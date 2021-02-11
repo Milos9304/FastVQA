@@ -1,3 +1,11 @@
-Input name = image1.png
-Num. of rows = 100
-Num. of cols = 150
+# DO NOT CHANGE VALUE BELOW
+type=qaoa
+#
+# QAOA configuration file for FastVQA
+#
+# hamiltonian_file = path_to_hml_file
+#
+#
+#
+# ------------------------ONLY EDIT BELOW------------------------
+hamiltonian_file = /home/milos/lattiQ/export/ntrulike_4_10.hml

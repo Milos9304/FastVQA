@@ -3,11 +3,16 @@
 #include "xacc_service.hpp"
 #include <random>
 
+#include "../logger.h"
+
 // Use XACC built-in QAOA to solve a QUBO problem
 // QUBO function:
 // y = -5x1 - 3x2 - 8x3 - 6x4 + 4x1x2 + 8x1x3 + 2x2x3 + 10x3x4
-int main(int argc, char **argv) {
-	xacc::Initialize(argc, argv);
+
+void run_dummy_qaoa(){
+	//int main(int argc, char **argv) {
+	//xacc::Initialize(argc, argv);
+	xacc::Initialize();
 	std::cout<<"init\n";
 
    // Use the Qpp simulator as the accelerator

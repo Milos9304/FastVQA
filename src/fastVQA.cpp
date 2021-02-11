@@ -3,13 +3,15 @@
 #include <boost/program_options.hpp>
 #include <exception>
 
+#include "vqe/qaoa.h"
+
 #include "config_io.h"
 #include "logger.h"
+
 
 namespace po = boost::program_options;
 
 int main(int ac, char** av){
-
 
 	std::string config;
 
@@ -42,10 +44,12 @@ int main(int ac, char** av){
     	}
 
     	logi("Running QAOA. Configuration loaded from " + config);
-    	logi(config);
+    	run_dummy_qaoa();
+
+
     	return 0;
     }
 
-    logi("Invalid arguments settings");
+    loge("Invalid argument settings");
     return 1;
 }

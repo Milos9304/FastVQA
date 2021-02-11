@@ -8,11 +8,12 @@
 #ifndef SRC_CONFIG_IO_H_
 #define SRC_CONFIG_IO_H_
 
+#include <vector>
 #include <fstream>
 
 struct VqeConfig{
 
-	int foobar;
+	std::vector<std::string> hamiltonians;
 
 };
 

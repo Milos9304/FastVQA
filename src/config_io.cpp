@@ -10,34 +10,67 @@
 
 extern VqeConfig loadConfigFile(std::string pathname){
 
-	std::string ipName;
-	int nR, nC;
+	std::string hml_file;
 
-	std::ifstream fin(pathname);
+	std::ifstream ifs(pathname);
 	std::string line;
-	std::istringstream sin;
+	std::istringstream line_stream;
 
-	if(!fin.is_open()){
-		throw std::runtime_error("Unable to open file " + pathname);
+	if(!ifs.is_open()){
+		throw std::runtime_error("Unable to open config file " + pathname);
 	}
 
-	while (std::getline(fin, line)) {
+	bool lookForType = true;
 
-	 sin.str(line.substr(line.find("=")+1));
+	VqeConfig vqeConfig;
 
-	 if (line.find("Input name") != std::string::npos) {
-	  logd("Input name " + sin.str());
-	  //sin >> ipName;
-	 }
-	 /*else if (line.find("Num. of rows") != std::string::npos) {
-	  sin >> nR;
-	 }
-	 else if (line.find("Num. of cols") != std::string::npos) {
-	  sin >> nC;
-	 }*/
-	 sin.clear();
+	/*
+	 * LOAD CONFIGURATION FILE
+	 * */
 
+	while (std::getline(ifs, line)) {
+
+		if(line[0] == '#')
+				continue;
+
+		line_stream.str(line.substr(line.find("=")+1));
+
+		if(lookForType and line.find("type") == std::string::npos)
+			throw std::runtime_error("Invalid config file type.");
+
+		lookForType = false;
+
+		if (line.find("type") != std::string::npos) {
+			if(line_stream.str() != "qaoa")
+				throw std::runtime_error("Invalid config file type.");
+		}
+
+		else if (line.find("hamiltonian_file") != std::string::npos) {
+			line_stream >> hml_file;
+		}
+
+		line_stream.clear();
 	}
+
+	ifs.close();
+
+	/*
+	 * LOAD CONTENTS OF HAMILTONIAN FILE
+	 */
+
+	if(hml_file.empty())
+		throw std::runtime_error("'hamiltonian_file' not specified in the config file");
+
+	std::ifstream hml_ifs(hml_file);
+	if(!hml_ifs.is_open()){
+			throw std::runtime_error("Unable to open hamiltonian file " + hml_file);
+	}
+
+	while (std::getline(hml_ifs, line))
+		vqeConfig.hamiltonians.push_back(line);
+
+	hml_ifs.close();
+
 
 	return VqeConfig();
 
