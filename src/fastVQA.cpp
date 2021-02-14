@@ -45,8 +45,6 @@ int main(int ac, char** av){
 
     	logi("Running QAOA. Configuration loaded from " + config);
     	run_dummy_qaoa();
-
-
     	return 0;
     }
 

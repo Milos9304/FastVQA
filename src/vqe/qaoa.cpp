@@ -19,8 +19,7 @@ void run_dummy_qaoa(){
     auto ir = xasmCompiler->compile(R"(__qpu__ void test(qbit q) {
         H(q[0]);
 		X(q[1]);
-        Measure(q[0]);
-        Measure(q[1]);
+        
     })", qpu);
 
     // Request the quantum kernel representing
@@ -32,9 +31,8 @@ void run_dummy_qaoa(){
     for(auto &m : qubitReg->getMeasurementCounts())//print();
     	std::cout << "oo: " << std::get<0>(m) <<" " <<std::get<1>(m)<< std::endl;
 
-    // Finalize the XACC Framework
+    // Finalize the XACC Framework*/
     xacc::Finalize();
-
 }
 /*#include <xacc.hpp>
 #include "xacc_observable.hpp"
