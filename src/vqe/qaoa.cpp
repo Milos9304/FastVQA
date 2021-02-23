@@ -1,40 +1,7 @@
 #include "xacc.hpp"
 
 #include <iostream>
-
-void run_dummy_qaoa(){
-    xacc::Initialize();
-    xacc::set_verbose(true);
-    xacc::setOption("quest-verbose", "true");
-    auto qpu = xacc::getAccelerator("quest", {
-        std::make_pair("quest-visitor", "exatn-mps"),
-        std::make_pair("shots", 10),
-    });
-    //xacc::getAccelerator("quest");
-    // Allocate a register of 40 qubits
-    auto qubitReg = xacc::qalloc(3);
-
-    // Create a Program
-    auto xasmCompiler = xacc::getCompiler("xasm");
-    auto ir = xasmCompiler->compile(R"(__qpu__ void test(qbit q) {
-        H(q[0]);
-		X(q[1]);
-        
-    })", qpu);
-
-    // Request the quantum kernel representing
-    // the above source code
-    auto program = ir->getComposite("test");
-    // Execute!
-    qpu->execute(qubitReg, program);
-
-    for(auto &m : qubitReg->getMeasurementCounts())//print();
-    	std::cout << "oo: " << std::get<0>(m) <<" " <<std::get<1>(m)<< std::endl;
-
-    // Finalize the XACC Framework*/
-    xacc::Finalize();
-}
-/*#include <xacc.hpp>
+#include <xacc.hpp>
 #include "xacc_observable.hpp"
 #include "xacc_service.hpp"
 #include <random>
@@ -49,7 +16,7 @@ void run_dummy_qaoa(){
 	//int main(int argc, char **argv) {
 	//xacc::Initialize(argc, argv);
 	xacc::Initialize();
-	std::cout<<"init\n";
+
 
  // Use the Qpp simulator as the accelerator
    auto acc = xacc::getAccelerator("quest");
@@ -87,6 +54,17 @@ void run_dummy_qaoa(){
                            // number of time steps (p) param
                            std::make_pair("steps", nbSteps)
                         });
+   if(initOk)
+	   logi("QAOA init sucessful.");
+   else{
+   	   loge("QAOA Init error!");
+   	   return;
+   }
    qaoa->execute(buffer);
    std::cout << "Min QUBO: " << (*buffer)["opt-val"].as<double>() << "\n";
-}*/
+   std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
+   for(auto &p: params)
+	   std::cout << p << "\n";
+
+   xacc::Finalize();
+}
