@@ -52,19 +52,61 @@ void run_dummy_qaoa(){
                            std::make_pair("optimizer", optimizer),
                            std::make_pair("observable", observable),
                            // number of time steps (p) param
-                           std::make_pair("steps", nbSteps)
+                           std::make_pair("steps", nbSteps),
+						   std::make_pair("calc-var-assignment", true)
                         });
    if(initOk)
-	   logi("QAOA init sucessful.");
+	   logi("QAOA init successful.");
    else{
    	   loge("QAOA Init error!");
    	   return;
    }
    qaoa->execute(buffer);
+
    std::cout << "Min QUBO: " << (*buffer)["opt-val"].as<double>() << "\n";
    std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
-   for(auto &p: params)
-	   std::cout << p << "\n";
 
+
+   //auto buffers = buffer->getChildren();
+   //for(std::string &name : buffer->getChildrenNames()){
+
+	//   std::cout << name << "\n";
+	   /*
+	    * I
+		evaled_Z0
+		evaled_Z0Z1
+		evaled_Z0Z2
+		evaled_Z1Z2
+		evaled_Z2
+		evaled_Z2Z3
+		evaled_Z3
+		I
+		evaled_Z0
+		evaled_Z0Z1
+		evaled_Z0Z2
+		evaled_Z1Z2
+		evaled_Z2
+		evaled_Z2Z3
+		evaled_Z3
+		I
+		evaled_Z0
+		evaled_Z0Z1
+		evaled_Z0Z2
+		evaled_Z1Z2
+		evaled_Z2
+		evaled_Z2Z3
+		evaled_Z3
+	    *
+	    */
+
+   //}
+   /*for(std::shared_ptr<xacc::AcceleratorBuffer> &childBuffer: buffers){
+
+	   childBuffer -> get
+
+   }*/
+   /*for(auto &p: params)
+	   std::cout << p << "\n";
+    */
    xacc::Finalize();
 }
