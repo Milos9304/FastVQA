@@ -20,7 +20,6 @@ void run_dummy_qaoa(){
 
  // Use the Qpp simulator as the accelerator
    auto acc = xacc::getAccelerator("quest");
-
    auto buffer = xacc::qalloc(4);
    // The corresponding QUBO Hamiltonian is:
    auto observable = xacc::quantum::getObservable(
@@ -61,7 +60,11 @@ void run_dummy_qaoa(){
    	   loge("QAOA Init error!");
    	   return;
    }
+
+   //xacc::setOption("use_global_qreg", "true");
+
    qaoa->execute(buffer);
+
 
    std::cout << "Min QUBO: " << (*buffer)["opt-val"].as<double>() << "\n";
    std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
