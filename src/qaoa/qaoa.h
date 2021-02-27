@@ -5,11 +5,11 @@
  *      Author: Milos Prokop
  */
 
-#ifndef SRC_VQE_QAOA_H_
-#define SRC_VQE_QAOA_H_
+#ifndef SRC_QAOA_QAOA_H_
+#define SRC_QAOA_QAOA_H_
 
 extern void run_dummy_qaoa();
 
 
 
-#endif /* SRC_VQE_QAOA_H_ */
+#endif /* SRC_QAOA_QAOA_H_ */

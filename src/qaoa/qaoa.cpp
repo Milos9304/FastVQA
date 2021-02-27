@@ -4,6 +4,7 @@
 #include <xacc.hpp>
 #include "xacc_observable.hpp"
 #include "xacc_service.hpp"
+//#include "QuEST.h"
 #include <random>
 
 #include "../logger.h"
@@ -12,19 +13,21 @@
 // QUBO function:
 // y = -5x1 - 3x2 - 8x3 - 6x4 + 4x1x2 + 8x1x3 + 2x2x3 + 10x3x4
 
+const std::string accelerator_name = "quest";
+
 void run_dummy_qaoa(){
 	//int main(int argc, char **argv) {
 	//xacc::Initialize(argc, argv);
 	xacc::Initialize();
 
-
- // Use the Qpp simulator as the accelerator
-   auto acc = xacc::getAccelerator("quest");
-   auto buffer = xacc::qalloc(4);
    // The corresponding QUBO Hamiltonian is:
    auto observable = xacc::quantum::getObservable(
          "pauli",
          std::string("-5.0 - 0.5 Z0 - 1.0 Z2 + 0.5 Z3 + 1.0 Z0 Z1 + 2.0 Z0 Z2 + 0.5 Z1 Z2 + 2.5 Z2 Z3"));
+
+   auto buffer = xacc::qalloc(observable->nBits());
+
+   auto acc = xacc::getAccelerator(accelerator_name, {std::make_pair("nbQbits", observable->nBits())});
 
    const int nbSteps = 1;//12;
    const int nbParams = nbSteps*11;
@@ -52,7 +55,11 @@ void run_dummy_qaoa(){
                            std::make_pair("observable", observable),
                            // number of time steps (p) param
                            std::make_pair("steps", nbSteps),
-						   std::make_pair("calc-var-assignment", true)
+						   std::make_pair("calc-var-assignment", true),
+						   // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
+						   std::make_pair("repeated_measurement_strategy", true),
+						   //Number of samples to estimate optimal variable assignment
+						   std::make_pair("nbSamples", /*1024*/5)
                         });
    if(initOk)
 	   logi("QAOA init successful.");
@@ -61,8 +68,6 @@ void run_dummy_qaoa(){
    	   return;
    }
 
-   //xacc::setOption("use_global_qreg", "true");
-
    qaoa->execute(buffer);
 
 
@@ -70,46 +75,5 @@ void run_dummy_qaoa(){
    std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
 
 
-   //auto buffers = buffer->getChildren();
-   //for(std::string &name : buffer->getChildrenNames()){
-
-	//   std::cout << name << "\n";
-	   /*
-	    * I
-		evaled_Z0
-		evaled_Z0Z1
-		evaled_Z0Z2
-		evaled_Z1Z2
-		evaled_Z2
-		evaled_Z2Z3
-		evaled_Z3
-		I
-		evaled_Z0
-		evaled_Z0Z1
-		evaled_Z0Z2
-		evaled_Z1Z2
-		evaled_Z2
-		evaled_Z2Z3
-		evaled_Z3
-		I
-		evaled_Z0
-		evaled_Z0Z1
-		evaled_Z0Z2
-		evaled_Z1Z2
-		evaled_Z2
-		evaled_Z2Z3
-		evaled_Z3
-	    *
-	    */
-
-   //}
-   /*for(std::shared_ptr<xacc::AcceleratorBuffer> &childBuffer: buffers){
-
-	   childBuffer -> get
-
-   }*/
-   /*for(auto &p: params)
-	   std::cout << p << "\n";
-    */
    xacc::Finalize();
 }

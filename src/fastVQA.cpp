@@ -3,10 +3,9 @@
 #include <boost/program_options.hpp>
 #include <exception>
 
-#include "vqe/qaoa.h"
-
 #include "config_io.h"
 #include "logger.h"
+#include "qaoa/qaoa.h"
 
 
 namespace po = boost::program_options;

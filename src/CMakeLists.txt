@@ -3,7 +3,7 @@ set(LIBRARY_NAME src)
 file(GLOB SRC fastVQA.cpp config_io.cpp)
 set(SRC_ORIG ${SRC})
 
-add_subdirectory(vqe)
+add_subdirectory(qaoa)
 
 find_package(Boost 1.74 COMPONENTS program_options REQUIRED)
 include_directories( ${Boost_INCLUDE_DIR} )
