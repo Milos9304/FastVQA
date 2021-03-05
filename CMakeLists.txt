@@ -9,11 +9,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 #
 # TO BE SET BY USER
 #
-if (NOT DEFINED ${DXACC_DIR})
-	set(DXACC_DIR /home/milos/.xacc)
+if (NOT DEFINED XACC_DIR)
+	set(XACC_DIR ~/.xacc)
 endif()
+
+message(${XACC_DIR})
 	
-get_filename_component(DXACC_DIR ${DXACC_DIR} ABSOLUTE)
+get_filename_component(DXACC_DIR ${XACC_DIR} ABSOLUTE)
                                               
 find_package(XACC REQUIRED)
 
