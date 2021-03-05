@@ -1,52 +1,50 @@
 #include <iostream>
 #include <iterator>
-#include <boost/program_options.hpp>
 #include <exception>
 
+#include "popl.hpp"
 #include "config_io.h"
 #include "logger.h"
 #include "qaoa/qaoa.h"
 
-
-namespace po = boost::program_options;
+using namespace popl;
 
 int main(int ac, char** av){
 
-	std::string config;
+	OptionParser op("Allowed options");
+	auto help_option = op.add<Switch>("h", "help", "produce help message");
+    auto qaoa 		 = op.add<Switch>("", "qaoa", "run qaoa algorithm");
+    auto config 	 = op.add<Value<std::string>>("", "config", "set config file location");
 
-    po::options_description desc("Allowed options");
-    desc.add_options()
-        ("help,h", "produce help message")
-		("qaoa", "run qaoa algorithm")
-        ("config,c", po::value<std::string>(&config), "set config file location");
+    op.parse(ac, av);
 
-    po::variables_map vm;
-    po::store(po::parse_command_line(ac, av, desc), vm);
-    po::notify(vm);
+    if (help_option->is_set())
+    		std::cout << op << "\n";
 
-    if (vm.count("help")) {
-        std::cout << desc << "\n";
-        return 0;
-    }
+    else if(qaoa -> is_set()){
 
-    if (vm.count("qaoa")) {
-    	if(config.empty()){
+    	if(!config->is_set()){
     		loge("No config file specified");
     		return 1;
     	}
 
     	try{
-    		VqeConfig vqeConfig = loadConfigFile(config);
-    	}catch(std::exception &e){
-    		loge(e.what());
-    		return 1;
+    		VqeConfig vqeConfig = loadConfigFile(config->value());
+    	}
+    	catch(std::exception &e){
+    	    loge(e.what());
+    	    return 1;
     	}
 
-    	logi("Running QAOA. Configuration loaded from " + config);
-    	run_dummy_qaoa();
-    	return 0;
+		logi("Running QAOA. Configuration loaded from " + config->value());
+		run_dummy_qaoa();
+		return 0;
     }
 
-    loge("Invalid argument settings");
-    return 1;
+    else{
+    	std::cout << "Invalid argument. Use ./fastVQA -h to see help." << "\n";
+    	return 1;
+    }
+
+    return 0;
 }
