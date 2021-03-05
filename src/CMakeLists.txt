@@ -5,7 +5,17 @@ set(SRC_ORIG ${SRC})
 
 add_subdirectory(qaoa)
 
+<<<<<<< HEAD
+=======
+#find_package(Boost 1.74 COMPONENTS program_options REQUIRED)
+#include_directories( ${Boost_INCLUDE_DIR} )
+
+>>>>>>> da0b777d2467d95279385af80854bf8e82afdb05
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../../bin")
 add_executable(fastVQA ${SRC_ORIG})
 #target_link_directories(fastVQA PUBLIC xacc::xacc xacc::quantum_gate)
 target_link_libraries(fastVQA PUBLIC vqe)
+<<<<<<< HEAD
+=======
+#target_link_libraries(fastVQA LINK_PUBLIC ${Boost_LIBRARIES} )
+>>>>>>> da0b777d2467d95279385af80854bf8e82afdb05
