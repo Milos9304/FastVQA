@@ -8,4 +8,4 @@ type=qaoa
 #
 #
 # ------------------------ONLY EDIT BELOW------------------------
-hamiltonian_file = /home/milos/lattiQ/export/ntrulike_4_10.hml
+hamiltonian_file = ../examples/hamiltonians/ntrulike_4_10.hml
