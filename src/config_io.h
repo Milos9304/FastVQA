@@ -11,12 +11,35 @@
 #include <vector>
 #include <fstream>
 
-struct VqeConfig{
+class VqaConfig{
 
-	std::vector<std::string> hamiltonians;
+	public:
+
+		bool verbose = true;
+
+		VqaConfig(std::string pathname);
+
+		std::vector<std::string> getHamiltonians(){
+			return hamiltonians;
+		}
+
+		void setCurrentHamiltonian(std::string hamiltonian){
+			current_hamiltonian = hamiltonian;
+		}
+
+		std::string getCurrentHamiltonian(){
+			return current_hamiltonian;
+		}
+
+	private:
+
+		std::vector<std::string> hamiltonians;
+		std::string current_hamiltonian = "";
+
+
 
 };
 
-extern VqeConfig loadConfigFile(std::string pathname);
+
 
 #endif /* SRC_CONFIG_IO_H_ */

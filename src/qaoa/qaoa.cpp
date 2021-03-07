@@ -1,5 +1,7 @@
 #include "xacc.hpp"
 
+#include "qaoa.h"
+
 #include <iostream>
 #include <xacc.hpp>
 #include "xacc_observable.hpp"
@@ -9,35 +11,42 @@
 
 #include "../logger.h"
 
-// Use XACC built-in QAOA to solve a QUBO problem
-// QUBO function:
-// y = -5x1 - 3x2 - 8x3 - 6x4 + 4x1x2 + 8x1x3 + 2x2x3 + 10x3x4
-
 const std::string accelerator_name = "quest";
 
-void run_dummy_qaoa(){
-	//int main(int argc, char **argv) {
-	//xacc::Initialize(argc, argv);
-	xacc::Initialize();
+void run_qaoa(VqaConfig* vqaConfig){
+
+   xacc::Initialize();
+
+   xacc::setOption("quest-verbose", "true");
 
    // The corresponding QUBO Hamiltonian is:
-   auto observable = xacc::quantum::getObservable(
-         "pauli",
-         std::string("-5.0 - 0.5 Z0 - 1.0 Z2 + 0.5 Z3 + 1.0 Z0 Z1 + 2.0 Z0 Z2 + 0.5 Z1 Z2 + 2.5 Z2 Z3"));
+   auto observable = xacc::quantum::getObservable("pauli", vqaConfig->getCurrentHamiltonian());
 
-   auto buffer = xacc::qalloc(observable->nBits());
+   int p = 1;
+
+   int num_qubits = observable->nBits();
+   int num_params_per_p = observable -> getNonIdentitySubTerms().size() + observable->nBits();
+   int num_params_total = p * num_params_per_p;
+
+   auto buffer = xacc::qalloc(num_qubits);
+
+   if(vqaConfig->verbose){
+	   logi(std::to_string(observable->nBits()) + " qubits, p="
+			   + std::to_string(p) + ", "
+			   + std::to_string(num_params_per_p) + " params per p"
+			   + std::to_string(num_params_total) + " params total"
+	   );
+   }
 
    auto acc = xacc::getAccelerator(accelerator_name, {std::make_pair("nbQbits", observable->nBits())});
 
-   const int nbSteps = 1;//12;
-   const int nbParams = nbSteps*11;
    std::vector<double> initialParams;
    std::random_device rd;
    std::mt19937 gen(rd());
    std::uniform_real_distribution<> dis(-2.0, 2.0);
 
    // Init random parameters
-   for (int i = 0; i < nbParams; ++i)
+   for (int i = 0; i < num_params_total; ++i)
    {
       initialParams.emplace_back(dis(gen));
    }
@@ -45,7 +54,7 @@ void run_dummy_qaoa(){
    auto optimizer = xacc::getOptimizer("nlopt",
       xacc::HeterogeneousMap {
          std::make_pair("initial-parameters", initialParams),
-         std::make_pair("nlopt-maxeval", nbParams*100) });
+         std::make_pair("nlopt-maxeval", num_params_total*10/*0*/) });
 
    auto qaoa = xacc::getService<xacc::Algorithm>("QAOA");
 
@@ -54,12 +63,12 @@ void run_dummy_qaoa(){
                            std::make_pair("optimizer", optimizer),
                            std::make_pair("observable", observable),
                            // number of time steps (p) param
-                           std::make_pair("steps", nbSteps),
+                           std::make_pair("steps", p),
 						   std::make_pair("calc-var-assignment", true),
 						   // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
 						   std::make_pair("repeated_measurement_strategy", true),
 						   //Number of samples to estimate optimal variable assignment
-						   std::make_pair("nbSamples", /*1024*/5)
+						   std::make_pair("nbSamples", 1024/*5*/)
                         });
    if(initOk)
 	   logi("QAOA init successful.");

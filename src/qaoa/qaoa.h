@@ -8,8 +8,9 @@
 #ifndef SRC_QAOA_QAOA_H_
 #define SRC_QAOA_QAOA_H_
 
-extern void run_dummy_qaoa();
+#include "../config_io.h"
 
+extern void run_qaoa(VqaConfig* vqaConfig);
 
 
 #endif /* SRC_QAOA_QAOA_H_ */

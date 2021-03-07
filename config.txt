@@ -9,3 +9,4 @@ type=qaoa
 #
 # ------------------------ONLY EDIT BELOW------------------------
 hamiltonian_file = ../examples/hamiltonians/ntrulike_4_10.hml
+verbose = true

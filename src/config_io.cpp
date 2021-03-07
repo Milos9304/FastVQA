@@ -8,7 +8,7 @@
 #include "config_io.h"
 #include "logger.h"
 
-extern VqeConfig loadConfigFile(std::string pathname){
+VqaConfig::VqaConfig(std::string pathname){
 
 	std::string hml_file;
 
@@ -21,8 +21,6 @@ extern VqeConfig loadConfigFile(std::string pathname){
 	}
 
 	bool lookForType = true;
-
-	VqeConfig vqeConfig;
 
 	/*
 	 * LOAD CONFIGURATION FILE
@@ -49,6 +47,13 @@ extern VqeConfig loadConfigFile(std::string pathname){
 			line_stream >> hml_file;
 		}
 
+		else if (line.find("verbose") != std::string::npos) {
+			std::string temp;
+			line_stream >> temp;
+			if(temp == "true")
+				verbose = true;
+		}
+
 		line_stream.clear();
 	}
 
@@ -67,11 +72,8 @@ extern VqeConfig loadConfigFile(std::string pathname){
 	}
 
 	while (std::getline(hml_ifs, line))
-		vqeConfig.hamiltonians.push_back(line);
+		hamiltonians.push_back(line);
 
 	hml_ifs.close();
-
-
-	return VqeConfig();
 
 }

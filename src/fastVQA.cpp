@@ -28,8 +28,10 @@ int main(int ac, char** av){
     		return 1;
     	}
 
+    	VqaConfig* vqaConfig;
+
     	try{
-    		VqeConfig vqeConfig = loadConfigFile(config->value());
+    		vqaConfig = new VqaConfig(config->value());
     	}
     	catch(std::exception &e){
     	    loge(e.what());
@@ -37,7 +39,20 @@ int main(int ac, char** av){
     	}
 
 		logi("Running QAOA. Configuration loaded from " + config->value());
-		run_dummy_qaoa();
+		int num_hamiltonians = vqaConfig->getHamiltonians().size();
+
+		logi(std::to_string(num_hamiltonians) + " hamiltonian(s) in the config file");
+
+		int i = 0;
+		for(auto &hamiltonian : vqaConfig->getHamiltonians()){
+
+			logi("Running hamiltonian " + std::to_string(i++) + " / " + std::to_string(num_hamiltonians));
+
+			vqaConfig->setCurrentHamiltonian(hamiltonian);
+			run_qaoa(vqaConfig);
+
+		}
+
 		return 0;
     }
 
