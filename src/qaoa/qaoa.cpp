@@ -54,22 +54,23 @@ void run_qaoa(VqaConfig* vqaConfig){
    auto optimizer = xacc::getOptimizer("nlopt",
       xacc::HeterogeneousMap {
          std::make_pair("initial-parameters", initialParams),
+         // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
+	     std::make_pair("repeated_measurement_strategy", true),
          std::make_pair("nlopt-maxeval", num_params_total*10/*0*/) });
 
    auto qaoa = xacc::getService<xacc::Algorithm>("QAOA");
 
    const bool initOk = qaoa->initialize({
-                           std::make_pair("accelerator", acc),
-                           std::make_pair("optimizer", optimizer),
-                           std::make_pair("observable", observable),
-                           // number of time steps (p) param
-                           std::make_pair("steps", p),
-						   std::make_pair("calc-var-assignment", true),
-						   // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
-						   std::make_pair("repeated_measurement_strategy", true),
-						   //Number of samples to estimate optimal variable assignment
-						   std::make_pair("nbSamples", 1024/*5*/)
-                        });
+	   std::make_pair("accelerator", acc),
+	   std::make_pair("optimizer", optimizer),
+	   std::make_pair("observable", observable),
+	   // number of time steps (p) param
+	   std::make_pair("steps", p),
+	   std::make_pair("calc-var-assignment", true),
+	   //Number of samples to estimate optimal variable assignment
+	   std::make_pair("nbSamples", 1024/*5*/)
+    });
+
    if(initOk)
 	   logi("QAOA init successful.");
    else{
