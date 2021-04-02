@@ -7,6 +7,61 @@
 
 #include "lattice.h"
 
+bool pen_initialized = false;
+
+void Lattice::penalize_expr(int penalty, penalty_mode mode){
+
+	expression_penalized = new Expression(*expression_bin);
+	expression_penalized->name = "expression_penalized";
+
+	if(mode == penalty_all){
+
+		int z1_id=0, z2_id=0;
+		std::vector<Var*>::iterator x2_it;
+
+		expression_penalized -> addConstant(penalty);
+		std::vector<Var*> variables = expression_penalized->getVariables();
+
+		if(variables[0]->id != -1){
+			loge("Error! id not the first val");
+			return;
+		}
+
+		int counter = 0;
+		for(std::vector<Var*>::iterator it = variables.begin() + 1;
+				it != variables.end(); ++it){
+
+			int z_id = expression_penalized -> addBinaryVar("z_"+(*it)->name);
+
+			if(counter == 0)
+				z1_id = z_id;
+			else if(counter == 1){
+				z2_id = z_id;
+				x2_it = it;
+			}
+
+			expression_penalized -> addNewTerm((*it)->id, z_id, -penalty);
+
+			for(std::vector<Var*>::iterator it2 = it; it2 != variables.end(); it2++){
+				expression_penalized -> addNewTerm((*it2)->id, z_id, penalty);
+			}
+
+		counter++;
+		}
+
+		//add z1=1, z2=x2
+		expression_penalized->substituteVarToInt(z1_id, 1);
+		std::map<int, int> subs_expr; //id, coeff
+		subs_expr.emplace((*x2_it)->id, 1);
+		expression_penalized->substitute(z2_id, subs_expr);
+	}
+
+
+	expression_penalized->print();
+
+}
+
+
 void Lattice::init_x(x_init_mode mode){
 
 	if(mode == x_zero_one){
@@ -76,6 +131,12 @@ std::string Lattice::toHamiltonianString(x_init_mode mode){
 		init_expr_bin(naive_overapprox);
 		bin_initialized = true;
 	}
+
+	if(!pen_initialized){
+		penalize_expr(1000, penalty_all);
+		pen_initialized = true;
+	}
+
 
 
 

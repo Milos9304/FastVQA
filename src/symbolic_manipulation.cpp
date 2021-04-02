@@ -70,14 +70,17 @@ void Expression::print(){
 			term.second < 0 ? std::cout << " - " << term.second * -1 : std::cout << " + " << term.second;
 		}
 
-		if(id1 == id2)
-			std::cout << " " << idMap[id1]->name << "^2" ;
+		if(id1 == -1 && id2 == -1){} //id
+		else if(id1 == -1)
+			std::cout << " " << idMap[id2]->name;
+		else if(id2 == -1)
+			std::cout << " " << idMap[id1]->name;
 		else
 			std::cout << " " << idMap[id1]->name << " " << idMap[id2]->name;
 
 	}
 
-	std::cout << "\n\n    Variables:\n";
+	std::cout << "\n\n    Variables (total " << variables.size() - 1  << "):\n";
 	for(auto &var: variables){
 
 		if(var->id >= 0) //do not print identity variable

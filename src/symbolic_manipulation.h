@@ -13,25 +13,27 @@
 #include <string>
 #include <algorithm>
 
+class Var{
+
+	public:
+
+		Var(int id, std::string name, int lowerBound, int upperBound){
+			this -> id = id;
+			this -> lb = lowerBound;
+			this -> ub = upperBound;
+			this -> name = name;
+		}
+
+		std::string name;
+
+		int lb, ub;
+		int id;
+
+};
+
 class Expression{
 
 	private:
-
-		class Var{
-
-			public:
-				Var(int id, std::string name, int lowerBound, int upperBound){
-					this -> id = id;
-					this -> lb = lowerBound;
-					this -> ub = upperBound;
-					this -> name = name;
-				}
-
-				std::string name;
-
-				int lb, ub;
-				int id;
-		};
 
 		int id_counter = 0;
 		std::vector<Var*> variables;
@@ -68,7 +70,10 @@ class Expression{
 		}
 
 		void addNewTerm(int id_a, int id_b, int coeff){
-			if(id_a <= id_b)
+
+			if(id_a == id_b)
+				polynomial.emplace(std::pair<int, int>(id_a, -1), coeff);
+			else if(id_a < id_b)
 				polynomial.emplace(std::pair<int, int>(id_a, id_b), coeff);
 			else
 				polynomial.emplace(std::pair<int, int>(id_b, id_a), coeff);
@@ -91,6 +96,16 @@ class Expression{
 				addNewTerm(id_a, id_b, coeff);
 			}
 
+		}
+
+		void addConstant(int constant){
+			polynomial[std::pair<int,int>(-1,-1)] += constant;
+		}
+
+		void substituteVarToInt(int id, int val){
+			std::map<int, int> subs_expr;
+			subs_expr.emplace(-1, val);
+			substitute(id, subs_expr);
 		}
 
 		void substitute(int id, std::map<int, int> subs_expr);

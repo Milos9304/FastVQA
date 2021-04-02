@@ -20,8 +20,9 @@ class Lattice{
 
 		enum x_init_mode { x_zero_one };
 		enum bin_mapping { naive_overapprox };
+		enum penalty_mode { penalty_all };
 
-		Lattice(MatrixInt lattice){
+		Lattice(MatrixInt lattice){ // @suppress("Class members should be properly initialized")
 
 			this -> orig_lattice = lattice;
 
@@ -44,13 +45,16 @@ class Lattice{
 		bool gram_initialized = false;
 		MatrixInt gram_matrix;
 
-		Expression *expression_int, *expression_bin;
+		Expression *expression_int, *expression_bin, *expression_penalized;
 
 		bool x_initialized = false;
 		void init_x(x_init_mode mode);
 
 		bool bin_initialized = false;
 		void init_expr_bin(bin_mapping mapping);
+
+		bool pen_initialized = false;
+		void penalize_expr(int penalty, penalty_mode mode);
 
 
 };
