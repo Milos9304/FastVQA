@@ -21,7 +21,7 @@ void stats_func(double energy){
 
 }
 
-void run_qaoa(VqaConfig* vqaConfig){
+void run_qaoa(std::string hamiltonian, bool verbose){
 
    outfile.open("statsfile.txt", std::fstream::out | std::ios_base::trunc);//std::ios_base::app
    xacc::Initialize();
@@ -29,8 +29,10 @@ void run_qaoa(VqaConfig* vqaConfig){
    //xacc::setOption("quest-verbose", "true");
    //xacc::setOption("quest-debug", "true");
 
+   std::cout << hamiltonian <<"\n";throw;
+
    // The corresponding QUBO Hamiltonian is:
-   auto observable = xacc::quantum::getObservable("pauli", vqaConfig->getCurrentHamiltonian());
+   auto observable = xacc::quantum::getObservable("pauli", hamiltonian);
 
    int p = 1;
 
@@ -40,7 +42,7 @@ void run_qaoa(VqaConfig* vqaConfig){
 
    auto buffer = xacc::qalloc(num_qubits);
 
-   if(vqaConfig->verbose){
+   if(verbose){
 	   logi(std::to_string(observable->nBits()) + " qubits, p="
 			   + std::to_string(p) + ", "
 			   + std::to_string(num_params_per_p) + " params per p"

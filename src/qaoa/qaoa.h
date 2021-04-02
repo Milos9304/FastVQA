@@ -8,9 +8,6 @@
 #ifndef SRC_QAOA_QAOA_H_
 #define SRC_QAOA_QAOA_H_
 
-#include "../config_io.h"
-
-extern void run_qaoa(VqaConfig* vqaConfig);
-
+extern void run_qaoa(std::string hamiltonian, bool verbose);
 
 #endif /* SRC_QAOA_QAOA_H_ */

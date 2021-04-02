@@ -39,17 +39,16 @@ int main(int ac, char** av){
     	}
 
 		logi("Running QAOA. Configuration loaded from " + config->value());
-		int num_hamiltonians = vqaConfig->getHamiltonians().size();
+		int num_lattices = vqaConfig->getLattices().size();
 
-		logi(std::to_string(num_hamiltonians) + " hamiltonian(s) in the config file");
+		logi(std::to_string(num_lattices) + " lattice(s) in the config file");
 
 		int i = 0;
-		for(auto &hamiltonian : vqaConfig->getHamiltonians()){
+		for(auto &lattice : vqaConfig->getLattices()){
 
-			logi("Running hamiltonian " + std::to_string(i++) + " / " + std::to_string(num_hamiltonians));
+			logi("Running lattice " + std::to_string(i++) + " / " + std::to_string(num_lattices));
 
-			vqaConfig->setCurrentHamiltonian(hamiltonian);
-			run_qaoa(vqaConfig);
+			run_qaoa(lattice.toHamiltonianString(Lattice::x_zero_one), vqaConfig->verbose);
 
 		}
 

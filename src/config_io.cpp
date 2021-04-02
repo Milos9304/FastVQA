@@ -8,9 +8,68 @@
 #include "config_io.h"
 #include "logger.h"
 
+MatrixInt VqaConfig::loadLatticeFromFile(std::string filename, bool *success){
+
+	std::ifstream file(filename);
+	if(!file.is_open()){
+		*success = false;
+		loge("Unable to open hamiltonian file " + filename);
+		return MatrixInt();
+	}
+
+	std::vector<std::string> lines;
+
+	std::string line;
+	while (getline(file, line)){
+		if (!line.empty())
+			lines.push_back(line);
+	}
+
+	file.close();
+
+	std::string line0 = lines[0];
+
+	int rows = lines.size();
+	int cols = 1;
+	for (unsigned int i = 0; i < line0.length(); i++) {
+		if (isspace(line0.at(i))){
+		  cols++;
+		}
+	}
+
+	MatrixInt lattice;
+	lattice.resize(rows, cols);
+
+	int row_index = 0;
+	int col_index = 0;
+
+	for(auto &line: lines){
+
+		 if(line[1] == '[')
+			 line = line.substr(2, line.length()-1);
+		 else if(line[line.length()-2] == ']')
+			 line = line.substr(1, line.length()-2);
+		 else
+			 line = line.substr(1, line.length()-1);
+
+		 std::istringstream in(line, std::istringstream::in);
+
+		 int n;
+
+		 col_index = 0;
+		 while (in >> n)
+			 lattice(row_index, col_index++) = n;
+
+		 row_index += 1;
+	}
+
+	*success = true;
+	return lattice;
+}
+
 VqaConfig::VqaConfig(std::string pathname){
 
-	std::string hml_file;
+	std::string lattice_files;
 
 	std::ifstream ifs(pathname);
 	std::string line;
@@ -43,8 +102,23 @@ VqaConfig::VqaConfig(std::string pathname){
 				throw std::runtime_error("Invalid config file type.");
 		}
 
-		else if (line.find("hamiltonian_file") != std::string::npos) {
-			line_stream >> hml_file;
+		else if (line.find("lattice_files") != std::string::npos) {
+
+			line_stream >> lattice_files;
+
+			std::istringstream ss(lattice_files);
+			std::string lattice_file;
+
+			while(std::getline(ss, lattice_file, ',')) {
+				bool success;
+				Eigen::MatrixXi lattice = loadLatticeFromFile(lattice_file, &success);
+
+				if(success)
+					lattices.push_back(Lattice(lattice));
+
+				logi(lattice_file + " loaded");
+			}
+
 		}
 
 		else if (line.find("verbose") != std::string::npos) {
@@ -59,21 +133,54 @@ VqaConfig::VqaConfig(std::string pathname){
 
 	ifs.close();
 
-	/*
-	 * LOAD CONTENTS OF HAMILTONIAN FILE
-	 */
+}
 
-	if(hml_file.empty())
-		throw std::runtime_error("'hamiltonian_file' not specified in the config file");
+/*
+std::ifstream file(filename);
+	std::vector<std::string> lines;
 
-	std::ifstream hml_ifs(hml_file);
-	if(!hml_ifs.is_open()){
-			throw std::runtime_error("Unable to open hamiltonian file " + hml_file);
+	std::string line;
+	while (getline(file, line)){
+	    if (!line.empty())
+	        lines.push_back(line);
 	}
 
-	while (std::getline(hml_ifs, line))
-		hamiltonians.push_back(line);
+	file.close();
 
-	hml_ifs.close();
+	std::string line0 = lines[0];
 
-}
+	int rows = lines.size();
+	int cols = 1;
+	for (int i = 0; i < line0.length(); i++) {
+	    if (isspace(line0.at(i))){
+	      cols++;
+	    }
+	}
+
+	matrix res("B", rows, cols, true);
+
+	int row_index = 0;
+	int col_index = 0;
+
+	for(auto &line: lines){
+
+         if(line[1] == '[')
+        	 line = line.substr(2, line.length()-1);
+         else if(line[line.length()-2] == ']')
+        	 line = line.substr(1, line.length()-2);
+         else
+        	 line = line.substr(1, line.length()-1);
+
+		 std::istringstream in(line, std::istringstream::in);
+
+		 double n;
+
+		 col_index = 0;
+		 while (in >> n)
+		    res.data[col_index++ + row_index * res.cols] = n;
+
+		 row_index += 1;
+	}
+
+	logd(filename + " loaded");
+*/

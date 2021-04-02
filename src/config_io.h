@@ -8,6 +8,7 @@
 #ifndef SRC_CONFIG_IO_H_
 #define SRC_CONFIG_IO_H_
 
+#include "lattice.h"
 #include <vector>
 #include <fstream>
 
@@ -19,8 +20,8 @@ class VqaConfig{
 
 		VqaConfig(std::string pathname);
 
-		std::vector<std::string> getHamiltonians(){
-			return hamiltonians;
+		std::vector<Lattice> getLattices(){
+			return lattices;
 		}
 
 		void setCurrentHamiltonian(std::string hamiltonian){
@@ -33,8 +34,10 @@ class VqaConfig{
 
 	private:
 
-		std::vector<std::string> hamiltonians;
+		std::vector<Lattice> lattices;
 		std::string current_hamiltonian = "";
+
+		MatrixInt loadLatticeFromFile(std::string filename, bool *success);
 
 
 
