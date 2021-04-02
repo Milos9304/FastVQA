@@ -17,6 +17,7 @@ class Var{
 
 	public:
 
+		//lb = -1, ub = 1 => qubo Z var
 		Var(int id, std::string name, int lowerBound, int upperBound){
 			this -> id = id;
 			this -> lb = lowerBound;
@@ -41,7 +42,7 @@ class Expression{
 		std::map<std::string, int> varMap;
 
 		//id, id, coeff
-		std::map<std::pair<int, int>, int> polynomial;
+		std::map<std::pair<int, int>, double> polynomial;
 
 	public:
 
@@ -69,23 +70,28 @@ class Expression{
 			return this->addIntegerVar(name, 0, 1);
 		}
 
-		void addNewTerm(int id_a, int id_b, int coeff){
-
-			if(id_a == id_b)
-				polynomial.emplace(std::pair<int, int>(id_a, -1), coeff);
-			else if(id_a < id_b)
-				polynomial.emplace(std::pair<int, int>(id_a, id_b), coeff);
-			else
-				polynomial.emplace(std::pair<int, int>(id_b, id_a), coeff);
+		std::pair<int, std::string> addZ(int qubit){ //when creating qubo formulation
+			std::string z_name = "Z"+std::to_string(qubit);
+			return std::pair<int, std::string>(this->addIntegerVar(z_name, 1, -1), z_name);
 		}
 
-		void addTermCoeff(int id_a, int id_b, int coeff){
+		void addNewTerm(int id_a, int id_b, double coeff){
+
+			if(id_a == id_b)
+				polynomial.emplace(std::pair<int, double>(id_a, -1), coeff);
+			else if(id_a < id_b)
+				polynomial.emplace(std::pair<int, double>(id_a, id_b), coeff);
+			else
+				polynomial.emplace(std::pair<int, double>(id_b, id_a), coeff);
+		}
+
+		void addTermCoeff(int id_a, int id_b, double coeff){
 
 			std::pair<int, int> to_search;
 			if(id_a <= id_b)
-				to_search = std::pair<int, int>(id_a, id_b);
+				to_search = std::pair<int, double>(id_a, id_b);
 			else
-				to_search = std::pair<int, int>(id_b, id_a);
+				to_search = std::pair<int, double>(id_b, id_a);
 
 			auto search = polynomial.find(to_search);
 			if (search != polynomial.end()) {
@@ -98,17 +104,17 @@ class Expression{
 
 		}
 
-		void addConstant(int constant){
+		void addConstant(double constant){
 			polynomial[std::pair<int,int>(-1,-1)] += constant;
 		}
 
-		void substituteVarToInt(int id, int val){
-			std::map<int, int> subs_expr;
+		void substituteVarToDouble(int id, double val){
+			std::map<int, double> subs_expr;
 			subs_expr.emplace(-1, val);
 			substitute(id, subs_expr);
 		}
 
-		void substitute(int id, std::map<int, int> subs_expr);
+		void substitute(int id, std::map<int, double> subs_expr);
 
 		std::vector<Var*> getVariables(){
 			return variables;
@@ -126,6 +132,7 @@ class Expression{
 			idMap.erase(id);
 		}
 
+		std::string expression_line_print();
 		void print();
 
 };

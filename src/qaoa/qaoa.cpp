@@ -29,7 +29,7 @@ void run_qaoa(std::string hamiltonian, bool verbose){
    //xacc::setOption("quest-verbose", "true");
    //xacc::setOption("quest-debug", "true");
 
-   std::cout << hamiltonian <<"\n";throw;
+   //std::cout << hamiltonian <<"\n";throw;
 
    // The corresponding QUBO Hamiltonian is:
    auto observable = xacc::quantum::getObservable("pauli", hamiltonian);

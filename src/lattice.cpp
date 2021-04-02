@@ -9,6 +9,33 @@
 
 bool pen_initialized = false;
 
+void Lattice::generate_qubo(){
+
+	expression_qubo = new Expression(*expression_penalized);
+	expression_qubo->name = "QUBO";
+
+	int qubit = 0;
+	for(auto &var : expression_qubo->getVariables()){
+
+		if(var->id < 0) //id
+			continue;
+
+		std::pair<int, std::string> z = expression_qubo -> addZ(qubit++);
+		qubo_to_bin_map.emplace(z.second, var);
+
+		std::map<int, double> subs_expr; //id, coeff
+
+		//(1-z)/2
+		subs_expr.emplace(-1, 0.5);
+		subs_expr.emplace(z.first, -0.5);
+		expression_qubo->substitute(var->id, subs_expr);
+
+	}
+
+	expression_qubo -> print();
+
+}
+
 void Lattice::penalize_expr(int penalty, penalty_mode mode){
 
 	expression_penalized = new Expression(*expression_bin);
@@ -50,12 +77,11 @@ void Lattice::penalize_expr(int penalty, penalty_mode mode){
 		}
 
 		//add z1=1, z2=x2
-		expression_penalized->substituteVarToInt(z1_id, 1);
-		std::map<int, int> subs_expr; //id, coeff
+		expression_penalized->substituteVarToDouble(z1_id, 1);
+		std::map<int, double> subs_expr; //id, coeff
 		subs_expr.emplace((*x2_it)->id, 1);
 		expression_penalized->substitute(z2_id, subs_expr);
 	}
-
 
 	expression_penalized->print();
 
@@ -86,7 +112,7 @@ void Lattice::init_expr_bin(bin_mapping mapping){
 	expression_bin = new Expression(*expression_int);
 	expression_bin->name = "expression_bin";
 
-	for(auto &var : expression_int->getVariables()){
+	for(auto &var : expression_bin->getVariables()){
 
 		if(var->id < 0) //identity coeff
 			continue;
@@ -96,7 +122,7 @@ void Lattice::init_expr_bin(bin_mapping mapping){
 
 		std::string name = var -> name;
 
-		std::map<int, int> subs_expr; //id, coeff
+		std::map<int, double> subs_expr; //id, coeff
 
 		if(mapping == naive_overapprox){
 
@@ -137,12 +163,12 @@ std::string Lattice::toHamiltonianString(x_init_mode mode){
 		pen_initialized = true;
 	}
 
+	if(!qubo_generated){
+		generate_qubo();
+		qubo_generated = true;
+	}
 
-
-
-	std::cout << gram_matrix;
-
-	return "ahoj";
+	return expression_qubo->expression_line_print();
 
 }
 

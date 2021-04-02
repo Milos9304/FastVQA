@@ -45,7 +45,9 @@ class Lattice{
 		bool gram_initialized = false;
 		MatrixInt gram_matrix;
 
-		Expression *expression_int, *expression_bin, *expression_penalized;
+		Expression *expression_int, *expression_bin, *expression_penalized, *expression_qubo;
+
+		std::map<std::string, Var*> qubo_to_bin_map;
 
 		bool x_initialized = false;
 		void init_x(x_init_mode mode);
@@ -56,6 +58,8 @@ class Lattice{
 		bool pen_initialized = false;
 		void penalize_expr(int penalty, penalty_mode mode);
 
+		bool qubo_generated = false;
+		void generate_qubo();
 
 };
 

@@ -8,7 +8,7 @@
 #include "logger.h"
 #include "symbolic_manipulation.h"
 
-void Expression::substitute(int id, std::map<int, int> subs_expr){
+void Expression::substitute(int id, std::map<int, double> subs_expr){
 
 	std::vector<std::pair<int, int>> toDel;
 
@@ -47,13 +47,13 @@ void Expression::substitute(int id, std::map<int, int> subs_expr){
 
 }
 
-void Expression::print(){
+std::string Expression::expression_line_print(){
 
-	std::cout<<"\n  Optimization problem ["+name+"]:\n";
+	std::stringstream ss;
 
-	std::cout << "\n    Expression:\n";
 	bool firstTerm = true;
-	std::cout << "	";
+	ss << "	";
+
 	for(auto &term : polynomial){
 
 		if(term.second == 0)
@@ -63,27 +63,41 @@ void Expression::print(){
 		int id2 = term.first.second;
 
 		if(firstTerm){
-			term.second < 0 ? std::cout << "-" << term.second : std::cout << "" << term.second;
+			term.second < 0 ? ss << "-" << term.second : ss << "" << term.second;
 			firstTerm = false;
 		}
 		else{
-			term.second < 0 ? std::cout << " - " << term.second * -1 : std::cout << " + " << term.second;
+			term.second < 0 ? ss << " - " << term.second * -1 : ss << " + " << term.second;
 		}
 
 		if(id1 == -1 && id2 == -1){} //id
 		else if(id1 == -1)
-			std::cout << " " << idMap[id2]->name;
+			ss << " " << idMap[id2]->name;
 		else if(id2 == -1)
-			std::cout << " " << idMap[id1]->name;
+			ss << " " << idMap[id1]->name;
 		else
-			std::cout << " " << idMap[id1]->name << " " << idMap[id2]->name;
+			ss << " " << idMap[id1]->name << " " << idMap[id2]->name;
 
 	}
 
-	std::cout << "\n\n    Variables (total " << variables.size() - 1  << "):\n";
+	return ss.str();
+}
+
+void Expression::print(){
+
+	std::cout<<"\n  Optimization problem ["+name+"]:\n";
+
+	std::cout << "\n    Expression:\n";
+
+	std::cout << expression_line_print();
+
+	std::cout << "\n\n    Variables (total " << variables.size() - 1 << "):\n";
 	for(auto &var: variables){
 
-		if(var->id >= 0) //do not print identity variable
+		if(var->lb == 1 && var->ub == -1) //Z var
+			std::cout << "	" << var->name << "\n";
+
+		else if(var->id >= 0) //do not print identity variable
 			std::cout << "	" << var->name << " " << "[" << var->lb << ", " << var->ub << "]\n";
 	}
 
