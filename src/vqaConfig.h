@@ -5,8 +5,8 @@
  *      Author: Milos Prokop
  */
 
-#ifndef SRC_CONFIG_IO_H_
-#define SRC_CONFIG_IO_H_
+#ifndef SRC_VQACONFIG_H_
+#define SRC_VQACONFIG_H_
 
 #include "lattice.h"
 #include <vector>
@@ -45,4 +45,4 @@ class VqaConfig{
 
 
 
-#endif /* SRC_CONFIG_IO_H_ */
+#endif /* SRC_VQACONFIG_H_ */

@@ -5,8 +5,8 @@
  *      Author: Milos Prokop
  */
 
-#include "config_io.h"
 #include "logger.h"
+#include "vqaConfig.h"
 
 MatrixInt VqaConfig::loadLatticeFromFile(std::string filename, bool *success){
 

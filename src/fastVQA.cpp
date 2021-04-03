@@ -3,9 +3,9 @@
 #include <exception>
 
 #include "popl.hpp"
-#include "config_io.h"
 #include "logger.h"
 #include "qaoa/qaoa.h"
+#include "vqaConfig.h"
 
 using namespace popl;
 

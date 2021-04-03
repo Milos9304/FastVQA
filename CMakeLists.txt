@@ -22,5 +22,6 @@ find_package(XACC REQUIRED)
 set (CMAKE_CXX_FLAGS "-g3 -Wall -O2")
 
 add_subdirectory(src)
+add_subdirectory(tests)
 
 

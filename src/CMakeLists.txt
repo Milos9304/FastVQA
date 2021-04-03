@@ -1,6 +1,6 @@
 set(LIBRARY_NAME src)
 
-file(GLOB SRC fastVQA.cpp config_io.cpp symbolic_manipulation.cpp lattice.cpp)
+file(GLOB SRC fastVQA.cpp vqaConfig.cpp symbolic_manipulation.cpp lattice.cpp)
 set(SRC_ORIG ${SRC})
 
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)

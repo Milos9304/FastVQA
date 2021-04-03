@@ -76,14 +76,19 @@ void Lattice::penalize_expr(int penalty, penalty_mode mode){
 		counter++;
 		}
 
-		//add z1=1, z2=x2
+		//add z0=1, z1=x1
 		expression_penalized->substituteVarToDouble(z1_id, 1);
 		std::map<int, double> subs_expr; //id, coeff
 		subs_expr.emplace((*x2_it)->id, 1);
 		expression_penalized->substitute(z2_id, subs_expr);
+
+		std::cout << "subs " << z1_id << " c" << 1 << "\n";
+		std::cout << "subs " << z2_id << " " << (*x2_it)->id << "\n";
 	}
 
 	expression_penalized->print();
+
+	throw;
 
 }
 
