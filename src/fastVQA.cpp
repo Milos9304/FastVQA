@@ -47,8 +47,8 @@ int main(int ac, char** av){
 		for(auto &lattice : vqaConfig->getLattices()){
 
 			logi("Running lattice " + std::to_string(i++) + " / " + std::to_string(num_lattices));
-
-			run_qaoa(lattice.toHamiltonianString(Lattice::x_zero_one), vqaConfig->verbose);
+			lattice.toHamiltonianString(Lattice::x_zero_one, true);break;
+			//run_qaoa(lattice.toHamiltonianString(Lattice::x_zero_one), vqaConfig->verbose);
 
 		}
 

@@ -18,10 +18,57 @@ std::vector<std::string> split(std::string const &input) {
 	    return ret;
 }
 
-bool compareHamiltonians(std::string generatedHml, std::string matlabHml){
+bool compareHamiltonians(std::string generatedHml, std::string matlabHml, std::function<std::string(std::string)> hmlMap){
+
+	int sign = 1;
 
 	for(auto &token : split(matlabHml)){
-		std::cout << token << "\n";
+		//std::cout << token << "\n";
+
+		int constant = 0;
+
+		if (token.find('*') != std::string::npos){
+
+			std::cout << token << ":" << std::endl;
+			std::vector<std::string> vars;
+			int coeff;
+
+			bool c = true;
+			size_t pos;
+			std::string parsed;
+			std::string remaining = token;
+			while ((pos = remaining.find('*')) != std::string::npos) {
+			    parsed =  remaining.substr(0, pos);
+				remaining = remaining.substr(pos+1, remaining.size()-1);
+			    if(c){
+			    	c = false;
+					coeff = std::stoi(parsed);
+			    }
+			    else
+			    	vars.push_back(parsed);
+			}
+
+			if(remaining.find('^') != std::string::npos){
+				pos = remaining.find('^');
+				vars.push_back(remaining.substr(0, pos));
+				vars.push_back(remaining.substr(0, pos));
+			}
+			else
+				vars.push_back(remaining);
+
+			coeff = sign * coeff;
+			for(auto &v:vars){
+				std::cout << v << "\n";
+			}
+
+		}else{
+			if(token == "-"){
+				sign = -1;
+			}else if(token == "+")
+				sign = 1;
+			else
+				constant = std::stoi(token);
+		}
 
 	}
 
@@ -50,7 +97,12 @@ TEST(svpToQuboTest, binary_substitution_penalized){
 		std::getline(file, matlabHamiltonian);
 		file.close();
 
-		EXPECT_TRUE(compareHamiltonians(generatedHamiltonian, matlabHamiltonian));
+		std::cout <<generatedHamiltonian;
+
+		EXPECT_TRUE(compareHamiltonians(generatedHamiltonian, matlabHamiltonian,
+				[](std::string x) {
+				return "x_"+std::to_string(std::stoi(x.substr(1, x.size()-1))-1)+"_b0";
+		}));
 
 		break;
 

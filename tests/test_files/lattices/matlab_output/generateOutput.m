@@ -32,13 +32,14 @@ for k=1:1%length(lattices)
        end
     end
     
-    f=X*G*transpose(X);    
-    penalized_f = f + L + sumXiZi;
+    f=X*G*transpose(X);
+    penalized_f = f + L + sumXiZi + sumXiZj;
     
     subs1 = subs(penalized_f, Z(1), 1);
     subs2 = subs(penalized_f, Z(2), X(2));
     
     expand(subs2)
+    
     fpath = [lattices(k).folder '/matlab_output/' lattices(k).name(1:end-2) '.txt'];
     fid = fopen(fpath,'wt');
     fprintf(fid,'%s', expand(subs2));
