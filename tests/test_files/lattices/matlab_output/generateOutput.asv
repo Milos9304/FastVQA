@@ -4,7 +4,7 @@ close all
 
 lattices = dir('../*.l');
 
-for i=1:1%length(lattices)
+for i=1:length(lattices)
     
    path = [lattices(i).folder '/' lattices(i).name];
    B = readmatrix(path... % filename
@@ -24,15 +24,11 @@ for i=1:1%length(lattices)
     L = 1000;
     
     sumXiZi = 0;
-    sumXiZj = 0;
     for i=1:dim
-       sumXiZi=sumXiZi -L * X(i) * Z(i);
-       for j=i+1:dim
-           sumXiZj=sumXiZj + L * Z(i) * X(j);
-       end
+       sumXiZi= -L * X(i) * Z(i);
     end
     
-    sumXiZj
+    sumXiZi
     
     X*G*transpose(X) + L + sumXiZi;
     

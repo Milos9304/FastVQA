@@ -69,7 +69,7 @@ void Lattice::penalize_expr(int penalty, penalty_mode mode){
 
 			expression_penalized -> addNewTerm((*it)->id, z_id, -penalty);
 
-			for(std::vector<Var*>::iterator it2 = it; it2 != variables.end(); it2++){
+			for(std::vector<Var*>::iterator it2 = it+1; it2 != variables.end(); it2++){
 				expression_penalized -> addNewTerm((*it2)->id, z_id, penalty);
 			}
 
