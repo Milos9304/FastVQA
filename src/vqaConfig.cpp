@@ -14,7 +14,7 @@ MatrixInt VqaConfig::loadLatticeFromFile(std::string filename, bool *success){
 	if(!file.is_open()){
 		*success = false;
 		loge("Unable to open hamiltonian file " + filename);
-		return MatrixInt();
+		throw std::runtime_error("Could not open file");
 	}
 
 	std::vector<std::string> lines;
@@ -113,8 +113,20 @@ VqaConfig::VqaConfig(std::string pathname){
 				bool success;
 				Eigen::MatrixXi lattice = loadLatticeFromFile(lattice_file, &success);
 
-				if(success)
-					lattices.push_back(Lattice(lattice));
+				if(success){
+
+					std::string name = lattice_file;
+
+					const size_t last_slash_idx = name.find_last_of("\\/");
+					if (std::string::npos != last_slash_idx)
+						name.erase(0, last_slash_idx + 1);
+
+					const size_t period_idx = name.rfind('.');
+					if (std::string::npos != period_idx)
+						name.erase(period_idx);
+
+					lattices.push_back(Lattice(lattice, name));
+				}
 
 				logi(lattice_file + " loaded");
 			}

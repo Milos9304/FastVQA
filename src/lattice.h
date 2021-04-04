@@ -18,12 +18,15 @@ class Lattice{
 
 	public:
 
+		std::string name;
+
 		enum x_init_mode { x_zero_one };
 		enum bin_mapping { naive_overapprox };
 		enum penalty_mode { penalty_all };
 
-		Lattice(MatrixInt lattice){ // @suppress("Class members should be properly initialized")
+		Lattice(MatrixInt lattice, std::string name = ""){ // @suppress("Class members should be properly initialized")
 
+			this -> name = name;
 			this -> orig_lattice = lattice;
 
 			if(lattice.rows() != lattice.cols()){
@@ -33,9 +36,10 @@ class Lattice{
 
 			this -> n = lattice.rows();
 			this -> expression_int = new Expression("expression_int");
+
 		}
 
-		std::string toHamiltonianString(x_init_mode mode);
+		std::string toHamiltonianString(x_init_mode mode, bool print=false);
 
 	private:
 
@@ -50,16 +54,16 @@ class Lattice{
 		std::map<std::string, Var*> qubo_to_bin_map;
 
 		bool x_initialized = false;
-		void init_x(x_init_mode mode);
+		void init_x(x_init_mode mode, bool print=false);
 
 		bool bin_initialized = false;
-		void init_expr_bin(bin_mapping mapping);
+		void init_expr_bin(bin_mapping mapping, bool print=false);
 
 		bool pen_initialized = false;
-		void penalize_expr(int penalty, penalty_mode mode);
+		void penalize_expr(int penalty, penalty_mode mode, bool print=false);
 
 		bool qubo_generated = false;
-		void generate_qubo();
+		void generate_qubo(bool print=false);
 
 };
 

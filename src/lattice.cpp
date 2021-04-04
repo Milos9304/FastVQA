@@ -9,7 +9,7 @@
 
 bool pen_initialized = false;
 
-void Lattice::generate_qubo(){
+void Lattice::generate_qubo(bool print){
 
 	expression_qubo = new Expression(*expression_penalized);
 	expression_qubo->name = "QUBO";
@@ -32,11 +32,12 @@ void Lattice::generate_qubo(){
 
 	}
 
-	expression_qubo -> print();
+	if(print)
+		expression_qubo -> print();
 
 }
 
-void Lattice::penalize_expr(int penalty, penalty_mode mode){
+void Lattice::penalize_expr(int penalty, penalty_mode mode, bool print){
 
 	expression_penalized = new Expression(*expression_bin);
 	expression_penalized->name = "expression_penalized";
@@ -82,18 +83,17 @@ void Lattice::penalize_expr(int penalty, penalty_mode mode){
 		subs_expr.emplace((*x2_it)->id, 1);
 		expression_penalized->substitute(z2_id, subs_expr);
 
-		std::cout << "subs " << z1_id << " c" << 1 << "\n";
-		std::cout << "subs " << z2_id << " " << (*x2_it)->id << "\n";
+		//std::cout << "subs " << z1_id << " c" << 1 << "\n";
+		//std::cout << "subs " << z2_id << " " << (*x2_it)->id << "\n";
 	}
 
-	expression_penalized->print();
-
-	throw;
+	if(print)
+		expression_penalized->print();
 
 }
 
 
-void Lattice::init_x(x_init_mode mode){
+void Lattice::init_x(x_init_mode mode, bool print){
 
 	if(mode == x_zero_one){
 		for(int i = 0; i < n; ++i){
@@ -108,11 +108,12 @@ void Lattice::init_x(x_init_mode mode){
 		}
 	}
 
-	expression_int->print();
+	if(print)
+		expression_int->print();
 
 }
 
-void Lattice::init_expr_bin(bin_mapping mapping){
+void Lattice::init_expr_bin(bin_mapping mapping, bool print){
 
 	expression_bin = new Expression(*expression_int);
 	expression_bin->name = "expression_bin";
@@ -143,10 +144,11 @@ void Lattice::init_expr_bin(bin_mapping mapping){
 		expression_bin->substitute(var->id, subs_expr);
 	}
 
-	expression_bin->print();
+	if(print)
+		expression_bin->print();
 }
 
-std::string Lattice::toHamiltonianString(x_init_mode mode){
+std::string Lattice::toHamiltonianString(x_init_mode mode, bool print){
 
 	if(!gram_initialized){
 		gram_matrix = orig_lattice * orig_lattice.transpose();
@@ -154,22 +156,22 @@ std::string Lattice::toHamiltonianString(x_init_mode mode){
 	}
 
 	if(!x_initialized){
-		init_x(mode);
+		init_x(mode, print);
 		x_initialized = true;
 	}
 
 	if(!bin_initialized){
-		init_expr_bin(naive_overapprox);
+		init_expr_bin(naive_overapprox, print);
 		bin_initialized = true;
 	}
 
 	if(!pen_initialized){
-		penalize_expr(1000, penalty_all);
+		penalize_expr(1000, penalty_all, print);
 		pen_initialized = true;
 	}
 
 	if(!qubo_generated){
-		generate_qubo();
+		generate_qubo(print);
 		qubo_generated = true;
 	}
 
