@@ -29,7 +29,8 @@ void Expression::substitute(int id, std::map<int, double> subs_expr){
 				for(auto &subs_var2 : subs_expr){
 					this -> addTermCoeff(subs_var.first, subs_var2.first, subs_var.second * subs_var2.second * term.second);
 				}
-			}
+		}
+
 		}else{
 			for(auto &subs_var : subs_expr){
 				this -> addTermCoeff(second_id, subs_var.first, subs_var.second * term.second);

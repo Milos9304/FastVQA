@@ -81,9 +81,9 @@ class Expression{
 
 		void addNewTerm(int id_a, int id_b, double coeff){
 
-			if(id_a == id_b)
+			if(id_a == id_b && idMap[id_a]->isBinary())
 				polynomial.emplace(std::pair<int, double>(-1, id_a), coeff);
-			else if(id_a < id_b)
+			else if(id_a <= id_b)
 				polynomial.emplace(std::pair<int, double>(id_a, id_b), coeff);
 			else
 				polynomial.emplace(std::pair<int, double>(id_b, id_a), coeff);
@@ -99,7 +99,7 @@ class Expression{
 
 			auto search = polynomial.find(to_search);
 			if (search != polynomial.end()) {
-				int coeff2 = search->second;
+				double coeff2 = search->second;
 				polynomial.erase(to_search);
 				addNewTerm(id_a, id_b, coeff + coeff2);
 			} else {
@@ -111,7 +111,7 @@ class Expression{
 					to_search = std::pair<int, int>(-1, id_b);
 					auto search = polynomial.find(to_search);
 					if (search != polynomial.end()) {
-						int coeff2 = search->second;
+						double coeff2 = search->second;
 						polynomial.erase(to_search);
 						addNewTerm(id_a, id_b, coeff + coeff2);
 						return;
@@ -122,7 +122,7 @@ class Expression{
 					to_search = std::pair<int, int>(id_b, id_b);
 					auto search = polynomial.find(to_search);
 					if (search != polynomial.end()) {
-						int coeff2 = search->second;
+						double coeff2 = search->second;
 						polynomial.erase(to_search);
 						addNewTerm(id_a, id_b, coeff + coeff2);
 						return;
