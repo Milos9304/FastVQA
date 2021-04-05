@@ -6,6 +6,7 @@
  */
 
 #include "logger.h"
+#include <iomanip>
 #include "symbolic_manipulation.h"
 
 void Expression::substitute(int id, std::map<int, double> subs_expr){
@@ -51,6 +52,7 @@ void Expression::substitute(int id, std::map<int, double> subs_expr){
 std::string Expression::expression_line_print(){
 
 	std::stringstream ss;
+	ss << std::fixed << std::setprecision(2);
 
 	bool firstTerm = true;
 	ss << "	";
@@ -64,11 +66,11 @@ std::string Expression::expression_line_print(){
 		int id2 = term.first.second;
 
 		if(firstTerm){
-			term.second < 0 ? ss << "-" << term.second : ss << "" << term.second;
+			ss << mpf_class(term.second);
 			firstTerm = false;
 		}
 		else{
-			term.second < 0 ? ss << " - " << term.second * -1 : ss << " + " << term.second;
+			term.second < 0 ? ss << " - " << mpf_class(term.second * -1) : ss << " + " << mpf_class(term.second);
 		}
 
 		if(id1 == -1 && id2 == -1){} //id

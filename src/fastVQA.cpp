@@ -44,13 +44,16 @@ int main(int ac, char** av){
 		logi(std::to_string(num_lattices) + " lattice(s) in the config file");
 
 		int i = 0;
-		for(auto &lattice : vqaConfig->getLattices()){
+		/*for(auto &lattice : vqaConfig->getLattices()){
 
 			logi("Running lattice " + std::to_string(i++) + " / " + std::to_string(num_lattices));
-			lattice.toHamiltonianString(Lattice::x_zero_one, true);break;
+			lattice.toHamiltonianString(Lattice::x_zero_one, true);
 			//run_qaoa(lattice.toHamiltonianString(Lattice::x_zero_one), vqaConfig->verbose);
 
-		}
+		}*/
+
+
+		vqaConfig->getLattices()[1].toHamiltonianString(Lattice::x_zero_one, true);
 
 		return 0;
     }

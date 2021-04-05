@@ -81,9 +81,9 @@ VqaConfig::VqaConfig(std::string pathname){
 
 	bool lookForType = true;
 
-	/*
-	 * LOAD CONFIGURATION FILE
-	 * */
+	//
+	// LOAD CONFIGURATION FILE
+	//
 
 	while (std::getline(ifs, line)) {
 
@@ -111,7 +111,7 @@ VqaConfig::VqaConfig(std::string pathname){
 
 			while(std::getline(ss, lattice_file, ',')) {
 				bool success;
-				Eigen::MatrixXi lattice = loadLatticeFromFile(lattice_file, &success);
+				MatrixInt lattice = loadLatticeFromFile(lattice_file, &success);
 
 				if(success){
 

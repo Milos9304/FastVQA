@@ -4,7 +4,7 @@ close all
 
 lattices = dir('../*.l');
 
-for k=1:2%length(lattices)
+for k=3:3%1:length(lattices)
     
    path = [lattices(k).folder '/' lattices(k).name];
    B = readmatrix(path... % filename
@@ -33,18 +33,22 @@ for k=1:2%length(lattices)
     end
     
     f=X*G*transpose(X);
-    penalized_f = f + L + sumXiZi + sumXiZj;
     
+    penalized_f = f + L + sumXiZi + sumXiZj;
+        
     subs1 = subs(penalized_f, Z(1), 1);
     subs2 = subs(subs1, Z(2), X(2));    
    
     subs_sq = subs2;
+    
+    expand(subs_sq)
+    
     for i=1:dim % get rid of squares
         subs_sq=subs(expand(subs_sq), X(i)^2, X(i));
     end
     
     final_exp = subs_sq;
-    vars=symvar(final_exp);
+    vars=sort(symvar(final_exp));
     
     num_qubits = size(vars, 2);
     Q=sym('Z', [1 num_qubits]);

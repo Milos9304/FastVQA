@@ -9,10 +9,11 @@
 #define SRC_LATTICE_H_
 
 #include "logger.h"
+#include <gmpxx.h>
 #include <eigen3/Eigen/Core>
 #include "symbolic_manipulation.h"
 
-typedef Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixInt;
+typedef Eigen::Matrix<mpz_class, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixInt;
 
 class Lattice{
 

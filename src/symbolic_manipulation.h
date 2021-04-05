@@ -12,6 +12,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <gmpxx.h>
 
 class Var{
 
@@ -46,7 +47,7 @@ class Expression{
 		std::map<std::string, int> varMap;
 
 		//id, id, coeff
-		std::map<std::pair<int, int>, double> polynomial;
+		std::map<std::pair<int, int>, mpq_class> polynomial;
 
 	public:
 
@@ -79,17 +80,17 @@ class Expression{
 			return std::pair<int, std::string>(this->addIntegerVar(z_name, 1, -1), z_name);
 		}
 
-		void addNewTerm(int id_a, int id_b, double coeff){
+		void addNewTerm(int id_a, int id_b, mpq_class coeff){
 
 			if(id_a == id_b && idMap[id_a]->isBinary())
-				polynomial.emplace(std::pair<int, double>(-1, id_a), coeff);
+				polynomial.emplace(std::pair<int, int>(-1, id_a), coeff);
 			else if(id_a <= id_b)
-				polynomial.emplace(std::pair<int, double>(id_a, id_b), coeff);
+				polynomial.emplace(std::pair<int, int>(id_a, id_b), coeff);
 			else
-				polynomial.emplace(std::pair<int, double>(id_b, id_a), coeff);
+				polynomial.emplace(std::pair<int, int>(id_b, id_a), coeff);
 		}
 
-		void addTermCoeff(int id_a, int id_b, double coeff){
+		void addTermCoeff(int id_a, int id_b, mpq_class coeff){
 
 			std::pair<int, int> to_search;
 			if(id_a <= id_b)
@@ -97,9 +98,11 @@ class Expression{
 			else
 				to_search = std::pair<int, int>(id_b, id_a);
 
+			mpq_class coeff2;
+
 			auto search = polynomial.find(to_search);
 			if (search != polynomial.end()) {
-				double coeff2 = search->second;
+				coeff2 = search->second;
 				polynomial.erase(to_search);
 				addNewTerm(id_a, id_b, coeff + coeff2);
 			} else {
@@ -111,7 +114,7 @@ class Expression{
 					to_search = std::pair<int, int>(-1, id_b);
 					auto search = polynomial.find(to_search);
 					if (search != polynomial.end()) {
-						double coeff2 = search->second;
+						coeff2 = search->second;
 						polynomial.erase(to_search);
 						addNewTerm(id_a, id_b, coeff + coeff2);
 						return;
@@ -122,9 +125,11 @@ class Expression{
 					to_search = std::pair<int, int>(id_b, id_b);
 					auto search = polynomial.find(to_search);
 					if (search != polynomial.end()) {
-						double coeff2 = search->second;
+						//double coeff2 = search->second;
+						coeff2 = search->second;
 						polynomial.erase(to_search);
 						addNewTerm(id_a, id_b, coeff + coeff2);
+						addNewTerm(id_a, id_b, coeff);
 						return;
 					}
 				}
@@ -135,7 +140,7 @@ class Expression{
 
 		}
 
-		void addConstant(double constant){
+		void addConstant(mpq_class constant){
 			polynomial[std::pair<int,int>(-1,-1)] += constant;
 		}
 
