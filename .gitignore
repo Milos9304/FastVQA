@@ -3,3 +3,4 @@ bin/*
 .cproject
 .project
 .settings
+*.txt.swp

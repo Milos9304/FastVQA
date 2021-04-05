@@ -148,7 +148,7 @@ void Lattice::init_expr_bin(bin_mapping mapping, bool print){
 		expression_bin->print();
 }
 
-std::string Lattice::toHamiltonianString(x_init_mode mode, bool print){
+std::string Lattice::toHamiltonianString(x_init_mode mode, int penalty, bool print){
 
 	if(!gram_initialized){
 		gram_matrix = orig_lattice * orig_lattice.transpose();
@@ -166,7 +166,7 @@ std::string Lattice::toHamiltonianString(x_init_mode mode, bool print){
 	}
 
 	if(!pen_initialized){
-		penalize_expr(1000, penalty_all, print);
+		penalize_expr(penalty, penalty_all, print);
 		pen_initialized = true;
 	}
 

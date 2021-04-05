@@ -59,9 +59,7 @@ for k=3:3%1:length(lattices)
     
     fpath = [lattices(k).folder '/matlab_output/' lattices(k).name(1:end-2) '.txt'];
     fid = fopen(fpath,'wt');
-    fprintf(fid,'%s', vpa(expand(final_exp),5));
+    fprintf(fid,'%s', vpa(expand(final_exp)));
     fclose(fid);    
-    
-    %https://uk.mathworks.com/help/symbolic/symbolic-summation.html
-   
+     
 end

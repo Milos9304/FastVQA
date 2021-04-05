@@ -40,7 +40,7 @@ class Lattice{
 
 		}
 
-		std::string toHamiltonianString(x_init_mode mode, bool print=false);
+		std::string toHamiltonianString(x_init_mode mode, int penalty, bool print=false);
 
 	private:
 

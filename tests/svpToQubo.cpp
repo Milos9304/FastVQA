@@ -162,10 +162,10 @@ bool compareHamiltonians(std::string generatedHml, std::string matlabHml){
 	//logd(std::to_string(matlabCoeff));
 	//logd(std::to_string(genCoeff));
 
-	std::cout << matlabCoeff << " " << genCoeff << "\n";
+	//std::cout << matlabCoeff << " " << genCoeff << "\n";
 
-	//if(matlabCoeff != genCoeff)
-	//	return false;
+	if(matlabCoeff != genCoeff)
+		return false;
 
 	if(matlabTerms.size() != genTerms.size())
 		return false;
@@ -229,7 +229,7 @@ bool compareHamiltonians(std::string generatedHml, std::string matlabHml){
 				loge(ss.str() + " " + genVars[0] + " not found in matlab");
 			else
 				loge(ss.str() + " " + genVars[0] + " " + genVars[1] + " not found in matlab");
-			//return false;
+			return false;
 		}
 	}
 
@@ -238,19 +238,17 @@ bool compareHamiltonians(std::string generatedHml, std::string matlabHml){
 
 TEST(svpToQuboTest, binary_substitution_penalized){
 
+	int penalty = 1000;
+
 	std::string config_file = "../tests/test_files/config_svpToQubo.txt";
 
 	VqaConfig * vqaConfig;
 
 	ASSERT_NO_THROW(vqaConfig = new VqaConfig(config_file));
 
-	int i = 0;
 	for(auto &lattice : vqaConfig->getLattices()){
 
-		if(i++<2)
-			continue;
-
-		std::string generatedHamiltonian = lattice.toHamiltonianString(Lattice::x_zero_one);
+		std::string generatedHamiltonian = lattice.toHamiltonianString(Lattice::x_zero_one, penalty);
 
 		std::string matlabHamiltonian;
 		std::ifstream file("../tests/test_files/lattices/matlab_output/"+lattice.name+".txt");
