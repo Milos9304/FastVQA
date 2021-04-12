@@ -102,9 +102,8 @@ void Expression::print(){
 
 		else if(var->id >= 0) //do not print identity variable
 			std::cout << "	" << var->name << " " << "[" << var->lb << ", " << var->ub << "]\n";
+
 	}
-
-
 
 	std::cout << "\n";
 

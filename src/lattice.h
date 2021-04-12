@@ -10,10 +10,40 @@
 
 #include "logger.h"
 #include <gmpxx.h>
-#include <eigen3/Eigen/Core>
+#include "fplll.h"
+//#include <eigen3/Eigen/Core>
 #include "symbolic_manipulation.h"
 
-typedef Eigen::Matrix<mpz_class, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixInt;
+//typedef Eigen::Matrix<mpz_class, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixInt;
+typedef ZZ_mat<mpz_t> MatrixInt;
+
+class MapOptions{
+
+	public:
+
+		enum x_init_mode { x_symmetric };
+		enum bin_mapping { naive_overapprox };
+		enum penalty_mode { penalty_all };
+
+		x_init_mode x_mode;
+		bin_mapping bin_map;
+		penalty_mode pen_mode;
+
+		int penalty;
+		int num_qbits_per_x;
+
+		MapOptions(x_init_mode x_mode=x_symmetric,
+				bin_mapping bin_map=naive_overapprox,
+				penalty_mode pen_mode=penalty_all,
+				int penalty_val=1000,
+				int num_qbits_per_x=1){
+			this->x_mode = x_mode;
+			this->bin_map = bin_map;
+			this->pen_mode = pen_mode;
+			this->penalty = penalty_val;
+			this->num_qbits_per_x = num_qbits_per_x;
+		}
+};
 
 class Lattice{
 
@@ -21,47 +51,44 @@ class Lattice{
 
 		std::string name;
 
-		enum x_init_mode { x_zero_one };
-		enum bin_mapping { naive_overapprox };
-		enum penalty_mode { penalty_all };
-
 		Lattice(MatrixInt lattice, std::string name = ""){ // @suppress("Class members should be properly initialized")
 
 			this -> name = name;
 			this -> orig_lattice = lattice;
 
-			if(lattice.rows() != lattice.cols()){
+			if(lattice.get_rows()/*.rows()*/ != lattice.get_cols()/*.cols()*/){
 				loge("Non-square lattice not supported");
 				return;
 			}
 
-			this -> n = lattice.rows();
+			this -> n = lattice.get_rows()/*.rows()*/;
 			this -> expression_int = new Expression("expression_int");
 
 		}
 
-		std::string toHamiltonianString(x_init_mode mode, int penalty, bool print=false);
+		MatrixInt* get_orig_lattice(){ return &orig_lattice; }
+		std::string toHamiltonianString(MapOptions* options, bool print=false);
 
 	private:
 
 		int n;
 		MatrixInt orig_lattice;
 
-		bool gram_initialized = false;
-		MatrixInt gram_matrix;
+		bool gso_initialized = false;
+		MatGSO<Z_NR<mpz_t>, FP_NR<double>>* gso;
 
 		Expression *expression_int, *expression_bin, *expression_penalized, *expression_qubo;
 
 		std::map<std::string, Var*> qubo_to_bin_map;
 
 		bool x_initialized = false;
-		void init_x(x_init_mode mode, bool print=false);
+		void init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, bool print=false);
 
 		bool bin_initialized = false;
-		void init_expr_bin(bin_mapping mapping, bool print=false);
+		void init_expr_bin(MapOptions::bin_mapping mapping, bool print=false);
 
 		bool pen_initialized = false;
-		void penalize_expr(int penalty, penalty_mode mode, bool print=false);
+		void penalize_expr(int penalty, MapOptions::penalty_mode mode, bool print=false);
 
 		bool qubo_generated = false;
 		void generate_qubo(bool print=false);

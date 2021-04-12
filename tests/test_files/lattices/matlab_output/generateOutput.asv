@@ -33,7 +33,7 @@ for k=1:length(lattices)
        end
     end
     
-    f=X(1:size(G,1))*G*transpose(X(1:size(G,1)));
+    f=X*G*transpose(X);
 
     penalized_f = f + L + sumXiZi + sumXiZj;
     
@@ -43,9 +43,8 @@ for k=1:length(lattices)
     subs_sq = subs2;
 
     if num_qubits_per_x > 1 % non binary x's
-        for i=1:size(G,1)
-            subs_sq = subs(expand(subs_sq), X(i), )
-        end        
+        
+        subs_sq = subs(expand(subs_sq), )
     end
     
     %expand(subs_sq)

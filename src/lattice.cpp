@@ -37,12 +37,12 @@ void Lattice::generate_qubo(bool print){
 
 }
 
-void Lattice::penalize_expr(int penalty, penalty_mode mode, bool print){
+void Lattice::penalize_expr(int penalty, MapOptions::penalty_mode mode, bool print){
 
 	expression_penalized = new Expression(*expression_bin);
 	expression_penalized->name = "expression_penalized";
 
-	if(mode == penalty_all){
+	if(mode == MapOptions::penalty_all){
 
 		int z1_id=0, z2_id=0;
 		std::vector<Var*>::iterator x2_it;
@@ -93,18 +93,34 @@ void Lattice::penalize_expr(int penalty, penalty_mode mode, bool print){
 }
 
 
-void Lattice::init_x(x_init_mode mode, bool print){
+void Lattice::init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, bool print){
 
-	if(mode == x_zero_one){
-		for(int i = 0; i < n; ++i){
-			expression_int->addBinaryVar("x"+std::to_string(i));
+	Z_NR<mpz_t> coeff;
+
+	if(mode == MapOptions::x_symmetric){
+
+		if(num_qbits_per_x == 1)
+			for(int i = 0; i < n; ++i)
+				expression_int->addBinaryVar("x"+std::to_string(i));
+		else{
+
+			int lb = -pow(2, num_qbits_per_x)/ 2 + 1;
+			int ub = 1-lb;
+
+			for(int i = 0; i < n; ++i)
+				expression_int->addIntegerVar("x"+std::to_string(i), lb, ub);
 		}
 	}
 
 	for(int i = 0; i < n; ++i){
-		expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(i)), gram_matrix.coeff(i, i)); // G_ii*x_i^2
+		gso->get_int_gram(coeff, i, i);
+		expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(i)), coeff.get_data()/*.coeff(i, i)*/); // G_ii*x_i^2
 		for(int j = 0; j < i; ++j){
-			expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(j)), 2*gram_matrix.coeff(i, j)); //2*G_ij*xi
+			mpz_class c(gso->get_int_gram(coeff, i, j).get_data());
+
+			//std::cout << "i" << i << " j" << j << " c"<<c << "\n";
+
+			expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(j)), 2*c/*.coeff(i, j)*/); //2*G_ij*xi
 		}
 	}
 
@@ -113,7 +129,7 @@ void Lattice::init_x(x_init_mode mode, bool print){
 
 }
 
-void Lattice::init_expr_bin(bin_mapping mapping, bool print){
+void Lattice::init_expr_bin(MapOptions::bin_mapping mapping, bool print){
 
 	expression_bin = new Expression(*expression_int);
 	expression_bin->name = "expression_bin";
@@ -130,7 +146,7 @@ void Lattice::init_expr_bin(bin_mapping mapping, bool print){
 
 		std::map<int, double> subs_expr; //id, coeff
 
-		if(mapping == naive_overapprox){
+		if(mapping == MapOptions::naive_overapprox){
 
 			subs_expr.emplace(-1, lb); //set lb to identity coeff
 			for(int i = 0; i < ceil(log2(ub-lb+1)); ++i){
@@ -148,25 +164,29 @@ void Lattice::init_expr_bin(bin_mapping mapping, bool print){
 		expression_bin->print();
 }
 
-std::string Lattice::toHamiltonianString(x_init_mode mode, int penalty, bool print){
+std::string Lattice::toHamiltonianString(MapOptions* options, bool print){
 
-	if(!gram_initialized){
-		gram_matrix = orig_lattice * orig_lattice.transpose();
-		gram_initialized = true;
+	if(!gso_initialized){
+		ZZ_mat<mpz_t> blank;
+
+		gso = new MatGSO<Z_NR<mpz_t>, FP_NR<double>>(orig_lattice, blank, blank, GSO_INT_GRAM);
+		gso->update_gso();
+
+		gso_initialized = true;
 	}
 
 	if(!x_initialized){
-		init_x(mode, print);
+		init_x(options->x_mode, options->num_qbits_per_x, print);
 		x_initialized = true;
 	}
 
 	if(!bin_initialized){
-		init_expr_bin(naive_overapprox, print);
+		init_expr_bin(options->bin_map, print);
 		bin_initialized = true;
 	}
 
 	if(!pen_initialized){
-		penalize_expr(penalty, penalty_all, print);
+		penalize_expr(options->penalty, options->pen_mode, print);
 		pen_initialized = true;
 	}
 

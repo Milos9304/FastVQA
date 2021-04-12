@@ -7,6 +7,8 @@
 #include "qaoa/qaoa.h"
 #include "vqaConfig.h"
 
+#include "latticeAlgorithms/iterativeLatticeReduction.h"
+
 using namespace popl;
 
 int main(int ac, char** av){
@@ -52,8 +54,9 @@ int main(int ac, char** av){
 
 		}*/
 
+		MapOptions* options = new MapOptions();
 
-		vqaConfig->getLattices()[1].toHamiltonianString(Lattice::x_zero_one, true);
+		vqaConfig->getLattices()[1].toHamiltonianString(options, true);
 
 		return 0;
     }

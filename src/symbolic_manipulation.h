@@ -80,6 +80,15 @@ class Expression{
 			return std::pair<int, std::string>(this->addIntegerVar(z_name, 1, -1), z_name);
 		}
 
+		void addNewTerm(int id_a, int id_b, mpz_t coeff){
+					addNewTerm(id_a, id_b, mpz_class(coeff));
+		}
+
+
+		void addNewTerm(int id_a, int id_b, mpq_t coeff){
+			addNewTerm(id_a, id_b, mpq_class(coeff));
+		}
+
 		void addNewTerm(int id_a, int id_b, mpq_class coeff){
 
 			if(id_a == id_b && idMap[id_a]->isBinary())

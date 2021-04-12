@@ -164,11 +164,16 @@ bool compareHamiltonians(std::string generatedHml, std::string matlabHml){
 
 	//std::cout << matlabCoeff << " " << genCoeff << "\n";
 
-	if(matlabCoeff != genCoeff)
+	if(matlabCoeff != genCoeff){
+		std::cerr<<"unequal constants\n";
 		return false;
+	}
 
-	if(matlabTerms.size() != genTerms.size())
+	if(matlabTerms.size() != genTerms.size()){
+		std::cerr<<"unequal sizes\n";\
 		return false;
+	}
+
 
 	for(auto &genTerm : genTerms){
 
@@ -236,9 +241,9 @@ bool compareHamiltonians(std::string generatedHml, std::string matlabHml){
 	return true;
 }
 
-TEST(svpToQuboTest, binary_substitution_penalized){
+/*TEST(svpToQuboTest, binary_substitution_penalized){
 
-	int penalty = 1000;
+	int penalty = 1000; //same as in matlab file
 
 	std::string config_file = "../tests/test_files/config_svpToQubo.txt";
 
@@ -248,7 +253,8 @@ TEST(svpToQuboTest, binary_substitution_penalized){
 
 	for(auto &lattice : vqaConfig->getLattices()){
 
-		std::string generatedHamiltonian = lattice.toHamiltonianString(Lattice::x_zero_one, penalty);
+		std::string generatedHamiltonian = lattice.toHamiltonianString(new MapOptions(MapOptions::x_symmetric,
+				MapOptions::naive_overapprox, MapOptions::penalty_all, penalty, 1));
 
 		std::string matlabHamiltonian;
 		std::ifstream file("../tests/test_files/lattices/matlab_output/"+lattice.name+".txt");
@@ -261,6 +267,38 @@ TEST(svpToQuboTest, binary_substitution_penalized){
 		//std::cout <<generatedHamiltonian << "\n";
 
 		EXPECT_TRUE(compareHamiltonians(generatedHamiltonian, matlabHamiltonian));
+
+	}
+}*/
+
+TEST(svpToQuboTest, two_qubit_substitution_penalized){
+
+	int penalty = 1000; //same as in matlab file
+
+	std::string config_file = "../tests/test_files/config_svpToQubo.txt";
+
+	VqaConfig * vqaConfig;
+
+	ASSERT_NO_THROW(vqaConfig = new VqaConfig(config_file));
+
+	for(auto &lattice : vqaConfig->getLattices()){
+
+		std::string generatedHamiltonian = lattice.toHamiltonianString(new MapOptions(MapOptions::x_symmetric,
+				MapOptions::naive_overapprox, MapOptions::penalty_all, penalty, 1), false);
+
+		std::string matlabHamiltonian;
+		std::ifstream file("../tests/test_files/lattices/matlab_output/"+lattice.name+".txt");
+		std::cout << "../tests/test_files/lattices/matlab_output/"+lattice.name+".txt"<<"\n";
+		ASSERT_TRUE(file.is_open());
+
+		std::getline(file, matlabHamiltonian);
+		file.close();
+
+		//std::cout <<generatedHamiltonian << "\n";
+
+		EXPECT_TRUE(compareHamiltonians(generatedHamiltonian, matlabHamiltonian));
+
+		break;
 
 	}
 }
