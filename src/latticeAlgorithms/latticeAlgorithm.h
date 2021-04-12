@@ -9,6 +9,9 @@
 #define SRC_LATTICEALGORITHMS_LATTICEALGORITHM_H_
 
 #include "../lattice.h"
+#include <functional>
+
+typedef std::function<void()> QOracle;
 
 class LatticeAlgorithm{
 
@@ -16,15 +19,26 @@ class LatticeAlgorithm{
 
 	public:
 
+		LatticeAlgorithm(Lattice* lattice, QOracle quantum_oracle){
+			this->lattice = lattice;
+			this->quantum_oracle = quantum_oracle;
+		}
+
 		void setLattice(Lattice* lattice){
-					this->lattice = lattice;
+			this->lattice = lattice;
 		}
 
 		void performLLLonLattice();
 
-		//virtual void run() = 0;
+		virtual void run() = 0;
 
 		virtual ~LatticeAlgorithm() {}
+
+	protected:
+		QOracle quantum_oracle;
+
+	private:
+		virtual void run_quantum() = 0;
 
 };
 

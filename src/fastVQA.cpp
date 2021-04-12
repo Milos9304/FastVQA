@@ -56,7 +56,12 @@ int main(int ac, char** av){
 
 		MapOptions* options = new MapOptions();
 
-		vqaConfig->getLattices()[1].toHamiltonianString(options, true);
+		//std::string hamiltonian = vqaConfig->getLattices()[1].toHamiltonianString(options, true);
+		Lattice lattice = vqaConfig->getLattices()[1]; //cannot substitute into below
+		QOracle quantum_oracle = []() { std::cerr<<"ahoj\n"; };
+
+		IterativeLatticeReduction ilr(&lattice, quantum_oracle, 10);
+		ilr.run();
 
 		return 0;
     }

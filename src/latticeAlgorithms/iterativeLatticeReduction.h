@@ -12,7 +12,21 @@
 
 class IterativeLatticeReduction : public LatticeAlgorithm {
 
-	void run();
+	int n_iters;
+
+	public:
+
+		IterativeLatticeReduction(Lattice* lattice, QOracle quantum_oracle, int n_iters) :
+			LatticeAlgorithm(lattice,  quantum_oracle) {
+
+				this->n_iters = n_iters;
+
+		}
+		void run();
+
+	private:
+
+		void run_quantum();
 
 };
 
