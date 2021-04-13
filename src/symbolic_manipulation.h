@@ -19,17 +19,19 @@ class Var{
 	public:
 
 		//lb = -1, ub = 1 => qubo Z var
-		Var(int id, std::string name, int lowerBound, int upperBound){
+		Var(int id, std::string name, int lowerBound, int upperBound, int qubit=-1){
 			this -> id = id;
 			this -> lb = lowerBound;
 			this -> ub = upperBound;
 			this -> name = name;
+			this -> qubit = qubit;
 		}
 
 		std::string name;
 
 		int lb, ub;
 		int id;
+		int qubit;
 
 		bool isBinary(){
 			return lb == 0 && ub == 1;
@@ -46,12 +48,13 @@ class Expression{
 		std::map<int, Var*> idMap;
 		std::map<std::string, int> varMap;
 
-		//id, id, coeff
-		std::map<std::pair<int, int>, mpq_class> polynomial;
 
 	public:
 
 		std::string name;
+
+		//id, id, coeff
+		std::map<std::pair<int, int>, mpq_class> polynomial;
 
 		Expression(std::string name){
 
@@ -63,8 +66,12 @@ class Expression{
 			this -> name = name;
 		}
 
-		int addIntegerVar(std::string name, int lowerBound, int upperBound){
-			Var* var = new Var(id_counter, name, lowerBound, upperBound);
+		int getQubit(int id){
+			return idMap[id]->qubit;
+		}
+
+		int addIntegerVar(std::string name, int lowerBound, int upperBound, int qubit=-1){
+			Var* var = new Var(id_counter, name, lowerBound, upperBound, qubit);
 			variables.push_back(var);
 			idMap.emplace(id_counter, var);
 			varMap.emplace(name, id_counter);
@@ -77,7 +84,7 @@ class Expression{
 
 		std::pair<int, std::string> addZ(int qubit){ //when creating qubo formulation
 			std::string z_name = "Z"+std::to_string(qubit);
-			return std::pair<int, std::string>(this->addIntegerVar(z_name, 1, -1), z_name);
+			return std::pair<int, std::string>(this->addIntegerVar(z_name, 1, -1, qubit), z_name);
 		}
 
 		void addNewTerm(int id_a, int id_b, mpz_t coeff){

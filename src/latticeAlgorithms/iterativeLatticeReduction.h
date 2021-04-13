@@ -16,8 +16,8 @@ class IterativeLatticeReduction : public LatticeAlgorithm {
 
 	public:
 
-		IterativeLatticeReduction(Lattice* lattice, QOracle quantum_oracle, int n_iters) :
-			LatticeAlgorithm(lattice,  quantum_oracle) {
+		IterativeLatticeReduction(Lattice* lattice, MapOptions* options, QOracle quantum_oracle, int n_iters) :
+			LatticeAlgorithm(lattice, options, quantum_oracle) {
 
 				this->n_iters = n_iters;
 

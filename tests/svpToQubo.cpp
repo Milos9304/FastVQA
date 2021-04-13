@@ -284,7 +284,7 @@ TEST(svpToQuboTest, two_qubit_substitution_penalized){
 	for(auto &lattice : vqaConfig->getLattices()){
 
 		std::string generatedHamiltonian = lattice.toHamiltonianString(new MapOptions(MapOptions::x_symmetric,
-				MapOptions::naive_overapprox, MapOptions::penalty_all, penalty, 1), false);
+				MapOptions::naive_overapprox, MapOptions::penalty_all, penalty, 1));
 
 		std::string matlabHamiltonian;
 		std::ifstream file("../tests/test_files/lattices/matlab_output/"+lattice.name+".txt");

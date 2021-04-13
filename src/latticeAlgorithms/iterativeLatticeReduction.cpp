@@ -19,5 +19,7 @@ void IterativeLatticeReduction::run(){
 }
 
 void IterativeLatticeReduction::run_quantum(){
-	this->quantum_oracle();
+
+	this->quantum_oracle(lattice->toHamiltonianString(options), lattice->name);
+
 }

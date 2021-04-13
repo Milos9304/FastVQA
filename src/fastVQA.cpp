@@ -1,15 +1,23 @@
 #include <iostream>
 #include <iterator>
 #include <exception>
+#include <chrono>
 
 #include "popl.hpp"
 #include "logger.h"
 #include "qaoa/qaoa.h"
 #include "vqaConfig.h"
-
+#include "indicators/progress_bar.hpp"
 #include "latticeAlgorithms/iterativeLatticeReduction.h"
+#include <xacc.hpp>
+
+#include "xacc_observable.hpp" //del
+#include "PauliOperator.hpp" //del
 
 using namespace popl;
+using namespace indicators;
+
+Color colors[9] = {Color::blue, Color::grey, Color::red, Color::green, Color::yellow, Color::blue, Color::magenta, Color::cyan, Color::white};
 
 int main(int ac, char** av){
 
@@ -54,14 +62,64 @@ int main(int ac, char** av){
 
 		}*/
 
-		MapOptions* options = new MapOptions();
+		QAOAOptions qaoaOptions;
+		qaoaOptions.max_iters = 5000;
+		qaoaOptions.verbose = true;
+
+		MapOptions* mapOptions = new MapOptions();
+		mapOptions->verbose = false;
 
 		//std::string hamiltonian = vqaConfig->getLattices()[1].toHamiltonianString(options, true);
-		Lattice lattice = vqaConfig->getLattices()[1]; //cannot substitute into below
-		QOracle quantum_oracle = []() { std::cerr<<"ahoj\n"; };
 
-		IterativeLatticeReduction ilr(&lattice, quantum_oracle, 10);
-		ilr.run();
+		xacc::Initialize();
+
+		int counter = 0;
+
+		for(auto &lattice : vqaConfig->getLattices()){
+
+			ProgressBar bar{
+				option::BarWidth{50},
+				option::Start{"["},
+				option::Fill{"="},
+				option::Lead{">"},
+				option::Remainder{" "},
+				option::End{"]"},
+				option::PrefixText{std::to_string(counter) + "/" + std::to_string(num_lattices) + " " + lattice.name},
+				option::ForegroundColor{colors[counter % 9]},
+				option::ShowElapsedTime{true},
+				option::ShowRemainingTime{true},
+				option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},
+				option::MaxProgress{qaoaOptions.max_iters}
+			};
+
+			//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+				QOracle quantum_oracle = [&bar, qaoaOptions]
+										  (/*xacc::quantum::PauliOperator hamiltonian*/std::string hamiltonian, std::string name) {
+					run_qaoa(hamiltonian, name, &bar, qaoaOptions);
+				};
+
+				IterativeLatticeReduction ilr(&lattice, mapOptions, quantum_oracle, 1);
+
+				ilr.run();
+
+			//std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+			//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << "[s]" << std::endl;
+
+			counter++;
+		}
+
+		xacc::Finalize();
+		/*auto observable = xacc::quantum::getObservable("pauli", vqaConfig->getLattices()[0].toHamiltonianString(options));
+        std::cout << "obs1 " << observable->toString() << "\n";
+
+        std::map<int, std::pair<std::string, std::complex<double>>> operators;
+
+        operators.emplace(0, std::pair<std::string, std::complex<double>>("Z", std::complex<double>(5,0)));
+        operators.emplace(1, std::pair<std::string, std::complex<double>>("Z", std::complex<double>(6,0)));
+
+        auto obs2 = xacc::quantum::PauliOperator(operators);
+        std::cout << "obs2 " << obs2.toString() << "\n";*/
 
 		return 0;
     }

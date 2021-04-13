@@ -3,7 +3,7 @@
 #include "qaoa.h"
 
 #include <iostream>
-#include <xacc.hpp>
+//#include <xacc.hpp>
 #include "xacc_observable.hpp"
 #include "xacc_service.hpp"
 //#include "QuEST.h"
@@ -15,16 +15,22 @@
 const std::string accelerator_name = "quest";
 std::ofstream outfile;
 
+indicators::ProgressBar* progress_bar;
+
 void stats_func(double energy){
 
   outfile << energy<<"\n";
+  progress_bar->tick();
 
 }
 
-void run_qaoa(std::string hamiltonian, bool verbose){
+void run_qaoa(/*xacc::quantum::PauliOperator observable*/std::string hamiltonian, std::string name, indicators::ProgressBar* bar, QAOAOptions qaoaOptions){
 
-   outfile.open("statsfile.txt", std::fstream::out | std::ios_base::trunc);//std::ios_base::app
-   xacc::Initialize();
+   int max_iters = qaoaOptions.max_iters;
+   bool verbose = qaoaOptions.verbose;
+
+   outfile.open("statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc);//std::ios_base::app
+   progress_bar = bar;
 
    //xacc::setOption("quest-verbose", "true");
    //xacc::setOption("quest-debug", "true");
@@ -32,12 +38,15 @@ void run_qaoa(std::string hamiltonian, bool verbose){
    //std::cout << hamiltonian <<"\n";throw;
 
    // The corresponding QUBO Hamiltonian is:
+
    auto observable = xacc::quantum::getObservable("pauli", hamiltonian);
+
+   //std::cout << "obs1 " << observable->toString() << "\n";
 
    int p = 1;
 
    int num_qubits = observable->nBits();
-   int num_params_per_p = observable -> getNonIdentitySubTerms().size() + observable->nBits();
+   int num_params_per_p = observable->getNonIdentitySubTerms().size() + observable->nBits();
    int num_params_total = p * num_params_per_p;
 
    auto buffer = xacc::qalloc(num_qubits);
@@ -67,7 +76,7 @@ void run_qaoa(std::string hamiltonian, bool verbose){
    auto optimizer = xacc::getOptimizer("nlopt",
       xacc::HeterogeneousMap {
          std::make_pair("initial-parameters", initialParams),
-         std::make_pair("nlopt-maxeval", 0)});//num_params_total*1/*100*/) });
+         std::make_pair("nlopt-maxeval", max_iters)});//num_params_total*1/*100*/) });
 
    auto qaoa = xacc::getService<xacc::Algorithm>("QAOA");
 
@@ -76,10 +85,10 @@ void run_qaoa(std::string hamiltonian, bool verbose){
    const bool initOk = qaoa->initialize({
 	   std::make_pair("accelerator", acc),
 	   std::make_pair("optimizer", optimizer),
-	   std::make_pair("observable", observable),
+	   std::make_pair("observable", /*static_cast<xacc::Observable*>(&*/observable/*)*/),
 	   // number of time steps (p) param
 	   std::make_pair("steps", p),
-	   std::make_pair("calc-var-assignment", true),
+	   //std::make_pair("calc-var-assignment", true),
 	   std::make_pair("simplified-simulation", true),
 	   std::make_pair("stats_func", stats_function),
 	   //Number of samples to estimate optimal variable assignment
@@ -97,9 +106,6 @@ void run_qaoa(std::string hamiltonian, bool verbose){
 
    std::cout << "Min QUBO: " << (*buffer)["opt-val"].as<double>() << "\n";
    std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
-
-
-   xacc::Finalize();
 
    outfile.close();
 }

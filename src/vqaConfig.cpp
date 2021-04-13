@@ -133,6 +133,40 @@ VqaConfig::VqaConfig(std::string pathname){
 
 		}
 
+		else if (line.find("lattice_dir") != std::string::npos) {
+
+					line_stream >> lattice_files;
+
+					std::istringstream ss(lattice_files);
+					std::string lattice_dir;
+
+					while(std::getline(ss, lattice_dir, ',')) {
+						bool success;
+
+						for (const auto &lattice_path : std::filesystem::directory_iterator(lattice_dir)){
+
+							std::string lattice_file = lattice_path.path().filename();
+							MatrixInt lattice = loadLatticeFromFile(lattice_path.path().relative_path(), &success);
+
+							if(success){
+
+								std::string name = lattice_file;
+
+								const size_t last_slash_idx = name.find_last_of("\\/");
+								if (std::string::npos != last_slash_idx)
+									name.erase(0, last_slash_idx + 1);
+
+								const size_t period_idx = name.rfind('.');
+								if (std::string::npos != period_idx)
+									name.erase(period_idx);
+
+								lattices.push_back(Lattice(lattice, name));
+							}
+							logi(lattice_file + " loaded");
+						}
+					}
+				}
+
 		else if (line.find("verbose") != std::string::npos) {
 			std::string temp;
 			line_stream >> temp;

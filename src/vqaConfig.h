@@ -11,6 +11,7 @@
 #include "lattice.h"
 #include <vector>
 #include <fstream>
+#include <filesystem>
 
 class VqaConfig{
 
@@ -42,7 +43,5 @@ class VqaConfig{
 
 
 };
-
-
 
 #endif /* SRC_VQACONFIG_H_ */

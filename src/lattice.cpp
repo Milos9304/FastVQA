@@ -5,6 +5,7 @@
  *      Author: Milos Prokop
  */
 
+
 #include "lattice.h"
 
 bool pen_initialized = false;
@@ -164,37 +165,74 @@ void Lattice::init_expr_bin(MapOptions::bin_mapping mapping, bool print){
 		expression_bin->print();
 }
 
-std::string Lattice::toHamiltonianString(MapOptions* options, bool print){
+void Lattice::calcHamiltonian(MapOptions* options, bool print){
 
 	if(!gso_initialized){
-		ZZ_mat<mpz_t> blank;
+			ZZ_mat<mpz_t> blank;
 
-		gso = new MatGSO<Z_NR<mpz_t>, FP_NR<double>>(orig_lattice, blank, blank, GSO_INT_GRAM);
-		gso->update_gso();
+			gso = new MatGSO<Z_NR<mpz_t>, FP_NR<double>>(orig_lattice, blank, blank, GSO_INT_GRAM);
+			gso->update_gso();
 
-		gso_initialized = true;
+			gso_initialized = true;
+		}
+
+		if(!x_initialized){
+			init_x(options->x_mode, options->num_qbits_per_x, print);
+			x_initialized = true;
+		}
+
+		if(!bin_initialized){
+			init_expr_bin(options->bin_map, print);
+			bin_initialized = true;
+		}
+
+		if(!pen_initialized){
+			penalize_expr(options->penalty, options->pen_mode, print);
+			pen_initialized = true;
+		}
+
+		if(!qubo_generated){
+			generate_qubo(print);
+			qubo_generated = true;
+		}
+}
+
+xacc::quantum::PauliOperator Lattice::getHamiltonian(MapOptions* options){
+
+	calcHamiltonian(options, options->verbose);
+
+	std::map<int, std::pair<std::string, std::complex<double>>> operators;
+/*
+	for(auto &term : expression_qubo->polynomial){
+
+		std::pair<int, int> vars = term.first;
+		if(vars.first == -1){
+
+			if(vars.second == -1){
+				//operators.emplace(expression_qubo->getQubit(var), std::pair<std::string, std::complex<double>>("Z", std::complex<double>(term.second.get_d(),0)));
+			}else{
+				operators.emplace(expression_qubo->getQubit(vars.second), std::pair<std::string, std::complex<double>>("Z", std::complex<double>(term.second.get_d(),0)));
+			}
+
+		}else{
+			//operators.emplace(expression_qubo->getQubit(vars.second), std::pair<std::string, std::complex<double>>("Z", std::complex<double>(term.second.get_d(),0)));
+		}
+
+
 	}
 
-	if(!x_initialized){
-		init_x(options->x_mode, options->num_qbits_per_x, print);
-		x_initialized = true;
-	}
+	operators.emplace(0, std::pair<std::string, std::complex<double>>("Z", std::complex<double>(5,0)));
+	operators.emplace(1, std::pair<std::string, std::complex<double>>("Z", std::complex<double>(6,0)));
+*/
+	hamiltonian = xacc::quantum::PauliOperator(operators);
 
-	if(!bin_initialized){
-		init_expr_bin(options->bin_map, print);
-		bin_initialized = true;
-	}
+	return hamiltonian;
 
-	if(!pen_initialized){
-		penalize_expr(options->penalty, options->pen_mode, print);
-		pen_initialized = true;
-	}
+}
 
-	if(!qubo_generated){
-		generate_qubo(print);
-		qubo_generated = true;
-	}
+std::string Lattice::toHamiltonianString(MapOptions* options){
 
+	calcHamiltonian(options, options->verbose);
 	return expression_qubo->expression_line_print();
 
 }

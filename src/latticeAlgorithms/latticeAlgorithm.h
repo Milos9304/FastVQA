@@ -10,18 +10,25 @@
 
 #include "../lattice.h"
 #include <functional>
+#include "PauliOperator.hpp"
 
-typedef std::function<void()> QOracle;
+typedef std::function<void(std::string hamiltonian/*xacc::quantum::PauliOperator*/, std::string name)> QOracle;
 
 class LatticeAlgorithm{
 
-	Lattice* lattice;
+	protected:
+		Lattice* lattice;
+		MapOptions* options;
+		xacc::quantum::PauliOperator hamiltonian;
+		QOracle quantum_oracle;
 
 	public:
 
-		LatticeAlgorithm(Lattice* lattice, QOracle quantum_oracle){
+		LatticeAlgorithm(Lattice* lattice, MapOptions* options, QOracle quantum_oracle){
 			this->lattice = lattice;
+			this->options = options;
 			this->quantum_oracle = quantum_oracle;
+			this->hamiltonian = lattice->getHamiltonian(options);
 		}
 
 		void setLattice(Lattice* lattice){
@@ -33,9 +40,6 @@ class LatticeAlgorithm{
 		virtual void run() = 0;
 
 		virtual ~LatticeAlgorithm() {}
-
-	protected:
-		QOracle quantum_oracle;
 
 	private:
 		virtual void run_quantum() = 0;

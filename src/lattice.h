@@ -13,6 +13,10 @@
 #include "fplll.h"
 //#include <eigen3/Eigen/Core>
 #include "symbolic_manipulation.h"
+//#include "PauliOperator.hpp"
+
+#include <xacc_observable.hpp>
+#include <PauliOperator.hpp>
 
 //typedef Eigen::Matrix<mpz_class, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixInt;
 typedef ZZ_mat<mpz_t> MatrixInt;
@@ -20,6 +24,8 @@ typedef ZZ_mat<mpz_t> MatrixInt;
 class MapOptions{
 
 	public:
+
+		bool verbose;
 
 		enum x_init_mode { x_symmetric };
 		enum bin_mapping { naive_overapprox };
@@ -36,12 +42,14 @@ class MapOptions{
 				bin_mapping bin_map=naive_overapprox,
 				penalty_mode pen_mode=penalty_all,
 				int penalty_val=1000,
-				int num_qbits_per_x=1){
+				int num_qbits_per_x=1,
+				bool verbose=false){
 			this->x_mode = x_mode;
 			this->bin_map = bin_map;
 			this->pen_mode = pen_mode;
 			this->penalty = penalty_val;
 			this->num_qbits_per_x = num_qbits_per_x;
+			this->verbose = verbose;
 		}
 };
 
@@ -67,7 +75,8 @@ class Lattice{
 		}
 
 		MatrixInt* get_orig_lattice(){ return &orig_lattice; }
-		std::string toHamiltonianString(MapOptions* options, bool print=false);
+		std::string toHamiltonianString(MapOptions* options);
+		xacc::quantum::PauliOperator getHamiltonian(MapOptions* options);
 
 	private:
 
@@ -92,6 +101,9 @@ class Lattice{
 
 		bool qubo_generated = false;
 		void generate_qubo(bool print=false);
+
+		xacc::quantum::PauliOperator hamiltonian;
+		void calcHamiltonian(MapOptions* options, bool print);
 
 };
 
