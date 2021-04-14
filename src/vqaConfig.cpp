@@ -146,6 +146,10 @@ VqaConfig::VqaConfig(std::string pathname){
 						for (const auto &lattice_path : std::filesystem::directory_iterator(lattice_dir)){
 
 							std::string lattice_file = lattice_path.path().filename();
+
+							if(lattice_file[0] != 'q')
+								continue;
+
 							MatrixInt lattice = loadLatticeFromFile(lattice_path.path().relative_path(), &success);
 
 							if(success){
