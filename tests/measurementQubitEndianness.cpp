@@ -11,7 +11,7 @@
 #include "xacc.hpp"
 
 
-TEST(measurementQubitEndianness, getMeasurementCounts_repated_measurement_mode){
+TEST(measurementQubitEndianness, getMeasurementCounts_repeated_measurement_strategy){
 
 	//q0 q1 q2 q3 q4
 	// 1  0  0  1  1
@@ -22,9 +22,9 @@ TEST(measurementQubitEndianness, getMeasurementCounts_repated_measurement_mode){
 	// i.e. the output is of form q_n-1, q_n-2, ..., 0
 
 	xacc::setOption("quest-verbose", "true");
+	xacc::setOption("quest-debug", "true");
 
-	auto qpu = xacc::getAccelerator("quest", {{"nbQbits", 5}, {"shots", 5},
-										{"repeated_measurement_strategy", true}});
+	auto qpu = xacc::getAccelerator("quest", {{"nbQbits", 5}, {"shots", 5}});
 
     auto provider = xacc::getIRProvider("quantum");
 	auto qubitReg = xacc::qalloc(5);
@@ -48,7 +48,7 @@ TEST(measurementQubitEndianness, getMeasurementCounts_repated_measurement_mode){
 
 	qpu->execute(qubitReg, program);
 
-	ASSERT_EQ(qubitReg->getMeasurementCounts().size(), 5);
+	ASSERT_EQ(qubitReg->getMeasurementCounts().size(), 1); // because only one unique
 
 	for(std::pair<std::string, int> meas : qubitReg->getMeasurementCounts()){
 		ASSERT_STREQ(meas.first.c_str(), "11001");
