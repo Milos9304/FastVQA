@@ -5,6 +5,7 @@
 
 #include "popl.hpp"
 #include "logger.h"
+#include "executionStatistics.h"
 #include "qaoa/qaoa.h"
 #include "vqaConfig.h"
 #include "indicators/progress_bar.hpp"
@@ -63,7 +64,7 @@ int main(int ac, char** av){
 		}*/
 
 		QAOAOptions qaoaOptions;
-		qaoaOptions.max_iters = 5000;
+		qaoaOptions.max_iters = 2;//0000;//5000;
 		qaoaOptions.verbose = true;
 
 		MapOptions* mapOptions = new MapOptions();
@@ -71,11 +72,17 @@ int main(int ac, char** av){
 
 		//std::string hamiltonian = vqaConfig->getLattices()[1].toHamiltonianString(options, true);
 
+		ExecutionStatistics* execStats = new ExecutionStatistics();
 		xacc::Initialize();
 
 		int counter = 0;
 
 		for(auto &lattice : vqaConfig->getLattices()){
+
+			if(lattice.name != "q_5_1_20_b_0")
+				continue;
+
+			//std::cerr<<"here";
 
 			ProgressBar bar{
 				option::BarWidth{50},
@@ -84,7 +91,7 @@ int main(int ac, char** av){
 				option::Lead{">"},
 				option::Remainder{" "},
 				option::End{"]"},
-				option::PrefixText{std::to_string(counter) + "/" + std::to_string(num_lattices) + " " + lattice.name},
+				option::PrefixText{std::to_string(counter+1) + "/" + std::to_string(num_lattices) + " " + lattice.name},
 				option::ForegroundColor{colors[counter % 9]},
 				option::ShowElapsedTime{true},
 				option::ShowRemainingTime{true},
@@ -94,13 +101,12 @@ int main(int ac, char** av){
 
 			//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
-				QOracle quantum_oracle = [&bar, qaoaOptions]
-										  (/*xacc::quantum::PauliOperator hamiltonian*/std::string hamiltonian, std::string name) {
-					run_qaoa(hamiltonian, name, &bar, qaoaOptions);
+				QOracle quantum_oracle = [&bar, execStats, qaoaOptions]
+										  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
+					run_qaoa(buffer, hamiltonian, name, &bar, execStats, qaoaOptions);
 				};
 
 				IterativeLatticeReduction ilr(&lattice, mapOptions, quantum_oracle, 1);
-
 				ilr.run();
 
 			//std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();

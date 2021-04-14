@@ -11,4 +11,3 @@ with open(sys.argv[1], encoding='utf8') as f:
         
 plt.plot(np.linspace(1,len(energies),len(energies)), energies, 'ro', markersize=1)
 plt.show()
-        

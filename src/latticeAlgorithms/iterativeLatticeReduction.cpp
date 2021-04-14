@@ -9,17 +9,19 @@
 
 void IterativeLatticeReduction::run(){
 
-	performLLLonLattice();
-
 	for(int i = 0; i < n_iters; ++i){
-		run_quantum();
 		performLLLonLattice();
+		run_quantum();
 	}
 
 }
 
 void IterativeLatticeReduction::run_quantum(){
 
-	this->quantum_oracle(lattice->toHamiltonianString(options), lattice->name);
+	xacc::qbit* buffer;
+	this->quantum_oracle(&buffer, lattice->toHamiltonianString(options), lattice->name);
 
+	std::cout << "Min QUBO: " << (*buffer)["opt-val"].as<double>() << "\n";
+	std::cerr << "Opt config: " << (*buffer)["opt-config"].as<std::string>() << "\n";
+	throw;
 }

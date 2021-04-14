@@ -197,12 +197,12 @@ void Lattice::calcHamiltonian(MapOptions* options, bool print){
 		}
 }
 
-xacc::quantum::PauliOperator Lattice::getHamiltonian(MapOptions* options){
+/*xacc::quantum::PauliOperator Lattice::getHamiltonian(MapOptions* options){
 
 	calcHamiltonian(options, options->verbose);
 
 	std::map<int, std::pair<std::string, std::complex<double>>> operators;
-/*
+
 	for(auto &term : expression_qubo->polynomial){
 
 		std::pair<int, int> vars = term.first;
@@ -223,12 +223,12 @@ xacc::quantum::PauliOperator Lattice::getHamiltonian(MapOptions* options){
 
 	operators.emplace(0, std::pair<std::string, std::complex<double>>("Z", std::complex<double>(5,0)));
 	operators.emplace(1, std::pair<std::string, std::complex<double>>("Z", std::complex<double>(6,0)));
-*/
+
 	hamiltonian = xacc::quantum::PauliOperator(operators);
 
 	return hamiltonian;
 
-}
+}*/
 
 std::string Lattice::toHamiltonianString(MapOptions* options){
 

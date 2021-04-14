@@ -298,8 +298,6 @@ TEST(svpToQuboTest, two_qubit_substitution_penalized){
 
 		EXPECT_TRUE(compareHamiltonians(generatedHamiltonian, matlabHamiltonian));
 
-		break;
-
 	}
 }
 

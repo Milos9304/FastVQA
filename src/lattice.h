@@ -13,10 +13,6 @@
 #include "fplll.h"
 //#include <eigen3/Eigen/Core>
 #include "symbolic_manipulation.h"
-//#include "PauliOperator.hpp"
-
-#include <xacc_observable.hpp>
-#include <PauliOperator.hpp>
 
 //typedef Eigen::Matrix<mpz_class, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixInt;
 typedef ZZ_mat<mpz_t> MatrixInt;
@@ -76,7 +72,7 @@ class Lattice{
 
 		MatrixInt* get_orig_lattice(){ return &orig_lattice; }
 		std::string toHamiltonianString(MapOptions* options);
-		xacc::quantum::PauliOperator getHamiltonian(MapOptions* options);
+		//xacc::quantum::PauliOperator getHamiltonian(MapOptions* options);
 
 	private:
 
@@ -102,7 +98,7 @@ class Lattice{
 		bool qubo_generated = false;
 		void generate_qubo(bool print=false);
 
-		xacc::quantum::PauliOperator hamiltonian;
+		//xacc::quantum::PauliOperator hamiltonian;
 		void calcHamiltonian(MapOptions* options, bool print);
 
 };

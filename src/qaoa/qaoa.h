@@ -8,9 +8,12 @@
 #ifndef SRC_QAOA_QAOA_H_
 #define SRC_QAOA_QAOA_H_
 
-#include "PauliOperator.hpp"
+//#include "PauliOperator.hpp"
 #include "../indicators/progress_bar.hpp"
-
+#include "../executionStatistics.h"
+#include "xacc_observable.hpp"
+#include "xacc_service.hpp"
+#include "xacc.hpp"
 
 //void run_qaoa(xacc::quantum::PauliOperator, bool verbose);
 
@@ -22,7 +25,7 @@ class QAOAOptions{
 
 };
 
-void run_qaoa(std::string hamiltonian, std::string name, indicators::ProgressBar* bar, QAOAOptions options);/*{
+void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, QAOAOptions options);/*{
 	run_qaoa(xacc::quantum::PauliOperator(hamiltonian), verbose);
 }*/
 
