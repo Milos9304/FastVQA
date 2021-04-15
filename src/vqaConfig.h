@@ -8,7 +8,7 @@
 #ifndef SRC_VQACONFIG_H_
 #define SRC_VQACONFIG_H_
 
-#include "lattice.h"
+#include "lattice/lattice.h"
 #include <vector>
 #include <fstream>
 #include <filesystem>

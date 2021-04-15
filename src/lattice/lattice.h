@@ -8,14 +8,16 @@
 #ifndef SRC_LATTICE_H_
 #define SRC_LATTICE_H_
 
-#include "logger.h"
+#include "../logger.h"
 #include <gmpxx.h>
 #include "fplll.h"
 //#include <eigen3/Eigen/Core>
-#include "symbolic_manipulation.h"
+#include "../symbolic_manipulation.h"
+#include <vector>
 
 //typedef Eigen::Matrix<mpz_class, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixInt;
 typedef ZZ_mat<mpz_t> MatrixInt;
+typedef std::vector<mpz_class> VectorInt;
 
 class MapOptions{
 
@@ -70,6 +72,9 @@ class Lattice{
 
 		}
 
+		//decode qubo optimal config to x config
+		VectorInt quboToXvector(std::string measurement);
+
 		MatrixInt* get_orig_lattice(){ return &orig_lattice; }
 		std::string toHamiltonianString(MapOptions* options);
 		//xacc::quantum::PauliOperator getHamiltonian(MapOptions* options);
@@ -84,14 +89,18 @@ class Lattice{
 
 		Expression *expression_int, *expression_bin, *expression_penalized, *expression_qubo;
 
-		std::map<std::string, Var*> qubo_to_bin_map;
+		//std::map<std::string, Var*> qubo_to_bin_map;
+		std::map<int, int> qbit_to_varId_map;
 
 		bool x_initialized = false;
 		void init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, bool print=false);
 
+		std::vector<int> x_ids;
+		std::map<int, std::map<int, mpq_class>> int_to_bin_map;
 		bool bin_initialized = false;
 		void init_expr_bin(MapOptions::bin_mapping mapping, bool print=false);
 
+		int z0_id=0, z1_id=0, x1_id;
 		bool pen_initialized = false;
 		void penalize_expr(int penalty, MapOptions::penalty_mode mode, bool print=false);
 

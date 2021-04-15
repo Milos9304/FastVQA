@@ -21,15 +21,19 @@ void Lattice::generate_qubo(bool print){
 		if(var->id < 0) //id
 			continue;
 
-		std::pair<int, std::string> z = expression_qubo -> addZ(qubit++);
-		qubo_to_bin_map.emplace(z.second, var);
+		std::pair<int, std::string> z = expression_qubo -> addZ(qubit);
+		//qubo_to_bin_map.emplace(z.second, var);
 
-		std::map<int, double> subs_expr; //id, coeff
+		std::map<int, mpq_class> subs_expr; //id, coeff
 
 		//(1-z)/2
 		subs_expr.emplace(-1, 0.5);
 		subs_expr.emplace(z.first, -0.5);
 		expression_qubo->substitute(var->id, subs_expr);
+
+		qbit_to_varId_map.emplace(qubit, var->id);
+
+		qubit++;
 
 	}
 
@@ -45,8 +49,7 @@ void Lattice::penalize_expr(int penalty, MapOptions::penalty_mode mode, bool pri
 
 	if(mode == MapOptions::penalty_all){
 
-		int z1_id=0, z2_id=0;
-		std::vector<Var*>::iterator x2_it;
+		std::vector<Var*>::iterator x1_it;
 
 		expression_penalized -> addConstant(penalty);
 		std::vector<Var*> variables = expression_penalized->getVariables();
@@ -63,10 +66,10 @@ void Lattice::penalize_expr(int penalty, MapOptions::penalty_mode mode, bool pri
 			int z_id = expression_penalized -> addBinaryVar("z_"+(*it)->name);
 
 			if(counter == 0)
-				z1_id = z_id;
+				z0_id = z_id;
 			else if(counter == 1){
-				z2_id = z_id;
-				x2_it = it;
+				z1_id = z_id;
+				x1_it = it;
 			}
 
 			expression_penalized -> addNewTerm((*it)->id, z_id, -penalty);
@@ -79,10 +82,13 @@ void Lattice::penalize_expr(int penalty, MapOptions::penalty_mode mode, bool pri
 		}
 
 		//add z0=1, z1=x1
-		expression_penalized->substituteVarToDouble(z1_id, 1);
-		std::map<int, double> subs_expr; //id, coeff
-		subs_expr.emplace((*x2_it)->id, 1);
-		expression_penalized->substitute(z2_id, subs_expr);
+		x1_id = (*x1_it)->id;
+		expression_penalized->substituteVarToDouble(z0_id, 1);
+		std::map<int, mpq_class> subs_expr; //id, coeff
+		subs_expr.emplace(x1_id, 1);
+		expression_penalized->substitute(z1_id, subs_expr);
+
+
 
 		//std::cout << "subs " << z1_id << " c" << 1 << "\n";
 		//std::cout << "subs " << z2_id << " " << (*x2_it)->id << "\n";
@@ -101,15 +107,19 @@ void Lattice::init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, bool pri
 	if(mode == MapOptions::x_symmetric){
 
 		if(num_qbits_per_x == 1)
-			for(int i = 0; i < n; ++i)
-				expression_int->addBinaryVar("x"+std::to_string(i));
+			for(int i = 0; i < n; ++i){
+				int id = expression_int->addBinaryVar("x"+std::to_string(i));
+				x_ids.push_back(id);
+			}
 		else{
 
 			int lb = -pow(2, num_qbits_per_x)/ 2 + 1;
 			int ub = 1-lb;
 
-			for(int i = 0; i < n; ++i)
-				expression_int->addIntegerVar("x"+std::to_string(i), lb, ub);
+			for(int i = 0; i < n; ++i){
+				int id = expression_int->addIntegerVar("x"+std::to_string(i), lb, ub);
+				x_ids.push_back(id);
+			}
 		}
 	}
 
@@ -145,7 +155,7 @@ void Lattice::init_expr_bin(MapOptions::bin_mapping mapping, bool print){
 
 		std::string name = var -> name;
 
-		std::map<int, double> subs_expr; //id, coeff
+		std::map<int, mpq_class> subs_expr; //id, coeff
 
 		if(mapping == MapOptions::naive_overapprox){
 
@@ -159,6 +169,7 @@ void Lattice::init_expr_bin(MapOptions::bin_mapping mapping, bool print){
 		}
 
 		expression_bin->substitute(var->id, subs_expr);
+		int_to_bin_map.emplace(var->id, subs_expr);
 	}
 
 	if(print)

@@ -1,6 +1,6 @@
-set(LIBRARY_NAME vqe)
+set(LIBRARY_NAME qaoa)
 
-file(GLOB SRC qaoa.cpp)
+file(GLOB SRC qaoa.cpp qaoaOptions.cpp)
 set(SRC_ORIG ${SRC})
 
 usfunctiongetresourcesource(TARGET

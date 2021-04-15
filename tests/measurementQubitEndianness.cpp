@@ -19,10 +19,10 @@ TEST(measurementQubitEndianness, getMeasurementCounts_repeated_measurement_strat
 	// requires
 	// output: "10011"
 	//
-	// i.e. the output is of form q_n-1, q_n-2, ..., 0
+	// i.e. the output of m_varAssignmentMode is of form q_n-1, q_n-2, ..., 0
 
-	xacc::setOption("quest-verbose", "true");
-	xacc::setOption("quest-debug", "true");
+	//xacc::setOption("quest-verbose", "true");
+	//xacc::setOption("quest-debug", "true");
 
 	auto qpu = xacc::getAccelerator("quest", {{"nbQbits", 5}, {"shots", 5}});
 

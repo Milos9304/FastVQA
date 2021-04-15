@@ -9,7 +9,7 @@
 #include <iomanip>
 #include "symbolic_manipulation.h"
 
-void Expression::substitute(int id, std::map<int, double> subs_expr){
+void Expression::substitute(int id, std::map<int, mpq_class> subs_expr){
 
 	std::vector<std::pair<int, int>> toDel;
 

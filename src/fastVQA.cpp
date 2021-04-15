@@ -18,7 +18,7 @@
 using namespace popl;
 using namespace indicators;
 
-Color colors[9] = {Color::blue, Color::grey, Color::red, Color::green, Color::yellow, Color::blue, Color::magenta, Color::cyan, Color::white};
+Color colors[9] = {Color::grey, Color::red, Color::green, Color::yellow, Color::blue, Color::magenta, Color::cyan, Color::white};
 
 int main(int ac, char** av){
 
@@ -63,9 +63,23 @@ int main(int ac, char** av){
 
 		}*/
 
+		AcceleratorPartial accelerator = [](std::shared_ptr<xacc::Observable> observable) {
+			return xacc::getAccelerator("quest", {std::make_pair("nbQbits", observable->nBits()),
+					 // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
+					 std::make_pair("repeated_measurement_strategy", true)});
+		};
+
+		OptimizerPartial optimizer = [](std::vector<double> initialParams, int max_iters) {
+			return xacc::getOptimizer("nlopt", xacc::HeterogeneousMap {std::make_pair("initial-parameters", initialParams),
+																       std::make_pair("nlopt-maxeval", max_iters)});
+		};
+
 		QAOAOptions qaoaOptions;
-		qaoaOptions.max_iters = 2;//0000;//5000;
+		qaoaOptions.max_iters = 5000;
 		qaoaOptions.verbose = true;
+		qaoaOptions.optimizer = optimizer;
+		qaoaOptions.accelerator = accelerator;
+		qaoaOptions.parametrizedMode = true;
 
 		MapOptions* mapOptions = new MapOptions();
 		mapOptions->verbose = false;
@@ -81,8 +95,6 @@ int main(int ac, char** av){
 
 			if(lattice.name != "q_5_1_20_b_0")
 				continue;
-
-			//std::cerr<<"here";
 
 			ProgressBar bar{
 				option::BarWidth{50},
@@ -101,9 +113,11 @@ int main(int ac, char** av){
 
 			//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
-				QOracle quantum_oracle = [&bar, execStats, qaoaOptions]
+				qaoaOptions.set_default_stats_function(execStats, &bar);
+
+				QOracle quantum_oracle = [&bar, execStats, &qaoaOptions]
 										  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
-					run_qaoa(buffer, hamiltonian, name, &bar, execStats, qaoaOptions);
+					run_qaoa(buffer, hamiltonian, name, &bar, execStats, &qaoaOptions);
 				};
 
 				IterativeLatticeReduction ilr(&lattice, mapOptions, quantum_oracle, 1);

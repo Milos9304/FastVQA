@@ -13,20 +13,23 @@
 class IterativeLatticeReduction : public LatticeAlgorithm {
 
 	int n_iters;
+	bool testing;
 
 	public:
 
-		IterativeLatticeReduction(Lattice* lattice, MapOptions* options, QOracle quantum_oracle, int n_iters) :
+		IterativeLatticeReduction(Lattice* lattice, MapOptions* options, QOracle quantum_oracle, int n_iters, bool testing=false) : // @suppress("Class members should be properly initialized")
 			LatticeAlgorithm(lattice, options, quantum_oracle) {
 
 				this->n_iters = n_iters;
+				this->testing = testing;
 
 		}
 		void run();
+		void run_test();
 
 	private:
 
-		void run_quantum();
+		std::pair<std::string, double> run_quantum(); //returns optimal configuration and its energy
 
 };
 

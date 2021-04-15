@@ -14,19 +14,14 @@
 #include "xacc_observable.hpp"
 #include "xacc_service.hpp"
 #include "xacc.hpp"
+#include "qaoaOptions.h"
+
 
 //void run_qaoa(xacc::quantum::PauliOperator, bool verbose);
 
-class QAOAOptions{
 
-	public:
-		int max_iters = 0;
-		bool verbose = true;
 
-};
-
-void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, QAOAOptions options);/*{
-	run_qaoa(xacc::quantum::PauliOperator(hamiltonian), verbose);
-}*/
+void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, ExecutionStatistics* execStats, QAOAOptions* options);
+void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, QAOAOptions* options);
 
 #endif /* SRC_QAOA_QAOA_H_ */

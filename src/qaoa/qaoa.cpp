@@ -9,43 +9,35 @@
 #include <fstream>
 #include "../logger.h"
 
-const std::string accelerator_name = "quest";
-std::ofstream outfile;
-
 indicators::ProgressBar* progress_bar;
 ExecutionStatistics* execStats;
 
-void stats_func(int mode, double energy){
+void run_qaoa(xacc::qbit** buffer,
+		std::string hamiltonian,
+		std::string name,
+		ExecutionStatistics* executionStats,
+		QAOAOptions* qaoaOptions){
 
-  switch(mode){
-  	  case 0:
-  		  execStats->startQuantumIterLog(); //quantum_init
-  		  break;
-  	  case 1:
-  		  execStats->finishQuantumIterLog();
-  		  break;
-  	  case 2:
-  		  execStats->startOptimizerIterLog();
-  		  break;
-  	  case 3:
-  		  execStats->finishOptimizerIterLog();
-  		  break;
-  	  case 4:
-  	  default:
-  		 outfile << energy <<"\n";
-  		 progress_bar->tick();
-  		 break;
-  }
+	run_qaoa(buffer, hamiltonian, name, nullptr, executionStats, qaoaOptions);
 
 }
 
-void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* executionStats, QAOAOptions qaoaOptions){
 
-   int max_iters = qaoaOptions.max_iters;
-   bool verbose = qaoaOptions.verbose;
+void run_qaoa(xacc::qbit** buffer,
+		std::string hamiltonian,
+		std::string name,
+		indicators::ProgressBar* bar,
+		ExecutionStatistics* executionStats,
+		QAOAOptions* qaoaOptions){
 
-   outfile.open("statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc);//std::ios_base::app
-   progress_bar = bar;
+   int max_iters = qaoaOptions->max_iters;
+   bool verbose = qaoaOptions->verbose;
+
+   qaoaOptions->outfile.open("statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc);//std::ios_base::app
+
+   if(bar)
+	   progress_bar = bar;
+
    execStats = executionStats;
 
    //xacc::setOption("quest-verbose", "true");
@@ -59,7 +51,7 @@ void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, in
 
    //std::cout << "obs1 " << observable->toString() << "\n";
 
-   int p = 1;
+   int p = qaoaOptions->p;
 
    int num_qubits = observable->nBits();
    int num_params_per_p = observable->getNonIdentitySubTerms().size() + observable->nBits();
@@ -76,10 +68,6 @@ void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, in
 	   );
    }
 
-   auto acc = xacc::getAccelerator(accelerator_name, {std::make_pair("nbQbits", observable->nBits()),
-	         // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
-		   	   	   	   	   	   	   	   	   	   	   	  std::make_pair("repeated_measurement_strategy", true)});
-
    std::vector<double> initialParams;
    std::random_device rd;
    std::mt19937 gen(rd());
@@ -90,28 +78,49 @@ void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, in
       initialParams.emplace_back(dis(gen));
    }
 
-   auto optimizer = xacc::getOptimizer("nlopt",
-      xacc::HeterogeneousMap {
-         std::make_pair("initial-parameters", initialParams),
-         std::make_pair("nlopt-maxeval", max_iters)});//num_params_total*1/*100*/) });
-
    auto qaoa = xacc::getService<xacc::Algorithm>("QAOA");
 
-   std::function<void(int, double)> stats_function = stats_func;
+   //std::function<void(int, double)> stats_function = stats_func;
 
-   const bool initOk = qaoa->initialize({
-	   std::make_pair("accelerator", acc),
-	   std::make_pair("optimizer", optimizer),
-	   std::make_pair("observable", /*static_cast<xacc::Observable*>(&*/observable/*)*/),
-	   // number of time steps (p) param
-	   std::make_pair("steps", p),
-	   std::make_pair("calc-var-assignment", true),
-	   std::make_pair("simplified-simulation", true),
-	   std::make_pair("stats_func", stats_function),
-	   //Number of samples to estimate optimal variable assignment
-	   std::make_pair("nbSamples", 1024/*5*/)
-    });
+   bool initOk;
 
+   // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
+   auto acc = xacc::getAccelerator("quest", {{"nbQbits", observable->nBits()}, {"repeated_measurement_strategy", true}});
+
+   auto optimizer = xacc::getOptimizer("nlopt",
+		   {{"initial-parameters", initialParams}, {"nlopt-maxeval", max_iters}});
+
+
+
+   if(qaoaOptions->isSetLogStats()){
+	   initOk = qaoa->initialize({
+			   std::make_pair("accelerator", qaoaOptions->accelerator(observable)),
+			   std::make_pair("optimizer", qaoaOptions->optimizer(initialParams, max_iters)),
+			   std::make_pair("observable", observable),
+			   // number of time steps (p) param
+			   std::make_pair("steps", qaoaOptions->p),
+			   std::make_pair("calc-var-assignment", qaoaOptions->calcVarAssignment),
+			   std::make_pair("simplified-simulation", qaoaOptions->simplifiedSimulation),
+			   std::make_pair("stats_func", qaoaOptions->get_stats_function()),
+			   //Number of samples to estimate optimal variable assignment
+			   std::make_pair("parameter-scheme", qaoaOptions->getParameterScheme()),
+			   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment)
+		});
+   }
+   else{
+	   initOk = qaoa->initialize({
+		   	   std::make_pair("accelerator", qaoaOptions->accelerator(observable)),
+		   	   std::make_pair("optimizer", qaoaOptions->optimizer(initialParams, max_iters)),
+	   		   std::make_pair("observable", /*static_cast<xacc::Observable*>(&*/observable/*)*/),
+	   		   // number of time steps (p) param
+	   		   std::make_pair("steps", qaoaOptions->p),
+	   		   std::make_pair("calc-var-assignment", qaoaOptions->calcVarAssignment),
+	   		   std::make_pair("simplified-simulation", qaoaOptions->simplifiedSimulation),
+	   		   //Number of samples to estimate optimal variable assignment
+			   std::make_pair("parameter-scheme", qaoaOptions->getParameterScheme()),
+	   		   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment)
+	   		});
+   }
    if(initOk)
 	   logi("QAOA init successful.");
    else{
@@ -121,9 +130,10 @@ void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, in
 
    qaoa->execute(**buffer);
 
+
    //std::cout << "Min QUBO: " << (**buffer)["opt-val"].as<double>() << "\n";
    //std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
 
-   outfile.close();
+   qaoaOptions->outfile.close();
 
 }

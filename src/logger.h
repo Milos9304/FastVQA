@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include "indicators/termcolor.hpp"
 
 #define LOG_LEVEL 0 //0 - debug, 1 - info, 2 - warning, 3 - error
 
@@ -25,38 +26,38 @@ inline std::string getCurrentDateTime(){
     return std::string(buf);
 
 };
-
-inline void printLog(std::string logType, std::string logMsg){
+template<typename Functor>
+inline void printLog(std::string logType, Functor termColor, std::string logMsg){
 
 	std::string now = getCurrentDateTime();
-	std::cout << "[[" << now << "]][" << logType << "] " << logMsg << std::endl;
+	std::cerr << termColor << "[[" << now << "]][" << logType << "] " << logMsg << termcolor::reset << std::endl;
 
 }
 
 inline void logd( std::string logMsg ){
 
 	if(LOG_LEVEL == 0)
-		printLog("DEBUG", logMsg);
+		printLog("DEBUG", termcolor::cyan, logMsg);
 
 }
 
 inline void logi( std::string logMsg ){
 
 	if(LOG_LEVEL <= 1)
-		printLog("INFO", logMsg);
+		printLog("INFO", termcolor::white, logMsg);
 
 }
 
 inline void logw( std::string logMsg ){
 
 	if(LOG_LEVEL <= 2)
-		printLog("WARNING", logMsg);
+		printLog("WARNING", termcolor::yellow, logMsg);
 
 }
 
 inline void loge( std::string logMsg ){
 
-	printLog("ERROR", logMsg);
+	printLog("ERROR", termcolor::red, logMsg);
 
 }
 

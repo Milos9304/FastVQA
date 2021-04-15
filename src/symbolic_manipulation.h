@@ -160,13 +160,13 @@ class Expression{
 			polynomial[std::pair<int,int>(-1,-1)] += constant;
 		}
 
-		void substituteVarToDouble(int id, double val){
-			std::map<int, double> subs_expr;
+		void substituteVarToDouble(int id, mpq_class val){
+			std::map<int, mpq_class> subs_expr;
 			subs_expr.emplace(-1, val);
 			substitute(id, subs_expr);
 		}
 
-		void substitute(int id, std::map<int, double> subs_expr);
+		void substitute(int id, std::map<int, mpq_class> subs_expr);
 
 		std::vector<Var*> getVariables(){
 			return variables;
@@ -174,6 +174,10 @@ class Expression{
 
 		int getId(std::string name){
 			return varMap[name];
+		}
+
+		std::string getName(int id){
+			return idMap[id]->name;
 		}
 
 		void delId(int id){

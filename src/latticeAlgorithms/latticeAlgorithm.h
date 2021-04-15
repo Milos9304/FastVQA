@@ -8,7 +8,7 @@
 #ifndef SRC_LATTICEALGORITHMS_LATTICEALGORITHM_H_
 #define SRC_LATTICEALGORITHMS_LATTICEALGORITHM_H_
 
-#include "../lattice.h"
+#include "../lattice/lattice.h"
 #include <functional>
 //#include "PauliOperator.hpp"
 #include "xacc.hpp"
@@ -39,11 +39,12 @@ class LatticeAlgorithm{
 		void performLLLonLattice();
 
 		virtual void run() = 0;
+		virtual void run_test() = 0;
 
 		virtual ~LatticeAlgorithm() {}
 
 	private:
-		virtual void run_quantum() = 0;
+		virtual std::pair<std::string, double> run_quantum() = 0; //opt config and its energy
 
 };
 
