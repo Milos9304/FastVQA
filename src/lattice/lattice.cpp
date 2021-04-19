@@ -208,6 +208,8 @@ void Lattice::calcHamiltonian(MapOptions* options, bool print){
 		}
 }
 
+
+
 /*xacc::quantum::PauliOperator Lattice::getHamiltonian(MapOptions* options){
 
 	calcHamiltonian(options, options->verbose);
@@ -240,6 +242,15 @@ void Lattice::calcHamiltonian(MapOptions* options, bool print){
 	return hamiltonian;
 
 }*/
+
+std::string Lattice::toHamiltonianString(){
+	if(!qubo_generated){
+		loge("Hamiltonian referenced but not yet generated!");
+		return "";
+	}
+	return expression_qubo->expression_line_print();
+
+}
 
 std::string Lattice::toHamiltonianString(MapOptions* options){
 

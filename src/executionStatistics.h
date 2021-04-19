@@ -9,6 +9,7 @@
 #define SRC_EXECUTIONSTATISTICS_H_
 
 #include "utils.hpp"
+#include "gmpxx.h"
 #include <chrono>
 
 class ExecutionStatistics{
@@ -21,6 +22,7 @@ public:
 
 	OnlineMeanVarianceCalculator quantum_iteration_time;
 	OnlineMeanVarianceCalculator optimizer_iteration_time;
+	//OnlineMeanVarianceCalculator expected_energy_stats;
 
 	void startQuantumIterLog();
 	void finishQuantumIterLog();

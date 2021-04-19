@@ -28,7 +28,7 @@ add_executable(iterativeLatticeReductionAlgo iterativeLatticeReductionAlgo.cpp
 
 target_link_libraries(svpToQubo PRIVATE gtest lattice gmpxx gmp fplll)
 target_link_libraries(measurementQubitEndianness PRIVATE gtest xacc::xacc libquest)
-target_link_libraries(iterativeLatticeReductionAlgo PRIVATE gtest lattice gmpxx gmp xacc::xacc xacc::quantum_gate fplll libquest)
+target_link_libraries(iterativeLatticeReductionAlgo PRIVATE gtest lattice gmpxx gmp xacc::xacc xacc::quantum_gate fplll io libquest)
 
 
 add_test(NAME svpToQubo COMMAND svpToQubo)

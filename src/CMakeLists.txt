@@ -12,6 +12,7 @@ set(SRC_ORIG ${SRC})
 #find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_subdirectory(qaoa)
+add_subdirectory(io)
 add_subdirectory(lattice)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../../bin")

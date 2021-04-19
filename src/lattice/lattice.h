@@ -8,6 +8,8 @@
 #ifndef SRC_LATTICE_H_
 #define SRC_LATTICE_H_
 
+#include "abstractLatticeInput.hpp"
+
 #include "../logger.h"
 #include <gmpxx.h>
 #include "fplll.h"
@@ -51,11 +53,9 @@ class MapOptions{
 		}
 };
 
-class Lattice{
+class Lattice : public AbstractLatticeInput{
 
 	public:
-
-		std::string name;
 
 		Lattice(MatrixInt lattice, std::string name = ""){ // @suppress("Class members should be properly initialized")
 
@@ -86,12 +86,14 @@ class Lattice{
 		MatrixInt* get_orig_lattice_transposed(){ return &orig_lattice_transposed; }
 		MatrixInt* get_current_lattice(){ return &current_lattice; }
 
+		std::string toHamiltonianString();
 		std::string toHamiltonianString(MapOptions* options);
+
+
 		//xacc::quantum::PauliOperator getHamiltonian(MapOptions* options);
 
 	private:
 
-		int n;
 		mpq_class orig_gh_sq; //gaussian heuristics
 		MatrixInt orig_lattice, orig_lattice_transposed, current_lattice;
 

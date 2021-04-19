@@ -33,14 +33,12 @@ class VqaConfig{
 			return current_hamiltonian;
 		}
 
+		static MatrixInt loadLatticeFromFile(std::string filename, bool *success);
+
 	private:
 
 		std::vector<Lattice> lattices;
 		std::string current_hamiltonian = "";
-
-		MatrixInt loadLatticeFromFile(std::string filename, bool *success);
-
-
 
 };
 

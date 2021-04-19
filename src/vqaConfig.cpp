@@ -13,7 +13,7 @@ MatrixInt VqaConfig::loadLatticeFromFile(std::string filename, bool *success){
 	std::ifstream file(filename);
 	if(!file.is_open()){
 		*success = false;
-		loge("Unable to open hamiltonian file " + filename);
+		loge("Unable to open lattice file " + filename);
 		throw std::runtime_error("Could not open file");
 	}
 

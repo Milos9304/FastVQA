@@ -16,7 +16,6 @@
 #include "xacc.hpp"
 #include "qaoaOptions.h"
 
-
 //void run_qaoa(xacc::quantum::PauliOperator, bool verbose);
 
 

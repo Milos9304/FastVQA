@@ -8,6 +8,7 @@
 
 #include <fstream>
 #include "../logger.h"
+#include "../io/saveProgress.hpp"
 
 indicators::ProgressBar* progress_bar;
 ExecutionStatistics* execStats;
@@ -33,7 +34,8 @@ void run_qaoa(xacc::qbit** buffer,
    int max_iters = qaoaOptions->max_iters;
    bool verbose = qaoaOptions->verbose;
 
-   qaoaOptions->outfile.open("statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc);//std::ios_base::app
+   if(qaoaOptions->logEnergies)
+	   qaoaOptions->outfile.open("statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc);//std::ios_base::app
 
    if(bar)
 	   progress_bar = bar;
@@ -54,16 +56,17 @@ void run_qaoa(xacc::qbit** buffer,
    int p = qaoaOptions->p;
 
    int num_qubits = observable->nBits();
-   int num_params_per_p = observable->getNonIdentitySubTerms().size() + observable->nBits();
+   int num_params_per_p = qaoaOptions->extendedParametrizedMode ? observable->getNonIdentitySubTerms().size() + observable->nBits() : 2;
    int num_params_total = p * num_params_per_p;
 
    //auto buffer = xacc::qalloc(num_qubits);
    *buffer = new xacc::qbit(xacc::qalloc(num_qubits));
 
    if(verbose){
-	   logi(std::to_string(observable->nBits()) + " qubits, p="
+	   logi(qaoaOptions->extendedParametrizedMode ? "parametrized mode, " : "normal mode, "+
+			   std::to_string(observable->nBits()) + " qubits, p="
 			   + std::to_string(p) + ", "
-			   + std::to_string(num_params_per_p) + " params per p"
+			   + std::to_string(num_params_per_p) + " params per p, "
 			   + std::to_string(num_params_total) + " params total"
 	   );
    }
@@ -73,9 +76,24 @@ void run_qaoa(xacc::qbit** buffer,
    std::mt19937 gen(rd());
    std::uniform_real_distribution<> dis(-2.0, 2.0);
 
-   // Init random parameters
-   for(int i = 0; i < num_params_total; ++i){
-      initialParams.emplace_back(dis(gen));
+
+   if(qaoaOptions->loadIntermediate){
+	   double expected_energy, sv_energy, hit_rate;
+	   bool success = loadProgress(qaoaOptions->l_intermediateName, &initialParams, &expected_energy, &sv_energy, &hit_rate);
+	   if(success){
+		   if(verbose)
+			   logi("Init params loaded from " + qaoaOptions->l_intermediateName);
+	   }else{
+		   loge("Problem loading params from " + qaoaOptions->l_intermediateName);
+		   return;
+	   }
+   }else{
+	   // Init random parameters
+	   for(int i = 0; i < num_params_total; ++i){
+		 initialParams.emplace_back(dis(gen));
+	   }
+	   if(verbose)
+		   logi("Random params generated");
    }
 
    auto qaoa = xacc::getService<xacc::Algorithm>("QAOA");
@@ -130,9 +148,20 @@ void run_qaoa(xacc::qbit** buffer,
 
    qaoa->execute(**buffer);
 
+   if(qaoaOptions->saveIntermediate){
+	   std::vector<double> params = (**buffer)["opt-params"].as<std::vector<double>>();
+	   double expected_energy = (**buffer)["expected-val"].as<double>();
+	   double sv_energy = (**buffer)["opt-val"].as<double>();
+	   double hit_rate = (**buffer)["hit_rate"].as<double>();
+
+	   saveProgress(qaoaOptions->s_intermediateName, params, expected_energy, sv_energy, hit_rate);
+   }
+
 
    //std::cout << "Min QUBO: " << (**buffer)["opt-val"].as<double>() << "\n";
    //std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
+
+
 
    qaoaOptions->outfile.close();
 

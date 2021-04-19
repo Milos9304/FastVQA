@@ -26,7 +26,8 @@ void QAOAOptions::set_default_stats_function(ExecutionStatistics* executionStati
 				  break;
 			  case 4:
 			  default:
-				 outfile << energy <<"\n";
+				 if(logEnergies)
+					 outfile << energy <<"\n";
 				 bar->tick();
 				 break;
 		  }

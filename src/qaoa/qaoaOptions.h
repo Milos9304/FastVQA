@@ -29,6 +29,12 @@ class QAOAOptions{
 		bool extendedParametrizedMode = false;
 		bool simplifiedSimulation = true;
 
+		bool saveIntermediate = false;
+		std::string s_intermediateName="";
+		bool loadIntermediate = false;
+		std::string l_intermediateName="";
+		bool logEnergies = false;
+
 		AcceleratorPartial accelerator;
 		OptimizerPartial optimizer;
 

@@ -12,4 +12,4 @@ type=qaoa
 verbose = true
 
 #lattice_files = ../generated_lattices/example,../generated_lattices/q_10_1_20_b,../generated_lattices/q_130_1_20_b
-lattice_dir = ../generated_lattices/blackeye
+lattice_dir = ../generated_lattices/cartwheel
