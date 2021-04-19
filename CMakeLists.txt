@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.17 FATAL_ERROR)
 
-project (FastVQA CXX)
+project (LattiQ CXX)
 
 set(CMAKE_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)

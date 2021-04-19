@@ -124,10 +124,10 @@ void Lattice::init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, bool pri
 	}
 
 	for(int i = 0; i < n; ++i){
-		gso->get_int_gram(coeff, i, i);
+		gso_current->get_int_gram(coeff, i, i);
 		expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(i)), coeff.get_data()/*.coeff(i, i)*/); // G_ii*x_i^2
 		for(int j = 0; j < i; ++j){
-			mpz_class c(gso->get_int_gram(coeff, i, j).get_data());
+			mpz_class c(gso_current->get_int_gram(coeff, i, j).get_data());
 
 			//std::cout << "i" << i << " j" << j << " c"<<c << "\n";
 
@@ -178,13 +178,13 @@ void Lattice::init_expr_bin(MapOptions::bin_mapping mapping, bool print){
 
 void Lattice::calcHamiltonian(MapOptions* options, bool print){
 
-	if(!gso_initialized){
+		if(!gso_current_initialized){
 			ZZ_mat<mpz_t> blank;
 
-			gso = new MatGSO<Z_NR<mpz_t>, FP_NR<double>>(orig_lattice, blank, blank, GSO_INT_GRAM);
-			gso->update_gso();
+			gso_current = new MatGSO<Z_NR<mpz_t>, FP_NR<double>>(current_lattice, blank, blank, GSO_INT_GRAM);
+			gso_current->update_gso();
 
-			gso_initialized = true;
+			gso_current_initialized = true;
 		}
 
 		if(!x_initialized){

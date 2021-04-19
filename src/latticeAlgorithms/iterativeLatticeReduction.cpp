@@ -6,31 +6,29 @@
  */
 
 #include "iterativeLatticeReduction.h"
+#include "fplll.h"
 
 void IterativeLatticeReduction::run(){
 
 	for(int i = 0; i < n_iters; ++i){
 
-		performLLLonLattice();
+		performLLLonLattice(0.99, 0.51);
 		std::pair<std::string, double> opt_config = run_quantum();
 
-
+		double short_vector_len_sq = opt_config.second;
 
 
 	}
 
 }
 
-void IterativeLatticeReduction::run_test(){
+//x_vect, energy
+std::pair<VectorInt, double> IterativeLatticeReduction::run_test(){
 
-	for(int i = 0; i < n_iters; ++i){
+	std::pair<std::string, double> opt_config = run_quantum();
+	VectorInt x_vect = lattice->quboToXvector(opt_config.first);
 
-		//performLLLonLattice();
-		std::pair<std::string, double> opt_config = run_quantum();
-
-		lattice->quboToXvector(opt_config.first);
-
-	}
+	return std::pair<VectorInt, double>(x_vect, opt_config.second);
 
 }
 

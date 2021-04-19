@@ -6,6 +6,29 @@
  */
 
 #include "lattice.h"
+#include "fplll/pruner/pruner.h"
+#include <cmath>
+
+#define log_pi 1.1447298858494
+
+mpq_class Lattice::calculate_gh_squared(MatrixInt* lattice){
+
+	if(!gso_orig_initialized){
+		ZZ_mat<mpz_t> blank;
+
+		gso_orig = new MatGSO<Z_NR<mpz_t>, FP_NR<double>>(orig_lattice, blank, blank, GSO_INT_GRAM);
+		gso_orig->update_gso();
+
+		gso_orig_initialized = true;
+	}
+
+	double ball_log_vol = (n/2.) * log_pi - lgamma(n/2. + 1);
+	double log_vol = gso_orig->get_log_det(0, n).get_d();
+	double log_gh =  1./n * (log_vol - 2 * ball_log_vol);
+
+	return exp(log_gh);
+
+}
 
 /*
  *  @dst: destination vector
@@ -44,21 +67,8 @@ VectorInt Lattice::quboToXvector(std::string measurement){
 
 		res.push_back(mpz_class(val));
 
-		//std::cout << val << " ";
 
-	}//std::cout<<"\n";
-
-	//redo z0=1, z1=x1 - NOT NEEDED AS WE CARE ONLY ABOUT X
-	//penalized_varId_map[z0_id] = 1;
-	//penalized_varId_map[z1_id] = x1_value;
-
+	}
 	return res;
-
 }
 
-//substitute back z0=1, z1=x1
-/*void Lattice::quboToPenalized(int* dst){
-
-
-
-}*/

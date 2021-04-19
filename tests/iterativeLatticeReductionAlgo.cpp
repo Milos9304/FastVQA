@@ -15,10 +15,25 @@
 
 using namespace indicators;
 
+TEST(iterativeLatticeReductionAlgo, gaussian_heuristics){
+
+	std::string config_file = "../tests/test_files/config_iterativeLatticeReduction.txt";
+	VqaConfig * vqaConfig;
+	ASSERT_NO_THROW(vqaConfig = new VqaConfig(config_file));
+
+	//value calculated by fpylll
+	ASSERT_NEAR(vqaConfig->getLattices()[0].get_orig_gh().get_d(), 22.61827991781903, 0.001);
+
+
+}
+
 TEST(iterativeLatticeReductionAlgo, opt_config_valid){
 
 	//xacc::setOption("quest-verbose", "true");
 	//xacc::setOption("quest-debug", "true");
+
+	const int num_repetitions = 5;
+	const int max_iters = 5;
 
 	std::string config_file = "../tests/test_files/config_iterativeLatticeReduction.txt";
 	VqaConfig * vqaConfig;
@@ -41,26 +56,15 @@ TEST(iterativeLatticeReductionAlgo, opt_config_valid){
 	};
 
 	QAOAOptions qaoaOptions;
-	qaoaOptions.max_iters = 5;//000;
+	qaoaOptions.max_iters = max_iters;//000;
 	qaoaOptions.calcVarAssignment = true;
 	qaoaOptions.verbose = true;
-	qaoaOptions.parametrizedMode=true;
+	qaoaOptions.extendedParametrizedMode=true;
 	qaoaOptions.accelerator = accelerator;
 	qaoaOptions.optimizer = optimizer;
 
-	ProgressBar bar{
-			option::BarWidth{50},
-			option::Start{"["},
-			option::Fill{"="},
-			option::Lead{">"},
-			option::Remainder{" "},
-			option::End{"]"},
-			option::ForegroundColor{Color::blue},
-			option::ShowElapsedTime{true},
-			option::ShowRemainingTime{true},
-			option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},
-			option::MaxProgress{qaoaOptions.max_iters}
-	};
+	ProgressBar bar;
+	bar.disabled=true;
 
 	qaoaOptions.set_default_stats_function(execStats, &bar);
 
@@ -72,39 +76,26 @@ TEST(iterativeLatticeReductionAlgo, opt_config_valid){
 	for(auto &lattice : vqaConfig->getLattices()){
 
 		IterativeLatticeReduction ilr(&lattice, mapOptions, quantum_oracle, 1);
-		ilr.run_test();
 
+		for(int i = 0; i < num_repetitions; ++i){
+
+			std::pair<VectorInt, double> x_vect_energy = ilr.run_test();
+
+			VectorInt x_vect = x_vect_energy.first;
+			double energy = x_vect_energy.second;
+
+			VectorInt short_lattice_vector = ilr.xVectToShortVect(&x_vect);
+
+			int len_squared = 0;
+
+			for(auto &x:short_lattice_vector){
+				len_squared += pow(mpz_class(x).get_si(), 2);
+			}
+
+			ASSERT_EQ(len_squared, energy);
+
+		}
 	}
-
-	/*auto qpu = xacc::getAccelerator("quest", {{"nbQbits", 5}, {"shots", 5}});
-
-    auto provider = xacc::getIRProvider("quantum");
-	auto qubitReg = xacc::qalloc(5);
-
-    auto compiler = xacc::getCompiler("xasm");
-
-	auto ir = compiler->compile(R"(__qpu__ void test(qbit q) {
-		X(q[0]);
-		X(q[3]);
-		X(q[4]);
-	})", qpu);
-
-	auto program = ir->getComposite("test");
-	std::vector<size_t> indices;
-	for(size_t i=0; i < 5; ++i){
-	  indices.push_back(i);
-	}
-
-	auto meas = provider->createInstruction("Measure", indices);
-	program->addInstructions({meas});
-
-	qpu->execute(qubitReg, program);
-
-	ASSERT_EQ(qubitReg->getMeasurementCounts().size(), 1); // because only one unique
-
-	for(std::pair<std::string, int> meas : qubitReg->getMeasurementCounts()){
-		ASSERT_STREQ(meas.first.c_str(), "11001");
-	}*/
 
 }
 

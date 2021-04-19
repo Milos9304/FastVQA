@@ -59,33 +59,44 @@ class Lattice{
 
 		Lattice(MatrixInt lattice, std::string name = ""){ // @suppress("Class members should be properly initialized")
 
+			this -> n = lattice.get_rows();
+
 			this -> name = name;
 			this -> orig_lattice = lattice;
+			this -> orig_lattice_transposed = MatrixInt(lattice);
+			this -> orig_lattice_transposed.transpose();
+			this -> current_lattice = MatrixInt(lattice);
+			this -> orig_gh_sq = calculate_gh_squared(&orig_lattice);
 
 			if(lattice.get_rows()/*.rows()*/ != lattice.get_cols()/*.cols()*/){
 				loge("Non-square lattice not supported");
 				return;
 			}
 
-			this -> n = lattice.get_rows()/*.rows()*/;
-			this -> expression_int = new Expression("expression_int");
+     		this -> expression_int = new Expression("expression_int");
 
 		}
 
 		//decode qubo optimal config to x config
 		VectorInt quboToXvector(std::string measurement);
 
+		mpq_class get_orig_gh(){return orig_gh_sq;}
+
 		MatrixInt* get_orig_lattice(){ return &orig_lattice; }
+		MatrixInt* get_orig_lattice_transposed(){ return &orig_lattice_transposed; }
+		MatrixInt* get_current_lattice(){ return &current_lattice; }
+
 		std::string toHamiltonianString(MapOptions* options);
 		//xacc::quantum::PauliOperator getHamiltonian(MapOptions* options);
 
 	private:
 
 		int n;
-		MatrixInt orig_lattice;
+		mpq_class orig_gh_sq; //gaussian heuristics
+		MatrixInt orig_lattice, orig_lattice_transposed, current_lattice;
 
-		bool gso_initialized = false;
-		MatGSO<Z_NR<mpz_t>, FP_NR<double>>* gso;
+		bool gso_current_initialized = false, gso_orig_initialized = false;
+		MatGSO<Z_NR<mpz_t>, FP_NR<double>>* gso_current, *gso_orig;
 
 		Expression *expression_int, *expression_bin, *expression_penalized, *expression_qubo;
 
@@ -109,6 +120,8 @@ class Lattice{
 
 		//xacc::quantum::PauliOperator hamiltonian;
 		void calcHamiltonian(MapOptions* options, bool print);
+
+		mpq_class calculate_gh_squared(MatrixInt* lattice);
 
 };
 

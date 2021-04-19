@@ -26,7 +26,7 @@ class QAOAOptions{
 		int nbSamples_calcVarAssignment = 1024;
 
 		bool calcVarAssignment = false;
-		bool parametrizedMode = false;
+		bool extendedParametrizedMode = false;
 		bool simplifiedSimulation = true;
 
 		AcceleratorPartial accelerator;
@@ -37,7 +37,7 @@ class QAOAOptions{
 		}
 
 		std::string getParameterScheme(){
-			return parametrizedMode ? "Extended" : "Standard";
+			return extendedParametrizedMode ? "Extended" : "Standard";
 		}
 
 		bool verbose = true;

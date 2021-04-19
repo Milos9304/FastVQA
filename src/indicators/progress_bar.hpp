@@ -279,8 +279,15 @@ private:
   }
 
 public:
+
+  bool disabled=false;
+
   void print_progress(bool from_multi_progress = false) {
-    std::lock_guard<std::mutex> lock{mutex_};
+
+	if(disabled)
+		return;
+
+	std::lock_guard<std::mutex> lock{mutex_};
 
     auto &os = get_value<details::ProgressBarOption::stream>();
 

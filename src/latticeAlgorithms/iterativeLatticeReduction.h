@@ -25,7 +25,7 @@ class IterativeLatticeReduction : public LatticeAlgorithm {
 
 		}
 		void run();
-		void run_test();
+		std::pair<VectorInt, double> run_test();
 
 	private:
 

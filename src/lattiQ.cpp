@@ -12,6 +12,8 @@
 #include "latticeAlgorithms/iterativeLatticeReduction.h"
 #include <xacc.hpp>
 
+#include "lattiQ.h"
+
 #include "xacc_observable.hpp" //del
 #include "PauliOperator.hpp" //del
 
@@ -54,15 +56,6 @@ int main(int ac, char** av){
 
 		logi(std::to_string(num_lattices) + " lattice(s) in the config file");
 
-		int i = 0;
-		/*for(auto &lattice : vqaConfig->getLattices()){
-
-			logi("Running lattice " + std::to_string(i++) + " / " + std::to_string(num_lattices));
-			lattice.toHamiltonianString(Lattice::x_zero_one, true);
-			//run_qaoa(lattice.toHamiltonianString(Lattice::x_zero_one), vqaConfig->verbose);
-
-		}*/
-
 		AcceleratorPartial accelerator = [](std::shared_ptr<xacc::Observable> observable) {
 			return xacc::getAccelerator("quest", {std::make_pair("nbQbits", observable->nBits()),
 					 // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
@@ -79,7 +72,7 @@ int main(int ac, char** av){
 		qaoaOptions.verbose = true;
 		qaoaOptions.optimizer = optimizer;
 		qaoaOptions.accelerator = accelerator;
-		qaoaOptions.parametrizedMode = true;
+		qaoaOptions.extendedParametrizedMode = true;
 
 		MapOptions* mapOptions = new MapOptions();
 		mapOptions->verbose = false;
@@ -111,20 +104,16 @@ int main(int ac, char** av){
 				option::MaxProgress{qaoaOptions.max_iters}
 			};
 
-			//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+			qaoaOptions.set_default_stats_function(execStats, &bar);
 
-				qaoaOptions.set_default_stats_function(execStats, &bar);
+			QOracle quantum_oracle = [&bar, execStats, &qaoaOptions]
+									  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
+				run_qaoa(buffer, hamiltonian, name, &bar, execStats, &qaoaOptions);
+			};
 
-				QOracle quantum_oracle = [&bar, execStats, &qaoaOptions]
-										  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
-					run_qaoa(buffer, hamiltonian, name, &bar, execStats, &qaoaOptions);
-				};
+			IterativeLatticeReduction ilr(&lattice, mapOptions, quantum_oracle, 1);
+			ilr.run();
 
-				IterativeLatticeReduction ilr(&lattice, mapOptions, quantum_oracle, 1);
-				ilr.run();
-
-			//std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-			//std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << "[s]" << std::endl;
 
 			counter++;
 		}

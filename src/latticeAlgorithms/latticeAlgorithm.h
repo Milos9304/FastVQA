@@ -36,10 +36,12 @@ class LatticeAlgorithm{
 			this->lattice = lattice;
 		}
 
-		void performLLLonLattice();
+		void performLLLonLattice(double delta=0.99, double eta=0.51, LLLMethod method=LLLMethod::LM_PROVED);
+
+		VectorInt xVectToShortVect(VectorInt* x_vect);
 
 		virtual void run() = 0;
-		virtual void run_test() = 0;
+		virtual std::pair<VectorInt, double> run_test() = 0;
 
 		virtual ~LatticeAlgorithm() {}
 
