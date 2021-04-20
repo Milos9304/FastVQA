@@ -12,7 +12,7 @@ save_instance::save_instance() {} // @suppress("Class members should be properly
 
 void saveProgress(std::string filename, std::vector<double> coefficients, double expected_energy, std::string sv, double sv_energy, double hit_rate){
 
-	std::ofstream ofs(filename);
+	/*std::ofstream ofs(filename);
 	boost::archive::text_oarchive ar(ofs);
 	save_instance instance(coefficients, expected_energy, sv, sv_energy, hit_rate);
 	ar & instance;
@@ -23,14 +23,14 @@ void saveProgress(std::string filename, std::vector<double> coefficients, double
 	pyofs << sv << "\n";
 	pyofs << sv_energy << "\n";
 	pyofs << hit_rate;
-	pyofs.close();
+	pyofs.close();*/
 
 }
 
 
 void saveProgress(std::string filename, std::vector<double> coefficients, double expected_energy, double sv_energy, double hit_rate){
 
-	std::ofstream ofs(filename);
+	/*std::ofstream ofs(filename);
 	boost::archive::text_oarchive ar(ofs);
 	save_instance instance(coefficients, expected_energy, sv_energy, hit_rate);
 	ar & instance;
@@ -41,12 +41,12 @@ void saveProgress(std::string filename, std::vector<double> coefficients, double
 	pyofs << sv_energy << "\n";
 	pyofs << hit_rate;
 	pyofs.close();
-
+*/
 }
 
 bool loadProgress(std::string filename, std::vector<double>* coefficients, double* expected_energy, double* sv_energy, double* hit_rate){
 
-	save_instance instance;
+	/*save_instance instance;
 	std::ifstream ifs(filename);
 	if(!ifs.is_open()){
 		loge(filename + " not found");
@@ -62,7 +62,7 @@ bool loadProgress(std::string filename, std::vector<double>* coefficients, doubl
 	*sv_energy = instance.sv_energy;
 	*hit_rate = instance.hit_rate;
 
-	return true;
+	return true;*/
 
 }
 
