@@ -8,17 +8,20 @@
 #ifndef SRC_IO_SAVEPROGRESS_HPP_
 #define SRC_IO_SAVEPROGRESS_HPP_
 
-#include <string>
 #include <vector>
+#include <string>
+
+/*
+#include <string>
 #include <fstream>
 #include <boost/serialization/vector.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
-
+*/
 class save_instance{
 
 	private:
-		friend class boost::serialization::access;
+		/*friend class boost::serialization::access;
 		template<class Archive>
 		void serialize(Archive & ar, const unsigned int version){
 		        ar & coefficients;
@@ -27,7 +30,7 @@ class save_instance{
 		        ar & sv_energy;
 		        ar & hit_rate;
 		}
-
+*/
 	public:
 		save_instance();
 		save_instance(std::vector<double> coefficients, double expected_energy, double sv_energy, double hit_rate){
