@@ -113,12 +113,9 @@ int main(int ac, char** av){
     		iss >> n;
     		ifs.close();
 
-    		std::cerr<<"Loaded hml: " << hamiltonian;
-
     		num_lattices = 1;
     		hmlLat = new HmlLattice(n, hamiltonian);
     		hmlLat->name = load_hml->value();
-
     	}
 
 
@@ -135,9 +132,12 @@ int main(int ac, char** av){
 
 		QAOAOptions qaoaOptions;
 		qaoaOptions.max_iters = niters->is_set() ? (niters->value() == 0 ? 5000 : niters->value()): 5000;
+		qaoaOptions.detailed_log_freq = 50;
 		qaoaOptions.verbose = true;
 		qaoaOptions.optimizer = optimizer;
 		qaoaOptions.accelerator = accelerator;
+		qaoaOptions.simplifiedSimulation = true;
+		qaoaOptions.logEnergies = true;
 		qaoaOptions.extendedParametrizedMode = true;
 		qaoaOptions.calcVarAssignment = true;
 		qaoaOptions.saveIntermediate = save_interm->is_set() ? (save_interm->value() == "" ? false : true) : false;
@@ -154,7 +154,7 @@ int main(int ac, char** av){
 		if(hml_lattice_mode){
 			xacc::qbit* buffer;
 			ProgressBar bar{bar_opts(0, 1, hmlLat->name)};
-			qaoaOptions.set_default_stats_function(execStats, &bar);
+			qaoaOptions.set_default_stats_function(execStats, &bar, hmlLat);
     		run_qaoa(&buffer, hmlLat->toHamiltonianString(), load_hml->value(), &bar, execStats, &qaoaOptions);
     		logd("Hml mode");
 		}else{
@@ -165,7 +165,7 @@ int main(int ac, char** av){
 
 				ProgressBar bar{bar_opts(counter, num_lattices, lattice->name)};
 
-				qaoaOptions.set_default_stats_function(execStats, &bar);
+				qaoaOptions.set_default_stats_function(execStats, &bar, lattice);
 
 				QOracle quantum_oracle = [&bar, execStats, &qaoaOptions]
 										  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {

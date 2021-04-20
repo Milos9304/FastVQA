@@ -11,15 +11,9 @@
 #include "abstractLatticeInput.hpp"
 
 #include "../logger.h"
-#include <gmpxx.h>
-#include "fplll.h"
 //#include <eigen3/Eigen/Core>
 #include "../symbolic_manipulation.h"
 #include <vector>
-
-//typedef Eigen::Matrix<mpz_class, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixInt;
-typedef ZZ_mat<mpz_t> MatrixInt;
-typedef std::vector<mpz_class> VectorInt;
 
 class MapOptions{
 

@@ -4,7 +4,7 @@ seed=77
 
 latticegen="/usr/bin/latticegen"
 
-for d in {7..7} #dimension
+for d in {20..20} #dimension
 do
 	for i in {0..9} #instance
 	do

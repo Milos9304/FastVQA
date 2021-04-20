@@ -12,6 +12,7 @@
 #include "../src/vqaConfig.h"
 #include "../src/qaoa/qaoa.h"
 #include "../src/indicators/progress_bar.hpp"
+#include "../src/lattice/hmlLattice.hpp"
 
 using namespace indicators;
 

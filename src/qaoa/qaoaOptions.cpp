@@ -6,10 +6,19 @@
  */
 
 #include "qaoaOptions.h"
+#include "../logger.h"
 
 void QAOAOptions::set_default_stats_function(ExecutionStatistics* executionStatistics, indicators::ProgressBar* bar){
 
-	stats_function = [this, executionStatistics, bar](int mode, double energy) {
+	this->set_default_stats_function(executionStatistics, bar, new HmlLattice(0, ""));
+	this->detailedLoggingDisabled = true;
+}
+
+void QAOAOptions::set_default_stats_function(ExecutionStatistics* executionStatistics, indicators::ProgressBar* bar, AbstractLatticeInput* lattice){
+
+	this->detailedLoggingDisabled = false;
+
+	stats_function = [this, executionStatistics, bar, lattice](int mode, double energy, double opt_energy, double hit_rate, std::string opt_config) {
 
 			switch(mode){
 			  case 0:
@@ -25,6 +34,17 @@ void QAOAOptions::set_default_stats_function(ExecutionStatistics* executionStati
 				  executionStatistics->finishOptimizerIterLog();
 				  break;
 			  case 4:
+
+				  outfile << energy << " " << opt_energy<< " " << hit_rate;
+
+				  if(!detailedLoggingDisabled){
+					  for(auto &i : lattice->quboToXvector(opt_config))
+						  outfile << " " << i;
+				  }
+				  outfile << "\n";
+
+				  break;
+			  case 5:
 			  default:
 				 if(logEnergies)
 					 outfile << energy <<"\n";

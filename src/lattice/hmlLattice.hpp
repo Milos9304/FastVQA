@@ -19,6 +19,11 @@ class HmlLattice : public AbstractLatticeInput{
 			this->hamiltonian = hamiltonian;
 		}
 
+		VectorInt quboToXvector(std::string measurement){
+			VectorInt r;
+			return r;
+		}
+
 		std::string toHamiltonianString(){return hamiltonian;}
 
 	private:

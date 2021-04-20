@@ -10,6 +10,8 @@
 
 #include "../indicators/progress_bar.hpp"
 #include "../executionStatistics.h"
+#include "../lattice/hmlLattice.hpp"
+#include "../lattice/abstractLatticeInput.hpp"
 #include <functional>
 #include <fstream>
 #include <xacc.hpp>
@@ -24,6 +26,7 @@ class QAOAOptions{
 		int max_iters = 0;
 		int p=1;
 		int nbSamples_calcVarAssignment = 1024;
+		int detailed_log_freq = 0;
 
 		bool calcVarAssignment = false;
 		bool extendedParametrizedMode = false;
@@ -49,16 +52,17 @@ class QAOAOptions{
 		bool verbose = true;
 		std::fstream outfile;
 
-		std::function<void(int, double)> get_stats_function(){
+		std::function<void(int, double, double, double, std::string)> get_stats_function(){
 			return stats_function;
 		}
 
-
 		void set_default_stats_function(ExecutionStatistics* execStats, indicators::ProgressBar* bar);
+		void set_default_stats_function(ExecutionStatistics* execStats, indicators::ProgressBar* bar, AbstractLatticeInput* lattice);
 
 	private:
-		std::function<void(int, double)> stats_function;
+		std::function<void(int, double, double, double, std::string)> stats_function;
 		bool logStats = false;
+		bool detailedLoggingDisabled = true;
 
 };
 
