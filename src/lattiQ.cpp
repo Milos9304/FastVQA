@@ -30,6 +30,7 @@ int main(int ac, char** av){
     auto niters       = op.add<Value<int>>("i", "iters", "max num of iterations", 0);
     auto save_hml     = op.add<Value<std::string>>("", "savehml", "save hamiltonian to file", "");
     auto load_hml     = op.add<Value<std::string>>("", "loadhml", "save hamiltonian to file", "");
+    auto debug        = op.add<Switch>("d", "debug", "print debug messages");
 
     auto save_interm  = op.add<Value<std::string>>("", "si", "save intermediate results (for specific experiments only)", "");
     auto load_interm  = op.add<Value<std::string>>("", "li", "load intermediate results (for specific experiments only)", "");
@@ -133,7 +134,9 @@ int main(int ac, char** av){
 		QAOAOptions qaoaOptions;
 		qaoaOptions.max_iters = niters->is_set() ? (niters->value() == 0 ? 5000 : niters->value()): 5000;
 		qaoaOptions.detailed_log_freq = 50;
-		qaoaOptions.verbose = true;
+		qaoaOptions.verbose = debug->is_set();
+		qaoaOptions.debug = debug->is_set();
+		qaoaOptions.verbose |= true;
 		qaoaOptions.optimizer = optimizer;
 		qaoaOptions.accelerator = accelerator;
 		qaoaOptions.simplifiedSimulation = true;

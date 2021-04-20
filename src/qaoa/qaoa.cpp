@@ -50,6 +50,7 @@ void run_qaoa(xacc::qbit** buffer,
    // The corresponding QUBO Hamiltonian is:
 
    auto observable = xacc::quantum::getObservable("pauli", hamiltonian);
+   logd("Hamiltonian loaded into observable");
 
    //std::cout << "obs1 " << observable->toString() << "\n";
 
@@ -61,6 +62,7 @@ void run_qaoa(xacc::qbit** buffer,
 
    //auto buffer = xacc::qalloc(num_qubits);
    *buffer = new xacc::qbit(xacc::qalloc(num_qubits));
+   logd("Memory for " + std::to_string(num_qubits) + "qubits allocated");
 
    if(verbose){
 	   logi(qaoaOptions->extendedParametrizedMode ? "parametrized mode" : "normal mode");
@@ -123,7 +125,8 @@ void run_qaoa(xacc::qbit** buffer,
 			   std::make_pair("stats_func", qaoaOptions->get_stats_function()),
 			   //Number of samples to estimate optimal variable assignment
 			   std::make_pair("parameter-scheme", qaoaOptions->getParameterScheme()),
-			   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment)
+			   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment),
+			   std::make_pair("debugMsgs", qaoaOptions->debug)
 		});
    }
    else{
@@ -138,7 +141,8 @@ void run_qaoa(xacc::qbit** buffer,
 	   		   std::make_pair("simplified-simulation", qaoaOptions->simplifiedSimulation),
 	   		   //Number of samples to estimate optimal variable assignment
 			   std::make_pair("parameter-scheme", qaoaOptions->getParameterScheme()),
-	   		   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment)
+	   		   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment),
+			   std::make_pair("debugMsgs", qaoaOptions->debug)
 	   		});
    }
    if(initOk)
@@ -148,7 +152,9 @@ void run_qaoa(xacc::qbit** buffer,
    	   return;
    }
 
+   logd("Executing qaoa");
    qaoa->execute(**buffer);
+   logd("Qaoa execution done");
 
    if(qaoaOptions->saveIntermediate){
 	   std::vector<double> params = (**buffer)["opt-params"].as<std::vector<double>>();
