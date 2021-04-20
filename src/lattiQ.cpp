@@ -161,6 +161,8 @@ int main(int ac, char** av){
 			int counter = 0;
 			for(auto &lattice_abs : lattices){
 
+				logi("Running " + lattice_abs->name);
+
 				Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 
 				ProgressBar bar{bar_opts(counter, num_lattices, lattice->name)};

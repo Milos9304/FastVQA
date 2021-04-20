@@ -63,8 +63,8 @@ void run_qaoa(xacc::qbit** buffer,
    *buffer = new xacc::qbit(xacc::qalloc(num_qubits));
 
    if(verbose){
-	   logi(qaoaOptions->extendedParametrizedMode ? "parametrized mode, " : "normal mode, "+
-			   std::to_string(observable->nBits()) + " qubits, p="
+	   logi(qaoaOptions->extendedParametrizedMode ? "parametrized mode" : "normal mode");
+	   logi(   std::to_string(observable->nBits()) + " qubits, p="
 			   + std::to_string(p) + ", "
 			   + std::to_string(num_params_per_p) + " params per p, "
 			   + std::to_string(num_params_total) + " params total"
