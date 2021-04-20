@@ -38,6 +38,8 @@ class QAOAOptions{
 		std::string l_intermediateName="";
 		bool logEnergies = false;
 
+		bool debug = false; //print debug msgs
+
 		AcceleratorPartial accelerator;
 		OptimizerPartial optimizer;
 
