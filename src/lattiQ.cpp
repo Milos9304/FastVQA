@@ -138,7 +138,7 @@ int main(int ac, char** av){
 		qaoaOptions.accelerator = accelerator;
 		qaoaOptions.simplifiedSimulation = true;
 		qaoaOptions.logEnergies = true;
-		qaoaOptions.extendedParametrizedMode = true;
+		qaoaOptions.extendedParametrizedMode = false;//true;
 		qaoaOptions.calcVarAssignment = true;
 		qaoaOptions.saveIntermediate = save_interm->is_set() ? (save_interm->value() == "" ? false : true) : false;
 		qaoaOptions.s_intermediateName = qaoaOptions.saveIntermediate ? save_interm->value() : "";
