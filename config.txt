@@ -1,11 +1,15 @@
 # DO NOT CHANGE VALUE BELOW
 type=qaoa
 #
-# QAOA configuration file for FastVQA
+# QAOA configuration file for LattiQ 
 #
-# hamiltonian_file = path_to_hml_file
+# lattice_files = paths to lattice files delimited by comma
 #
 #
 #
 # ------------------------ONLY EDIT BELOW------------------------
-hamiltonian_file = ../examples/hamiltonians/ntrulike_4_10.hml
+
+verbose = true
+
+#lattice_files = ../generated_lattices/example,../generated_lattices/q_10_1_20_b,../generated_lattices/q_130_1_20_b
+lattice_dir = ../generated_lattices/blackeye

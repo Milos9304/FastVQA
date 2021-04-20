@@ -3,3 +3,7 @@ bin/*
 .cproject
 .project
 .settings
+*.txt.swp
+tests/test_files/lattices/matlab_output/q_130_1_20_b.txt
+*plots
+*statsfiles

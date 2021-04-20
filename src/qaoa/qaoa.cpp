@@ -1,66 +1,146 @@
-#include "xacc.hpp"
+#include "qaoa.h"
 
 #include <iostream>
-#include <xacc.hpp>
-#include "xacc_observable.hpp"
-#include "xacc_service.hpp"
+//#include <xacc.hpp>
+
 //#include "QuEST.h"
 #include <random>
 
+#include <fstream>
 #include "../logger.h"
+#include "../io/saveProgress.hpp"
 
-// Use XACC built-in QAOA to solve a QUBO problem
-// QUBO function:
-// y = -5x1 - 3x2 - 8x3 - 6x4 + 4x1x2 + 8x1x3 + 2x2x3 + 10x3x4
+indicators::ProgressBar* progress_bar;
+ExecutionStatistics* execStats;
 
-const std::string accelerator_name = "quest";
+void run_qaoa(xacc::qbit** buffer,
+		std::string hamiltonian,
+		std::string name,
+		ExecutionStatistics* executionStats,
+		QAOAOptions* qaoaOptions){
 
-void run_dummy_qaoa(){
-	//int main(int argc, char **argv) {
-	//xacc::Initialize(argc, argv);
-	xacc::Initialize();
+	run_qaoa(buffer, hamiltonian, name, nullptr, executionStats, qaoaOptions);
+
+}
+
+
+void run_qaoa(xacc::qbit** buffer,
+		std::string hamiltonian,
+		std::string name,
+		indicators::ProgressBar* bar,
+		ExecutionStatistics* executionStats,
+		QAOAOptions* qaoaOptions){
+
+   int max_iters = qaoaOptions->max_iters;
+   bool verbose = qaoaOptions->verbose;
+
+   if(qaoaOptions->logEnergies)
+	   qaoaOptions->outfile.open("statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc);//std::ios_base::app
+
+   if(bar)
+	   progress_bar = bar;
+
+   execStats = executionStats;
+
+   //xacc::setOption("quest-verbose", "true");
+   //xacc::setOption("quest-debug", "true");
+
+   //std::cout << hamiltonian <<"\n";throw;
 
    // The corresponding QUBO Hamiltonian is:
-   auto observable = xacc::quantum::getObservable(
-         "pauli",
-         std::string("-5.0 - 0.5 Z0 - 1.0 Z2 + 0.5 Z3 + 1.0 Z0 Z1 + 2.0 Z0 Z2 + 0.5 Z1 Z2 + 2.5 Z2 Z3"));
 
-   auto buffer = xacc::qalloc(observable->nBits());
+   auto observable = xacc::quantum::getObservable("pauli", hamiltonian);
 
-   auto acc = xacc::getAccelerator(accelerator_name, {std::make_pair("nbQbits", observable->nBits())});
+   //std::cout << "obs1 " << observable->toString() << "\n";
 
-   const int nbSteps = 1;//12;
-   const int nbParams = nbSteps*11;
+   int p = qaoaOptions->p;
+
+   int num_qubits = observable->nBits();
+   int num_params_per_p = qaoaOptions->extendedParametrizedMode ? observable->getNonIdentitySubTerms().size() + observable->nBits() : 2;
+   int num_params_total = p * num_params_per_p;
+
+   //auto buffer = xacc::qalloc(num_qubits);
+   *buffer = new xacc::qbit(xacc::qalloc(num_qubits));
+
+   if(verbose){
+	   logi(qaoaOptions->extendedParametrizedMode ? "parametrized mode, " : "normal mode, "+
+			   std::to_string(observable->nBits()) + " qubits, p="
+			   + std::to_string(p) + ", "
+			   + std::to_string(num_params_per_p) + " params per p, "
+			   + std::to_string(num_params_total) + " params total"
+	   );
+   }
+
    std::vector<double> initialParams;
    std::random_device rd;
    std::mt19937 gen(rd());
    std::uniform_real_distribution<> dis(-2.0, 2.0);
 
-   // Init random parameters
-   for (int i = 0; i < nbParams; ++i)
-   {
-      initialParams.emplace_back(dis(gen));
-   }
 
-   auto optimizer = xacc::getOptimizer("nlopt",
-      xacc::HeterogeneousMap {
-         std::make_pair("initial-parameters", initialParams),
-         std::make_pair("nlopt-maxeval", nbParams*100) });
+   if(qaoaOptions->loadIntermediate){
+	   double expected_energy, sv_energy, hit_rate;
+	   bool success = loadProgress(qaoaOptions->l_intermediateName, &initialParams, &expected_energy, &sv_energy, &hit_rate);
+	   if(success){
+		   if(verbose)
+			   logi("Init params loaded from " + qaoaOptions->l_intermediateName);
+	   }else{
+		   loge("Problem loading params from " + qaoaOptions->l_intermediateName);
+		   return;
+	   }
+   }else{
+	   // Init random parameters
+	   for(int i = 0; i < num_params_total; ++i){
+		 initialParams.emplace_back(dis(gen));
+	   }
+	   if(verbose)
+		   logi("Random params generated");
+   }
 
    auto qaoa = xacc::getService<xacc::Algorithm>("QAOA");
 
-   const bool initOk = qaoa->initialize({
-                           std::make_pair("accelerator", acc),
-                           std::make_pair("optimizer", optimizer),
-                           std::make_pair("observable", observable),
-                           // number of time steps (p) param
-                           std::make_pair("steps", nbSteps),
-						   std::make_pair("calc-var-assignment", true),
-						   // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
-						   std::make_pair("repeated_measurement_strategy", true),
-						   //Number of samples to estimate optimal variable assignment
-						   std::make_pair("nbSamples", /*1024*/5)
-                        });
+   //std::function<void(int, double)> stats_function = stats_func;
+
+   bool initOk;
+
+   // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
+   auto acc = xacc::getAccelerator("quest", {{"nbQbits", observable->nBits()}, {"repeated_measurement_strategy", true}});
+
+   auto optimizer = xacc::getOptimizer("nlopt",
+		   {{"initial-parameters", initialParams}, {"nlopt-maxeval", max_iters}});
+
+
+
+   if(qaoaOptions->isSetLogStats()){
+	   initOk = qaoa->initialize({
+			   std::make_pair("accelerator", qaoaOptions->accelerator(observable)),
+			   std::make_pair("optimizer", qaoaOptions->optimizer(initialParams, max_iters)),
+			   std::make_pair("observable", observable),
+			   std::make_pair("detailed_log_freq", qaoaOptions->detailed_log_freq),
+			   // number of time steps (p) param
+			   std::make_pair("steps", qaoaOptions->p),
+			   std::make_pair("calc-var-assignment", qaoaOptions->calcVarAssignment),
+			   std::make_pair("simplified-simulation", qaoaOptions->simplifiedSimulation),
+			   std::make_pair("stats_func", qaoaOptions->get_stats_function()),
+			   //Number of samples to estimate optimal variable assignment
+			   std::make_pair("parameter-scheme", qaoaOptions->getParameterScheme()),
+			   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment)
+		});
+   }
+   else{
+	   initOk = qaoa->initialize({
+		   	   std::make_pair("accelerator", qaoaOptions->accelerator(observable)),
+		   	   std::make_pair("optimizer", qaoaOptions->optimizer(initialParams, max_iters)),
+	   		   std::make_pair("observable", /*static_cast<xacc::Observable*>(&*/observable/*)*/),
+			   std::make_pair("detailed_log_freq", qaoaOptions->detailed_log_freq),
+	   		   // number of time steps (p) param
+	   		   std::make_pair("steps", qaoaOptions->p),
+	   		   std::make_pair("calc-var-assignment", qaoaOptions->calcVarAssignment),
+	   		   std::make_pair("simplified-simulation", qaoaOptions->simplifiedSimulation),
+	   		   //Number of samples to estimate optimal variable assignment
+			   std::make_pair("parameter-scheme", qaoaOptions->getParameterScheme()),
+	   		   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment)
+	   		});
+   }
    if(initOk)
 	   logi("QAOA init successful.");
    else{
@@ -68,12 +148,23 @@ void run_dummy_qaoa(){
    	   return;
    }
 
-   qaoa->execute(buffer);
+   qaoa->execute(**buffer);
+
+   if(qaoaOptions->saveIntermediate){
+	   std::vector<double> params = (**buffer)["opt-params"].as<std::vector<double>>();
+	   double expected_energy = (**buffer)["expected-val"].as<double>();
+	   double sv_energy = (**buffer)["opt-val"].as<double>();
+	   double hit_rate = (**buffer)["hit_rate"].as<double>();
+
+	   saveProgress(qaoaOptions->s_intermediateName, params, expected_energy, sv_energy, hit_rate);
+   }
 
 
-   std::cout << "Min QUBO: " << (*buffer)["opt-val"].as<double>() << "\n";
-   std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
+   //std::cout << "Min QUBO: " << (**buffer)["opt-val"].as<double>() << "\n";
+   //std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
 
 
-   xacc::Finalize();
+
+   qaoaOptions->outfile.close();
+
 }
