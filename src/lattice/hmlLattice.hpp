@@ -26,6 +26,10 @@ class HmlLattice : public AbstractLatticeInput{
 
 		std::string toHamiltonianString(){return hamiltonian;}
 
+		std::pair<std::vector<double>, std::vector<int>> getHmlInQuestFormulation(){}
+
+
+
 	private:
 		std::string hamiltonian;
 

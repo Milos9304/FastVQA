@@ -13,19 +13,53 @@
 indicators::ProgressBar* progress_bar;
 ExecutionStatistics* execStats;
 
-void run_qaoa(xacc::qbit** buffer,
+void Qaoa::run_qaoa(xacc::qbit** buffer,
 		std::string hamiltonian,
 		std::string name,
 		ExecutionStatistics* executionStats,
 		QAOAOptions* qaoaOptions){
 
-	run_qaoa(buffer, hamiltonian, name, nullptr, executionStats, qaoaOptions);
+	Qaoa::_run_qaoa(buffer, hamiltonian, std::pair<std::vector<double>, std::vector<int>>(), name, nullptr, executionStats, qaoaOptions);
+
+}
+
+void Qaoa::run_qaoa(xacc::qbit** buffer,
+		std::pair<std::vector<double>, std::vector<int>> hamiltonian,
+		std::string name,
+		ExecutionStatistics* executionStats,
+		QAOAOptions* qaoaOptions){
+
+	Qaoa::_run_qaoa(buffer, "", hamiltonian, name, nullptr, executionStats, qaoaOptions);
 
 }
 
 
-void run_qaoa(xacc::qbit** buffer,
+void Qaoa::run_qaoa(xacc::qbit** buffer,
 		std::string hamiltonian,
+		std::string name,
+		indicators::ProgressBar* bar,
+		ExecutionStatistics* executionStats,
+		QAOAOptions* qaoaOptions){
+
+	Qaoa::_run_qaoa(buffer, hamiltonian, std::pair<std::vector<double>, std::vector<int>>(), name, bar, executionStats, qaoaOptions);
+
+}
+
+void Qaoa::run_qaoa(xacc::qbit** buffer,
+		std::string hamiltonian,
+		std::pair<std::vector<double>, std::vector<int>> hamiltonian2,
+		std::string name,
+		indicators::ProgressBar* bar,
+		ExecutionStatistics* executionStats,
+		QAOAOptions* qaoaOptions){
+
+	Qaoa::_run_qaoa(buffer, hamiltonian, hamiltonian2, name, bar, executionStats, qaoaOptions);
+
+}
+
+void Qaoa::_run_qaoa(xacc::qbit** buffer,
+		std::string hamiltonian,
+		std::pair<std::vector<double>, std::vector<int>> hamiltonian2,
 		std::string name,
 		indicators::ProgressBar* bar,
 		ExecutionStatistics* executionStats,
@@ -74,8 +108,8 @@ void run_qaoa(xacc::qbit** buffer,
    }
 
    std::vector<double> initialParams;
-   std::random_device rd;
-   std::mt19937 gen(rd());
+   //std::random_device rd;
+   std::mt19937 gen(/*rd()*/1997);
    std::uniform_real_distribution<> dis(-2.0, 2.0);
 
 
@@ -103,9 +137,23 @@ void run_qaoa(xacc::qbit** buffer,
    //std::function<void(int, double)> stats_function = stats_func;
 
    bool initOk;
+   std::vector<double> hamCoeffs;
+   std::vector<int> hamPauliCodes;
+
+   if(qaoaOptions->provideHamiltonian){
+	   hamCoeffs = hamiltonian2.first;
+	   hamPauliCodes = hamiltonian2.second;
+   }
 
    // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
-   auto acc = xacc::getAccelerator("quest", {{"nbQbits", observable->nBits()}, {"repeated_measurement_strategy", true}});
+   auto acc = xacc::getAccelerator("quest",
+		   {{"nbQbits", observable->nBits()},
+			{"startWithPlusState", true},
+			{"repeated_measurement_strategy", true},
+			{"hamiltonianProvided", qaoaOptions->provideHamiltonian},
+		    {"hamiltonianCoeffs", hamCoeffs},
+			{"pauliCodes", hamPauliCodes}
+		   });
 
    auto optimizer = xacc::getOptimizer("nlopt",
 		   {{"initial-parameters", initialParams}, {"nlopt-maxeval", max_iters}});
@@ -126,6 +174,7 @@ void run_qaoa(xacc::qbit** buffer,
 			   //Number of samples to estimate optimal variable assignment
 			   std::make_pair("parameter-scheme", qaoaOptions->getParameterScheme()),
 			   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment),
+			   std::make_pair("questHamExpectation", qaoaOptions->provideHamiltonian),
 			   std::make_pair("debugMsgs", qaoaOptions->debug)
 		});
    }
@@ -142,6 +191,7 @@ void run_qaoa(xacc::qbit** buffer,
 	   		   //Number of samples to estimate optimal variable assignment
 			   std::make_pair("parameter-scheme", qaoaOptions->getParameterScheme()),
 	   		   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment),
+			   std::make_pair("questHamExpectation", qaoaOptions->provideHamiltonian),
 			   std::make_pair("debugMsgs", qaoaOptions->debug)
 	   		});
    }

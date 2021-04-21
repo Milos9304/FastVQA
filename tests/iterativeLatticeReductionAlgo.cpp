@@ -71,7 +71,7 @@ TEST(iterativeLatticeReductionAlgo, opt_config_valid){
 
 	QOracle quantum_oracle = [execStats, &bar, &qaoaOptions]
 							  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
-		run_qaoa(buffer, hamiltonian, name, &bar, execStats, &qaoaOptions);
+		Qaoa::run_qaoa(buffer, hamiltonian, name, &bar, execStats, &qaoaOptions);
 	};
 
 	for(auto &lattice : vqaConfig->getLattices()){

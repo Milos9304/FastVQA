@@ -26,6 +26,9 @@ class AbstractLatticeInput{
 		//decode qubo optimal config to x config
 		virtual VectorInt quboToXvector(std::string measurement) = 0;
 
+		virtual std::pair<std::vector<double>, std::vector<int>> getHmlInQuestFormulation() = 0;
+
+
 		virtual std::string toHamiltonianString() = 0;
 		virtual ~AbstractLatticeInput(){}
 

@@ -18,9 +18,22 @@
 
 //void run_qaoa(xacc::quantum::PauliOperator, bool verbose);
 
+class Qaoa{
+
+	public:
+
+		static void run_qaoa(xacc::qbit** buffer, std::pair<std::vector<double>, std::vector<int>>, std::string name, ExecutionStatistics* execStats, QAOAOptions* options);
+		static void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, ExecutionStatistics* execStats, QAOAOptions* options);
+		static void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, QAOAOptions* options);
+		static void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::pair<std::vector<double>, std::vector<int>> hamiltonian2, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, QAOAOptions* options);
 
 
-void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, ExecutionStatistics* execStats, QAOAOptions* options);
-void run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, QAOAOptions* options);
+	private:
+
+		static void _run_qaoa(xacc::qbit** buffer, std::string hamiltonian, std::pair<std::vector<double>, std::vector<int>> hamiltonian2, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, QAOAOptions* options);
+
+};
+
+
 
 #endif /* SRC_QAOA_QAOA_H_ */
