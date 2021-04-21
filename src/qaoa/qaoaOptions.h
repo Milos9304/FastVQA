@@ -39,6 +39,7 @@ class QAOAOptions{
 		bool logEnergies = false;
 
 		bool debug = false; //print debug msgs
+		bool provideHamiltonian = false;
 
 		AcceleratorPartial accelerator;
 		OptimizerPartial optimizer;

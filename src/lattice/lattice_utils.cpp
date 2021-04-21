@@ -11,6 +11,64 @@
 
 #define log_pi 1.1447298858494
 
+std::pair<std::vector<double>, std::vector<int>> Lattice::getHmlInQuestFormulation(){
+
+	std::vector<double> coeffs;
+	std::vector<int> pauliOpts;
+
+	if(!qubo_generated){
+			loge("Hamiltonian referenced but not yet generated!");
+			return std::pair<std::vector<double>, std::vector<int>>(coeffs, pauliOpts);
+	}
+
+	int nbQubits = expression_qubo->getIdMapSize();
+
+	logw("Beware of overflows!! Create gmp qiskit or normalize to lower vals");
+	logw("Normalization is probably best solution");
+
+	for(auto &term : expression_qubo->polynomial){
+
+		if(term.second == 0)
+			continue;
+
+		int id1 = term.first.first;
+		int id2 = term.first.second;
+
+		int pos1, pos2;
+
+		coeffs.push_back(term.second.get_d());
+
+		if(id1 == -1 && id2 == -1){ //id
+			pos1=pos1=-1; //never matches
+		}
+		else if(id1 == -1){
+			pos1=expression_qubo->getQubit(id2);
+			pos2=pos1;
+		}
+		else if(id2 == -1){
+			pos1=expression_qubo->getQubit(id1);
+			pos2=pos1;
+		}else{
+			pos1=expression_qubo->getQubit(id1);
+			pos2=expression_qubo->getQubit(id2);
+		}
+
+		for(int i = 0; i < nbQubits; ++i){
+			if(i == pos1 || i == pos2)
+				pauliOpts.push_back(3); //3 is pauli op code for z in qiskit
+			else
+				pauliOpts.push_back(0);
+		}
+
+
+
+	}
+
+
+	return std::pair<std::vector<double>, std::vector<int>>(coeffs, pauliOpts);
+
+}
+
 mpq_class Lattice::calculate_gh_squared(MatrixInt* lattice){
 
 	if(!gso_orig_initialized){

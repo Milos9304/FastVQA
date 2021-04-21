@@ -143,6 +143,7 @@ int main(int ac, char** av){
 		qaoaOptions.logEnergies = true;
 		qaoaOptions.extendedParametrizedMode = true;
 		qaoaOptions.calcVarAssignment = true;
+		//qaoaOptions.provideHamiltonian = true;
 		qaoaOptions.saveIntermediate = save_interm->is_set() ? (save_interm->value() == "" ? false : true) : false;
 		qaoaOptions.s_intermediateName = qaoaOptions.saveIntermediate ? save_interm->value() : "";
 		qaoaOptions.loadIntermediate = load_interm->is_set() ? (load_interm->value() == "" ? false : true) : false;
@@ -153,12 +154,14 @@ int main(int ac, char** av){
 
 		ExecutionStatistics* execStats = new ExecutionStatistics();
 		xacc::Initialize();
+		xacc::setOption("quest-verbose", "true");
+		xacc::setOption("quest-debug", "true");
 
 		if(hml_lattice_mode){
 			xacc::qbit* buffer;
 			ProgressBar bar{bar_opts(0, 1, hmlLat->name)};
 			qaoaOptions.set_default_stats_function(execStats, &bar, hmlLat);
-    		run_qaoa(&buffer, hmlLat->toHamiltonianString(), load_hml->value(), &bar, execStats, &qaoaOptions);
+    		Qaoa::run_qaoa(&buffer, hmlLat->toHamiltonianString(), load_hml->value(), &bar, execStats, &qaoaOptions);
     		logd("Hml mode");
 		}else{
 			int counter = 0;
@@ -168,13 +171,16 @@ int main(int ac, char** av){
 
 				Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 
+				lattice->toHamiltonianString(mapOptions); //remake
+				std::pair<std::vector<double>, std::vector<int>> hamiltonian2 = lattice->getHmlInQuestFormulation();
+
 				ProgressBar bar{bar_opts(counter, num_lattices, lattice->name)};
 
 				qaoaOptions.set_default_stats_function(execStats, &bar, lattice);
 
-				QOracle quantum_oracle = [&bar, execStats, &qaoaOptions]
+				QOracle quantum_oracle = [&bar, execStats, &qaoaOptions, hamiltonian2]
 										  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
-					run_qaoa(buffer, hamiltonian, name, &bar, execStats, &qaoaOptions);
+					Qaoa::run_qaoa(buffer, hamiltonian, hamiltonian2, name, &bar, execStats, &qaoaOptions);
 				};
 
 				IterativeLatticeReduction ilr(lattice, mapOptions, quantum_oracle, 1);

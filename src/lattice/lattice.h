@@ -80,6 +80,8 @@ class Lattice : public AbstractLatticeInput{
 		MatrixInt* get_orig_lattice_transposed(){ return &orig_lattice_transposed; }
 		MatrixInt* get_current_lattice(){ return &current_lattice; }
 
+		std::pair<std::vector<double>, std::vector<int>> getHmlInQuestFormulation();
+
 		std::string toHamiltonianString();
 		std::string toHamiltonianString(MapOptions* options);
 

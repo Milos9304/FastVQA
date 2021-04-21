@@ -53,6 +53,8 @@ class Expression{
 
 		std::string name;
 
+		int getIdMapSize(){return idMap.size();}
+
 		//id, id, coeff
 		std::map<std::pair<int, int>, mpq_class> polynomial;
 
