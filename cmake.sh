@@ -11,6 +11,7 @@ GMP_L_DIR="/home/nx05/nx05/milos_pr/.local/lib"
 
 cmake \
   -DCMAKE_CXX_COMPILER=${CXX} \
+  -DCMAKE_C_COMPILER=${CC} \
   -DXACC_DIR=${XACC_DIR} \
   -DGMP_H_DIR=${GMP_H_DIR} \
   -DGMP_L_DIR=${GMP_L_DIR} \

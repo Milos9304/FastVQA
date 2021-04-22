@@ -143,7 +143,7 @@ int main(int ac, char** av){
 		qaoaOptions.logEnergies = true;
 		qaoaOptions.extendedParametrizedMode = false;//true;
 		qaoaOptions.calcVarAssignment = true;
-		//qaoaOptions.provideHamiltonian = true;
+		qaoaOptions.provideHamiltonian = true;
 		qaoaOptions.saveIntermediate = save_interm->is_set() ? (save_interm->value() == "" ? false : true) : false;
 		qaoaOptions.s_intermediateName = qaoaOptions.saveIntermediate ? save_interm->value() : "";
 		qaoaOptions.loadIntermediate = load_interm->is_set() ? (load_interm->value() == "" ? false : true) : false;
