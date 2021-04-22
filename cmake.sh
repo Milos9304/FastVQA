@@ -1,8 +1,8 @@
 #!/bin/bash
 
-CC=gcc
-CXX=g++
-FC=gfortran
+CC=icc #gcc
+CXX=icpc #g++
+#FC=gfortran
 
 BUILD_TYPE=Release
 XACC_DIR="~/.xacc"
