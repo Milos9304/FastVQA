@@ -6,8 +6,8 @@ include_directories(${DXACC_DIR}/include/xacc/)
 include_directories(${DXACC_DIR}/include/quantum/gate)
 include_directories(${DXACC_DIR}/include/cppmicroservices4)
 
-add_library(libquest SHARED IMPORTED)
-set_property(TARGET libquest PROPERTY IMPORTED_LOCATION ${DXACC_DIR}/lib/libQuEST.so)
+#add_library(libquest SHARED IMPORTED)
+#set_property(TARGET libquest PROPERTY IMPORTED_LOCATION ${DXACC_DIR}/lib/libQuEST.so)
 
 add_executable(svpToQubo svpToQubo.cpp 
                          ../src/vqaConfig.cpp 
@@ -27,8 +27,8 @@ add_executable(iterativeLatticeReductionAlgo iterativeLatticeReductionAlgo.cpp
 											 ../src/symbolic_manipulation.cpp)
 
 target_link_libraries(svpToQubo PRIVATE gtest lattice gmpxx gmp fplll)
-target_link_libraries(measurementQubitEndianness PRIVATE gtest xacc::xacc libquest)
-target_link_libraries(iterativeLatticeReductionAlgo PRIVATE gtest lattice gmpxx gmp xacc::xacc xacc::quantum_gate fplll io libquest)
+target_link_libraries(measurementQubitEndianness PRIVATE gtest xacc::xacc)# libquest)
+target_link_libraries(iterativeLatticeReductionAlgo PRIVATE gtest lattice gmpxx gmp xacc::xacc xacc::quantum_gate fplll io)# libquest)
 
 
 add_test(NAME svpToQubo COMMAND svpToQubo)
