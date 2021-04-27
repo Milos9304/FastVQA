@@ -133,15 +133,19 @@ int main(int ac, char** av){
 			}
 
 
-			AcceleratorPartial accelerator = [](std::shared_ptr<xacc::Observable> observable) {
-				return xacc::getAccelerator("quest", {std::make_pair("nbQbits", observable->nBits()),
+			AcceleratorPartial accelerator = [](std::shared_ptr<xacc::Observable> observable,
+					bool hamiltonianExpectation,
+					std::vector<double> hamCoeffs,
+					std::vector<int>hamPauliCodes){
+				return xacc::getAccelerator("quest", {
+						 std::make_pair("nbQbits", observable->nBits()),
 						 // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
 						 std::make_pair("repeated_measurement_strategy", true),
 						 std::make_pair("startWithPlusState", true),
 						 std::make_pair("repeated_measurement_strategy", true),
-						 			/*{"hamiltonianProvided", qaoaOptions->provideHamiltonian},
-						 		    {"hamiltonianCoeffs", hamCoeffs},
-						 			{"pauliCodes", hamPauliCodes}*/});
+						 std::make_pair("hamiltonianProvided", hamiltonianExpectation),
+						 std::make_pair("hamiltonianCoeffs", hamCoeffs),
+						 std::make_pair("pauliCodes", hamPauliCodes)});
 			};
 
 			OptimizerPartial optimizer = [](std::vector<double> initialParams, int max_iters) {
@@ -161,7 +165,7 @@ int main(int ac, char** av){
 			qaoaOptions.logEnergies = true;
 			qaoaOptions.extendedParametrizedMode = false;//true;
 			qaoaOptions.calcVarAssignment = true;
-			//qaoaOptions.provideHamiltonian = true;
+			qaoaOptions.provideHamiltonian = true;
 			qaoaOptions.saveIntermediate = save_interm->is_set() ? (save_interm->value() == "" ? false : true) : false;
 			qaoaOptions.s_intermediateName = qaoaOptions.saveIntermediate ? save_interm->value() : "";
 			qaoaOptions.loadIntermediate = load_interm->is_set() ? (load_interm->value() == "" ? false : true) : false;
@@ -189,7 +193,10 @@ int main(int ac, char** av){
 
 					Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 
-					lattice->toHamiltonianString(mapOptions); //remake
+					lattice->toHamiltonianString(mapOptions); //remake, keep it here
+
+					logw(lattice->toHamiltonianString(mapOptions));
+
 					std::pair<std::vector<double>, std::vector<int>> hamiltonian2 = lattice->getHmlInQuestFormulation();
 
 					ProgressBar bar{bar_opts(counter, num_lattices, lattice->name)};

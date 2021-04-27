@@ -165,7 +165,10 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 
    if(qaoaOptions->isSetLogStats()){
 	   initOk = qaoa->initialize({
-			   std::make_pair("accelerator", qaoaOptions->accelerator(observable)),
+			   std::make_pair("accelerator", qaoaOptions->accelerator(observable,
+					   qaoaOptions->provideHamiltonian,
+					   hamCoeffs,
+					   hamPauliCodes)),
 			   std::make_pair("optimizer", qaoaOptions->optimizer(initialParams, max_iters)),
 			   std::make_pair("observable", observable),
 			   std::make_pair("detailed_log_freq", qaoaOptions->detailed_log_freq),
@@ -183,7 +186,10 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
    }
    else{
 	   initOk = qaoa->initialize({
-		   	   std::make_pair("accelerator", qaoaOptions->accelerator(observable)),
+		       std::make_pair("accelerator", qaoaOptions->accelerator(observable,
+		    		   qaoaOptions->provideHamiltonian,
+					   hamCoeffs,
+					   hamPauliCodes)),
 		   	   std::make_pair("optimizer", qaoaOptions->optimizer(initialParams, max_iters)),
 	   		   std::make_pair("observable", /*static_cast<xacc::Observable*>(&*/observable/*)*/),
 			   std::make_pair("detailed_log_freq", qaoaOptions->detailed_log_freq),

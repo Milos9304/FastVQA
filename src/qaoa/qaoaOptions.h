@@ -16,7 +16,11 @@
 #include <fstream>
 #include <xacc.hpp>
 
-typedef std::function<std::shared_ptr<xacc::Accelerator>(std::shared_ptr<xacc::Observable>)> AcceleratorPartial;
+typedef std::function<std::shared_ptr<xacc::Accelerator>(std::shared_ptr<xacc::Observable>,
+		bool, //provide hamiltonian
+		std::vector<double>, // hamCoeffs
+		std::vector<int>) //hamPauliCodes
+		> AcceleratorPartial;
 typedef std::function<std::shared_ptr<xacc::Optimizer>(std::vector<double>, int)> OptimizerPartial;
 
 class QAOAOptions{
