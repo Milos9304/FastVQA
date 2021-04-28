@@ -12,6 +12,7 @@ void IterativeLatticeReduction::run(){
 
 	for(int i = 0; i < n_iters; ++i){
 
+		//loge("LLL not performed");
 		performLLLonLattice(0.99, 0.51);
 		std::pair<std::string, double> opt_config = run_quantum();
 

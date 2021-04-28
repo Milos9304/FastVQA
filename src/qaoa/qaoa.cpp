@@ -69,8 +69,10 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
    int max_iters = qaoaOptions->max_iters;
    bool verbose = qaoaOptions->verbose;
 
-   if(qaoaOptions->logEnergies)
+   if(qaoaOptions->logEnergies){
+	   //qaoaOptions->outfile.rdbuf()->pubsetbuf(0, 0); //disable buffer
 	   qaoaOptions->outfile.open("statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc);//std::ios_base::app
+   }
 
    if(bar)
 	   progress_bar = bar;
