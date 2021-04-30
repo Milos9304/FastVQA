@@ -12,12 +12,17 @@ void IterativeLatticeReduction::run(){
 
 	for(int i = 0; i < n_iters; ++i){
 
-		//loge("LLL not performed");
-		performLLLonLattice(0.99, 0.51);
+		loge("LLL not performed");
+		//performLLLonLattice(0.99, 0.51);
 		std::pair<std::string, double> opt_config = run_quantum();
 
-		double short_vector_len_sq = opt_config.second;
+		VectorInt x_vect = lattice->quboToXvector(opt_config.first);
+		loge("NOW FOLLOWS");
+		for(auto &x:x_vect)
+			std::cerr<<x<<"\n";
 
+		double short_vector_len_sq = opt_config.second;
+		logw("short vector len sq: " + std::to_string(short_vector_len_sq));
 
 	}
 
