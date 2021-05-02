@@ -38,14 +38,14 @@ ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
 
 color = 'tab:blue'
 ax2.set_ylabel('percent', color=color)  # we already handled the x-label with ax1
-ax2.plot(detailed_indexes, hit_rates, 'bo', markersize=1)
+ax2.plot(detailed_indexes, hit_rates, 'bo', markersize=6)
 ax2.tick_params(axis='y', labelcolor=color)
 
 ax3 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
 
 color = 'tab:orange'
 ax3.set_ylabel('energy', color=color)  # we already handled the x-label with ax1
-ax3.plot(detailed_indexes, opt_energies, '*', color=color, markersize=1)
+ax3.plot(detailed_indexes, opt_energies, '*', color=color, markersize=6)
 ax3.tick_params(axis='y', labelcolor=color)
 #plt.plot(detailed_indexes, hit_rates, 'o', color=color, markersize=1)
 

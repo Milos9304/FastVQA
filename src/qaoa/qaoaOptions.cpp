@@ -35,13 +35,15 @@ void QAOAOptions::set_default_stats_function(ExecutionStatistics* executionStati
 				  break;
 			  case 4:
 
-				  outfile << energy << " " << opt_energy<< " " << hit_rate;
+				  logw("OPT ENERGY " + std::to_string(opt_energy));
+				  outfile << energy << " " << opt_energy << " " << hit_rate;
 
 				  if(!detailedLoggingDisabled){
 					  for(auto &i : lattice->quboToXvector(opt_config))
 						  outfile << " " << i;
 				  }
 				  outfile << "\n";
+				  outfile.flush();
 
 				  break;
 			  case 5:

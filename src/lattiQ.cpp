@@ -150,12 +150,13 @@ int main(int ac, char** av){
 
 			OptimizerPartial optimizer = [](std::vector<double> initialParams, int max_iters) {
 				return xacc::getOptimizer("nlopt", xacc::HeterogeneousMap {std::make_pair("initial-parameters", initialParams),
-																		   std::make_pair("nlopt-maxeval", max_iters)});
+																		   std::make_pair("nlopt-maxeval", max_iters),
+																		   std::make_pair("nlopt-ftol", 10e-9)});
 			};
 
 			QAOAOptions qaoaOptions;
 			qaoaOptions.max_iters = niters->is_set() ? (niters->value() == 0 ? 5000 : niters->value()): 5000;
-			qaoaOptions.detailed_log_freq = 0;//50;
+			qaoaOptions.detailed_log_freq = 50;
 			qaoaOptions.verbose = debug->is_set();
 			qaoaOptions.debug = debug->is_set();
 			qaoaOptions.verbose |= true;
@@ -163,7 +164,7 @@ int main(int ac, char** av){
 			qaoaOptions.accelerator = accelerator;
 			qaoaOptions.simplifiedSimulation = true;
 			qaoaOptions.logEnergies = true;
-			qaoaOptions.extendedParametrizedMode = true;//false;//true;
+			qaoaOptions.extendedParametrizedMode = false;//true;
 			qaoaOptions.calcVarAssignment = true;
 			qaoaOptions.provideHamiltonian = true;
 			qaoaOptions.saveIntermediate = save_interm->is_set() ? (save_interm->value() == "" ? false : true) : false;
@@ -192,6 +193,10 @@ int main(int ac, char** av){
 					logi("Running " + lattice_abs->name);
 
 					Lattice *lattice = static_cast<Lattice*>(lattice_abs);
+
+					lattice->lll_transformation = new MatrixInt(lattice->n, lattice->n);
+
+					lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
 
 					lattice->toHamiltonianString(mapOptions); //remake, keep it here
 
