@@ -17,11 +17,11 @@ std::pair<std::vector<double>, std::vector<int>> Lattice::getHmlInQuestFormulati
 	std::vector<int> pauliOpts;
 
 	if(!qubo_generated){
-			loge("Hamiltonian referenced but not yet generated!");
-			return std::pair<std::vector<double>, std::vector<int>>(coeffs, pauliOpts);
+		loge("Hamiltonian referenced but not yet generated!");
+		return std::pair<std::vector<double>, std::vector<int>>(coeffs, pauliOpts);
 	}
 
-	int nbQubits = expression_qubo->getIdMapSize();
+	int nbQubits = expression_qubo->getIdMapSize()-1; //-1 bc of identity
 
 	logw("Beware of overflows!! Create gmp qiskit or normalize to lower vals");
 	logw("Normalization is probably best solution");
@@ -39,7 +39,7 @@ std::pair<std::vector<double>, std::vector<int>> Lattice::getHmlInQuestFormulati
 		coeffs.push_back(term.second.get_d());
 
 		if(id1 == -1 && id2 == -1){ //id
-			pos1=pos1=-1; //never matches
+			pos1=pos2=-1; //never matches
 		}
 		else if(id1 == -1){
 			pos1=expression_qubo->getQubit(id2);
@@ -60,13 +60,8 @@ std::pair<std::vector<double>, std::vector<int>> Lattice::getHmlInQuestFormulati
 				pauliOpts.push_back(0);
 		}
 
-
-
 	}
-
-
 	return std::pair<std::vector<double>, std::vector<int>>(coeffs, pauliOpts);
-
 }
 
 mpq_class Lattice::calculate_gh_squared(MatrixInt* lattice){

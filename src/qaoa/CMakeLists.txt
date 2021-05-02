@@ -14,7 +14,7 @@ usfunctiongeneratebundleinit(TARGET
                             
 add_library(${LIBRARY_NAME} SHARED ${SRC})
 
-set(_bundle_name fastVqa)
+set(_bundle_name lattiQ)
 set_target_properties(${LIBRARY_NAME}
                     PROPERTIES COMPILE_DEFINITIONS
                                 US_BUNDLE_NAME=${_bundle_name}
@@ -28,7 +28,7 @@ usfunctionembedresources(TARGET
                         manifest.json)
 xacc_configure_plugin_rpath(${LIBRARY_NAME})
 
-add_library(libquest SHARED IMPORTED)
-set_property(TARGET libquest PROPERTY IMPORTED_LOCATION ${DXACC_DIR}/lib/libQuEST.so)
+#add_library(libquest SHARED IMPORTED)
+#set_property(TARGET libquest PROPERTY IMPORTED_LOCATION ${DXACC_DIR}/lib/libQuEST.so)
 
-target_link_libraries(${LIBRARY_NAME} PUBLIC io xacc::xacc xacc::quantum_gate xacc::pauli libquest)#xacc::quantum_gate xacc::quantum_annealing xacc::pauli xacc::pauli xacc::fermion)
+target_link_libraries(${LIBRARY_NAME} PUBLIC io xacc::xacc xacc::quantum_gate xacc::pauli)# libquest)#xacc::quantum_gate xacc::quantum_annealing xacc::pauli xacc::pauli xacc::fermion)

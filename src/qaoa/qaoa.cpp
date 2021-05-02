@@ -9,6 +9,7 @@
 #include <fstream>
 #include "../logger.h"
 #include "../io/saveProgress.hpp"
+#include "mpi.h"
 
 indicators::ProgressBar* progress_bar;
 ExecutionStatistics* execStats;
@@ -68,8 +69,10 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
    int max_iters = qaoaOptions->max_iters;
    bool verbose = qaoaOptions->verbose;
 
-   if(qaoaOptions->logEnergies)
+   if(qaoaOptions->logEnergies){
+	   //qaoaOptions->outfile.rdbuf()->pubsetbuf(0, 0); //disable buffer
 	   qaoaOptions->outfile.open("statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc);//std::ios_base::app
+   }
 
    if(bar)
 	   progress_bar = bar;
@@ -126,7 +129,9 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
    }else{
 	   // Init random parameters
 	   for(int i = 0; i < num_params_total; ++i){
-		 initialParams.emplace_back(dis(gen));
+		 //initialParams.emplace_back(dis(gen));
+		   double p=dis(gen);logd(std::to_string(p));
+		   initialParams.emplace_back(p);
 	   }
 	   if(verbose)
 		   logi("Random params generated");
@@ -146,14 +151,14 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
    }
 
    // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
-   auto acc = xacc::getAccelerator("quest",
+   /*auto acc = xacc::getAccelerator("quest",
 		   {{"nbQbits", observable->nBits()},
 			{"startWithPlusState", true},
 			{"repeated_measurement_strategy", true},
 			{"hamiltonianProvided", qaoaOptions->provideHamiltonian},
 		    {"hamiltonianCoeffs", hamCoeffs},
 			{"pauliCodes", hamPauliCodes}
-		   });
+		   });*/
 
    auto optimizer = xacc::getOptimizer("nlopt",
 		   {{"initial-parameters", initialParams}, {"nlopt-maxeval", max_iters}});
@@ -162,7 +167,10 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 
    if(qaoaOptions->isSetLogStats()){
 	   initOk = qaoa->initialize({
-			   std::make_pair("accelerator", qaoaOptions->accelerator(observable)),
+			   std::make_pair("accelerator", qaoaOptions->accelerator(observable,
+					   qaoaOptions->provideHamiltonian,
+					   hamCoeffs,
+					   hamPauliCodes)),
 			   std::make_pair("optimizer", qaoaOptions->optimizer(initialParams, max_iters)),
 			   std::make_pair("observable", observable),
 			   std::make_pair("detailed_log_freq", qaoaOptions->detailed_log_freq),
@@ -180,7 +188,10 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
    }
    else{
 	   initOk = qaoa->initialize({
-		   	   std::make_pair("accelerator", qaoaOptions->accelerator(observable)),
+		       std::make_pair("accelerator", qaoaOptions->accelerator(observable,
+		    		   qaoaOptions->provideHamiltonian,
+					   hamCoeffs,
+					   hamPauliCodes)),
 		   	   std::make_pair("optimizer", qaoaOptions->optimizer(initialParams, max_iters)),
 	   		   std::make_pair("observable", /*static_cast<xacc::Observable*>(&*/observable/*)*/),
 			   std::make_pair("detailed_log_freq", qaoaOptions->detailed_log_freq),
@@ -223,4 +234,8 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 
    qaoaOptions->outfile.close();
 
+}
+
+void Qaoa::run_qaoa_slave_process(){
+	auto acc = xacc::getAccelerator("quest");
 }

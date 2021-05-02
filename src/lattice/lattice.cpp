@@ -179,6 +179,9 @@ void Lattice::init_expr_bin(MapOptions::bin_mapping mapping, bool print){
 void Lattice::calcHamiltonian(MapOptions* options, bool print){
 
 		if(!gso_current_initialized){
+
+			logw("calc gso");
+
 			ZZ_mat<mpz_t> blank;
 
 			gso_current = new MatGSO<Z_NR<mpz_t>, FP_NR<double>>(current_lattice, blank, blank, GSO_INT_GRAM);
