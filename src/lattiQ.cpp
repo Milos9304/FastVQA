@@ -260,6 +260,7 @@ int main(int ac, char** av){
 
 					if(rank == 0)
 						logi("Running " + lattice_abs->name);
+
 					Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 					lattice->lll_transformation = new MatrixInt(lattice->n, lattice->n);
 					lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
