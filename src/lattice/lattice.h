@@ -76,6 +76,9 @@ class Lattice : public AbstractLatticeInput{
 
 		//decode qubo optimal config to x config
 		VectorInt quboToXvector(std::string measurement);
+		VectorInt quboToXvector(bool* measurement, int n);
+
+		int getNumQubits(){return expression_qubo->getIdMapSize()-1;}
 
 		mpq_class get_orig_gh(){return orig_gh_sq;}
 

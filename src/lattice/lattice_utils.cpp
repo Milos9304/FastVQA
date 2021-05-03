@@ -93,8 +93,6 @@ VectorInt Lattice::quboToXvector(std::string measurement){
 
 	std::map<int, int> penalized_varId_map;
 
-	int x1_value;
-
 	for (int i = 0; i < n; ++i) {
 		int varId = qbit_to_varId_map[i];
 
@@ -102,6 +100,39 @@ VectorInt Lattice::quboToXvector(std::string measurement){
 			penalized_varId_map[varId] = measurement[n-1-i]-'0';
 		}
 
+	}
+
+	VectorInt res;
+	for(auto &x: x_ids){
+
+		mpq_class val = 0;
+		for(auto &id_val:int_to_bin_map[x]){
+			val += id_val.second * penalized_varId_map[id_val.first]; //binary var times its coeff
+		}
+
+		if(val.get_den() != 1){
+			stringstream ss;
+			ss << "Lattice::quboToXvector: decimal " << val << " to int conversion\n";
+			logw(ss.str());
+		}
+
+		res.push_back(mpz_class(val));
+
+
+	}
+	return res;
+}
+
+VectorInt Lattice::quboToXvector(bool* measurement, int n){
+
+	std::map<int, int> penalized_varId_map;
+
+	for (int i = 0; i < n; ++i) {
+		int varId = qbit_to_varId_map[i];
+
+		if(expression_penalized->getName(varId)[0] != 'z'){
+			penalized_varId_map[varId] = measurement[n-1-i]/*-'0'*/;
+		}
 	}
 
 	VectorInt res;
