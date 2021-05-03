@@ -35,9 +35,9 @@ public:
 	// Function to print the output
 	void updateShortestVect(bool* arr){
 
-		if(rank == 0 && bar_tick_temp-- == 0){
+		if(rank == 0 /*&& bar_tick_temp-- == 0*/){
 			bar->tick();
-			bar_tick_temp = bar_tick;
+			//bar_tick_temp = bar_tick;
 		}
 
 		double result = 0;

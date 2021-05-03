@@ -324,10 +324,10 @@ int main(int ac, char** av){
 						option::ShowElapsedTime{true},\
 						option::ShowRemainingTime{true},\
 						option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},\
-						option::MaxProgress{/*(1ULL<<(num_qubits-qubits_fixed)) > (1ULL<<20)*/100}};
+						option::MaxProgress{(1ULL<<(num_qubits-qubits_fixed))}};
 
 						e.bar = &bar;
-						e.bar_tick = (1ULL<<(num_qubits-qubits_fixed)) / 100;
+						//e.bar_tick = (1ULL<<(num_qubits-qubits_fixed)) / 100;
 
 					}
 					counter++;
