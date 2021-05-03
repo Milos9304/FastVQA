@@ -18,6 +18,8 @@
 #include "xacc_observable.hpp" //del
 #include "PauliOperator.hpp" //del
 
+#include "enumeration.h"
+
 #include <mpi.h>
 
 using namespace popl;
@@ -31,17 +33,20 @@ int main(int ac, char** av){
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
 	//--------------------------------RANK ZERO CODE------------------------------------------
-	if(rank == 0){
+	if(rank == 0 || strcmp(av[1],"qaoa")){
 
 		OptionParser op("Allowed options");
 		auto help_option  = op.add<Switch>("h", "help", "produce help message");
 		auto qaoa 		  = op.add<Switch>("", "qaoa", "run qaoa algorithm");
+		auto enumeration  = op.add<Switch>("", "enum", "enumerate all qubo configurations");
 		auto config 	  = op.add<Value<std::string>>("", "config", "config file location", "");
 		auto lattice_file = op.add<Value<std::string>>("l", "lattice", "lattice file location", "");
 		auto niters       = op.add<Value<int>>("i", "iters", "max num of iterations", 0);
 		auto save_hml     = op.add<Value<std::string>>("", "savehml", "save hamiltonian to file", "");
 		auto load_hml     = op.add<Value<std::string>>("", "loadhml", "save hamiltonian to file", "");
 		auto debug        = op.add<Switch>("d", "debug", "print debug messages");
+		auto qubits_per_x = op.add<Value<int>>("q", "", "qubits per x", 1);
+
 
 		auto save_interm  = op.add<Value<std::string>>("", "si", "save intermediate results (for specific experiments only)", "");
 		auto load_interm  = op.add<Value<std::string>>("", "li", "load intermediate results (for specific experiments only)", "");
@@ -61,7 +66,7 @@ int main(int ac, char** av){
 		std::vector<Lattice> lattices_in;
 		std::vector<AbstractLatticeInput*> lattices;
 
-		if(qaoa -> is_set()){
+		if(qaoa -> is_set() || enumeration->is_set()){
 
 			if(!load_hml->is_set()){
 
@@ -132,107 +137,220 @@ int main(int ac, char** av){
 				hmlLat->name = load_hml->value();
 			}
 
+			if(qaoa->is_set()){
 
-			AcceleratorPartial accelerator = [](std::shared_ptr<xacc::Observable> observable,
-					bool hamiltonianExpectation,
-					std::vector<double> hamCoeffs,
-					std::vector<int>hamPauliCodes){
-				return xacc::getAccelerator("quest", {
-						 std::make_pair("nbQbits", observable->nBits()),
-						 // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
-						 std::make_pair("repeated_measurement_strategy", true),
-						 std::make_pair("startWithPlusState", true),
-						 std::make_pair("repeated_measurement_strategy", true),
-						 std::make_pair("hamiltonianProvided", hamiltonianExpectation),
-						 std::make_pair("hamiltonianCoeffs", hamCoeffs),
-						 std::make_pair("pauliCodes", hamPauliCodes)});
-			};
+				AcceleratorPartial accelerator = [](std::shared_ptr<xacc::Observable> observable,
+						bool hamiltonianExpectation,
+						std::vector<double> hamCoeffs,
+						std::vector<int>hamPauliCodes){
+					return xacc::getAccelerator("quest", {
+							 std::make_pair("nbQbits", observable->nBits()),
+							 // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
+							 std::make_pair("repeated_measurement_strategy", true),
+							 std::make_pair("startWithPlusState", true),
+							 std::make_pair("repeated_measurement_strategy", true),
+							 std::make_pair("hamiltonianProvided", hamiltonianExpectation),
+							 std::make_pair("hamiltonianCoeffs", hamCoeffs),
+							 std::make_pair("pauliCodes", hamPauliCodes)});
+				};
 
-			OptimizerPartial optimizer = [](std::vector<double> initialParams, int max_iters) {
-				return xacc::getOptimizer("nlopt", xacc::HeterogeneousMap {std::make_pair("initial-parameters", initialParams),
-																		   std::make_pair("nlopt-maxeval", max_iters),
-																		   std::make_pair("nlopt-ftol", 10e-9)});
-			};
+				OptimizerPartial optimizer = [](std::vector<double> initialParams, int max_iters) {
+					return xacc::getOptimizer("nlopt", xacc::HeterogeneousMap {std::make_pair("initial-parameters", initialParams),
+																			   std::make_pair("nlopt-maxeval", max_iters),
+																			   std::make_pair("nlopt-ftol", 10e-9)});
+				};
 
-			QAOAOptions qaoaOptions;
-			qaoaOptions.max_iters = niters->is_set() ? (niters->value() == 0 ? 5000 : niters->value()): 5000;
-			qaoaOptions.detailed_log_freq = 50;
-			qaoaOptions.verbose = debug->is_set();
-			qaoaOptions.debug = debug->is_set();
-			qaoaOptions.verbose |= true;
-			qaoaOptions.optimizer = optimizer;
-			qaoaOptions.accelerator = accelerator;
-			qaoaOptions.simplifiedSimulation = true;
-			qaoaOptions.logEnergies = true;
-			qaoaOptions.extendedParametrizedMode = false;//true;
-			qaoaOptions.calcVarAssignment = true;
-			qaoaOptions.provideHamiltonian = true;
-			qaoaOptions.saveIntermediate = save_interm->is_set() ? (save_interm->value() == "" ? false : true) : false;
-			qaoaOptions.s_intermediateName = qaoaOptions.saveIntermediate ? save_interm->value() : "";
-			qaoaOptions.loadIntermediate = load_interm->is_set() ? (load_interm->value() == "" ? false : true) : false;
-			qaoaOptions.l_intermediateName = qaoaOptions.loadIntermediate ? load_interm->value() : "";
+				QAOAOptions qaoaOptions;
+				qaoaOptions.max_iters = niters->is_set() ? (niters->value() == 0 ? 5000 : niters->value()): 5000;
+				qaoaOptions.detailed_log_freq = 50;
+				qaoaOptions.verbose = debug->is_set();
+				qaoaOptions.debug = debug->is_set();
+				qaoaOptions.verbose |= true;
+				qaoaOptions.optimizer = optimizer;
+				qaoaOptions.accelerator = accelerator;
+				qaoaOptions.simplifiedSimulation = true;
+				qaoaOptions.logEnergies = true;
+				qaoaOptions.extendedParametrizedMode = false;//true;
+				qaoaOptions.calcVarAssignment = true;
+				qaoaOptions.provideHamiltonian = true;
+				qaoaOptions.saveIntermediate = save_interm->is_set() ? (save_interm->value() == "" ? false : true) : false;
+				qaoaOptions.s_intermediateName = qaoaOptions.saveIntermediate ? save_interm->value() : "";
+				qaoaOptions.loadIntermediate = load_interm->is_set() ? (load_interm->value() == "" ? false : true) : false;
+				qaoaOptions.l_intermediateName = qaoaOptions.loadIntermediate ? load_interm->value() : "";
 
-			MapOptions* mapOptions = new MapOptions();
-			mapOptions->verbose = false;
+				MapOptions* mapOptions = new MapOptions();
+				mapOptions->verbose = false;
 
-			ExecutionStatistics* execStats = new ExecutionStatistics();
-			xacc::Initialize();
-			xacc::setOption("quest-verbose", "true");
-			xacc::setOption("quest-debug", "true");
+				ExecutionStatistics* execStats = new ExecutionStatistics();
+				xacc::Initialize();
+				xacc::setOption("quest-verbose", "true");
+				xacc::setOption("quest-debug", "true");
 
-			if(hml_lattice_mode){
-				xacc::qbit* buffer;
-				ProgressBar bar{bar_opts(0, 1, hmlLat->name)};
-				qaoaOptions.set_default_stats_function(execStats, &bar, hmlLat);
-				Qaoa::run_qaoa(&buffer, hmlLat->toHamiltonianString(), load_hml->value(), &bar, execStats, &qaoaOptions);
-				logd("Hml mode");
-			}else{
+				if(hml_lattice_mode){
+					xacc::qbit* buffer;
+					ProgressBar bar{bar_opts(0, 1, hmlLat->name)};
+					qaoaOptions.set_default_stats_function(execStats, &bar, hmlLat);
+					Qaoa::run_qaoa(&buffer, hmlLat->toHamiltonianString(), load_hml->value(), &bar, execStats, &qaoaOptions);
+					logd("Hml mode");
+				}else{
+					int counter = 0;
+					for(auto &lattice_abs : lattices){
+
+						logi("Running " + lattice_abs->name);
+
+						Lattice *lattice = static_cast<Lattice*>(lattice_abs);
+
+						lattice->lll_transformation = new MatrixInt(lattice->n, lattice->n);
+
+						lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
+
+						lattice->toHamiltonianString(mapOptions); //remake, keep it here
+
+						logw(lattice->toHamiltonianString(mapOptions));
+
+						std::pair<std::vector<double>, std::vector<int>> hamiltonian2 = lattice->getHmlInQuestFormulation();
+
+						ProgressBar bar{bar_opts(counter, num_lattices, lattice->name)};
+
+						qaoaOptions.set_default_stats_function(execStats, &bar, lattice);
+
+						QOracle quantum_oracle = [&bar, execStats, &qaoaOptions, hamiltonian2]
+												  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
+							Qaoa::run_qaoa(buffer, hamiltonian, hamiltonian2, name, &bar, execStats, &qaoaOptions);
+						};
+
+						IterativeLatticeReduction ilr(lattice, mapOptions, quantum_oracle, 1);
+
+						if(save_hml->is_set() && save_hml->value() != ""){
+							std::ofstream ofs(save_hml->value(), std::ios::binary | std::ios::out);
+							ofs << lattice->n << "\n";
+							ofs << lattice->toHamiltonianString(mapOptions);
+							ofs.close();
+						}
+
+						ilr.run();
+
+						counter++;
+					}
+				}
+
+				//for(int i = 1; i < numRanks; ++i){
+				//	MPI_Send(&control_val_exit, 1, MPI_INT, i, control_tag , MPI_COMM_WORLD);
+				//}
+
+				xacc::Finalize();
+			} else{ //enum
+
+				MapOptions* mapOptions = new MapOptions();
+				mapOptions->num_qbits_per_x=qubits_per_x->value();
+				mapOptions->verbose = false;
+				mapOptions->penalty = 0;
+
+				int qubits_fixed = 0;
+				int nranks = numRanks;
+				while (nranks >>= 1) ++qubits_fixed;
+
+				logd(std::to_string(rank) + " fixing " + std::to_string(qubits_fixed) + " qubits");
+
 				int counter = 0;
 				for(auto &lattice_abs : lattices){
 
 					logi("Running " + lattice_abs->name);
-
 					Lattice *lattice = static_cast<Lattice*>(lattice_abs);
-
 					lattice->lll_transformation = new MatrixInt(lattice->n, lattice->n);
-
 					lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
 
 					lattice->toHamiltonianString(mapOptions); //remake, keep it here
+					//logw(lattice->toHamiltonianString(mapOptions));
 
-					logw(lattice->toHamiltonianString(mapOptions));
+					std::pair<std::vector<double>, std::vector<int>> hml = lattice->getHmlInQuestFormulation();
 
-					std::pair<std::vector<double>, std::vector<int>> hamiltonian2 = lattice->getHmlInQuestFormulation();
+					int n = lattice->getNumQubits();
+					int num_qubits = n;
 
-					ProgressBar bar{bar_opts(counter, num_lattices, lattice->name)};
+					for(int j = n-1; j >= 0; --j){
 
-					qaoaOptions.set_default_stats_function(execStats, &bar, lattice);
+						bool qbit_found = false;
+						for(int i = 0; i < hml.first.size(); ++i){
+							if(hml.second[i*n+j]==3){
+								qbit_found = true;
+								break;
+							}
+						}
+						if(!qbit_found)
+							num_qubits = j;
+						else
+							break;
 
-					QOracle quantum_oracle = [&bar, execStats, &qaoaOptions, hamiltonian2]
-											  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
-						Qaoa::run_qaoa(buffer, hamiltonian, hamiltonian2, name, &bar, execStats, &qaoaOptions);
-					};
-
-					IterativeLatticeReduction ilr(lattice, mapOptions, quantum_oracle, 1);
-
-					if(save_hml->is_set() && save_hml->value() != ""){
-						std::ofstream ofs(save_hml->value(), std::ios::binary | std::ios::out);
-						ofs << lattice->n << "\n";
-						ofs << lattice->toHamiltonianString(mapOptions);
-						ofs.close();
 					}
 
-					ilr.run();
+					bool* arr = (bool*)malloc((num_qubits-qubits_fixed)*sizeof(bool));
 
+					logi("Enumeration over " + std::to_string(num_qubits) + " qubits");
+
+					bool* fixed = (bool*)malloc(qubits_fixed*sizeof(bool));
+
+					loge(std::to_string(rank));
+
+					for(int i = 0; i < qubits_fixed; ++i){
+						fixed[i] = rank % (1<<(i+1));
+					}
+
+					EnumerationC e;
+					e.n = n;
+					e.rank = rank;
+					e.fixed = fixed;
+					e.n_qubits = num_qubits;
+					e.qubits_fixed=qubits_fixed;
+					e.lattice = lattice;
+					e.coeffs = hml.first;
+					e.pauliOpts = hml.second;
+					e.ignoreZero = (mapOptions->penalty == 0);
+
+					if(rank==0){
+						ProgressBar bar{
+						option::BarWidth{50},\
+						option::Start{"["},\
+						option::Fill{"="},\
+						option::Lead{">"},\
+						option::Remainder{" "},\
+						option::End{"]"},\
+						option::PrefixText{std::to_string(counter+1) + "/" + std::to_string(num_lattices) + " " + lattice->name},\
+						option::ForegroundColor{colors[counter % 7]},\
+						option::ShowElapsedTime{true},\
+						option::ShowRemainingTime{true},\
+						option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},\
+						option::MaxProgress{(1ULL<<num_qubits)}};
+
+						e.bar = &bar;
+
+					}
 					counter++;
+
+					e.generateAllBinaryStrings(arr, 0);
+
+					double shortestVect;
+
+					MPI_Reduce(&e.shortestVectLen, &shortestVect, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+
+					if(rank == 0){
+						std::cerr<<"Minimum is: "  << shortestVect << "\n";
+
+						std::cerr<< "gh^2 = " << lattice->get_orig_gh().get_d() << "\n";
+						int sum = 0;
+						for(auto &x: lattice->get_current_lattice()->matrix[0])
+								sum += x.get_si()*x.get_si();
+						std::cerr<< "LLL |b1|: norm/gh = " << sqrt(sum) / sqrt(lattice->get_orig_gh().get_d()) << "\n";
+						std::cerr<< "final |b1|: norm/gh = " << sqrt(shortestVect) / sqrt(   lattice->get_orig_gh().get_d()  ) << "\n";
+					}
+
 				}
+
 			}
-
-			//for(int i = 1; i < numRanks; ++i){
-			//	MPI_Send(&control_val_exit, 1, MPI_INT, i, control_tag , MPI_COMM_WORLD);
-			//}
-
-			xacc::Finalize();
+			int flag;
+			MPI_Finalized(&flag);
+		    if(!flag)
+		    	MPI_Finalize();
 			return 0;
 		}
 
