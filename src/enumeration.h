@@ -20,6 +20,7 @@ public:
 	int rank;
 	bool* fixed;
 	int qubits_fixed;
+	long long bar_tick, bar_tick_temp;
 
 	bool ignoreZero = false;
 
@@ -34,8 +35,10 @@ public:
 	// Function to print the output
 	void updateShortestVect(bool* arr){
 
-		if(rank == 0)
+		if(rank == 0 && bar_tick_temp-- == 0){
 			bar->tick();
+			bar_tick_temp = bar_tick;
+		}
 
 		double result = 0;
 			//cout << arr[i] << " ";
@@ -74,6 +77,10 @@ public:
 
 	// Function to generate all binary strings
 	void generateAllBinaryStrings(bool* arr, int i){
+
+		if(i ==0){
+			bar_tick_temp=bar_tick;
+		}
 
 		if (i == n_qubits-qubits_fixed) {
 			updateShortestVect(arr);

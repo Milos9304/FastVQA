@@ -81,7 +81,7 @@ int main(int ac, char** av){
 
 					bool success;
 					MatrixInt m = VqaConfig::loadLatticeFromFile(lattice_file->value(), &success);
-					loadL = new Lattice(m, "");
+					loadL = new Lattice(m, lattice_file->value());
 					lattices.push_back(loadL);
 					num_lattices = 1;
 
@@ -250,12 +250,16 @@ int main(int ac, char** av){
 				int nranks = numRanks;
 				while (nranks >>= 1) ++qubits_fixed;
 
-				logd(std::to_string(rank) + " fixing " + std::to_string(qubits_fixed) + " qubits");
+
+				std::ofstream ofs;
+				if(rank == 0)
+					ofs.open("enum_file.txt", std::ofstream::out | std::ofstream::trunc);
 
 				int counter = 0;
 				for(auto &lattice_abs : lattices){
 
-					logi("Running " + lattice_abs->name);
+					if(rank == 0)
+						logi("Running " + lattice_abs->name);
 					Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 					lattice->lll_transformation = new MatrixInt(lattice->n, lattice->n);
 					lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
@@ -286,14 +290,13 @@ int main(int ac, char** av){
 
 					bool* arr = (bool*)malloc((num_qubits-qubits_fixed)*sizeof(bool));
 
-					logi("Enumeration over " + std::to_string(num_qubits) + " qubits");
+					if(rank == 0)
+						logi("Enumeration over " + std::to_string(num_qubits) + " qubits");
 
 					bool* fixed = (bool*)malloc(qubits_fixed*sizeof(bool));
 
-					loge(std::to_string(rank));
-
 					for(int i = 0; i < qubits_fixed; ++i){
-						fixed[i] = rank % (1<<(i+1));
+						fixed[i] = rank & (1<<i);
 					}
 
 					EnumerationC e;
@@ -315,14 +318,15 @@ int main(int ac, char** av){
 						option::Lead{">"},\
 						option::Remainder{" "},\
 						option::End{"]"},\
-						option::PrefixText{std::to_string(counter+1) + "/" + std::to_string(num_lattices) + " " + lattice->name},\
+						option::PrefixText{std::to_string(counter+1) + "/" + std::to_string(num_lattices)},\
 						option::ForegroundColor{colors[counter % 7]},\
 						option::ShowElapsedTime{true},\
 						option::ShowRemainingTime{true},\
 						option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},\
-						option::MaxProgress{(1ULL<<num_qubits)}};
+						option::MaxProgress{/*(1ULL<<(num_qubits-qubits_fixed)) > (1ULL<<20)*/100}};
 
 						e.bar = &bar;
+						e.bar_tick = (1ULL<<(num_qubits-qubits_fixed)) / 100;
 
 					}
 					counter++;
@@ -334,7 +338,8 @@ int main(int ac, char** av){
 					MPI_Reduce(&e.shortestVectLen, &shortestVect, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
 
 					if(rank == 0){
-						std::cerr<<"Minimum is: "  << shortestVect << "\n";
+
+						std::cerr<<"\nMinimum is: "  << shortestVect << "\n";
 
 						std::cerr<< "gh^2 = " << lattice->get_orig_gh().get_d() << "\n";
 						int sum = 0;
@@ -342,9 +347,14 @@ int main(int ac, char** av){
 								sum += x.get_si()*x.get_si();
 						std::cerr<< "LLL |b1|: norm/gh = " << sqrt(sum) / sqrt(lattice->get_orig_gh().get_d()) << "\n";
 						std::cerr<< "final |b1|: norm/gh = " << sqrt(shortestVect) / sqrt(   lattice->get_orig_gh().get_d()  ) << "\n";
-					}
 
+						ofs << lattice->name << " " << shortestVect << " " << sqrt(sum) / sqrt(lattice->get_orig_gh().get_d()) << " " << sqrt(shortestVect) / sqrt( lattice->get_orig_gh().get_d()  ) << "\n";
+
+					}
 				}
+
+				if(rank == 0)
+					ofs.close();
 
 			}
 			int flag;
