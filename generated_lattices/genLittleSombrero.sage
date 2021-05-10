@@ -1,24 +1,17 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
 from fpylll import FPLLL, IntegerMatrix, LLL, SVP
 import os
 from glob import glob
 
-FPLLL.set_random_seed(1997)
+FPLLL.set_random_seed(44)
 
 save_directory = "littleSombrero"
 
-
-# In[ ]:
 q=65537
 d_full = 180
 rank_reduced_min = 10
-rank_reduced_max = 40
+rank_reduced_max = 45
 
-#num_instances = 20
+num_instances = 50
 
 for rank in range(rank_reduced_min, rank_reduced_max+1):
     path = "./"+save_directory+"/rank_"+str(rank)
@@ -30,7 +23,7 @@ for rank in range(rank_reduced_min, rank_reduced_max+1):
         for f in files:
             os.remove(f)
         
-for i in range (20,50):#(0, num_instances):
+for i in range (0, num_instances):
 
     with open(save_directory+"/"+str(i)+"_info.txt", 'w') as f_info:  
     
