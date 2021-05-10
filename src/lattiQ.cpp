@@ -20,6 +20,8 @@
 
 #include "enumeration.h"
 
+#include "littleSombrero.h"
+
 #include <mpi.h>
 
 using namespace popl;
@@ -48,6 +50,8 @@ int main(int ac, char** av){
 		auto qubits_per_x = op.add<Value<int>>("q", "", "qubits per x", 1);
 
 
+		auto littleSombrero = op.add<Switch>("s", "", "perform little sombrero experiment");
+
 		auto save_interm  = op.add<Value<std::string>>("", "si", "save intermediate results (for specific experiments only)", "");
 		auto load_interm  = op.add<Value<std::string>>("", "li", "load intermediate results (for specific experiments only)", "");
 
@@ -72,7 +76,7 @@ int main(int ac, char** av){
 
 				VqaConfig* vqaConfig;
 
-				if(!config->is_set()){
+				if(!config->is_set() && !littleSombrero->is_set()){
 
 					if(!lattice_file->is_set()){
 						loge("Neither config nor lattice file specified");
@@ -90,6 +94,13 @@ int main(int ac, char** av){
 					else
 						loge("Problem loading " + lattice_file->value());
 
+				}
+				else if(littleSombrero->is_set()){
+
+					LittleSombrero ls;
+					for(std::pair<MatrixInt, std::string> &m: ls.loadLs())
+						lattices.push_back(new Lattice(m.first, m.second));
+
 				}else{
 
 					//config file load
@@ -98,7 +109,7 @@ int main(int ac, char** av){
 					}
 					catch(std::exception &e){
 						loge(e.what());
-					    MPI_Finalize();
+						MPI_Finalize();
 						return 1;
 					}
 
