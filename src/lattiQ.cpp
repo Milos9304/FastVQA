@@ -26,7 +26,12 @@
 
 using namespace popl;
 
+std::vector<std::pair<double, double>> ls_info;
+
 int main(int ac, char** av){
+
+	std::cout << fixed;
+	std::cerr << fixed;
 
 	int rank, numRanks;
 
@@ -100,6 +105,8 @@ int main(int ac, char** av){
 					LittleSombrero ls;
 					for(std::pair<MatrixInt, std::string> &m: ls.loadLs())
 						lattices.push_back(new Lattice(m.first, m.second));
+
+					ls_info = ls.loadInfo();
 
 				}else{
 
@@ -270,110 +277,277 @@ int main(int ac, char** av){
 
 
 				std::ofstream ofs;
-				if(rank == 0)
+				std::ofstream ofs_littleSombrero;
+
+				if(rank == 0){
 					ofs.open("enum_file.txt", std::ofstream::out | std::ofstream::trunc);
+					ofs_littleSombrero.open("little_sombrero_out.txt", std::ofstream::out | std::ofstream::app);
+				}
 
 				int counter = 0;
+
+				int ls_num_ranks = LittleSombrero::rank_high-LittleSombrero::rank_low+1;
+
 				for(auto &lattice_abs : lattices){
 
 					if(rank == 0)
 						logi("Running " + lattice_abs->name);
 
 					Lattice *lattice = static_cast<Lattice*>(lattice_abs);
-					lattice->lll_transformation = new MatrixInt(lattice->n_rows, lattice->n_cols);
-					lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
 
-					lattice->toHamiltonianString(mapOptions); //remake, keep it here
-					//logw(lattice->toHamiltonianString(mapOptions));
+					if(littleSombrero->is_set()){
 
-					std::pair<std::vector<double>, std::vector<int>> hml = lattice->getHmlInQuestFormulation();
+						int ls_instance = counter / ls_num_ranks;
+						int ls_rank = counter % ls_num_ranks + LittleSombrero::rank_low;
 
-					int n = lattice->getNumQubits();
-					int num_qubits = n;
+						if(ls_rank > 40){
 
-					for(int j = n-1; j >= 0; --j){
+							ofs_littleSombrero << counter << " " << mapOptions->num_qbits_per_x << "\n";
+							ofs_littleSombrero.flush();
 
-						bool qbit_found = false;
-						for(int i = 0; i < hml.first.size(); ++i){
-							if(hml.second[i*n+j]==3){
-								qbit_found = true;
+							counter++; //42
+							ofs_littleSombrero << counter << " skip\n";
+							ofs_littleSombrero.flush();
+
+							counter++; //43
+							ofs_littleSombrero << counter << " skip\n";
+							ofs_littleSombrero.flush();
+
+							counter++; //44
+							ofs_littleSombrero << counter << " skip\n";
+							ofs_littleSombrero.flush();
+
+							counter++; //45
+							ofs_littleSombrero << counter << " skip\n";
+							ofs_littleSombrero.flush();
+
+							counter ++;
+							continue;
+						}
+
+						logd(std::to_string(ls_instance) + " : " + std::to_string(ls_rank));
+
+						if(counter % ls_num_ranks == 0)
+							mapOptions->num_qbits_per_x = 1; //start with 1 qubit
+						else if(ls_info[counter-1].second>=ls_info[counter].second-0.001){
+							counter++;
+							logd("Skip");
+							ofs_littleSombrero << counter << " " << mapOptions->num_qbits_per_x << "\n";
+							ofs_littleSombrero.flush();
+							continue;
+						}
+
+
+						while(1){
+
+							lattice->toHamiltonianString(mapOptions); //remake, keep it here
+							std::pair<std::vector<double>, std::vector<int>> hml = lattice->getHmlInQuestFormulation();
+
+							int n = lattice->getNumQubits();
+							int num_qubits = n;
+
+							for(int j = n-1; j >= 0; --j){
+
+								bool qbit_found = false;
+								for(int i = 0; i < hml.first.size(); ++i){
+									if(hml.second[i*n+j]==3){
+										qbit_found = true;
+										break;
+									}
+								}
+								if(!qbit_found)
+									num_qubits = j;
+								else
+									break;
+
+							}
+
+							bool* arr = (bool*)malloc((num_qubits-qubits_fixed)*sizeof(bool));
+
+							if(rank == 0)
+								logi("Enumeration over " + std::to_string(num_qubits) + " qubits");
+
+							bool* fixed = (bool*)malloc(qubits_fixed*sizeof(bool));
+
+							for(int i = 0; i < qubits_fixed; ++i){
+								fixed[i] = rank & (1<<i);
+							}
+
+							EnumerationC e;
+							e.n = n;
+							e.rank = rank;
+							e.fixed = fixed;
+							e.n_qubits = num_qubits;
+							e.qubits_fixed=qubits_fixed;
+							e.lattice = lattice;
+							e.coeffs = hml.first;
+							e.pauliOpts = hml.second;
+							e.ignoreZero = (mapOptions->penalty == 0);
+
+							if(rank==0){
+								ProgressBar bar{
+								option::BarWidth{50},\
+								option::Start{"["},\
+								option::Fill{"="},\
+								option::Lead{">"},\
+								option::Remainder{" "},\
+								option::End{"]"},\
+								option::PrefixText{std::to_string(counter+1) + "/" + std::to_string(num_lattices)},\
+								option::ForegroundColor{colors[counter % 7]},\
+								option::ShowElapsedTime{true},\
+								option::ShowRemainingTime{true},\
+								option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},\
+								option::MaxProgress{(1ULL<<(num_qubits-qubits_fixed))}};
+
+								e.bar = &bar;
+								//e.bar_tick = (1ULL<<(num_qubits-qubits_fixed)) / 100;
+
+							}
+
+							e.generateAllBinaryStrings(arr, 0);
+
+							double shortestVect;
+
+							MPI_Reduce(&e.shortestVectLen, &shortestVect, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+
+							double minFound = sqrt(shortestVect);
+
+							if(rank == 0){
+
+								//std::cerr<<"\nMinimum is: "  << shortestVect << "\n";
+								std::cerr<<"\nMinimum_sqrt: "  << minFound << "\n";
+
+								ofs_littleSombrero << counter << " " << mapOptions->num_qbits_per_x << "\n";
+								ofs_littleSombrero.flush();
+
+								//std::cerr<< "gh^2 = " << lattice->get_orig_gh().get_d() << "\n";
+								int sum = 0;
+								for(auto &x: lattice->get_current_lattice()->matrix[0])
+										sum += x.get_si()*x.get_si();
+
+								std::cerr<< "final |b1|: norm/gh = " << sqrt(shortestVect) / sqrt(   lattice->get_orig_gh().get_d()  ) << "\n";
+
+								ofs << lattice->name << " " << shortestVect << " " << sqrt(sum) / sqrt(lattice->get_orig_gh().get_d()) << " " << sqrt(shortestVect) / sqrt( lattice->get_orig_gh().get_d()  ) << "\n";
+
+							}
+
+							logd("Comparing " + std::to_string(minFound) + " to " + std::to_string(ls_info[counter].second));
+
+							if(minFound <= ls_info[counter].second + 0.001){
+								logd("Success. Progressing to higher rank");
 								break;
 							}
+throw;
+							mapOptions->num_qbits_per_x++;
+							logd("Increasing number of qubits to " + std::to_string(mapOptions->num_qbits_per_x));
+
 						}
-						if(!qbit_found)
-							num_qubits = j;
-						else
-							break;
+
+						counter++;
+
+					}else{
+
+						lattice->lll_transformation = new MatrixInt(lattice->n_rows, lattice->n_cols);
+						lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
+
+						lattice->toHamiltonianString(mapOptions); //remake, keep it here
+						//logw(lattice->toHamiltonianString(mapOptions));
+
+						std::pair<std::vector<double>, std::vector<int>> hml = lattice->getHmlInQuestFormulation();
+
+						int n = lattice->getNumQubits();
+						int num_qubits = n;
+
+						for(int j = n-1; j >= 0; --j){
+
+							bool qbit_found = false;
+							for(int i = 0; i < hml.first.size(); ++i){
+								if(hml.second[i*n+j]==3){
+									qbit_found = true;
+									break;
+								}
+							}
+							if(!qbit_found)
+								num_qubits = j;
+							else
+								break;
+
+						}
+
+						bool* arr = (bool*)malloc((num_qubits-qubits_fixed)*sizeof(bool));
+
+						if(rank == 0)
+							logi("Enumeration over " + std::to_string(num_qubits) + " qubits");
+
+						bool* fixed = (bool*)malloc(qubits_fixed*sizeof(bool));
+
+						for(int i = 0; i < qubits_fixed; ++i){
+							fixed[i] = rank & (1<<i);
+						}
+
+						EnumerationC e;
+						e.n = n;
+						e.rank = rank;
+						e.fixed = fixed;
+						e.n_qubits = num_qubits;
+						e.qubits_fixed=qubits_fixed;
+						e.lattice = lattice;
+						e.coeffs = hml.first;
+						e.pauliOpts = hml.second;
+						e.ignoreZero = (mapOptions->penalty == 0);
+
+						if(rank==0){
+							ProgressBar bar{
+							option::BarWidth{50},\
+							option::Start{"["},\
+							option::Fill{"="},\
+							option::Lead{">"},\
+							option::Remainder{" "},\
+							option::End{"]"},\
+							option::PrefixText{std::to_string(counter+1) + "/" + std::to_string(num_lattices)},\
+							option::ForegroundColor{colors[counter % 7]},\
+							option::ShowElapsedTime{true},\
+							option::ShowRemainingTime{true},\
+							option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},\
+							option::MaxProgress{(1ULL<<(num_qubits-qubits_fixed))}};
+
+							e.bar = &bar;
+							//e.bar_tick = (1ULL<<(num_qubits-qubits_fixed)) / 100;
+
+						}
+						counter++;
+
+						e.generateAllBinaryStrings(arr, 0);
+
+						double shortestVect;
+
+						MPI_Reduce(&e.shortestVectLen, &shortestVect, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
+
+						if(rank == 0){
+
+							std::cerr<<"\nMinimum is: "  << shortestVect << "\n";
+							std::cerr<<"\nMinimum_sqrt: "  << sqrt(shortestVect) << "\n";
+
+							std::cerr<< "gh^2 = " << lattice->get_orig_gh().get_d() << "\n";
+							int sum = 0;
+							for(auto &x: lattice->get_current_lattice()->matrix[0])
+									sum += x.get_si()*x.get_si();
+							if(!littleSombrero->is_set())
+								std::cerr<< "LLL |b1|: norm/gh = " << sqrt(sum) / sqrt(lattice->get_orig_gh().get_d()) << "\n";
+							std::cerr<< "final |b1|: norm/gh = " << sqrt(shortestVect) / sqrt(   lattice->get_orig_gh().get_d()  ) << "\n";
+
+							ofs << lattice->name << " " << shortestVect << " " << sqrt(sum) / sqrt(lattice->get_orig_gh().get_d()) << " " << sqrt(shortestVect) / sqrt( lattice->get_orig_gh().get_d()  ) << "\n";
+
+						}
 
 					}
 
-					bool* arr = (bool*)malloc((num_qubits-qubits_fixed)*sizeof(bool));
-
-					if(rank == 0)
-						logi("Enumeration over " + std::to_string(num_qubits) + " qubits");
-
-					bool* fixed = (bool*)malloc(qubits_fixed*sizeof(bool));
-
-					for(int i = 0; i < qubits_fixed; ++i){
-						fixed[i] = rank & (1<<i);
-					}
-
-					EnumerationC e;
-					e.n = n;
-					e.rank = rank;
-					e.fixed = fixed;
-					e.n_qubits = num_qubits;
-					e.qubits_fixed=qubits_fixed;
-					e.lattice = lattice;
-					e.coeffs = hml.first;
-					e.pauliOpts = hml.second;
-					e.ignoreZero = (mapOptions->penalty == 0);
-
-					if(rank==0){
-						ProgressBar bar{
-						option::BarWidth{50},\
-						option::Start{"["},\
-						option::Fill{"="},\
-						option::Lead{">"},\
-						option::Remainder{" "},\
-						option::End{"]"},\
-						option::PrefixText{std::to_string(counter+1) + "/" + std::to_string(num_lattices)},\
-						option::ForegroundColor{colors[counter % 7]},\
-						option::ShowElapsedTime{true},\
-						option::ShowRemainingTime{true},\
-						option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},\
-						option::MaxProgress{(1ULL<<(num_qubits-qubits_fixed))}};
-
-						e.bar = &bar;
-						//e.bar_tick = (1ULL<<(num_qubits-qubits_fixed)) / 100;
-
-					}
-					counter++;
-
-					e.generateAllBinaryStrings(arr, 0);
-
-					double shortestVect;
-
-					MPI_Reduce(&e.shortestVectLen, &shortestVect, 1, MPI_DOUBLE, MPI_MIN, 0, MPI_COMM_WORLD);
-
-					if(rank == 0){
-
-						std::cerr<<"\nMinimum is: "  << shortestVect << "\n";
-
-						std::cerr<< "gh^2 = " << lattice->get_orig_gh().get_d() << "\n";
-						int sum = 0;
-						for(auto &x: lattice->get_current_lattice()->matrix[0])
-								sum += x.get_si()*x.get_si();
-						std::cerr<< "LLL |b1|: norm/gh = " << sqrt(sum) / sqrt(lattice->get_orig_gh().get_d()) << "\n";
-						std::cerr<< "final |b1|: norm/gh = " << sqrt(shortestVect) / sqrt(   lattice->get_orig_gh().get_d()  ) << "\n";
-
-						ofs << lattice->name << " " << shortestVect << " " << sqrt(sum) / sqrt(lattice->get_orig_gh().get_d()) << " " << sqrt(shortestVect) / sqrt( lattice->get_orig_gh().get_d()  ) << "\n";
-
-					}
 				}
 
-				if(rank == 0)
+				if(rank == 0){
 					ofs.close();
+					ofs_littleSombrero.close();
+				}
 
 			}
 			int flag;

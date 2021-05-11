@@ -14,11 +14,12 @@ class LittleSombrero{
 
 public:
 
-	int ls_num_instances = 50;
-	int rank_low = 10;
-	int rank_high = 45;
+	const static int ls_num_instances = 50;
+	const static int rank_low = 10;
+	const static int rank_high = 45;
 
 	std::vector<std::pair<MatrixInt, std::string>> loadLs();
+	std::vector<std::pair<double, double>> loadInfo();
 };
 
 #endif /* SRC_LITTLESOMBRERO_H_ */
