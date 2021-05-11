@@ -307,22 +307,18 @@ int main(int ac, char** av){
 						else if(ls_info[counter-1].second>=ls_info[counter].second-0.001){
 							counter++;
 							logd("Skip");
-							ofs_littleSombrero << counter << " " << mapOptions->num_qbits_per_x << "\n";
+							ofs_littleSombrero << counter << " " << ls_instance << " " << ls_rank << " " << mapOptions->num_qbits_per_x << "\n";
 							ofs_littleSombrero.flush();
 							continue;
 						}
 
 						if(ls_rank * mapOptions->num_qbits_per_x > 30){
 
-							ofs_littleSombrero << counter << " " << "skip" << "\n";
+							ofs_littleSombrero << counter << " " << ls_instance << " " << ls_rank << " " << "skip" << "\n";
 							ofs_littleSombrero.flush();
 							counter++;
 							continue;
-
 						}
-
-						}
-
 
 						while(1){
 
@@ -403,7 +399,7 @@ int main(int ac, char** av){
 								//std::cerr<<"\nMinimum is: "  << shortestVect << "\n";
 								std::cerr<<"\nMinimum_sqrt: "  << minFound << "\n";
 
-								ofs_littleSombrero << counter << " " << mapOptions->num_qbits_per_x << "\n";
+								ofs_littleSombrero << counter << " " << ls_instance << " " << ls_rank << " " << mapOptions->num_qbits_per_x << "\n";
 								ofs_littleSombrero.flush();
 
 								//std::cerr<< "gh^2 = " << lattice->get_orig_gh().get_d() << "\n";
