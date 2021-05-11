@@ -10,7 +10,7 @@
 
 void QAOAOptions::set_default_stats_function(ExecutionStatistics* executionStatistics, indicators::ProgressBar* bar){
 
-	this->set_default_stats_function(executionStatistics, bar, new HmlLattice(0, ""));
+	this->set_default_stats_function(executionStatistics, bar, new HmlLattice(0, 0, ""));
 	this->detailedLoggingDisabled = true;
 }
 

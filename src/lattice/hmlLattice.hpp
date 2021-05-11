@@ -14,8 +14,9 @@ class HmlLattice : public AbstractLatticeInput{
 
 	public:
 
-		HmlLattice(int n, std::string hamiltonian){
-			this->n = n;
+		HmlLattice(int n_rows, int n_cols, std::string hamiltonian){
+			this->n_rows = n_rows;
+			this->n_cols = n_cols;
 			this->hamiltonian = hamiltonian;
 		}
 

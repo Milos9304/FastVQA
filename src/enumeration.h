@@ -30,7 +30,7 @@ public:
 	Lattice* lattice;
 	ProgressBar* bar;
 
-	double shortestVectLen=9999999999;
+	double shortestVectLen=std::numeric_limits<double>::max();
 
 	// Function to print the output
 	void updateShortestVect(bool* arr){

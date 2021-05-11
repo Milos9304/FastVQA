@@ -107,7 +107,7 @@ void Lattice::init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, bool pri
 	if(mode == MapOptions::x_symmetric){
 
 		if(num_qbits_per_x == 1)
-			for(int i = 0; i < n; ++i){
+			for(int i = 0; i < n_rows; ++i){
 				int id = expression_int->addBinaryVar("x"+std::to_string(i));
 				x_ids.push_back(id);
 			}
@@ -116,14 +116,14 @@ void Lattice::init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, bool pri
 			int lb = -pow(2, num_qbits_per_x)/ 2 + 1;
 			int ub = 1-lb;
 
-			for(int i = 0; i < n; ++i){
+			for(int i = 0; i < n_rows; ++i){
 				int id = expression_int->addIntegerVar("x"+std::to_string(i), lb, ub);
 				x_ids.push_back(id);
 			}
 		}
 	}
 
-	for(int i = 0; i < n; ++i){
+	for(int i = 0; i < n_rows; ++i){
 		gso_current->get_int_gram(coeff, i, i);
 		expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(i)), coeff.get_data()/*.coeff(i, i)*/); // G_ii*x_i^2
 		for(int j = 0; j < i; ++j){

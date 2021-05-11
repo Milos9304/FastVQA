@@ -56,7 +56,8 @@ class Lattice : public AbstractLatticeInput{
 
 		Lattice(MatrixInt lattice, std::string name = ""){ // @suppress("Class members should be properly initialized")
 
-			this -> n = lattice.get_rows();
+			this -> n_rows = lattice.get_rows();
+			this -> n_cols = lattice.get_cols();
 
 			this -> name = name;
 			this -> orig_lattice = lattice;
@@ -65,10 +66,10 @@ class Lattice : public AbstractLatticeInput{
 			this -> current_lattice = MatrixInt(lattice);
 			this -> orig_gh_sq = calculate_gh_squared(&orig_lattice);
 
-			if(lattice.get_rows()/*.rows()*/ != lattice.get_cols()/*.cols()*/){
-				loge("Non-square lattice not supported");
-				return;
-			}
+			//if(lattice.get_rows()/*.rows()*/ != lattice.get_cols()/*.cols()*/){
+			//	loge("Non-square lattice not supported");
+			//	return;
+			//}
 
      		this -> expression_int = new Expression("expression_int");
 

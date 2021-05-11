@@ -6,6 +6,7 @@ file(GLOB SRC   lattiQ.cpp
 				latticeAlgorithms/*.cpp
 				utils.cpp
 				executionStatistics.cpp
+				littleSombrero.cpp
 				)
 set(SRC_ORIG ${SRC})
 

@@ -21,7 +21,7 @@ class AbstractLatticeInput{
 
 	public:
 		std::string name;
-		int n;
+		int n_rows, n_cols;
 
 		//decode qubo optimal config to x config
 		virtual VectorInt quboToXvector(std::string measurement) = 0;
