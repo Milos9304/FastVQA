@@ -314,14 +314,13 @@ int main(int ac, char** av){
 
 						if(ls_rank * mapOptions->num_qbits_per_x > 30){
 
-							while(ls_rank <= LittleSombrero::rank_high){
-								ofs_littleSombrero << counter << " " << "skip" << "\n";
-								ofs_littleSombrero.flush();
-								counter++;
-								ls_rank ++;
-							}
-
+							ofs_littleSombrero << counter << " " << "skip" << "\n";
+							ofs_littleSombrero.flush();
+							counter++;
 							continue;
+
+						}
+
 						}
 
 
