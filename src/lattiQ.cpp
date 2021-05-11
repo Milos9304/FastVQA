@@ -300,31 +300,6 @@ int main(int ac, char** av){
 						int ls_instance = counter / ls_num_ranks;
 						int ls_rank = counter % ls_num_ranks + LittleSombrero::rank_low;
 
-						if(ls_rank > 40){
-
-							ofs_littleSombrero << counter << " " << mapOptions->num_qbits_per_x << "\n";
-							ofs_littleSombrero.flush();
-
-							counter++; //42
-							ofs_littleSombrero << counter << " skip\n";
-							ofs_littleSombrero.flush();
-
-							counter++; //43
-							ofs_littleSombrero << counter << " skip\n";
-							ofs_littleSombrero.flush();
-
-							counter++; //44
-							ofs_littleSombrero << counter << " skip\n";
-							ofs_littleSombrero.flush();
-
-							counter++; //45
-							ofs_littleSombrero << counter << " skip\n";
-							ofs_littleSombrero.flush();
-
-							counter ++;
-							continue;
-						}
-
 						logd(std::to_string(ls_instance) + " : " + std::to_string(ls_rank));
 
 						if(counter % ls_num_ranks == 0)
@@ -334,6 +309,18 @@ int main(int ac, char** av){
 							logd("Skip");
 							ofs_littleSombrero << counter << " " << mapOptions->num_qbits_per_x << "\n";
 							ofs_littleSombrero.flush();
+							continue;
+						}
+
+						if(ls_rank * mapOptions->num_qbits_per_x > 30){
+
+							while(ls_rank <= LittleSombrero::rank_high){
+								ofs_littleSombrero << counter << " " << "skip" << "\n";
+								ofs_littleSombrero.flush();
+								counter++;
+								ls_rank ++;
+							}
+
 							continue;
 						}
 
