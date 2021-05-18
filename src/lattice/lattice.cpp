@@ -88,10 +88,10 @@ void Lattice::penalize_expr(int penalty, MapOptions::penalty_mode mode, bool pri
 		subs_expr.emplace(x1_id, 1);
 		expression_penalized->substitute(z1_id, subs_expr);
 
-
-
 		//std::cout << "subs " << z1_id << " c" << 1 << "\n";
 		//std::cout << "subs " << z2_id << " " << (*x2_it)->id << "\n";
+	}else if(mode == MapOptions::overlap_trick){
+		//do nothing as no penalty qubits needed
 	}
 
 	if(print)

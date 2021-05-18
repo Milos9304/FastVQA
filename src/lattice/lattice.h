@@ -21,9 +21,20 @@ class MapOptions{
 
 		bool verbose;
 
+		/*
+		 * x_symmetric: x_i \ in [-2^(B-1) + 1 , 2^(B-1)]
+		 *
+		 * */
 		enum x_init_mode { x_symmetric };
 		enum bin_mapping { naive_overapprox };
-		enum penalty_mode { penalty_all };
+
+		/*
+		 * penalty_all: apply penalty
+		 * overlap_trick
+		 *
+		 *
+		 */
+		enum penalty_mode { penalty_all, overlap_trick };
 
 		x_init_mode x_mode;
 		bin_mapping bin_map;

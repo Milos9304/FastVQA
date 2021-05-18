@@ -53,6 +53,7 @@ int main(int ac, char** av){
 		auto load_hml     = op.add<Value<std::string>>("", "loadhml", "save hamiltonian to file", "");
 		auto debug        = op.add<Switch>("d", "debug", "print debug messages");
 		auto qubits_per_x = op.add<Value<int>>("q", "", "qubits per x", 1);
+		auto overlap_trick = op.add<Switch>("o", "", "perform overlap trick instead of applying penalty");
 
 
 		auto littleSombrero = op.add<Switch>("s", "", "perform little sombrero experiment");
@@ -170,7 +171,10 @@ int main(int ac, char** av){
 							 std::make_pair("repeated_measurement_strategy", true),
 							 std::make_pair("hamiltonianProvided", hamiltonianExpectation),
 							 std::make_pair("hamiltonianCoeffs", hamCoeffs),
-							 std::make_pair("pauliCodes", hamPauliCodes)});
+							 std::make_pair("pauliCodes", hamPauliCodes),
+							 //std::make_pair("overlap_trick", overlap_trick->is_set()),
+							 //std::make_pair("zero_config_statevect_index", overlap_trick->is_set() ? 1 : 0)
+					});
 				};
 
 				OptimizerPartial optimizer = [](std::vector<double> initialParams, int max_iters) {
@@ -196,9 +200,14 @@ int main(int ac, char** av){
 				qaoaOptions.s_intermediateName = qaoaOptions.saveIntermediate ? save_interm->value() : "";
 				qaoaOptions.loadIntermediate = load_interm->is_set() ? (load_interm->value() == "" ? false : true) : false;
 				qaoaOptions.l_intermediateName = qaoaOptions.loadIntermediate ? load_interm->value() : "";
+				qaoaOptions.overlap_trick = overlap_trick->is_set();
 
 				MapOptions* mapOptions = new MapOptions();
 				mapOptions->verbose = false;
+				if(overlap_trick->is_set())
+					mapOptions->pen_mode = MapOptions::overlap_trick;
+				else
+					mapOptions->pen_mode = MapOptions::penalty_all;
 
 				ExecutionStatistics* execStats = new ExecutionStatistics();
 				xacc::Initialize();

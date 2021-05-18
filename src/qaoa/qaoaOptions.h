@@ -45,6 +45,8 @@ class QAOAOptions{
 		bool debug = false; //print debug msgs
 		bool provideHamiltonian = false;
 
+		bool overlap_trick = false; //penalization strategy
+
 		AcceleratorPartial accelerator;
 		OptimizerPartial optimizer;
 
