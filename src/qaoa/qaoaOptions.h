@@ -46,6 +46,7 @@ class QAOAOptions{
 		bool provideHamiltonian = false;
 
 		bool overlap_trick = false; //penalization strategy
+		int zero_reference_state=0;
 
 		AcceleratorPartial accelerator;
 		OptimizerPartial optimizer;

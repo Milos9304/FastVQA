@@ -184,7 +184,8 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 			   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment),
 			   std::make_pair("questHamExpectation", qaoaOptions->provideHamiltonian),
 			   std::make_pair("debugMsgs", qaoaOptions->debug),
-			   std::make_pair("overlapTrick", qaoaOptions->overlap_trick)
+			   std::make_pair("overlapTrick", qaoaOptions->overlap_trick),
+			   std::make_pair("zeroRefState", qaoaOptions->zero_reference_state)
 		});
    }
    else{
@@ -205,7 +206,8 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 	   		   std::make_pair("nbSamples", qaoaOptions->nbSamples_calcVarAssignment),
 			   std::make_pair("questHamExpectation", qaoaOptions->provideHamiltonian),
 			   std::make_pair("debugMsgs", qaoaOptions->debug),
-			   std::make_pair("overlapTrick", qaoaOptions->overlap_trick)
+			   std::make_pair("overlapTrick", qaoaOptions->overlap_trick),
+			   std::make_pair("zeroRefState", qaoaOptions->zero_reference_state)
 	   		});
    }
    if(initOk)

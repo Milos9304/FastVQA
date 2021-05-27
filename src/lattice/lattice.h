@@ -103,6 +103,8 @@ class Lattice : public AbstractLatticeInput{
 		std::string toHamiltonianString();
 		std::string toHamiltonianString(MapOptions* options);
 
+		//classical state that corresponds to zero eigen-value of Hamiltonian
+		int getZeroReferenceState();
 
 		//xacc::quantum::PauliOperator getHamiltonian(MapOptions* options);
 
@@ -124,6 +126,10 @@ class Lattice : public AbstractLatticeInput{
 
 		std::vector<int> x_ids;
 		std::map<int, std::map<int, mpq_class>> int_to_bin_map;
+
+		// x_i->c+sum(c_i*x'_i);
+		// specifies values for x'_i s.t. x_i=0
+		std::map<int, int> varId_to_zero_ref_map;
 		bool bin_initialized = false;
 		void init_expr_bin(MapOptions::bin_mapping mapping, bool print=false);
 

@@ -241,6 +241,8 @@ int main(int ac, char** av){
 						ProgressBar bar{bar_opts(counter, num_lattices, lattice->name)};
 
 						qaoaOptions.set_default_stats_function(execStats, &bar, lattice);
+						if(qaoaOptions.overlap_trick)
+							qaoaOptions.zero_reference_state = lattice->getZeroReferenceState();
 
 						QOracle quantum_oracle = [&bar, execStats, &qaoaOptions, hamiltonian2]
 												  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {

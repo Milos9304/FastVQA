@@ -39,7 +39,7 @@ void IterativeLatticeReduction::run(){
 
 		for(int c = 0; c < lattice->lll_transformation->c; ++c){
 			int res = 0;
-			for(int r = 0; r < x_vect.size(); ++r){
+			for(unsigned int r = 0; r < x_vect.size(); ++r){
 				int a = lattice->lll_transformation->matrix[r][c].get_si();
 				int b = x_vect[r].get_si();
 				res += b * a;
