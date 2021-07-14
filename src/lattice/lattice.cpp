@@ -88,10 +88,10 @@ void Lattice::penalize_expr(int penalty, MapOptions::penalty_mode mode, bool pri
 		subs_expr.emplace(x1_id, 1);
 		expression_penalized->substitute(z1_id, subs_expr);
 
-
-
 		//std::cout << "subs " << z1_id << " c" << 1 << "\n";
 		//std::cout << "subs " << z2_id << " " << (*x2_it)->id << "\n";
+	}else if(mode == MapOptions::overlap_trick){
+		//do nothing as no penalty qubits needed
 	}
 
 	if(print)
@@ -106,12 +106,12 @@ void Lattice::init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, bool pri
 
 	if(mode == MapOptions::x_symmetric){
 
-		if(num_qbits_per_x == 1)
+		if(num_qbits_per_x == 1){
 			for(int i = 0; i < n_rows; ++i){
 				int id = expression_int->addBinaryVar("x"+std::to_string(i));
 				x_ids.push_back(id);
 			}
-		else{
+		}else{
 
 			int lb = -pow(2, num_qbits_per_x)/ 2 + 1;
 			int ub = 1-lb;
@@ -164,8 +164,13 @@ void Lattice::init_expr_bin(MapOptions::bin_mapping mapping, bool print){
 
 				int id = expression_bin->addBinaryVar(name + "_b"+std::to_string(i));
 				subs_expr.emplace(id, pow(2, i));
+
+				varId_to_zero_ref_map[id]=0; //all zero as no constant is involved in naive_overapprox
 			}
 
+		}else{
+			loge("NOT IMPLEMENTED");
+			throw;
 		}
 
 		expression_bin->substitute(var->id, subs_expr);
@@ -259,6 +264,27 @@ std::string Lattice::toHamiltonianString(MapOptions* options){
 
 	calcHamiltonian(options, options->verbose);
 	return expression_qubo->expression_line_print();
+
+}
+
+int Lattice::getZeroReferenceState(){
+	if(!qubo_generated){
+			loge("Hamiltonian referenced but not yet generated!");
+			return 0;
+	}
+
+	int zero_ref_state = 0;
+
+	//q_n-1 ... q_0
+
+	for(int i = 0; i < this->getNumQubits(); ++i){
+
+		int var_id = qbit_to_varId_map[i];
+		zero_ref_state += varId_to_zero_ref_map[var_id] == 0 ? 0 : (1<<i);
+
+	}
+
+	return zero_ref_state;
 
 }
 

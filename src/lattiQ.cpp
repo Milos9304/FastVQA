@@ -43,17 +43,18 @@ int main(int ac, char** av){
 	if(rank == 0 || strcmp(av[1],"qaoa")){
 
 		OptionParser op("Allowed options");
-		auto help_option  = op.add<Switch>("h", "help", "produce help message");
-		auto qaoa 		  = op.add<Switch>("", "qaoa", "run qaoa algorithm");
-		auto enumeration  = op.add<Switch>("", "enum", "enumerate all qubo configurations");
-		auto config 	  = op.add<Value<std::string>>("", "config", "config file location", "");
-		auto lattice_file = op.add<Value<std::string>>("l", "lattice", "lattice file location", "");
-		auto niters       = op.add<Value<int>>("i", "iters", "max num of iterations", 0);
-		auto save_hml     = op.add<Value<std::string>>("", "savehml", "save hamiltonian to file", "");
-		auto load_hml     = op.add<Value<std::string>>("", "loadhml", "save hamiltonian to file", "");
-		auto debug        = op.add<Switch>("d", "debug", "print debug messages");
-		auto qubits_per_x = op.add<Value<int>>("q", "", "qubits per x", 1);
-
+		auto help_option     = op.add<Switch>("h", "help", "produce help message");
+		auto qaoa 		     = op.add<Switch>("", "qaoa", "run qaoa algorithm");
+		auto enumeration     = op.add<Switch>("", "enum", "enumerate all qubo configurations");
+		auto config 	     = op.add<Value<std::string>>("", "config", "config file location", "");
+		auto lattice_file    = op.add<Value<std::string>>("l", "lattice", "lattice file location", "");
+		auto niters          = op.add<Value<int>>("i", "iters", "max num of iterations", 0);
+		auto save_hml        = op.add<Value<std::string>>("", "savehml", "save hamiltonian to file", "");
+		auto load_hml        = op.add<Value<std::string>>("", "loadhml", "save hamiltonian to file", "");
+		auto debug           = op.add<Switch>("d", "debug", "print debug messages");
+		auto qubits_per_x    = op.add<Value<int>>("q", "", "qubits per x", 1);
+		auto overlap_trick   = op.add<Switch>("o", "", "perform overlap trick instead of applying penalty");
+		auto overlap_penalty = op.add<Value<int>>("p", "", "overlap penalty", 1000);
 
 		auto littleSombrero = op.add<Switch>("s", "", "perform little sombrero experiment");
 
@@ -158,7 +159,7 @@ int main(int ac, char** av){
 
 			if(qaoa->is_set()){
 
-				AcceleratorPartial accelerator = [](std::shared_ptr<xacc::Observable> observable,
+				AcceleratorPartial accelerator = [overlap_penalty](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
 						std::vector<double> hamCoeffs,
 						std::vector<int>hamPauliCodes){
@@ -170,7 +171,11 @@ int main(int ac, char** av){
 							 std::make_pair("repeated_measurement_strategy", true),
 							 std::make_pair("hamiltonianProvided", hamiltonianExpectation),
 							 std::make_pair("hamiltonianCoeffs", hamCoeffs),
-							 std::make_pair("pauliCodes", hamPauliCodes)});
+							 std::make_pair("pauliCodes", hamPauliCodes),
+							 std::make_pair("overlapPenalty", overlap_penalty->value())
+							 //std::make_pair("overlap_trick", overlap_trick->is_set()),
+							 //std::make_pair("zero_config_statevect_index", overlap_trick->is_set() ? 1 : 0)
+					});
 				};
 
 				OptimizerPartial optimizer = [](std::vector<double> initialParams, int max_iters) {
@@ -196,9 +201,14 @@ int main(int ac, char** av){
 				qaoaOptions.s_intermediateName = qaoaOptions.saveIntermediate ? save_interm->value() : "";
 				qaoaOptions.loadIntermediate = load_interm->is_set() ? (load_interm->value() == "" ? false : true) : false;
 				qaoaOptions.l_intermediateName = qaoaOptions.loadIntermediate ? load_interm->value() : "";
+				qaoaOptions.overlap_trick = overlap_trick->is_set();
 
 				MapOptions* mapOptions = new MapOptions();
 				mapOptions->verbose = false;
+				if(overlap_trick->is_set())
+					mapOptions->pen_mode = MapOptions::overlap_trick;
+				else
+					mapOptions->pen_mode = MapOptions::penalty_all;
 
 				ExecutionStatistics* execStats = new ExecutionStatistics();
 				xacc::Initialize();
@@ -232,6 +242,8 @@ int main(int ac, char** av){
 						ProgressBar bar{bar_opts(counter, num_lattices, lattice->name)};
 
 						qaoaOptions.set_default_stats_function(execStats, &bar, lattice);
+						if(qaoaOptions.overlap_trick)
+							qaoaOptions.zero_reference_state = lattice->getZeroReferenceState();
 
 						QOracle quantum_oracle = [&bar, execStats, &qaoaOptions, hamiltonian2]
 												  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
@@ -307,22 +319,18 @@ int main(int ac, char** av){
 						else if(ls_info[counter-1].second>=ls_info[counter].second-0.001){
 							counter++;
 							logd("Skip");
-							ofs_littleSombrero << counter << " " << mapOptions->num_qbits_per_x << "\n";
+							ofs_littleSombrero << counter << " " << ls_instance << " " << ls_rank << " " << mapOptions->num_qbits_per_x << "\n";
 							ofs_littleSombrero.flush();
 							continue;
 						}
 
 						if(ls_rank * mapOptions->num_qbits_per_x > 30){
 
-							ofs_littleSombrero << counter << " " << "skip" << "\n";
+							ofs_littleSombrero << counter << " " << ls_instance << " " << ls_rank << " " << "skip" << "\n";
 							ofs_littleSombrero.flush();
 							counter++;
 							continue;
-
 						}
-
-						}
-
 
 						while(1){
 
@@ -403,7 +411,7 @@ int main(int ac, char** av){
 								//std::cerr<<"\nMinimum is: "  << shortestVect << "\n";
 								std::cerr<<"\nMinimum_sqrt: "  << minFound << "\n";
 
-								ofs_littleSombrero << counter << " " << mapOptions->num_qbits_per_x << "\n";
+								ofs_littleSombrero << counter << " " << ls_instance << " " << ls_rank << " " << mapOptions->num_qbits_per_x << "\n";
 								ofs_littleSombrero.flush();
 
 								//std::cerr<< "gh^2 = " << lattice->get_orig_gh().get_d() << "\n";

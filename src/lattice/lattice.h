@@ -21,9 +21,20 @@ class MapOptions{
 
 		bool verbose;
 
+		/*
+		 * x_symmetric: x_i \ in [-2^(B-1) + 1 , 2^(B-1)]
+		 *
+		 * */
 		enum x_init_mode { x_symmetric };
 		enum bin_mapping { naive_overapprox };
-		enum penalty_mode { penalty_all };
+
+		/*
+		 * penalty_all: apply penalty
+		 * overlap_trick
+		 *
+		 *
+		 */
+		enum penalty_mode { penalty_all, overlap_trick };
 
 		x_init_mode x_mode;
 		bin_mapping bin_map;
@@ -92,6 +103,8 @@ class Lattice : public AbstractLatticeInput{
 		std::string toHamiltonianString();
 		std::string toHamiltonianString(MapOptions* options);
 
+		//classical state that corresponds to zero eigen-value of Hamiltonian
+		int getZeroReferenceState();
 
 		//xacc::quantum::PauliOperator getHamiltonian(MapOptions* options);
 
@@ -113,6 +126,10 @@ class Lattice : public AbstractLatticeInput{
 
 		std::vector<int> x_ids;
 		std::map<int, std::map<int, mpq_class>> int_to_bin_map;
+
+		// x_i->c+sum(c_i*x'_i);
+		// specifies values for x'_i s.t. x_i=0
+		std::map<int, int> varId_to_zero_ref_map;
 		bool bin_initialized = false;
 		void init_expr_bin(MapOptions::bin_mapping mapping, bool print=false);
 
