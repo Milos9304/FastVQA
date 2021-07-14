@@ -13,7 +13,7 @@
 #include "lattice/hmlLattice.hpp"
 #include <xacc.hpp>
 
-#include "lattiQ.h"
+#include "fastVQA.h"
 
 #include "xacc_observable.hpp" //del
 #include "PauliOperator.hpp" //del
@@ -552,7 +552,7 @@ throw;
 		}
 
 		else{
-			std::cout << "Invalid argument. Use ./lattiQ -h to see help." << "\n";
+			std::cout << "Invalid argument. Use ./fastVQA -h to see help." << "\n";
 		    MPI_Finalize();
 			return 1;
 		}

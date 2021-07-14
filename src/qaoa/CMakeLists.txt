@@ -14,7 +14,7 @@ usfunctiongeneratebundleinit(TARGET
                             
 add_library(${LIBRARY_NAME} SHARED ${SRC})
 
-set(_bundle_name lattiQ)
+set(_bundle_name fastVQA)
 set_target_properties(${LIBRARY_NAME}
                     PROPERTIES COMPILE_DEFINITIONS
                                 US_BUNDLE_NAME=${_bundle_name}
