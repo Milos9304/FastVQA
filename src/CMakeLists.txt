@@ -7,6 +7,7 @@ file(GLOB SRC   fastVQA.cpp
 				utils.cpp
 				executionStatistics.cpp
 				littleSombrero.cpp
+				run_paper_experiment.cpp
 				)
 set(SRC_ORIG ${SRC})
 

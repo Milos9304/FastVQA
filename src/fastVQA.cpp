@@ -19,7 +19,7 @@
 #include "PauliOperator.hpp" //del
 
 #include "enumeration.h"
-
+#include "run_paper_experiment.h"
 #include "littleSombrero.h"
 
 #include <mpi.h>
@@ -45,7 +45,7 @@ int main(int ac, char** av){
 		OptionParser op("Allowed options");
 		auto help_option     = op.add<Switch>("h", "help", "produce help message");
 		auto qaoa 		     = op.add<Switch>("", "qaoa", "run qaoa algorithm");
-		auto enumeration     = op.add<Switch>("", "enum", "enumerate all qubo configurations");
+		//auto enumeration     = op.add<Switch>("", "enum", "enumerate all qubo configurations");
 		auto config 	     = op.add<Value<std::string>>("", "config", "config file location", "");
 		auto lattice_file    = op.add<Value<std::string>>("l", "lattice", "lattice file location", "");
 		auto niters          = op.add<Value<int>>("i", "iters", "max num of iterations", 0);
@@ -55,6 +55,8 @@ int main(int ac, char** av){
 		auto qubits_per_x    = op.add<Value<int>>("q", "", "qubits per x", 1);
 		auto overlap_trick   = op.add<Switch>("o", "", "perform overlap trick instead of applying penalty");
 		auto overlap_penalty = op.add<Value<int>>("p", "", "overlap penalty", 1000);
+
+		auto paper_exp		 = op.add<Switch>("e", "paperexp", "perform experiment as in the paper");
 
 		auto littleSombrero = op.add<Switch>("s", "", "perform little sombrero experiment");
 
@@ -76,9 +78,14 @@ int main(int ac, char** av){
 		std::vector<Lattice> lattices_in;
 		std::vector<AbstractLatticeInput*> lattices;
 
-		if(qaoa -> is_set() || enumeration->is_set()){
+		if(qaoa -> is_set() /*|| enumeration->is_set()*/){
 
-			if(!load_hml->is_set()){
+			if(paper_exp->is_set()){
+
+				run_paper_exp(25, 25, 180);
+
+			}
+			else if(!load_hml->is_set()){
 
 				VqaConfig* vqaConfig;
 
@@ -158,6 +165,8 @@ int main(int ac, char** av){
 			}
 
 			if(qaoa->is_set()){
+
+				loge("KURVA");
 
 				AcceleratorPartial accelerator = [overlap_penalty](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,

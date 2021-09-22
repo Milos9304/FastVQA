@@ -64,7 +64,6 @@ class Lattice : public AbstractLatticeInput{
 
 	MatrixInt* lll_transformation;
 
-
 		Lattice(MatrixInt lattice, std::string name = ""){ // @suppress("Class members should be properly initialized")
 
 			this -> n_rows = lattice.get_rows();
