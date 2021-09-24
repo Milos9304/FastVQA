@@ -288,3 +288,13 @@ int Lattice::getZeroReferenceState(){
 
 }
 
+void Lattice::reduce_rank(int reduced_rank){
+
+	if(reduced_rank < 0 || reduced_rank > this -> current_lattice.get_rows()){
+		loge("Invalid reduced rank");
+		return;
+	}
+
+	this -> n_rows = reduced_rank;//lattice.get_rows();
+}
+

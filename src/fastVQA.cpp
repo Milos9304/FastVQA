@@ -88,7 +88,7 @@ int main(int ac, char** av){
 
 				int i = 0;
 				for(auto &m: matrices)
-					lattices.push_back(new Lattice(m, std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i++].rank)));
+					lattices.push_back(new Lattice(m, std::to_string(solutions[i++].lattice_id)+"_50"));
 
 				num_lattices = lattices.size();
 
@@ -219,7 +219,7 @@ int main(int ac, char** av){
 				qaoaOptions.overlap_trick = overlap_trick->is_set();
 
 				MapOptions* mapOptions = new MapOptions();
-				mapOptions->verbose = false;
+				mapOptions->verbose = debug->is_set();
 				mapOptions->num_qbits_per_x=qubits_per_x->value();
 				if(overlap_trick->is_set())
 					mapOptions->pen_mode = MapOptions::overlap_trick;
@@ -245,9 +245,10 @@ int main(int ac, char** av){
 
 						Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 
-						lattice->lll_transformation = new MatrixInt(lattice->n_rows, lattice->n_cols);
-
-						lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
+						//rank 25
+						lattice->reduce_rank(25);
+						//lattice->lll_transformation = new MatrixInt(lattice->n_rows, lattice->n_cols);
+						//lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
 
 						lattice->toHamiltonianString(mapOptions); //remake, keep it here
 

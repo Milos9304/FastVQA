@@ -64,10 +64,18 @@ class Lattice : public AbstractLatticeInput{
 
 	MatrixInt* lll_transformation;
 
-		Lattice(MatrixInt lattice, std::string name = ""){ // @suppress("Class members should be properly initialized")
+		Lattice(MatrixInt lattice, std::string name = "", int reduced_rank=0){ // @suppress("Class members should be properly initialized")
 
 			this -> n_rows = lattice.get_rows();
 			this -> n_cols = lattice.get_cols();
+
+			if(reduced_rank != 0){
+				this -> n_rows = reduced_rank;//lattice.get_rows();
+				if(reduced_rank < 0 || reduced_rank > lattice.get_rows()){
+					loge("Invalid reduced rank");
+					return;
+				}
+			}
 
 			this -> name = name;
 			this -> orig_lattice = lattice;
@@ -82,8 +90,9 @@ class Lattice : public AbstractLatticeInput{
 			//}
 
      		this -> expression_int = new Expression("expression_int");
-
 		}
+
+		void reduce_rank(int reduced_rank);
 
 		//decode qubo optimal config to x config
 		VectorInt quboToXvector(std::string measurement);
