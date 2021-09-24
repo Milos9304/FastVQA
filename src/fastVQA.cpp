@@ -174,8 +174,6 @@ int main(int ac, char** av){
 
 			if(qaoa->is_set()){
 
-				loge("KURVA");
-
 				AcceleratorPartial accelerator = [overlap_penalty](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
 						std::vector<double> hamCoeffs,
@@ -222,6 +220,7 @@ int main(int ac, char** av){
 
 				MapOptions* mapOptions = new MapOptions();
 				mapOptions->verbose = false;
+				mapOptions->num_qbits_per_x=qubits_per_x->value();
 				if(overlap_trick->is_set())
 					mapOptions->pen_mode = MapOptions::overlap_trick;
 				else
