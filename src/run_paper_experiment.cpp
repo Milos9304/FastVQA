@@ -4,7 +4,7 @@
 #include <utility>
 #include "logger.h"
 
-void read_experiment_file(int num_ranks, int rank_min, int dim){
+SolutionDataset read_experiment_file(int num_ranks, int rank_min, int dim){
 
 	std::ifstream expFile("../paper_experiment/out_higher_dims.csv");
 	std::ifstream matrixFile("../paper_experiment/out_higher_dims2_matrices.csv");
@@ -42,8 +42,10 @@ void read_experiment_file(int num_ranks, int rank_min, int dim){
 		            ss.ignore();
 		    }
 
-		    std::get<0>(sol) = svLength;
-		    std::get<1>(sol) = vectOfCoeffs;
+		    sol.lattice_id = inst_counter;
+		    sol.rank = vectOfCoeffs.size();
+		    sol.svLength = svLength;
+		    sol.coeffs = vectOfCoeffs;
 		    solutionDataset.addDataset(sol);
 
 		}
@@ -91,10 +93,12 @@ void read_experiment_file(int num_ranks, int rank_min, int dim){
 
 	expFile.close();
 	matrixFile.close();
+
+	return solutionDataset;
 }
 
-void run_paper_exp(int num_ranks, int rank_min, int dim){
+SolutionDataset run_paper_exp(int num_ranks, int rank_min, int dim){
 
-	read_experiment_file(num_ranks, rank_min, dim);
+	return read_experiment_file(num_ranks, rank_min, dim);
 
 }

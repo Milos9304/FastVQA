@@ -82,7 +82,15 @@ int main(int ac, char** av){
 
 			if(paper_exp->is_set()){
 
-				run_paper_exp(25, 25, 180);
+				std::pair<std::vector<MatrixInt>, std::vector<Solution>> dataset = run_paper_exp(25, 25, 180).getMatricexAndDataset();
+				std::vector<MatrixInt> matrices = std::get<0>(dataset);
+				std::vector<Solution> solutions = std::get<1>(dataset);
+
+				int i = 0;
+				for(auto &m: matrices)
+					lattices.push_back(new Lattice(m, std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i++].rank)));
+
+				num_lattices = lattices.size();
 
 			}
 			else if(!load_hml->is_set()){

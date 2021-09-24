@@ -10,7 +10,16 @@
 
 #include "vqaConfig.h"
 
-typedef std::pair<double, std::vector<int>> Solution;
+class Solution{
+public:
+
+	int rank;
+	int lattice_id;
+
+	double svLength;
+	std::vector<int> coeffs;
+
+};
 
 class SolutionDataset{
 
@@ -19,7 +28,7 @@ public:
 	int rank_min;
 	int dim;
 
-	std::vector<Lattice> matrices;
+	std::vector<MatrixInt> matrices;
 	std::vector<Solution> dataset;
 
 	SolutionDataset(int num_ranks, int rank_min, int dim){
@@ -32,13 +41,17 @@ public:
 		this->dataset.push_back(s);
 	}
 
-	void addLattice(Lattice l){
+	void addLattice(MatrixInt l){
 		this->matrices.push_back(l);
+	}
+
+	std::pair<std::vector<MatrixInt>, std::vector<Solution>> getMatricexAndDataset(){
+		return std::pair<std::vector<MatrixInt>, std::vector<Solution>>(this->matrices, this->dataset);
 	}
 
 };
 
-void read_experiment_file(int num_ranks, int rank_min, int dim);
-void run_paper_exp(int num_ranks, int rank_min, int dim);
+SolutionDataset read_experiment_file(int num_ranks, int rank_min, int dim);
+SolutionDataset run_paper_exp(int num_ranks, int rank_min, int dim);
 
 #endif /* SSRC_RUN_PAPER_EXP_H_ */
