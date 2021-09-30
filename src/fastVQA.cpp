@@ -246,7 +246,7 @@ int main(int ac, char** av){
 						Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 
 						//rank 25
-						lattice->reduce_rank(25);
+						lattice->reduce_rank(/*25*/12);
 						//lattice->lll_transformation = new MatrixInt(lattice->n_rows, lattice->n_cols);
 						//lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
 
