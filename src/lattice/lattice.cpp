@@ -90,7 +90,7 @@ void Lattice::penalize_expr(int penalty, MapOptions::penalty_mode mode, bool pri
 
 		//std::cout << "subs " << z1_id << " c" << 1 << "\n";
 		//std::cout << "subs " << z2_id << " " << (*x2_it)->id << "\n";
-	}else if(mode == MapOptions::overlap_trick){
+	}else if(mode == MapOptions::no_hml_penalization){
 		//do nothing as no penalty qubits needed
 	}
 

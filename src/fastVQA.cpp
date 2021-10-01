@@ -53,8 +53,8 @@ int main(int ac, char** av){
 		auto load_hml        = op.add<Value<std::string>>("", "loadhml", "save hamiltonian to file", "");
 		auto debug           = op.add<Switch>("d", "debug", "print debug messages");
 		auto qubits_per_x    = op.add<Value<int>>("q", "", "qubits per x", 1);
-		auto overlap_trick   = op.add<Switch>("o", "", "perform overlap trick instead of applying penalty");
-		auto overlap_penalty = op.add<Value<int>>("p", "", "overlap penalty", 1000);
+		auto overlap_trick   = op.add<Switch>("o", "", "perform overlap trick");
+		auto overlap_penalty = op.add<Value<int>>("p", "", "overlap penalty", 0);
 
 		auto paper_exp		 = op.add<Switch>("e", "paperexp", "perform experiment as in the paper");
 
@@ -174,7 +174,7 @@ int main(int ac, char** av){
 
 			if(qaoa->is_set()){
 
-				AcceleratorPartial accelerator = [overlap_penalty](std::shared_ptr<xacc::Observable> observable,
+				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
 						std::vector<double> hamCoeffs,
 						std::vector<int>hamPauliCodes){
@@ -187,8 +187,8 @@ int main(int ac, char** av){
 							 std::make_pair("hamiltonianProvided", hamiltonianExpectation),
 							 std::make_pair("hamiltonianCoeffs", hamCoeffs),
 							 std::make_pair("pauliCodes", hamPauliCodes),
-							 std::make_pair("overlapPenalty", overlap_penalty->value())
-							 //std::make_pair("overlap_trick", overlap_trick->is_set()),
+							 std::make_pair("overlapPenalty", overlap_penalty->value()),
+							 std::make_pair("overlap_trick", overlap_trick->is_set())
 							 //std::make_pair("zero_config_statevect_index", overlap_trick->is_set() ? 1 : 0)
 					});
 				};
@@ -221,8 +221,8 @@ int main(int ac, char** av){
 				MapOptions* mapOptions = new MapOptions();
 				mapOptions->verbose = debug->is_set();
 				mapOptions->num_qbits_per_x=qubits_per_x->value();
-				if(overlap_trick->is_set())
-					mapOptions->pen_mode = MapOptions::overlap_trick;
+				if(overlap_trick->is_set() || overlap_penalty->value() == 0)
+					mapOptions->pen_mode = MapOptions::no_hml_penalization;
 				else
 					mapOptions->pen_mode = MapOptions::penalty_all;
 

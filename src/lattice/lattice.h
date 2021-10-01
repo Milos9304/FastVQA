@@ -30,11 +30,11 @@ class MapOptions{
 
 		/*
 		 * penalty_all: apply penalty
-		 * overlap_trick
+		 * no_hml_penalization
 		 *
 		 *
 		 */
-		enum penalty_mode { penalty_all, overlap_trick };
+		enum penalty_mode { penalty_all, no_hml_penalization };
 
 		x_init_mode x_mode;
 		bin_mapping bin_map;
