@@ -14,6 +14,11 @@ void IterativeLatticeReduction::run(){
 	std::pair<std::string, double> opt_config = run_quantum();
 	VectorInt x_vect = lattice->quboToXvector(opt_config.first);
 
+	logd("NOW FOLLOWS X VECTOR");
+	for(auto &x:x_vect)
+		std::cerr<<x<<" ";
+	std::cerr<<"\n";
+
 	double short_vector_len_sq = opt_config.second;
 	logw("short vector len sq: " + std::to_string(short_vector_len_sq));
 
@@ -29,12 +34,6 @@ void IterativeLatticeReduction::run(){
 	for(int i = 0; i < n_iters; ++i){
 
 		if(lattice->lll_preprocessed){
-
-			loge("NOW FOLLOWS LLL X VECTOR");
-			for(auto &x:x_vect)
-				std::cerr<<x<<" ";
-			std::cerr<<"\n";
-
 			std::cerr<< "LLL |b1|: norm/gh = " << sqrt(sum) / sqrt(lattice->get_orig_gh().get_d()) << "\n";
 			cols = lattice->lll_transformation->c;
 			current_lattice = lattice->lll_transformation;
@@ -45,7 +44,7 @@ void IterativeLatticeReduction::run(){
 
 		std::cerr<< "final |b1|: norm/gh = " << sqrt(short_vector_len_sq) / sqrt(   lattice->get_orig_gh().get_d()  ) << "\n";
 
-		loge("NOW FOLLOWS FINAL X VECTOR");
+		loge("NOW FOLLOWS SHORTEST FOUND VECTOR");
 
 		for(int c = 0; c < cols; ++c){
 			int res = 0;
@@ -56,10 +55,7 @@ void IterativeLatticeReduction::run(){
 			}
 			std::cerr<<res<<" ";
 		}std::cerr<<"\n";
-
-
 	}
-
 }
 
 //x_vect, energy
