@@ -55,8 +55,10 @@ int main(int ac, char** av){
 		auto qubits_per_x    = op.add<Value<int>>("q", "", "qubits per x", 1);
 		auto overlap_trick   = op.add<Switch>("o", "", "perform overlap trick");
 		auto overlap_penalty = op.add<Value<int>>("p", "", "overlap penalty", 0);
+		auto lll_preprocess  = op.add<Switch>("", "lll", "perform LLL preprocessing on the lattice");
 
 		auto paper_exp		 = op.add<Switch>("e", "paperexp", "perform experiment as in the paper");
+		auto rank_reduce 	 = op.add<Value<int>>("r", "", "rank truncation for paperexp", 0);
 
 		auto littleSombrero = op.add<Switch>("s", "", "perform little sombrero experiment");
 
@@ -245,10 +247,14 @@ int main(int ac, char** av){
 
 						Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 
-						//rank 25
-						lattice->reduce_rank(/*25*/12);
-						//lattice->lll_transformation = new MatrixInt(lattice->n_rows, lattice->n_cols);
-						//lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
+						if(paper_exp->is_set() && rank_reduce->value())
+							lattice->reduce_rank(rank_reduce->value());
+
+						if(lll_preprocess->is_set()){
+							lattice->lll_transformation = new MatrixInt(lattice->n_rows, lattice->n_cols);
+							lattice->lll_preprocessed=true;
+							lll_reduction(*(lattice->get_current_lattice()), *(lattice->lll_transformation), 0.99, 0.51, LLLMethod::LM_PROVED, FloatType::FT_DOUBLE);
+						}
 
 						lattice->toHamiltonianString(mapOptions); //remake, keep it here
 

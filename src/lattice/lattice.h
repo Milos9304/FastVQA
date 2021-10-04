@@ -63,6 +63,7 @@ class Lattice : public AbstractLatticeInput{
 	public:
 
 	MatrixInt* lll_transformation;
+	bool lll_preprocessed;
 
 		Lattice(MatrixInt lattice, std::string name = "", int reduced_rank=0){ // @suppress("Class members should be properly initialized")
 
@@ -78,6 +79,7 @@ class Lattice : public AbstractLatticeInput{
 			}
 
 			this -> name = name;
+			this -> lll_preprocessed = false;
 			this -> orig_lattice = lattice;
 			this -> orig_lattice_transposed = MatrixInt(lattice);
 			this -> orig_lattice_transposed.transpose();
