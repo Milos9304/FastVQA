@@ -26,4 +26,18 @@ Color colors[9] = {Color::red, Color::green, Color::yellow, Color::blue, Color::
 														option::MaxProgress{qaoaOptions.max_iters}
 
 
+std::string process(std::string const& s)
+{
+    std::string::size_type pos = s.find('_');
+    if (pos != std::string::npos)
+    {
+        return s.substr(0, pos);
+    }
+    else
+    {
+        return s;
+    }
+}
+
+
 #endif /* SRC_LATTIQ_H_ */

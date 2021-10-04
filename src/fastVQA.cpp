@@ -90,7 +90,7 @@ int main(int ac, char** av){
 
 				int i = 0;
 				for(auto &m: matrices)
-					lattices.push_back(new Lattice(m, std::to_string(solutions[i++].lattice_id)+"_50"));
+					lattices.push_back(new Lattice(m, std::to_string(solutions[i++].lattice_id)+"_"+std::to_string(rank_reduce->value())));
 
 				num_lattices = lattices.size();
 
@@ -241,7 +241,14 @@ int main(int ac, char** av){
 					logd("Hml mode");
 				}else{
 					int counter = 0;
+					int prev_lattice_id=-1;
 					for(auto &lattice_abs : lattices){
+
+						int new_id = std::stoi(process(lattice_abs->name));
+						if(prev_lattice_id == new_id)
+							continue;
+
+						prev_lattice_id = new_id;
 
 						logi("Running " + lattice_abs->name);
 
