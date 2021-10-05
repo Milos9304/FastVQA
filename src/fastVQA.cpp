@@ -90,8 +90,10 @@ int main(int ac, char** av){
 				std::vector<Solution> solutions = std::get<1>(dataset);
 
 				int i = 0;
-				for(auto &m: matrices)
+				for(auto &m: matrices){
 					lattices.push_back(new Lattice(m, std::to_string(solutions[i++].lattice_id)+"_"+std::to_string(rank_reduce->value())));
+					loge(std::to_string(solutions[i++].lattice_id)+"_"+std::to_string(rank_reduce->value()));
+				}
 
 				std::cerr<<i<<" kokot\n";
 				return 0;

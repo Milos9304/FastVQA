@@ -34,7 +34,6 @@ void QAOAOptions::set_default_stats_function(ExecutionStatistics* executionStati
 				  executionStatistics->finishOptimizerIterLog();
 				  break;
 			  case 4:
-
 				  logw("OPT ENERGY " + std::to_string(opt_energy));
 				  outfile << energy << " " << opt_energy << " " << hit_rate;
 
@@ -44,12 +43,12 @@ void QAOAOptions::set_default_stats_function(ExecutionStatistics* executionStati
 				  }
 				  outfile << "\n";
 				  outfile.flush();
-
+					logw(std::to_string(energy));
+					logw("DOPUCE");
 				  break;
 			  case 5:
 			  default:
-				 if(logEnergies)
-					 outfile << energy <<"\n";
+				 outfile << energy <<"\n";
 				 bar->tick();
 				 break;
 		  }
