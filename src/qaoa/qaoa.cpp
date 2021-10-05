@@ -188,7 +188,6 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 			   std::make_pair("debugMsgs", qaoaOptions->debug),
 			   std::make_pair("overlapTrick", qaoaOptions->overlap_trick),
 			   std::make_pair("zeroRefState", qaoaOptions->zero_reference_state),
-			   std::make_pair("saveAnsatz", qaoaOptions->save_ansatz)
 		});
    }
    else{
@@ -213,7 +212,6 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 			   std::make_pair("debugMsgs", qaoaOptions->debug),
 			   std::make_pair("overlapTrick", qaoaOptions->overlap_trick),
 			   std::make_pair("zeroRefState", qaoaOptions->zero_reference_state),
-			   std::make_pair("saveAnsatz", qaoaOptions->save_ansatz)
 	   		});
    }
    if(initOk)
