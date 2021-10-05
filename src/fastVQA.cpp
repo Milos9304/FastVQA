@@ -87,7 +87,7 @@ int main(int ac, char** av){
 
 			if(paper_exp->is_set()){
 
-				loge("Gaussian heuristics not impelemnted for low rank matrices. Returning 1.");
+				loge("Gaussian heuristics not implemented for low rank matrices. Returning 1.");
 
 				SolutionDataset solutionDataset = run_paper_exp(25, 25, 180);
 				std::pair<std::vector<MatrixInt>, std::vector<Solution>> dataset = solutionDataset.getMatricexAndDataset();
