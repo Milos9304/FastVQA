@@ -67,7 +67,7 @@ std::pair<std::vector<double>, std::vector<int>> Lattice::getHmlInQuestFormulati
 mpq_class Lattice::calculate_gh_squared(MatrixInt* lattice){
 
 	if(n_rows != n_cols){
-		loge("Gaussian heuristics not impelemnted for low rank matrices. Returning 1.");
+		//loge("Gaussian heuristics not implemented for low rank matrices. Returning 1.");
 		return 1;
 	}
 

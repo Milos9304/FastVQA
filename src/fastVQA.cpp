@@ -85,18 +85,28 @@ int main(int ac, char** av){
 
 			if(paper_exp->is_set()){
 
-				std::pair<std::vector<MatrixInt>, std::vector<Solution>> dataset = run_paper_exp(25, 25, 180).getMatricexAndDataset();
+				loge("Gaussian heuristics not impelemnted for low rank matrices. Returning 1.");
+
+				SolutionDataset solutionDataset = run_paper_exp(25, 25, 180);
+				std::pair<std::vector<MatrixInt>, std::vector<Solution>> dataset = solutionDataset.getMatricexAndDataset();
 				std::vector<MatrixInt> matrices = std::get<0>(dataset);
 				std::vector<Solution> solutions = std::get<1>(dataset);
 
-				int i = 0;
-				for(auto &m: matrices){
-					lattices.push_back(new Lattice(m, std::to_string(solutions[i++].lattice_id)+"_"+std::to_string(rank_reduce->value())));
-					loge(std::to_string(solutions[i++].lattice_id)+"_"+std::to_string(rank_reduce->value()));
+				int i = rank_reduce->value() - solutionDataset.rank_min;
+				if(i < 0 || i >= solutionDataset.num_ranks){
+					logw("Invalid rank_reduce value. Will fetch the first matrix");
+					i = 0;
 				}
 
-				std::cerr<<i<<" kokot\n";
-				return 0;
+				for(auto &m: matrices){
+					lattices.push_back(new Lattice(m, std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank)));
+					loge(std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank));
+
+					if(rank_reduce->value() == 0)
+						i++;
+					else
+						i+=solutionDataset.num_ranks+1;
+				}
 
 				num_lattices = lattices.size();
 
