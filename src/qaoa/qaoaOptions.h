@@ -42,6 +42,8 @@ class QAOAOptions{
 		std::string l_intermediateName="";
 		bool logEnergies = false;
 
+		bool save_ansatz = false;
+
 		bool debug = false; //print debug msgs
 		bool provideHamiltonian = false;
 

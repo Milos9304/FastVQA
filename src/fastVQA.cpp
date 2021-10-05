@@ -61,7 +61,9 @@ int main(int ac, char** av){
 		auto paper_exp		 = op.add<Switch>("e", "paperexp", "perform experiment as in the paper");
 		auto rank_reduce 	 = op.add<Value<int>>("r", "", "rank truncation for paperexp", 0);
 
-		auto littleSombrero = op.add<Switch>("s", "", "perform little sombrero experiment");
+		auto save_ansatz	 = op.add<Switch>("s", "saveAnsatz", "save ansatz files");
+
+		auto littleSombrero = op.add<Switch>("", "littleSombrero", "perform little sombrero experiment");
 
 		auto save_interm  = op.add<Value<std::string>>("", "si", "save intermediate results (for specific experiments only)", "");
 		auto load_interm  = op.add<Value<std::string>>("", "li", "load intermediate results (for specific experiments only)", "");
@@ -107,9 +109,7 @@ int main(int ac, char** av){
 					else
 						i+=solutionDataset.num_ranks+1;
 				}
-
 				num_lattices = lattices.size();
-
 			}
 			else if(!load_hml->is_set()){
 
@@ -236,6 +236,7 @@ int main(int ac, char** av){
 				qaoaOptions.l_intermediateName = qaoaOptions.loadIntermediate ? load_interm->value() : "";
 				qaoaOptions.overlap_trick = overlap_trick->is_set();
 				qaoaOptions.nbSamples_calcVarAssignment = nbSamples->value();
+				qaoaOptions.save_ansatz = save_ansatz->is_set();
 
 				MapOptions* mapOptions = new MapOptions();
 				mapOptions->verbose = debug->is_set();
