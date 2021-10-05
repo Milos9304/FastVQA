@@ -49,6 +49,7 @@ int main(int ac, char** av){
 		auto config 	     = op.add<Value<std::string>>("", "config", "config file location", "");
 		auto lattice_file    = op.add<Value<std::string>>("l", "lattice", "lattice file location", "");
 		auto niters          = op.add<Value<int>>("i", "iters", "max num of iterations", 0);
+		auto nbSamples 		 = op.add<Value<int>>("n", "nbSamples", "number of samples in var assigmnent", 1024);
 		auto save_hml        = op.add<Value<std::string>>("", "savehml", "save hamiltonian to file", "");
 		auto load_hml        = op.add<Value<std::string>>("", "loadhml", "save hamiltonian to file", "");
 		auto debug           = op.add<Switch>("d", "debug", "print debug messages");
@@ -91,6 +92,9 @@ int main(int ac, char** av){
 				int i = 0;
 				for(auto &m: matrices)
 					lattices.push_back(new Lattice(m, std::to_string(solutions[i++].lattice_id)+"_"+std::to_string(rank_reduce->value())));
+
+				std::cerr<<i<<" kokot\n";
+				return 0;
 
 				num_lattices = lattices.size();
 
@@ -219,6 +223,7 @@ int main(int ac, char** av){
 				qaoaOptions.loadIntermediate = load_interm->is_set() ? (load_interm->value() == "" ? false : true) : false;
 				qaoaOptions.l_intermediateName = qaoaOptions.loadIntermediate ? load_interm->value() : "";
 				qaoaOptions.overlap_trick = overlap_trick->is_set();
+				qaoaOptions.nbSamples_calcVarAssignment = nbSamples->value();
 
 				MapOptions* mapOptions = new MapOptions();
 				mapOptions->verbose = debug->is_set();
