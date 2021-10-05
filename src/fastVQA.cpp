@@ -192,10 +192,11 @@ int main(int ac, char** av){
 
 			if(qaoa->is_set()){
 
-				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick](std::shared_ptr<xacc::Observable> observable,
+				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
 						std::vector<double> hamCoeffs,
-						std::vector<int>hamPauliCodes){
+						std::vector<int>hamPauliCodes,
+						std::string name){
 					return xacc::getAccelerator("quest", {
 							 std::make_pair("nbQbits", observable->nBits()),
 							 // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
@@ -206,7 +207,9 @@ int main(int ac, char** av){
 							 std::make_pair("hamiltonianCoeffs", hamCoeffs),
 							 std::make_pair("pauliCodes", hamPauliCodes),
 							 std::make_pair("overlapPenalty", overlap_penalty->value()),
-							 std::make_pair("overlap_trick", overlap_trick->is_set())
+							 std::make_pair("nbSamples", nbSamples->value()),
+							 std::make_pair("name", name),
+							 std::make_pair("overlapTrick", overlap_trick->is_set())
 							 //std::make_pair("zero_config_statevect_index", overlap_trick->is_set() ? 1 : 0)
 					});
 				};

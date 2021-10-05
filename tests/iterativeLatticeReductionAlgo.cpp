@@ -45,7 +45,7 @@ TEST(iterativeLatticeReductionAlgo, opt_config_valid){
 
 	ExecutionStatistics* execStats = new ExecutionStatistics();
 
-	AcceleratorPartial accelerator = [](std::shared_ptr<xacc::Observable> observable, bool provideHamiltonian, std::vector<double>, std::vector<int>) {
+	AcceleratorPartial accelerator = [](std::shared_ptr<xacc::Observable> observable, bool provideHamiltonian, std::vector<double>, std::vector<int>, std::string) {
 				return xacc::getAccelerator("quest", {std::make_pair("nbQbits", observable->nBits()),
 						 // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
 						 std::make_pair("repeated_measurement_strategy", true)});

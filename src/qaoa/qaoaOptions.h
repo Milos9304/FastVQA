@@ -19,7 +19,8 @@
 typedef std::function<std::shared_ptr<xacc::Accelerator>(std::shared_ptr<xacc::Observable>,
 		bool, //provide hamiltonian
 		std::vector<double>, // hamCoeffs
-		std::vector<int>) //hamPauliCodes
+		std::vector<int>, //hamPauliCodes
+		std::string name)
 		> AcceleratorPartial;
 typedef std::function<std::shared_ptr<xacc::Optimizer>(std::vector<double>, int)> OptimizerPartial;
 
