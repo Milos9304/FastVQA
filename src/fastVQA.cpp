@@ -192,7 +192,7 @@ int main(int ac, char** av){
 
 			if(qaoa->is_set()){
 
-				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples](std::shared_ptr<xacc::Observable> observable,
+				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
 						std::vector<double> hamCoeffs,
 						std::vector<int>hamPauliCodes,
@@ -209,7 +209,8 @@ int main(int ac, char** av){
 							 std::make_pair("overlapPenalty", overlap_penalty->value()),
 							 std::make_pair("nbSamples", nbSamples->value()),
 							 std::make_pair("name", name),
-							 std::make_pair("overlapTrick", overlap_trick->is_set())
+							 std::make_pair("overlapTrick", overlap_trick->is_set()),
+   						     std::make_pair("saveAnsatz", save_ansatz->is_set())
 							 //std::make_pair("zero_config_statevect_index", overlap_trick->is_set() ? 1 : 0)
 					});
 				};
