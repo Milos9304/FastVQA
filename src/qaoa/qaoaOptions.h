@@ -44,6 +44,7 @@ class QAOAOptions{
 		bool logEnergies = false;
 
 		bool save_ansatz = false;
+		bool load_ansatz = false;
 
 		bool debug = false; //print debug msgs
 		bool provideHamiltonian = false;
