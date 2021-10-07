@@ -62,6 +62,7 @@ int main(int ac, char** av){
 		auto rank_reduce 	 = op.add<Value<int>>("r", "", "rank truncation for paperexp", 0);
 
 		auto save_ansatz	 = op.add<Switch>("s", "saveAnsatz", "save ansatz files");
+		auto load_ansatz	 = op.add<Switch>("l", "loadAnsatz", "load ansatz files");
 
 		auto littleSombrero = op.add<Switch>("", "littleSombrero", "perform little sombrero experiment");
 
@@ -192,7 +193,7 @@ int main(int ac, char** av){
 
 			if(qaoa->is_set()){
 
-				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz](std::shared_ptr<xacc::Observable> observable,
+				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz, load_ansatz](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
 						std::vector<double> hamCoeffs,
 						std::vector<int>hamPauliCodes,
@@ -210,7 +211,8 @@ int main(int ac, char** av){
 							 std::make_pair("nbSamples", nbSamples->value()),
 							 std::make_pair("name", name),
 							 std::make_pair("overlapTrick", overlap_trick->is_set()),
-   						     std::make_pair("saveAnsatz", save_ansatz->is_set())
+   						     std::make_pair("saveAnsatz", save_ansatz->is_set()),
+							 std::make_pair("loadAnsatz", load_ansatz->is_set())
 							 //std::make_pair("zero_config_statevect_index", overlap_trick->is_set() ? 1 : 0)
 					});
 				};
