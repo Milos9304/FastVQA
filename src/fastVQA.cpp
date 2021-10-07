@@ -47,7 +47,7 @@ int main(int ac, char** av){
 		auto qaoa 		     = op.add<Switch>("", "qaoa", "run qaoa algorithm");
 		//auto enumeration     = op.add<Switch>("", "enum", "enumerate all qubo configurations");
 		auto config 	     = op.add<Value<std::string>>("", "config", "config file location", "");
-		auto lattice_file    = op.add<Value<std::string>>("l", "lattice", "lattice file location", "");
+		auto lattice_file    = op.add<Value<std::string>>("", "lattice", "lattice file location", "");
 		auto niters          = op.add<Value<int>>("i", "iters", "max num of iterations", 0);
 		auto nbSamples 		 = op.add<Value<int>>("n", "nbSamples", "number of samples in var assigmnent", 1024);
 		auto save_hml        = op.add<Value<std::string>>("", "savehml", "save hamiltonian to file", "");
