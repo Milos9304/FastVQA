@@ -62,7 +62,7 @@ int main(int ac, char** av){
 		auto rank_reduce 	 = op.add<Value<int>>("r", "", "rank truncation for paperexp", 0);
 
 		auto save_ansatz	 = op.add<Switch>("s", "saveAnsatz", "save ansatz files");
-		auto load_ansatz	 = op.add<Switch>("s", "loadAnsatz", "load ansatz files");
+		auto load_ansatz	 = op.add<Switch>("l", "loadAnsatz", "load ansatz files");
 
 		auto littleSombrero = op.add<Switch>("", "littleSombrero", "perform little sombrero experiment");
 
