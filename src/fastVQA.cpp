@@ -243,6 +243,7 @@ int main(int ac, char** av){
 				qaoaOptions.overlap_trick = overlap_trick->is_set();
 				qaoaOptions.nbSamples_calcVarAssignment = nbSamples->value();
 				qaoaOptions.save_ansatz = save_ansatz->is_set();
+				qaoaOptions.load_ansatz = load_ansatz->is_set();
 
 				MapOptions* mapOptions = new MapOptions();
 				mapOptions->verbose = debug->is_set();
