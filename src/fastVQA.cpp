@@ -103,13 +103,13 @@ int main(int ac, char** av){
 
 				for(auto &m: matrices){
 					lattices.push_back(new Lattice(m, std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank)));
-					loge(std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank));
+					std::cout << (std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank)) << " ";
 
 					if(rank_reduce->value() == 0)
 						i++;
 					else
 						i+=solutionDataset.num_ranks+1;
-				}
+				}std::cout << "\n";
 				num_lattices = lattices.size();
 			}
 			else if(!load_hml->is_set()){
