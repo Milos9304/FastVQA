@@ -39,12 +39,15 @@ int main(int ac, char** av){
 	MPI_Comm_size(MPI_COMM_WORLD, &numRanks);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+	int seed = 1997;
+
 	//--------------------------------RANK ZERO CODE------------------------------------------
 	if(rank == 0 || strcmp(av[1],"qaoa")){
 
 		OptionParser op("Allowed options");
 		auto help_option     = op.add<Switch>("h", "help", "produce help message");
 		auto qaoa 		     = op.add<Switch>("", "qaoa", "run qaoa algorithm");
+		auto seed_option 	 = op.add<Value<int>>("", "seed", "seed for the experiments", seed);
 		//auto enumeration     = op.add<Switch>("", "enum", "enumerate all qubo configurations");
 		auto config 	     = op.add<Value<std::string>>("", "config", "config file location", "");
 		auto lattice_file    = op.add<Value<std::string>>("", "lattice", "lattice file location", "");
@@ -76,6 +79,9 @@ int main(int ac, char** av){
 		    MPI_Finalize();
 			return 0;
 		}
+
+		seed = seed_option->value();
+		logd("Using seed " + std::to_string(seed));
 
 		int num_lattices;
 		bool hml_lattice_mode=false;
@@ -193,12 +199,13 @@ int main(int ac, char** av){
 
 			if(qaoa->is_set()){
 
-				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz, load_ansatz](std::shared_ptr<xacc::Observable> observable,
+				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz, load_ansatz, seed](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
 						std::vector<double> hamCoeffs,
 						std::vector<int>hamPauliCodes,
 						std::string name){
 					return xacc::getAccelerator("quest", {
+							 std::make_pair("seed", seed),
 							 std::make_pair("nbQbits", observable->nBits()),
 							 // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
 							 std::make_pair("repeated_measurement_strategy", true),
