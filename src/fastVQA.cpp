@@ -232,7 +232,7 @@ int main(int ac, char** av){
 
 				QAOAOptions qaoaOptions;
 				qaoaOptions.max_iters = niters->is_set() ? (niters->value() == 0 ? 5000 : niters->value()): 5000;
-				qaoaOptions.detailed_log_freq = 50;
+				qaoaOptions.detailed_log_freq = 0;//50;
 				qaoaOptions.verbose = debug->is_set();
 				qaoaOptions.debug = debug->is_set();
 				qaoaOptions.verbose |= true;
