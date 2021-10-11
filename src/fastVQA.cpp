@@ -40,7 +40,6 @@ int main(int ac, char** av){
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
 	int seed = 1997;
-	logd("Using seed " + std::to_string(seed));
 
 	//--------------------------------RANK ZERO CODE------------------------------------------
 	if(rank == 0 || strcmp(av[1],"qaoa")){
@@ -48,6 +47,7 @@ int main(int ac, char** av){
 		OptionParser op("Allowed options");
 		auto help_option     = op.add<Switch>("h", "help", "produce help message");
 		auto qaoa 		     = op.add<Switch>("", "qaoa", "run qaoa algorithm");
+		auto seed_option 	 = op.add<Value<int>>("", "seed", "seed for the experiments", seed);
 		//auto enumeration     = op.add<Switch>("", "enum", "enumerate all qubo configurations");
 		auto config 	     = op.add<Value<std::string>>("", "config", "config file location", "");
 		auto lattice_file    = op.add<Value<std::string>>("", "lattice", "lattice file location", "");
@@ -79,6 +79,9 @@ int main(int ac, char** av){
 		    MPI_Finalize();
 			return 0;
 		}
+
+		seed = seed_option->value();
+		logd("Using seed " + std::to_string(seed));
 
 		int num_lattices;
 		bool hml_lattice_mode=false;
