@@ -71,7 +71,7 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 
    if(qaoaOptions->logEnergies){
 	   //qaoaOptions->outfile.rdbuf()->pubsetbuf(0, 0); //disable buffer
-	   qaoaOptions->outfile.open("exp_files/statsfile_"+name+".txt", std::fstream::out | std::ios_base::app); //| std::ios_base::trunc);//std::ios_base::app
+	   qaoaOptions->outfile.open("../experiment_files/statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc); //| std::ios_base::trunc);//std::ios_base::app
    }
 
    if(bar)
