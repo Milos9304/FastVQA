@@ -39,15 +39,18 @@ int main(int ac, char** av){
 	MPI_Comm_size(MPI_COMM_WORLD, &numRanks);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
+	int seed = 1997;
+
 	//--------------------------------RANK ZERO CODE------------------------------------------
-	if(rank == 0 || strcmp(av[1],"qaoa")){
+	if(rank == 0 /*|| strcmp(av[1],"qaoa")*/){
 
 		OptionParser op("Allowed options");
 		auto help_option     = op.add<Switch>("h", "help", "produce help message");
 		auto qaoa 		     = op.add<Switch>("", "qaoa", "run qaoa algorithm");
+		auto seed_option 	 = op.add<Value<int>>("", "seed", "seed for the experiments", seed);
 		//auto enumeration     = op.add<Switch>("", "enum", "enumerate all qubo configurations");
 		auto config 	     = op.add<Value<std::string>>("", "config", "config file location", "");
-		auto lattice_file    = op.add<Value<std::string>>("l", "lattice", "lattice file location", "");
+		auto lattice_file    = op.add<Value<std::string>>("", "lattice", "lattice file location", "");
 		auto niters          = op.add<Value<int>>("i", "iters", "max num of iterations", 0);
 		auto nbSamples 		 = op.add<Value<int>>("n", "nbSamples", "number of samples in var assigmnent", 1024);
 		auto save_hml        = op.add<Value<std::string>>("", "savehml", "save hamiltonian to file", "");
@@ -60,8 +63,10 @@ int main(int ac, char** av){
 
 		auto paper_exp		 = op.add<Switch>("e", "paperexp", "perform experiment as in the paper");
 		auto rank_reduce 	 = op.add<Value<int>>("r", "", "rank truncation for paperexp", 0);
+		auto circ_dir_prefix = op.add<Value<std::string>>("c", "circ-dir-prefix", "", "../experiment_files");
 
 		auto save_ansatz	 = op.add<Switch>("s", "saveAnsatz", "save ansatz files");
+		auto load_ansatz	 = op.add<Switch>("l", "loadAnsatz", "load ansatz files");
 
 		auto littleSombrero = op.add<Switch>("", "littleSombrero", "perform little sombrero experiment");
 
@@ -75,6 +80,9 @@ int main(int ac, char** av){
 		    MPI_Finalize();
 			return 0;
 		}
+
+		seed = seed_option->value();
+		logd("Using seed " + std::to_string(seed));
 
 		int num_lattices;
 		bool hml_lattice_mode=false;
@@ -102,13 +110,13 @@ int main(int ac, char** av){
 
 				for(auto &m: matrices){
 					lattices.push_back(new Lattice(m, std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank)));
-					loge(std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank));
+					std::cout << (std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank)) << " ";
 
 					if(rank_reduce->value() == 0)
 						i++;
 					else
 						i+=solutionDataset.num_ranks+1;
-				}
+				}std::cout << "\n";
 				num_lattices = lattices.size();
 			}
 			else if(!load_hml->is_set()){
@@ -192,12 +200,13 @@ int main(int ac, char** av){
 
 			if(qaoa->is_set()){
 
-				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz](std::shared_ptr<xacc::Observable> observable,
+				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz, load_ansatz, seed, circ_dir_prefix](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
 						std::vector<double> hamCoeffs,
 						std::vector<int>hamPauliCodes,
 						std::string name){
 					return xacc::getAccelerator("quest", {
+							 std::make_pair("seed", seed),
 							 std::make_pair("nbQbits", observable->nBits()),
 							 // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
 							 std::make_pair("repeated_measurement_strategy", true),
@@ -210,7 +219,9 @@ int main(int ac, char** av){
 							 std::make_pair("nbSamples", nbSamples->value()),
 							 std::make_pair("name", name),
 							 std::make_pair("overlapTrick", overlap_trick->is_set()),
-   						     std::make_pair("saveAnsatz", save_ansatz->is_set())
+   						     std::make_pair("saveAnsatz", save_ansatz->is_set()),
+							 std::make_pair("loadAnsatz", load_ansatz->is_set()),
+							 std::make_pair("circ_dir_prefix", circ_dir_prefix->value())
 							 //std::make_pair("zero_config_statevect_index", overlap_trick->is_set() ? 1 : 0)
 					});
 				};
@@ -223,7 +234,7 @@ int main(int ac, char** av){
 
 				QAOAOptions qaoaOptions;
 				qaoaOptions.max_iters = niters->is_set() ? (niters->value() == 0 ? 5000 : niters->value()): 5000;
-				qaoaOptions.detailed_log_freq = 50;
+				qaoaOptions.detailed_log_freq = 0;//50;
 				qaoaOptions.verbose = debug->is_set();
 				qaoaOptions.debug = debug->is_set();
 				qaoaOptions.verbose |= true;
@@ -241,6 +252,7 @@ int main(int ac, char** av){
 				qaoaOptions.overlap_trick = overlap_trick->is_set();
 				qaoaOptions.nbSamples_calcVarAssignment = nbSamples->value();
 				qaoaOptions.save_ansatz = save_ansatz->is_set();
+				qaoaOptions.load_ansatz = load_ansatz->is_set();
 
 				MapOptions* mapOptions = new MapOptions();
 				mapOptions->verbose = debug->is_set();

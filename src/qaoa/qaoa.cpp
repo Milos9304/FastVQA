@@ -71,7 +71,7 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 
    if(qaoaOptions->logEnergies){
 	   //qaoaOptions->outfile.rdbuf()->pubsetbuf(0, 0); //disable buffer
-	   qaoaOptions->outfile.open("statsfile_"+name+".txt", std::fstream::out | std::ios_base::app); //| std::ios_base::trunc);//std::ios_base::app
+	   qaoaOptions->outfile.open("../experiment_files/statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc); //| std::ios_base::trunc);//std::ios_base::app
    }
 
    if(bar)
@@ -179,6 +179,7 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 			   std::make_pair("detailed_log_freq", qaoaOptions->detailed_log_freq),
 			   // number of time steps (p) param
 			   std::make_pair("steps", qaoaOptions->p),
+			   std::make_pair("load_ansatz",  qaoaOptions->load_ansatz),
 			   std::make_pair("calc-var-assignment", qaoaOptions->calcVarAssignment),
 			   std::make_pair("simplified-simulation", qaoaOptions->simplifiedSimulation),
 			   std::make_pair("stats_func", qaoaOptions->get_stats_function()),
@@ -204,7 +205,8 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 			   std::make_pair("detailed_log_freq", qaoaOptions->detailed_log_freq),
 	   		   // number of time steps (p) param
 	   		   std::make_pair("steps", qaoaOptions->p),
-	   		   std::make_pair("calc-var-assignment", qaoaOptions->calcVarAssignment),
+			   std::make_pair("load_ansatz",  qaoaOptions->load_ansatz),
+	   		   std::make_pair("calc-var-assignment", qaoaOptions->calcVarAssignment || qaoaOptions->load_ansatz),
 	   		   std::make_pair("simplified-simulation", qaoaOptions->simplifiedSimulation),
 	   		   //Number of samples to estimate optimal variable assignment
 			   std::make_pair("parameter-scheme", qaoaOptions->getParameterScheme()),
