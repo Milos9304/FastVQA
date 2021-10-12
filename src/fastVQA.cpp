@@ -288,8 +288,9 @@ int main(int ac, char** av){
 
 						Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 
-						if(paper_exp->is_set() && rank_reduce->value())
-							lattice->reduce_rank(rank_reduce->value());
+						//THIS IS DONE A LITTLE BIT ABOVE
+						//if(paper_exp->is_set() && rank_reduce->value())
+						//	lattice->reduce_rank(rank_reduce->value());
 
 						if(lll_preprocess->is_set()){
 							lattice->lll_transformation = new MatrixInt(lattice->n_rows, lattice->n_cols);
