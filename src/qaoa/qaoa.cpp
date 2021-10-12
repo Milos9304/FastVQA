@@ -163,6 +163,7 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
    auto optimizer = xacc::getOptimizer("nlopt",
 		   {{"initial-parameters", initialParams}, {"nlopt-maxeval", max_iters}});
 
+   loge("My observable has " + std::to_string(observable->nBits()));
 
 
    if(qaoaOptions->isSetLogStats()){
