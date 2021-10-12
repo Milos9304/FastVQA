@@ -63,6 +63,7 @@ int main(int ac, char** av){
 
 		auto paper_exp		 = op.add<Switch>("e", "paperexp", "perform experiment as in the paper");
 		auto rank_reduce 	 = op.add<Value<int>>("r", "", "rank truncation for paperexp", 0);
+		auto circ_dir_prefix = op.add<Value<std::string>>("c", "circ-dir-prefix", "", "../experiment_files");
 
 		auto save_ansatz	 = op.add<Switch>("s", "saveAnsatz", "save ansatz files");
 		auto load_ansatz	 = op.add<Switch>("l", "loadAnsatz", "load ansatz files");
@@ -219,7 +220,8 @@ int main(int ac, char** av){
 							 std::make_pair("name", name),
 							 std::make_pair("overlapTrick", overlap_trick->is_set()),
    						     std::make_pair("saveAnsatz", save_ansatz->is_set()),
-							 std::make_pair("loadAnsatz", load_ansatz->is_set())
+							 std::make_pair("loadAnsatz", load_ansatz->is_set()),
+							 std::make_pair("circ_dir_prefix", circ_dir_prefix->value())
 							 //std::make_pair("zero_config_statevect_index", overlap_trick->is_set() ? 1 : 0)
 					});
 				};
