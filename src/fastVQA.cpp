@@ -200,7 +200,7 @@ int main(int ac, char** av){
 
 			if(qaoa->is_set()){
 
-				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz, load_ansatz, seed](std::shared_ptr<xacc::Observable> observable,
+				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz, load_ansatz, seed, circ_dir_prefix](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
 						std::vector<double> hamCoeffs,
 						std::vector<int>hamPauliCodes,
