@@ -109,7 +109,9 @@ int main(int ac, char** av){
 				}
 
 				for(auto &m: matrices){
-					lattices.push_back(new Lattice(m, std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank)));
+					Lattice* new_lattice = new Lattice(m, std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank));
+					new_lattice->reduce_rank(solutions[i].rank);
+					lattices.push_back(new_lattice);
 					std::cout << (std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank)) << " ";
 
 					if(rank_reduce->value() == 0)
