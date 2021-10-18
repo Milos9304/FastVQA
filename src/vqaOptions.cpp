@@ -48,7 +48,7 @@ void VQAOptions::set_default_stats_function(ExecutionStatistics* executionStatis
 			  case 5:
 			  default:
 				 outfile << energy <<"\n";
-				 bar->tick();
+				 //bar->tick();
 				 break;
 		  }
 

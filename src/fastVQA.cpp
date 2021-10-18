@@ -196,7 +196,7 @@ int main(int ac, char** av){
 
 			if(qaoa->is_set() || vqe->is_set()){
 
-				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz, load_ansatz, seed, circ_dir_prefix](std::shared_ptr<xacc::Observable> observable,
+				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz, load_ansatz, seed, circ_dir_prefix, vqe](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
 						std::vector<double> hamCoeffs,
 						std::vector<int>hamPauliCodes,
@@ -217,6 +217,7 @@ int main(int ac, char** av){
 							 std::make_pair("overlapTrick", overlap_trick->is_set()),
    						     std::make_pair("saveAnsatz", save_ansatz->is_set()),
 							 std::make_pair("loadAnsatz", load_ansatz->is_set()),
+							 std::make_pair("vqa_mode", (vqe->is_set() ? std::string("vqe") : std::string("vqe"))),
 							 std::make_pair("circ_dir_prefix", circ_dir_prefix->value())
 							 //std::make_pair("zero_config_statevect_index", overlap_trick->is_set() ? 1 : 0)
 					});
@@ -269,8 +270,8 @@ int main(int ac, char** av){
 
 				ExecutionStatistics* execStats = new ExecutionStatistics();
 				xacc::Initialize();
-				xacc::setOption("quest-verbose", "true");
-				xacc::setOption("quest-debug", "true");
+				xacc::setOption("quest-verbose", "false");
+				xacc::setOption("quest-debug", "false");
 
 				if(hml_lattice_mode){
 					xacc::qbit* buffer;

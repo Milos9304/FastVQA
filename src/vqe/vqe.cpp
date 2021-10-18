@@ -192,14 +192,25 @@ void Vqe::_run_vqe(xacc::qbit** buffer,
          m.insert("shuffle-terms", /*m_shuffleTerms*/false);
          ansatz->expand(m);
 
-	   initOk=vqe->initialize({std::make_pair("ansatz", ansatz),
+         if(vqeOptions->logEnergies)
+        	 initOk=vqe->initialize({std::make_pair("ansatz", ansatz),
 	                    std::make_pair("observable", observable),
+						std::make_pair("stats_func", vqeOptions->get_stats_function()),
 	                    std::make_pair("accelerator", vqeOptions->accelerator(observable,
 	     					   vqeOptions->provideHamiltonian,
 	     					   hamCoeffs,
 	     					   hamPauliCodes,
 	     					   name)),
 	                    std::make_pair("optimizer", optimizer)});
+         else
+        	 initOk=vqe->initialize({std::make_pair("ansatz", ansatz),
+        	 	                    std::make_pair("observable", observable),
+        	 	                    std::make_pair("accelerator", vqeOptions->accelerator(observable,
+        	 	     					   vqeOptions->provideHamiltonian,
+        	 	     					   hamCoeffs,
+        	 	     					   hamPauliCodes,
+        	 	     					   name)),
+        	 	                    std::make_pair("optimizer", optimizer)});
    //}
 	   /*
    else{
