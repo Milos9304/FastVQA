@@ -12,7 +12,7 @@ using namespace indicators;
 
 Color colors[9] = {Color::red, Color::green, Color::yellow, Color::blue, Color::magenta, Color::cyan};
 
-#define bar_opts(counter, num_lattices, lattice_name)   option::BarWidth{50},\
+#define bar_opts(counter, num_lattices, lattice_name, optionsName)   option::BarWidth{50},\
 														option::Start{"["},\
 														option::Fill{"="},\
 														option::Lead{">"},\
@@ -23,7 +23,7 @@ Color colors[9] = {Color::red, Color::green, Color::yellow, Color::blue, Color::
 														option::ShowElapsedTime{true},\
 														option::ShowRemainingTime{true},\
 														option::FontStyles{std::vector<FontStyle>{FontStyle::bold}},\
-														option::MaxProgress{qaoaOptions.max_iters}
+														option::MaxProgress{optionsName->max_iters}
 
 
 std::string process(std::string const& s)

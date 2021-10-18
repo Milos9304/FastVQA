@@ -5,16 +5,16 @@
  *      Author: Milos Prokop
  */
 
-#include "qaoaOptions.h"
-#include "../logger.h"
+#include "vqaOptions.h"
+#include "logger.h"
 
-void QAOAOptions::set_default_stats_function(ExecutionStatistics* executionStatistics, indicators::ProgressBar* bar){
+void VQAOptions::set_default_stats_function(ExecutionStatistics* executionStatistics, indicators::ProgressBar* bar){
 
 	this->set_default_stats_function(executionStatistics, bar, new HmlLattice(0, 0, ""));
 	this->detailedLoggingDisabled = true;
 }
 
-void QAOAOptions::set_default_stats_function(ExecutionStatistics* executionStatistics, indicators::ProgressBar* bar, AbstractLatticeInput* lattice){
+void VQAOptions::set_default_stats_function(ExecutionStatistics* executionStatistics, indicators::ProgressBar* bar, AbstractLatticeInput* lattice){
 
 	this->detailedLoggingDisabled = false;
 

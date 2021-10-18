@@ -7,6 +7,7 @@
 #include "logger.h"
 #include "executionStatistics.h"
 #include "qaoa/qaoa.h"
+#include "vqe/vqe.h"
 #include "vqaConfig.h"
 #include "indicators/progress_bar.hpp"
 #include "latticeAlgorithms/iterativeLatticeReduction.h"
@@ -20,7 +21,6 @@
 
 #include "enumeration.h"
 #include "run_paper_experiment.h"
-#include "littleSombrero.h"
 
 #include <mpi.h>
 
@@ -47,6 +47,7 @@ int main(int ac, char** av){
 		OptionParser op("Allowed options");
 		auto help_option     = op.add<Switch>("h", "help", "produce help message");
 		auto qaoa 		     = op.add<Switch>("", "qaoa", "run qaoa algorithm");
+		auto vqe 		     = op.add<Switch>("", "vqe", "run vqe algorithm");
 		auto seed_option 	 = op.add<Value<int>>("", "seed", "seed for the experiments", seed);
 		//auto enumeration     = op.add<Switch>("", "enum", "enumerate all qubo configurations");
 		auto config 	     = op.add<Value<std::string>>("", "config", "config file location", "");
@@ -67,8 +68,6 @@ int main(int ac, char** av){
 
 		auto save_ansatz	 = op.add<Switch>("s", "saveAnsatz", "save ansatz files");
 		auto load_ansatz	 = op.add<Switch>("l", "loadAnsatz", "load ansatz files");
-
-		auto littleSombrero = op.add<Switch>("", "littleSombrero", "perform little sombrero experiment");
 
 		auto save_interm  = op.add<Value<std::string>>("", "si", "save intermediate results (for specific experiments only)", "");
 		auto load_interm  = op.add<Value<std::string>>("", "li", "load intermediate results (for specific experiments only)", "");
@@ -91,7 +90,7 @@ int main(int ac, char** av){
 		std::vector<Lattice> lattices_in;
 		std::vector<AbstractLatticeInput*> lattices;
 
-		if(qaoa -> is_set() /*|| enumeration->is_set()*/){
+		if(qaoa -> is_set() || vqe->is_set()){
 
 			if(paper_exp->is_set()){
 
@@ -118,6 +117,10 @@ int main(int ac, char** av){
 						i++;
 					else
 						i+=solutionDataset.num_ranks+1;
+
+					loge("Loading only one lattice");
+					break;
+
 				}std::cout << "\n";
 				num_lattices = lattices.size();
 			}
@@ -125,7 +128,7 @@ int main(int ac, char** av){
 
 				VqaConfig* vqaConfig;
 
-				if(!config->is_set() && !littleSombrero->is_set()){
+				if(!config->is_set()){
 
 					if(!lattice_file->is_set()){
 						loge("Neither config nor lattice file specified");
@@ -142,15 +145,6 @@ int main(int ac, char** av){
 						logi(lattice_file->value() + " loaded");
 					else
 						loge("Problem loading " + lattice_file->value());
-
-				}
-				else if(littleSombrero->is_set()){
-
-					LittleSombrero ls;
-					for(std::pair<MatrixInt, std::string> &m: ls.loadLs())
-						lattices.push_back(new Lattice(m.first, m.second));
-
-					ls_info = ls.loadInfo();
 
 				}else{
 
@@ -200,7 +194,7 @@ int main(int ac, char** av){
 				hmlLat->name = load_hml->value();*/
 			}
 
-			if(qaoa->is_set()){
+			if(qaoa->is_set() || vqe->is_set()){
 
 				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz, load_ansatz, seed, circ_dir_prefix](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
@@ -234,27 +228,36 @@ int main(int ac, char** av){
 																			   std::make_pair("nlopt-ftol", 10e-9)});
 				};
 
-				QAOAOptions qaoaOptions;
-				qaoaOptions.max_iters = niters->is_set() ? (niters->value() == 0 ? 5000 : niters->value()): 5000;
-				qaoaOptions.detailed_log_freq = 0;//50;
-				qaoaOptions.verbose = debug->is_set();
-				qaoaOptions.debug = debug->is_set();
-				qaoaOptions.verbose |= true;
-				qaoaOptions.optimizer = optimizer;
-				qaoaOptions.accelerator = accelerator;
-				qaoaOptions.simplifiedSimulation = true;
-				qaoaOptions.logEnergies = true;
-				qaoaOptions.extendedParametrizedMode = false;//true;
-				qaoaOptions.calcVarAssignment = true;
-				qaoaOptions.provideHamiltonian = true;
-				qaoaOptions.saveIntermediate = save_interm->is_set() ? (save_interm->value() == "" ? false : true) : false;
-				qaoaOptions.s_intermediateName = qaoaOptions.saveIntermediate ? save_interm->value() : "";
-				qaoaOptions.loadIntermediate = load_interm->is_set() ? (load_interm->value() == "" ? false : true) : false;
-				qaoaOptions.l_intermediateName = qaoaOptions.loadIntermediate ? load_interm->value() : "";
-				qaoaOptions.overlap_trick = overlap_trick->is_set();
-				qaoaOptions.nbSamples_calcVarAssignment = nbSamples->value();
-				qaoaOptions.save_ansatz = save_ansatz->is_set();
-				qaoaOptions.load_ansatz = load_ansatz->is_set();
+				QAOAOptions *qaoaOptions;
+				VQEOptions *vqeOptions;
+
+				VQAOptions *vqaOptions = qaoa->is_set() ? new QAOAOptions() : (true? new VQEOptions() : new VQAOptions());
+				vqaOptions->max_iters = niters->is_set() ? (niters->value() == 0 ? 5000 : niters->value()): 5000;
+				vqaOptions->detailed_log_freq = 0;//50;
+				vqaOptions->verbose = debug->is_set();
+				vqaOptions->debug = debug->is_set();
+				vqaOptions->verbose |= true;
+				vqaOptions->optimizer = optimizer;
+				vqaOptions->accelerator = accelerator;
+				vqaOptions->logEnergies = true;
+				vqaOptions->calcVarAssignment = true;
+				vqaOptions->provideHamiltonian = true;
+				vqaOptions->saveIntermediate = save_interm->is_set() ? (save_interm->value() == "" ? false : true) : false;
+				vqaOptions->s_intermediateName = qaoaOptions->saveIntermediate ? save_interm->value() : "";
+				vqaOptions->loadIntermediate = load_interm->is_set() ? (load_interm->value() == "" ? false : true) : false;
+				vqaOptions->l_intermediateName = qaoaOptions->loadIntermediate ? load_interm->value() : "";
+				vqaOptions->overlap_trick = overlap_trick->is_set();
+				vqaOptions->nbSamples_calcVarAssignment = nbSamples->value();
+				vqaOptions->save_ansatz = save_ansatz->is_set();
+				vqaOptions->load_ansatz = load_ansatz->is_set();
+
+				if(qaoa->is_set()){
+					qaoaOptions = static_cast<QAOAOptions*>(vqaOptions);
+					qaoaOptions->simplifiedSimulation = true;
+					qaoaOptions->extendedParametrizedMode = false;//true;
+				}else if(vqe->is_set()){
+					vqeOptions = static_cast<VQEOptions*>(vqaOptions);
+				}
 
 				MapOptions* mapOptions = new MapOptions();
 				mapOptions->verbose = debug->is_set();
@@ -271,9 +274,9 @@ int main(int ac, char** av){
 
 				if(hml_lattice_mode){
 					xacc::qbit* buffer;
-					ProgressBar bar{bar_opts(0, 1, hmlLat->name)};
-					qaoaOptions.set_default_stats_function(execStats, &bar, hmlLat);
-					Qaoa::run_qaoa(&buffer, hmlLat->toHamiltonianString(), load_hml->value(), &bar, execStats, &qaoaOptions);
+					ProgressBar bar{bar_opts(0, 1, hmlLat->name, qaoaOptions)};
+					qaoaOptions->set_default_stats_function(execStats, &bar, hmlLat);
+					Qaoa::run_qaoa(&buffer, hmlLat->toHamiltonianString(), load_hml->value(), &bar, execStats, qaoaOptions);
 					logd("Hml mode");
 				}else{
 					int counter = 0;
@@ -292,7 +295,9 @@ int main(int ac, char** av){
 
 						//THIS IS DONE A LITTLE BIT ABOVE
 						//if(paper_exp->is_set() && rank_reduce->value())
-						//	lattice->reduce_rank(rank_reduce->value());
+
+						loge("DELETE THIS TO 10 CONVERSION!");
+						lattice->reduce_rank(10);
 
 						if(lll_preprocess->is_set()){
 							lattice->lll_transformation = new MatrixInt(lattice->n_rows, lattice->n_cols);
@@ -306,16 +311,36 @@ int main(int ac, char** av){
 
 						std::pair<std::vector<double>, std::vector<int>> hamiltonian2 = lattice->getHmlInQuestFormulation();
 
-						ProgressBar bar{bar_opts(counter, num_lattices, lattice->name)};
+						QOracle quantum_oracle;
 
-						qaoaOptions.set_default_stats_function(execStats, &bar, lattice);
-						if(qaoaOptions.overlap_trick)
-							qaoaOptions.zero_reference_state = lattice->getZeroReferenceState();
+						if(qaoa->is_set()){
 
-						QOracle quantum_oracle = [&bar, execStats, &qaoaOptions, hamiltonian2]
-												  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
-							Qaoa::run_qaoa(buffer, hamiltonian, hamiltonian2, name, &bar, execStats, &qaoaOptions);
-						};
+							ProgressBar bar{bar_opts(counter, num_lattices, lattice->name, qaoaOptions)};
+
+							qaoaOptions->set_default_stats_function(execStats, &bar, lattice);
+							if(qaoaOptions->overlap_trick)
+								qaoaOptions->zero_reference_state = lattice->getZeroReferenceState();
+
+							quantum_oracle = [&bar, execStats, qaoaOptions, hamiltonian2]
+													  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
+								Qaoa::run_qaoa(buffer, hamiltonian, hamiltonian2, name, &bar, execStats, qaoaOptions);
+							};
+						}else if(vqe->is_set()){
+
+							ProgressBar bar{bar_opts(counter, num_lattices, lattice->name, vqeOptions)};
+
+							vqeOptions->set_default_stats_function(execStats, &bar, lattice);
+							if(vqeOptions->overlap_trick)
+								vqeOptions->zero_reference_state = lattice->getZeroReferenceState();
+
+							quantum_oracle = [&bar, execStats, vqeOptions, hamiltonian2]
+													  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
+								//Qaoa::run_qaoa(buffer, hamiltonian, hamiltonian2, name, &bar, execStats, &qaoaOptions);
+								Vqe::run_vqe(buffer, hamiltonian, hamiltonian2, name, &bar, execStats, vqeOptions);
+							};
+						}else{
+							throw;
+						}
 
 						IterativeLatticeReduction ilr(lattice, mapOptions, quantum_oracle, 1);
 
@@ -337,7 +362,7 @@ int main(int ac, char** av){
 				//}
 
 				xacc::Finalize();
-			} else{ //enum
+			} else{/* //enum
 
 				MapOptions* mapOptions = new MapOptions();
 				mapOptions->num_qbits_per_x=qubits_per_x->value();
@@ -610,7 +635,7 @@ throw;
 					ofs_littleSombrero.close();
 				}
 
-			}
+			*/}
 			int flag;
 			MPI_Finalized(&flag);
 		    if(!flag)

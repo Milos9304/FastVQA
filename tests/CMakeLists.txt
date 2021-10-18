@@ -19,7 +19,8 @@ add_executable(measurementQubitEndianness measurementQubitEndianness.cpp)
 add_executable(iterativeLatticeReductionAlgo iterativeLatticeReductionAlgo.cpp 
 											 ../src/vqaConfig.cpp 
 											 ../src/qaoa/qaoa.cpp
-											 ../src/qaoa/qaoaOptions.cpp
+											 ../src/vqe/vqe.cpp
+											 ../src/vqaOptions.cpp
 											 ../src/executionStatistics.cpp
 											 ../src/utils.cpp
 											 ../src/latticeAlgorithms/iterativeLatticeReduction.cpp

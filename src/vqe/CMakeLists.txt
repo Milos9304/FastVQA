@@ -1,6 +1,6 @@
-set(LIBRARY_NAME qaoa)
+set(LIBRARY_NAME vqe)
 
-file(GLOB SRC qaoa.cpp)
+file(GLOB SRC vqe.cpp)
 set(SRC_ORIG ${SRC})
 
 usfunctiongetresourcesource(TARGET
@@ -21,7 +21,7 @@ set_target_properties(${LIBRARY_NAME}
                                 US_BUNDLE_NAME
                                 ${_bundle_name})
 usfunctionembedresources(TARGET
-                        ${LIBRARY_NAME}
+                       ${LIBRARY_NAME}
                         WORKING_DIRECTORY
                         ${CMAKE_CURRENT_SOURCE_DIR}
                         FILES

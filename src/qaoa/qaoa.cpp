@@ -11,9 +11,6 @@
 #include "../io/saveProgress.hpp"
 #include "mpi.h"
 
-indicators::ProgressBar* progress_bar;
-ExecutionStatistics* execStats;
-
 void Qaoa::run_qaoa(xacc::qbit** buffer,
 		std::string hamiltonian,
 		std::string name,
@@ -75,9 +72,9 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
    }
 
    if(bar)
-	   progress_bar = bar;
+	   qaoaOptions->progress_bar = bar;
 
-   execStats = executionStats;
+   qaoaOptions->execStats = executionStats;
 
    //xacc::setOption("quest-verbose", "true");
    //xacc::setOption("quest-debug", "true");

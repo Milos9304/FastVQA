@@ -1,0 +1,6 @@
+{
+  "bundle.symbolic_name" : "FastVQA",
+  "bundle.activator" : true,
+  "bundle.name" : "FastVQA",
+  "bundle.description" : "Have fun!"
+}
