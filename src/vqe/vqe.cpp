@@ -201,7 +201,9 @@ void Vqe::_run_vqe(xacc::qbit** buffer,
 	     					   hamCoeffs,
 	     					   hamPauliCodes,
 	     					   name)),
-	                    std::make_pair("optimizer", optimizer)});
+	                    std::make_pair("optimizer", optimizer),
+						std::make_pair("overlapTrick", vqeOptions->overlap_trick),
+						std::make_pair("zeroRefState", vqeOptions->zero_reference_state)});
          else
         	 initOk=vqe->initialize({std::make_pair("ansatz", ansatz),
         	 	                    std::make_pair("observable", observable),
@@ -210,7 +212,9 @@ void Vqe::_run_vqe(xacc::qbit** buffer,
         	 	     					   hamCoeffs,
         	 	     					   hamPauliCodes,
         	 	     					   name)),
-        	 	                    std::make_pair("optimizer", optimizer)});
+        	 	                    std::make_pair("optimizer", optimizer),
+									std::make_pair("overlapTrick", vqeOptions->overlap_trick),
+									std::make_pair("zeroRefState", vqeOptions->zero_reference_state)});
    //}
 	   /*
    else{

@@ -54,7 +54,7 @@ std::pair<std::vector<double>, std::vector<int>> Lattice::getHmlInQuestFormulati
 		}
 
 		for(int i = 0; i < nbQubits; ++i){
-			if(i == pos1 || i == pos2)
+			if(i == nbQubits-1-pos1 || i == nbQubits-1-pos2)
 				pauliOpts.push_back(3); //3 is pauli op code for z in qiskit
 			else
 				pauliOpts.push_back(0);

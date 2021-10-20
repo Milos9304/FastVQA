@@ -61,6 +61,7 @@ int main(int ac, char** av){
 		auto overlap_trick   = op.add<Switch>("o", "", "perform overlap trick");
 		auto overlap_penalty = op.add<Value<int>>("p", "", "overlap penalty", 0);
 		auto lll_preprocess  = op.add<Switch>("", "lll", "perform LLL preprocessing on the lattice");
+		auto second_eigval   = op.add<Switch>("", "second", "pick second lowest energy");
 
 		auto paper_exp		 = op.add<Switch>("e", "paperexp", "perform experiment as in the paper");
 		auto rank_reduce 	 = op.add<Value<int>>("r", "", "rank truncation for paperexp", 0);
@@ -96,7 +97,7 @@ int main(int ac, char** av){
 
 				loge("Gaussian heuristics not implemented for low rank matrices. Returning 1.");
 
-				SolutionDataset solutionDataset = run_paper_exp(25, 25, 180);
+				SolutionDataset solutionDataset = run_paper_exp(11, 10, 180);
 				std::pair<std::vector<MatrixInt>, std::vector<Solution>> dataset = solutionDataset.getMatricexAndDataset();
 				std::vector<MatrixInt> matrices = std::get<0>(dataset);
 				std::vector<Solution> solutions = std::get<1>(dataset);
@@ -196,7 +197,7 @@ int main(int ac, char** av){
 
 			if(qaoa->is_set() || vqe->is_set()){
 
-				AcceleratorPartial accelerator = [overlap_penalty, overlap_trick, nbSamples, save_ansatz, load_ansatz, seed, circ_dir_prefix, vqe](std::shared_ptr<xacc::Observable> observable,
+				AcceleratorPartial accelerator = [overlap_penalty, second_eigval, overlap_trick, nbSamples, save_ansatz, load_ansatz, seed, circ_dir_prefix, vqe](std::shared_ptr<xacc::Observable> observable,
 						bool hamiltonianExpectation,
 						std::vector<double> hamCoeffs,
 						std::vector<int>hamPauliCodes,
@@ -215,6 +216,7 @@ int main(int ac, char** av){
 							 std::make_pair("nbSamples", nbSamples->value()),
 							 std::make_pair("name", name),
 							 std::make_pair("overlapTrick", overlap_trick->is_set()),
+							 std::make_pair("second_eigenergy", second_eigval->is_set()),
    						     std::make_pair("saveAnsatz", save_ansatz->is_set()),
 							 std::make_pair("loadAnsatz", load_ansatz->is_set()),
 							 std::make_pair("vqa_mode", (vqe->is_set() ? std::string("vqe") : std::string("vqe"))),
@@ -226,7 +228,7 @@ int main(int ac, char** av){
 				OptimizerPartial optimizer = [](std::vector<double> initialParams, int max_iters) {
 					return xacc::getOptimizer("nlopt", xacc::HeterogeneousMap {std::make_pair("initial-parameters", initialParams),
 																			   std::make_pair("nlopt-maxeval", max_iters),
-																			   std::make_pair("nlopt-ftol", /*10e-9*/10e-3)});
+																			   std::make_pair("nlopt-ftol", /*10e-9*/10e-1)});
 				};
 
 				QAOAOptions *qaoaOptions;
@@ -263,6 +265,7 @@ int main(int ac, char** av){
 				MapOptions* mapOptions = new MapOptions();
 				mapOptions->verbose = debug->is_set();
 				mapOptions->num_qbits_per_x=qubits_per_x->value();
+				mapOptions->penalty=overlap_penalty->value();
 				if(overlap_trick->is_set() || overlap_penalty->value() == 0)
 					mapOptions->pen_mode = MapOptions::no_hml_penalization;
 				else
@@ -297,8 +300,8 @@ int main(int ac, char** av){
 						//THIS IS DONE A LITTLE BIT ABOVE
 						//if(paper_exp->is_set() && rank_reduce->value())
 
-						loge("DELETE THIS TO 3 CONVERSION!");
-						lattice->reduce_rank(3);
+						/*loge("DELETE THIS TO 15 CONVERSION!");
+						lattice->reduce_rank(15);*/
 
 						if(lll_preprocess->is_set()){
 							lattice->lll_transformation = new MatrixInt(lattice->n_rows, lattice->n_cols);
