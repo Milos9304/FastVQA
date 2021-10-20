@@ -226,7 +226,7 @@ int main(int ac, char** av){
 				OptimizerPartial optimizer = [](std::vector<double> initialParams, int max_iters) {
 					return xacc::getOptimizer("nlopt", xacc::HeterogeneousMap {std::make_pair("initial-parameters", initialParams),
 																			   std::make_pair("nlopt-maxeval", max_iters),
-																			   std::make_pair("nlopt-ftol", 10e-9)});
+																			   std::make_pair("nlopt-ftol", /*10e-9*/10e-3)});
 				};
 
 				QAOAOptions *qaoaOptions;
@@ -297,8 +297,8 @@ int main(int ac, char** av){
 						//THIS IS DONE A LITTLE BIT ABOVE
 						//if(paper_exp->is_set() && rank_reduce->value())
 
-						loge("DELETE THIS TO 10 CONVERSION!");
-						lattice->reduce_rank(10);
+						loge("DELETE THIS TO 3 CONVERSION!");
+						lattice->reduce_rank(3);
 
 						if(lll_preprocess->is_set()){
 							lattice->lll_transformation = new MatrixInt(lattice->n_rows, lattice->n_cols);
