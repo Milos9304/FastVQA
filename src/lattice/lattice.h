@@ -15,6 +15,16 @@
 #include "../symbolic_manipulation.h"
 #include <vector>
 
+struct Hamiltonian{
+	int nbQubits;
+
+	std::string getHamiltonianString(){return "";}
+
+	//quest formulation
+	std::vector<double> coeffs;
+	std::vector<int> pauliOpts;
+};
+
 class MapOptions{
 
 	public:
@@ -58,9 +68,12 @@ class MapOptions{
 		}
 };
 
-class Lattice : public AbstractLatticeInput{
+class Lattice {
 
 	public:
+
+	std::string name;
+	int n_rows, n_cols;
 
 	MatrixInt* lll_transformation;
 	bool lll_preprocessed;
@@ -108,7 +121,7 @@ class Lattice : public AbstractLatticeInput{
 		MatrixInt* get_orig_lattice_transposed(){ return &orig_lattice_transposed; }
 		MatrixInt* get_current_lattice(){ return &current_lattice; }
 
-		std::pair<std::vector<double>, std::vector<int>> getHmlInQuestFormulation();
+		Hamiltonian getHamiltonian();
 
 		std::string toHamiltonianString();
 		std::string toHamiltonianString(MapOptions* options);

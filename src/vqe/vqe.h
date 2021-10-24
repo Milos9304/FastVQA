@@ -9,11 +9,12 @@
 #define SRC_VQE_VQE_H_
 
 //#include "PauliOperator.hpp"
+#include "../lattice/lattice.h"
 #include "../indicators/progress_bar.hpp"
 #include "../executionStatistics.h"
-#include "xacc_observable.hpp"
-#include "xacc_service.hpp"
-#include "xacc.hpp"
+#include "../fastVQA.h"
+#include "../ansatz.h"
+#include "../Optimizer.h"
 #include "vqeOptions.h"
 
 //void run_qaoa(xacc::quantum::PauliOperator, bool verbose);
@@ -22,17 +23,18 @@ class Vqe{
 
 	public:
 
-		static void run_vqe(xacc::qbit** buffer, std::pair<std::vector<double>, std::vector<int>>, std::string name, ExecutionStatistics* execStats, VQEOptions* options);
-		static void run_vqe(xacc::qbit** buffer, std::string hamiltonian, std::string name, ExecutionStatistics* execStats, VQEOptions* options);
-		static void run_vqe(xacc::qbit** buffer, std::string hamiltonian, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, VQEOptions* options);
-		static void run_vqe(xacc::qbit** buffer, std::string hamiltonian, std::pair<std::vector<double>, std::vector<int>> hamiltonian2, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, VQEOptions* options);
-
-		static void run_vqe_slave_process();
+		void run_vqe(ExperimentBuffer* buffer, Hamiltonian* hamiltonian, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, VQEOptions* options);
+		void run_vqe_slave_process();
 
 	private:
+		bool initialize(std::string name, Ansatz* ansatz,
+			Hamiltonian* observable,
+			StatsFunction stats_function,
+			Optimizer* optimizer,
+			bool overlap_trick,
+			int zero_reference_state);
 
-		static void _run_vqe(xacc::qbit** buffer, std::string hamiltonian, std::pair<std::vector<double>, std::vector<int>> hamiltonian2, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, VQEOptions* options);
-
+		void execute(ExperimentBuffer* buffer);
 };
 
 

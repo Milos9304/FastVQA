@@ -10,6 +10,14 @@
 
 using namespace indicators;
 
+class ExperimentBuffer{
+public:
+   double opt_val;
+   std::vector<double> opt_params;
+   double expected_energy;
+   double hit_rate;
+};
+
 Color colors[9] = {Color::red, Color::green, Color::yellow, Color::blue, Color::magenta, Color::cyan};
 
 #define bar_opts(counter, num_lattices, lattice_name, optionsName)   option::BarWidth{50},\

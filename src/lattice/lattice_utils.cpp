@@ -11,17 +11,16 @@
 
 #define log_pi 1.1447298858494
 
-std::pair<std::vector<double>, std::vector<int>> Lattice::getHmlInQuestFormulation(){
+Hamiltonian Lattice::getHamiltonian(){
 
-	std::vector<double> coeffs;
-	std::vector<int> pauliOpts;
+	Hamiltonian result;
 
 	if(!qubo_generated){
 		loge("Hamiltonian referenced but not yet generated!");
-		return std::pair<std::vector<double>, std::vector<int>>(coeffs, pauliOpts);
+		throw;
 	}
 
-	int nbQubits = expression_qubo->getIdMapSize()-1; //-1 bc of identity
+	result.nbQubits = expression_qubo->getIdMapSize()-1; //-1 bc of identity
 
 	logw("Beware of overflows!! Create gmp qiskit or normalize to lower vals");
 	logw("Normalization is probably best solution");
@@ -36,7 +35,7 @@ std::pair<std::vector<double>, std::vector<int>> Lattice::getHmlInQuestFormulati
 
 		int pos1, pos2;
 
-		coeffs.push_back(term.second.get_d());
+		result.coeffs.push_back(term.second.get_d());
 
 		if(id1 == -1 && id2 == -1){ //id
 			pos1=pos2=-1; //never matches
@@ -53,15 +52,14 @@ std::pair<std::vector<double>, std::vector<int>> Lattice::getHmlInQuestFormulati
 			pos2=expression_qubo->getQubit(id2);
 		}
 
-		for(int i = 0; i < nbQubits; ++i){
-			if(i == nbQubits-1-pos1 || i == nbQubits-1-pos2)
-				pauliOpts.push_back(3); //3 is pauli op code for z in qiskit
+		for(int i = 0; i < result.nbQubits; ++i){
+			if(i == result.nbQubits-1-pos1 || i == result.nbQubits-1-pos2)
+				result.pauliOpts.push_back(3); //3 is pauli op code for z in qiskit
 			else
-				pauliOpts.push_back(0);
+				result.pauliOpts.push_back(0);
 		}
-
 	}
-	return std::pair<std::vector<double>, std::vector<int>>(coeffs, pauliOpts);
+	return result;
 }
 
 mpq_class Lattice::calculate_gh_squared(MatrixInt* lattice){

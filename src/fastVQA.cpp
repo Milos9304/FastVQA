@@ -12,12 +12,8 @@
 #include "indicators/progress_bar.hpp"
 #include "latticeAlgorithms/iterativeLatticeReduction.h"
 #include "lattice/hmlLattice.hpp"
-#include <xacc.hpp>
 
 #include "fastVQA.h"
-
-#include "xacc_observable.hpp" //del
-#include "PauliOperator.hpp" //del
 
 #include "enumeration.h"
 #include "run_paper_experiment.h"
@@ -86,10 +82,10 @@ int main(int ac, char** av){
 
 		int num_lattices;
 		bool hml_lattice_mode=false;
-		HmlLattice* hmlLat;
+		//HmlLattice* hmlLat;
 		Lattice* loadL;
 		std::vector<Lattice> lattices_in;
-		std::vector<AbstractLatticeInput*> lattices;
+		std::vector</*AbstractLatticeInput**/Lattice*> lattices;
 
 		if(qaoa -> is_set() || vqe->is_set()){
 
@@ -277,11 +273,12 @@ int main(int ac, char** av){
 				xacc::setOption("quest-debug", "false");
 
 				if(hml_lattice_mode){
-					xacc::qbit* buffer;
+					/*xacc::qbit* buffer;
 					ProgressBar bar{bar_opts(0, 1, hmlLat->name, qaoaOptions)};
 					qaoaOptions->set_default_stats_function(execStats, &bar, hmlLat);
 					Qaoa::run_qaoa(&buffer, hmlLat->toHamiltonianString(), load_hml->value(), &bar, execStats, qaoaOptions);
-					logd("Hml mode");
+					logd("Hml mode");*/
+					loge("UNUIMPLEMENTED");throw;
 				}else{
 					int counter = 0;
 					int prev_lattice_id=-1;
@@ -313,11 +310,11 @@ int main(int ac, char** av){
 
 						logw(lattice->toHamiltonianString(mapOptions));
 
-						std::pair<std::vector<double>, std::vector<int>> hamiltonian2 = lattice->getHmlInQuestFormulation();
+						Hamiltonian hamiltonian = lattice->getHamiltonian();
 
 						QOracle quantum_oracle;
 
-						if(qaoa->is_set()){
+						if(qaoa->is_set()){/*
 
 							ProgressBar bar{bar_opts(counter, num_lattices, lattice->name, qaoaOptions)};
 
@@ -325,11 +322,11 @@ int main(int ac, char** av){
 							if(qaoaOptions->overlap_trick)
 								qaoaOptions->zero_reference_state = lattice->getZeroReferenceState();
 
-							quantum_oracle = [&bar, execStats, qaoaOptions, hamiltonian2]
+							quantum_oracle = [&bar, execStats, qaoaOptions, hamiltonian]
 													  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
-								Qaoa::run_qaoa(buffer, hamiltonian, hamiltonian2, name, &bar, execStats, qaoaOptions);
+								Qaoa::run_qaoa(buffer, hamiltonian, hamiltonian, name, &bar, execStats, qaoaOptions);
 							};
-						}else if(vqe->is_set()){
+						*/}else if(vqe->is_set()){
 
 							ProgressBar bar{bar_opts(counter, num_lattices, lattice->name, vqeOptions)};
 
@@ -337,10 +334,10 @@ int main(int ac, char** av){
 							if(vqeOptions->overlap_trick)
 								vqeOptions->zero_reference_state = lattice->getZeroReferenceState();
 
-							quantum_oracle = [&bar, execStats, vqeOptions, hamiltonian2]
-													  (xacc::qbit** buffer, std::string hamiltonian, std::string name) {
+							quantum_oracle = [&bar, execStats, vqeOptions, &hamiltonian]
+													  (ExperimentBuffer* buffer, std::string name) {
 								//Qaoa::run_qaoa(buffer, hamiltonian, hamiltonian2, name, &bar, execStats, &qaoaOptions);
-								Vqe::run_vqe(buffer, hamiltonian, hamiltonian2, name, &bar, execStats, vqeOptions);
+								Vqe::run_vqe(buffer, &hamiltonian, name, /*&bar, */execStats, vqeOptions);
 							};
 						}else{
 							throw;

@@ -5,12 +5,12 @@
  *      Author: Milos Prokop
  */
 
-#ifndef SRC_LATTICE_HMLLATTICE_HPP_
+/*#ifndef SRC_LATTICE_HMLLATTICE_HPP_
 #define SRC_LATTICE_HMLLATTICE_HPP_
 
 #include "abstractLatticeInput.hpp"
 
-class HmlLattice : public AbstractLatticeInput{
+class HmlLattice{
 
 	public:
 
@@ -27,10 +27,6 @@ class HmlLattice : public AbstractLatticeInput{
 
 		std::string toHamiltonianString(){return hamiltonian;}
 
-		std::pair<std::vector<double>, std::vector<int>> getHmlInQuestFormulation(){}
-
-
-
 	private:
 		std::string hamiltonian;
 
@@ -38,4 +34,4 @@ class HmlLattice : public AbstractLatticeInput{
 
 
 
-#endif /* SRC_LATTICE_HMLLATTICE_HPP_ */
+#endif *//* SRC_LATTICE_HMLLATTICE_HPP_ */
