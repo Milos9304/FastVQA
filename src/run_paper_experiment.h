@@ -9,6 +9,10 @@
 #define SRC_RUN_PAPER_EXP_H_
 
 #include "vqaConfig.h"
+#include <fstream>
+#include <vector>
+#include <utility>
+#include "io/logger.h"
 
 class Solution{
 public:

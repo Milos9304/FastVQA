@@ -11,9 +11,10 @@
 
 #define log_pi 1.1447298858494
 
-Hamiltonian Lattice::getHamiltonian(){
+Hamiltonian Lattice::getHamiltonian(MapOptions* options){
 
 	Hamiltonian result;
+	this->calcHamiltonian(options, true);
 
 	if(!qubo_generated){
 		loge("Hamiltonian referenced but not yet generated!");

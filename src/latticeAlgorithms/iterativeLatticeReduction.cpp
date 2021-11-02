@@ -71,15 +71,15 @@ std::pair<VectorInt, double> IterativeLatticeReduction::run_test(){
 
 std::pair<std::string, double> IterativeLatticeReduction::run_quantum(){
 
-	xacc::qbit* buffer;
+	ExperimentBuffer buffer;
 
-	this->quantum_oracle(&buffer, lattice->toHamiltonianString(options), lattice->name);
+	this->quantum_oracle(&buffer, /*lattice->toHamiltonianString(options), */lattice->name);
 
 	//std::cerr << "Min QUBO: " << (*buffer)["opt-val"].as<double>() << "\n";
 	//std::cerr << "Opt config: " << (*buffer)["opt-config"].as<std::string>() << "\n";
 
-	return std::pair<std::string, double>((*buffer)["opt-config"].as<std::string>(),
-			(*buffer)["opt-val"].as<double>());
+	return std::pair<std::string, double>("unknown", buffer.opt_val);/*((*buffer)["opt-config"].as<std::string>(),
+			(*buffer)["opt-val"].as<double>());*/
 
 	//std::cout << "Min QUBO: " << (*buffer)["opt-val"].as<double>() << "\n";
 	//std::cerr << "Opt config: " << (*buffer)["opt-config"].as<std::string>() << "\n";

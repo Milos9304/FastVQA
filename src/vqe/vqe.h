@@ -10,11 +10,13 @@
 
 //#include "PauliOperator.hpp"
 #include "../lattice/lattice.h"
-#include "../indicators/progress_bar.hpp"
+#include "../io/logger.h"
+#include "../io/saveProgress.hpp"
+#include "../io/indicators/progress_bar.hpp"
 #include "../executionStatistics.h"
 #include "../fastVQA.h"
-#include "../ansatz.h"
-#include "../Optimizer.h"
+#include "../ansatz/ansatz.h"
+#include "../optimizer/optimizer.h"
 #include "vqeOptions.h"
 
 //void run_qaoa(xacc::quantum::PauliOperator, bool verbose);
@@ -27,16 +29,19 @@ class Vqe{
 		void run_vqe_slave_process();
 
 	private:
-		bool initialize(std::string name, Ansatz* ansatz,
+
+		Ansatz ansatz;
+
+		int num_qubits;
+		int num_params;
+		/*bool initialize(std::string name, Ansatz* ansatz,
 			Hamiltonian* observable,
 			StatsFunction stats_function,
 			Optimizer* optimizer,
 			bool overlap_trick,
 			int zero_reference_state);
-
-		void execute(ExperimentBuffer* buffer);
+*/
+		void execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, Hamiltonian* hamiltonian);
 };
-
-
 
 #endif /* SRC_QAOA_QAOA_H_ */

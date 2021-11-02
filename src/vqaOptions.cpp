@@ -6,15 +6,14 @@
  */
 
 #include "vqaOptions.h"
-#include "logger.h"
 
-void VQAOptions::set_default_stats_function(ExecutionStatistics* executionStatistics, indicators::ProgressBar* bar){
+/*void VQAOptions::set_default_stats_function(ExecutionStatistics* executionStatistics, indicators::ProgressBar* bar){
 
-	this->set_default_stats_function(executionStatistics, bar, new HmlLattice(0, 0, ""));
+	this->set_default_stats_function(executionStatistics, bar, new Lattice(0, 0, ""));
 	this->detailedLoggingDisabled = true;
-}
+}*/
 
-void VQAOptions::set_default_stats_function(ExecutionStatistics* executionStatistics, indicators::ProgressBar* bar, AbstractLatticeInput* lattice){
+void VQAOptions::set_default_stats_function(ExecutionStatistics* executionStatistics, indicators::ProgressBar* bar, Lattice* lattice){
 
 	this->detailedLoggingDisabled = false;
 

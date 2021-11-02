@@ -7,11 +7,9 @@
 #include <random>
 
 #include <fstream>
-#include "../logger.h"
-#include "../io/saveProgress.hpp"
 #include "mpi.h"
 
-void Qaoa::run_qaoa(xacc::qbit** buffer,
+void Qaoa::run_qaoa(ExperimentBuffer* buffer,
 		std::string hamiltonian,
 		std::string name,
 		ExecutionStatistics* executionStats,
@@ -21,7 +19,7 @@ void Qaoa::run_qaoa(xacc::qbit** buffer,
 
 }
 
-void Qaoa::run_qaoa(xacc::qbit** buffer,
+void Qaoa::run_qaoa(ExperimentBuffer* buffer,
 		std::pair<std::vector<double>, std::vector<int>> hamiltonian,
 		std::string name,
 		ExecutionStatistics* executionStats,
@@ -32,7 +30,7 @@ void Qaoa::run_qaoa(xacc::qbit** buffer,
 }
 
 
-void Qaoa::run_qaoa(xacc::qbit** buffer,
+void Qaoa::run_qaoa(ExperimentBuffer* buffer,
 		std::string hamiltonian,
 		std::string name,
 		indicators::ProgressBar* bar,
@@ -43,7 +41,7 @@ void Qaoa::run_qaoa(xacc::qbit** buffer,
 
 }
 
-void Qaoa::run_qaoa(xacc::qbit** buffer,
+void Qaoa::run_qaoa(ExperimentBuffer* buffer,
 		std::string hamiltonian,
 		std::pair<std::vector<double>, std::vector<int>> hamiltonian2,
 		std::string name,
@@ -55,7 +53,7 @@ void Qaoa::run_qaoa(xacc::qbit** buffer,
 
 }
 
-void Qaoa::_run_qaoa(xacc::qbit** buffer,
+void Qaoa::_run_qaoa(ExperimentBuffer* buffer,
 		std::string hamiltonian,
 		std::pair<std::vector<double>, std::vector<int>> hamiltonian2,
 		std::string name,
@@ -83,7 +81,14 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 
    // The corresponding QUBO Hamiltonian is:
 
+
+
+   /*
+
+
    auto observable = xacc::quantum::getObservable("pauli", hamiltonian);
+
+
    logd("Hamiltonian loaded into observable");
 
    //std::cout << "obs1 " << observable->toString() << "\n";
@@ -109,7 +114,7 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 
    std::vector<double> initialParams;
    //std::random_device rd;
-   std::mt19937 gen(/*rd()*/1997);
+   std::mt19937 gen(1997);
    std::uniform_real_distribution<> dis(-2.0, 2.0);
 
 
@@ -147,15 +152,7 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 	   hamPauliCodes = hamiltonian2.second;
    }
 
-   // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
-   /*auto acc = xacc::getAccelerator("quest",
-		   {{"nbQbits", observable->nBits()},
-			{"startWithPlusState", true},
-			{"repeated_measurement_strategy", true},
-			{"hamiltonianProvided", qaoaOptions->provideHamiltonian},
-		    {"hamiltonianCoeffs", hamCoeffs},
-			{"pauliCodes", hamPauliCodes}
-		   });*/
+
 
    auto optimizer = xacc::getOptimizer("nlopt",
 		   {{"initial-parameters", initialParams}, {"nlopt-maxeval", max_iters}});
@@ -195,7 +192,6 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 					   hamPauliCodes,
 					   name)),
 		   	   std::make_pair("optimizer", qaoaOptions->optimizer(initialParams, max_iters)),
-	   		   std::make_pair("observable", /*static_cast<xacc::Observable*>(&*/observable/*)*/),
 			   std::make_pair("detailed_log_freq", qaoaOptions->detailed_log_freq),
 	   		   // number of time steps (p) param
 	   		   std::make_pair("steps", qaoaOptions->p),
@@ -238,9 +234,11 @@ void Qaoa::_run_qaoa(xacc::qbit** buffer,
 
 
    qaoaOptions->outfile.close();
-
+*/
 }
 
 void Qaoa::run_qaoa_slave_process(){
-	auto acc = xacc::getAccelerator("quest");
+	//auto acc = xacc::getAccelerator("quest");
+	loge("NOT IMPLEMENTED");
+	throw;
 }

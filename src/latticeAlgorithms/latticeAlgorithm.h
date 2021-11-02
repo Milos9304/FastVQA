@@ -8,12 +8,16 @@
 #ifndef SRC_LATTICEALGORITHMS_LATTICEALGORITHM_H_
 #define SRC_LATTICEALGORITHMS_LATTICEALGORITHM_H_
 
+#include "../fastVQA.h"
+#include "../io/logger.h"
 #include "../lattice/lattice.h"
 #include <functional>
-//#include "PauliOperator.hpp"
-#include "xacc.hpp"
+#include "fplll.h"
 
-typedef std::function<void(xacc::qbit** buffer, std::string hamiltonian, std::string name)> QOracle;
+//#include "PauliOperator.hpp"
+//#include "xacc.hpp"
+
+typedef std::function<void(ExperimentBuffer* buffer, std::string name)> QOracle;
 
 class LatticeAlgorithm{
 

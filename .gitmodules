@@ -1,0 +1,7 @@
+[submodule "src/QuEST"]
+	path = src/QuEST
+	url = https://github.com/Milos9304/QuEST.git
+	branch = Quacc
+[submodule "src/optimizer/nlopt"]
+	path = src/optimizer/nlopt
+	url = https://github.com/stevengj/nlopt

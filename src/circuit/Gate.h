@@ -8,17 +8,35 @@
 #ifndef QUACC_GATE_ENCODINGS_H_
 #define QUACC_GATE_ENCODINGS_H_
 
+#include <memory>
+#include <string>
+#include "../io/logger.h"
+
 typedef unsigned char GateCode;
+
+class Parameter{
+public:
+	static const std::string blank_param_name;
+
+	std::string name;
+	double value;
+	Parameter(std::string name, double value){
+		this->name = name;
+		this->value = value;
+	}
+};
 
 class Gate{
 
 private:
-	static const uint8_t two_qubit=128;
-	static const uint8_t one_qubit=0;
+	static const unsigned char two_qubit=128;
+	static const unsigned char one_qubit=0;
 
 public:
 
-	Gate(GateCode code, int qubit1, double param=.0){
+	static const std::shared_ptr<Parameter> blankParam;
+
+	Gate(GateCode code, int qubit1, std::shared_ptr<Parameter> param=blankParam){
 		if(code & two_qubit){
 		  loge(std::to_string(code) + "is a two qubit gate");
 		  throw;
@@ -29,7 +47,7 @@ public:
 		this->param=param;
 	}
 
-	Gate(GateCode code, int qubit1, int qubit2, double param=.0){
+	Gate(GateCode code, int qubit1, int qubit2, std::shared_ptr<Parameter> param=blankParam){
 		if(!(code & two_qubit)){
 		  loge(std::to_string(code) + "is a one qubit gate");
 		  throw;
@@ -44,7 +62,7 @@ public:
 	GateCode code;
 	bool is_twoQubit(){return code & two_qubit;}
 	int qubit1, qubit2;
-	double param;
+	std::shared_ptr<Parameter> param;
 
 	//Gate codes
 	static const GateCode g_I = 1 | one_qubit;

@@ -7,8 +7,6 @@
 #include <random>
 
 #include <fstream>
-#include "../logger.h"
-#include "../io/saveProgress.hpp"
 #include "mpi.h"
 
 void Vqe::run_vqe(ExperimentBuffer* buffer,
@@ -20,6 +18,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 
    int max_iters = vqeOptions->max_iters;
    bool verbose = vqeOptions->verbose;
+
 
    if(vqeOptions->logEnergies){
 	   //vqeOptions->outfile.rdbuf()->pubsetbuf(0, 0); //disable buffer
@@ -41,9 +40,8 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 
    //logd("Hamiltonian loaded into observable");
 
-   int num_qubits = hamiltonian->nbQubits;
+   num_qubits = hamiltonian->nbQubits;
    //int num_params_per_p = vqeOptions->extendedParametrizedMode ? observable->getNonIdentitySubTerms().size() + observable->nBits() : 2;
-   int num_params_total = 2;//p * num_params_per_p;
 
    //auto buffer = xacc::qalloc(num_qubits);
    //*buffer = new xacc::qbit(xacc::qalloc(num_qubits));
@@ -60,7 +58,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
    std::uniform_real_distribution<> dis(-2.0, 2.0);
 
    if(vqeOptions->loadIntermediate){
-	   double expected_energy, sv_energy, hit_rate;
+	   /*double expected_energy, sv_energy, hit_rate;
 	   bool success = loadProgress(vqeOptions->l_intermediateName, &initialParams, &expected_energy, &sv_energy, &hit_rate);
 	   if(success){
 		   if(verbose)
@@ -68,16 +66,16 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 	   }else{
 		   loge("Problem loading params from " + vqeOptions->l_intermediateName);
 		   return;
-	   }
+	   }*/
    }else{
 	   // Init random parameters
-	   for(int i = 0; i < num_params_total; ++i){
+	   /*for(int i = 0; i < num_params_total; ++i){
 		 //initialParams.emplace_back(dis(gen));
 		   double p=dis(gen);logd(std::to_string(p));
 		   initialParams.emplace_back(p);
 	   }
 	   if(verbose)
-		   logi("Random params generated");
+		   logi("Random params generated");*/
    }
 
    //std::function<void(int, double)> stats_function = stats_func;
@@ -136,15 +134,19 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
          //m.insert("shuffle-terms", /*m_shuffleTerms*/false);
          //ansatz->expand(m);
 
-   	   	 Ansatz ansatz = getAnsatz("EfficientSU2", num_qubits);
-   	   	 Optimizer optimizer;
+   	   	   logd("Before ansatz gen");
 
-		 bool initOk=initialize(name, &ansatz,
+   	   	 ansatz = getAnsatz("EfficientSU2", num_qubits, 1997);
+   	   	 num_params = ansatz.num_params;
+
+ 	   	 logd("After ansatz gen");
+
+		 /*bool initOk=initialize(name, &ansatz,
 					hamiltonian,
 					vqeOptions->get_stats_function(),
 					&optimizer,
 					vqeOptions->overlap_trick,
-					vqeOptions->zero_reference_state);
+					vqeOptions->zero_reference_state);*/
 
 	   /*
    else{
@@ -177,15 +179,8 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 	   		});
    }*/
 
-   if(initOk)
-	   logi("VQE init successful.");
-   else{
-   	   loge("VQE Init error!");
-   	   return;
-   }
-
    logd("Executing vqe");
-   execute(buffer);
+   execute(buffer, vqeOptions->accelerator, vqeOptions->optimizer, hamiltonian);
    logd("Vqe execution done");
 
    if(vqeOptions->saveIntermediate){
@@ -205,6 +200,24 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 
 }
 
+void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, Hamiltonian* hamiltonian){
+
+	acc->initialize(hamiltonian);
+
+	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
+
+		return acc->calc_expectation(buffer, &ansatz, x);
+
+	}, num_params);
+
+	OptResult result = optimizer->optimize(f);
+
+	acc->finalize();
+
+}
+
 void Vqe::run_vqe_slave_process(){
-	auto acc = xacc::getAccelerator("quest");
+	//auto acc = xacc::getAccelerator("quest");
+	loge("NOT IMPLEMENTED");
+	throw;
 }

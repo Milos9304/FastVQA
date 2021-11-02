@@ -8,7 +8,7 @@
 #ifndef SRC_ENUMERATION_H_
 #define SRC_ENUMERATION_H_
 
-#include "indicators/progress_bar.hpp"
+#include "io/indicators/progress_bar.hpp"
 #include "lattice/lattice.h"
 
 class EnumerationC{

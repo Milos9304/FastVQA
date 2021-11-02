@@ -9,6 +9,8 @@
 #define SRC_VQACONFIG_H_
 
 #include "lattice/lattice.h"
+#include "io/logger.h"
+
 #include <vector>
 #include <fstream>
 #include <filesystem>

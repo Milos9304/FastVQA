@@ -5,7 +5,6 @@
  *      Author: Milos Prokop
  */
 
-#include "logger.h"
 #include <iomanip>
 #include "symbolic_manipulation.h"
 

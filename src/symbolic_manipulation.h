@@ -13,6 +13,7 @@
 #include <string>
 #include <algorithm>
 #include <gmpxx.h>
+#include "io/logger.h"
 
 class Var{
 

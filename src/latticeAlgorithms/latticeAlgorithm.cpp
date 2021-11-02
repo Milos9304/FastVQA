@@ -5,9 +5,7 @@
  *      Author: Milos Prokop
  */
 
-#include "../logger.h"
 #include "latticeAlgorithm.h"
-#include "fplll.h"
 
 void LatticeAlgorithm::performLLLonLattice(double delta, double eta, LLLMethod method){
 

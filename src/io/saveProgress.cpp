@@ -5,7 +5,7 @@
  *      Author: Milos Prokop
  */
 
-#include "../logger.h"
+#include "logger.h"
 #include "saveProgress.hpp"
 
 save_instance::save_instance() {} // @suppress("Class members should be properly initialized")

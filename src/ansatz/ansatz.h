@@ -8,12 +8,13 @@
 #ifndef SRC_ANSATZ_H_
 #define SRC_ANSATZ_H_
 
-#include "Circuit.h"
+#include <random>
+#include "../circuit/Circuit.h"
 
 struct Ansatz{
 	Circuit circuit;
-	Parameters parameters;
+	int num_params;
 };
 
-Ansatz getAnsatz(std::string ansatz_type, int num_qubits);
+Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int seed);
 #endif /* SRC_ANSATZ_H_ */

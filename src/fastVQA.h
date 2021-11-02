@@ -8,6 +8,9 @@
 #ifndef SRC_LATTIQ_H_
 #define SRC_LATTIQ_H_
 
+#include "io/logger.h"
+#include "io/indicators/progress_bar.hpp"
+
 using namespace indicators;
 
 class ExperimentBuffer{
@@ -18,7 +21,7 @@ public:
    double hit_rate;
 };
 
-Color colors[9] = {Color::red, Color::green, Color::yellow, Color::blue, Color::magenta, Color::cyan};
+const Color colors[9] = {Color::red, Color::green, Color::yellow, Color::blue, Color::magenta, Color::cyan};
 
 #define bar_opts(counter, num_lattices, lattice_name, optionsName)   option::BarWidth{50},\
 														option::Start{"["},\
@@ -34,18 +37,6 @@ Color colors[9] = {Color::red, Color::green, Color::yellow, Color::blue, Color::
 														option::MaxProgress{optionsName->max_iters}
 
 
-std::string process(std::string const& s)
-{
-    std::string::size_type pos = s.find('_');
-    if (pos != std::string::npos)
-    {
-        return s.substr(0, pos);
-    }
-    else
-    {
-        return s;
-    }
-}
-
+std::string process(std::string const& s);
 
 #endif /* SRC_LATTIQ_H_ */

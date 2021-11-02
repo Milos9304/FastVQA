@@ -10,20 +10,11 @@
 
 #include "abstractLatticeInput.hpp"
 
-#include "../logger.h"
+#include "../io/logger.h"
 //#include <eigen3/Eigen/Core>
 #include "../symbolic_manipulation.h"
+#include "../hamiltonian/hamiltonian.h"
 #include <vector>
-
-struct Hamiltonian{
-	int nbQubits;
-
-	std::string getHamiltonianString(){return "";}
-
-	//quest formulation
-	std::vector<double> coeffs;
-	std::vector<int> pauliOpts;
-};
 
 class MapOptions{
 
@@ -121,7 +112,7 @@ class Lattice {
 		MatrixInt* get_orig_lattice_transposed(){ return &orig_lattice_transposed; }
 		MatrixInt* get_current_lattice(){ return &current_lattice; }
 
-		Hamiltonian getHamiltonian();
+		Hamiltonian getHamiltonian(MapOptions* options);
 
 		std::string toHamiltonianString();
 		std::string toHamiltonianString(MapOptions* options);

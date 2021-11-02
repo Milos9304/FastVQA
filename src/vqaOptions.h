@@ -8,23 +8,19 @@
 #ifndef SRC_VQAOPTIONS_H_
 #define SRC_VQAOPTIONS_H_
 
-#include "indicators/progress_bar.hpp"
+#include "io/logger.h"
+#include "io/indicators/progress_bar.hpp"
 #include "executionStatistics.h"
 //#include "lattice/hmlLattice.hpp"
 #include "lattice/lattice.h"
+#include "accelerator/accelerator.h"
+#include "optimizer/optimizer.h"
 #include <functional>
 #include <fstream>
-#include <xacc.hpp>
 
 typedef std::function<void(int, double, double, double, std::string)> StatsFunction;
 
-typedef std::function<std::shared_ptr<xacc::Accelerator>(std::shared_ptr<xacc::Observable>,
-		bool, //provide hamiltonian
-		std::vector<double>, // hamCoeffs
-		std::vector<int>, //hamPauliCodes
-		std::string name)
-		> AcceleratorPartial;
-typedef std::function<std::shared_ptr<xacc::Optimizer>(std::vector<double>, int)> OptimizerPartial;
+typedef std::function<std::shared_ptr<Optimizer>(std::vector<double>, int)> OptimizerPartial;
 
 class VQAOptions{
 
@@ -57,8 +53,8 @@ class VQAOptions{
 		bool overlap_trick = false; //penalization strategy
 		int zero_reference_state=0;
 
-		AcceleratorPartial accelerator;
-		OptimizerPartial optimizer;
+		Accelerator* accelerator;
+		Optimizer* optimizer;
 
 		bool isSetLogStats(){
 			return logStats;
@@ -71,7 +67,7 @@ class VQAOptions{
 			return stats_function;
 		}
 
-		void set_default_stats_function(ExecutionStatistics* execStats, indicators::ProgressBar* bar);
+		//void set_default_stats_function(ExecutionStatistics* execStats, indicators::ProgressBar* bar);
 		void set_default_stats_function(ExecutionStatistics* execStats, indicators::ProgressBar* bar, Lattice* lattice);
 
 	private:

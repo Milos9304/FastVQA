@@ -1,10 +1,35 @@
 #include "ansatz.h"
 
-std::pair<std::shared_ptr<xacc::CompositeInstruction>, std::vector<std::string>> getAnsatz(std::string ansatz_type, int num_qubits){
+Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int seed){
+
+	Ansatz ansatz;
+    std::mt19937 gen(seed); //rd() instead of seed
+	std::uniform_real_distribution<> dis(-2.0, 2.0);
 
 	if(ansatz_type == "EfficientSU2"){
 
-		std::vector<std::string> parameters;
+		for(int i = 0; i < num_qubits; ++i){
+			double param1 = dis(gen);
+			double param2 = dis(gen);
+			ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("a"+std::to_string(i), param1)));
+			ansatz.circuit.addParametrizedGate(Gate::g_Rz, i, std::shared_ptr<Parameter>(new Parameter("b"+std::to_string(i), param2)));
+		}
+
+		for(int i = 0; i < num_qubits-1; ++i){
+			ansatz.circuit.addGate(Gate::g_CNOT, i, i+1);
+		}
+
+		for(int i = 0; i < num_qubits; ++i){
+			double param1 = dis(gen);
+			double param2 = dis(gen);
+			ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("c"+std::to_string(i), param1)));
+			ansatz.circuit.addParametrizedGate(Gate::g_Rz, i, std::shared_ptr<Parameter>(new Parameter("d"+std::to_string(i), param2)));
+		}
+
+		ansatz.num_params = num_qubits * 4;
+
+
+		/*std::vector<std::string> parameters;
 		for(int i = 0; i < num_qubits; ++i){
 			parameters.push_back("a"+std::to_string(i));
 			parameters.push_back("b"+std::to_string(i));
@@ -35,7 +60,7 @@ std::pair<std::shared_ptr<xacc::CompositeInstruction>, std::vector<std::string>>
 		std::string circuit_str=".compiler xasm\n.circuit EfficientSU2\n.parameters ";
 		circuit_str+=param_string+"\n.qbit q\nfor (int i = 0; i < "+std::to_string(num_qubits)+"; i++){"+for_body+"}";
 
-		/*std::cerr<<circuit_str<<"\n\n";
+		std::cerr<<circuit_str<<"\n\n";
 
 		circuit_str=R"(
 				  .compiler xasm
@@ -44,7 +69,7 @@ std::pair<std::shared_ptr<xacc::CompositeInstruction>, std::vector<std::string>>
 				  .qbit q
 				  X(q[0]);
 				  )";
-		std::cerr<<circuit_str<<"\n\n";*/
+		std::cerr<<circuit_str<<"\n\n";
 
 		std::cerr<<for_body<<"\n";
 
@@ -52,10 +77,10 @@ std::pair<std::shared_ptr<xacc::CompositeInstruction>, std::vector<std::string>>
 
 		return std::pair<std::shared_ptr<xacc::CompositeInstruction>,
 				std::vector<std::string>>(xacc::getCompiled("EfficientSU2"), parameters);
-
+		 */
 	}else{
 		std::cerr<<"Unknown ansatz type";
 		throw;
 	}
-
+	return ansatz;
 }
