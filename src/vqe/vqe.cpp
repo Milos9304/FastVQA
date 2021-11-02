@@ -206,11 +206,19 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 
 	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
 
-		return acc->calc_expectation(buffer, &ansatz, x);
+		double expectation = acc->calc_expectation(buffer, &ansatz, x);
+		logw(std::to_string(expectation));
+		return expectation;
 
 	}, num_params);
 
-	OptResult result = optimizer->optimize(f);
+	std::vector<double> initial_params;
+
+	for(auto &gate : ansatz.circuit.gates)
+		if(gate.param->name != "")
+			initial_params.push_back(gate.param->value);
+
+	OptResult result = optimizer->optimize(f, initial_params, 10e-6, 100);
 
 	acc->finalize();
 

@@ -7,8 +7,9 @@ void Accelerator::run(Circuit circuit, const std::vector<double> &x){
 
 	for(auto &gate : circuit.gates){
 
-		if(gate.param->name != "")
+		if(gate.param->name != ""){
 			param_val = x[i++];
+		}
 
 		apply_gate(gate, param_val);
 	}

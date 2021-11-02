@@ -55,7 +55,7 @@ public:
 
 class Optimizer{
 public:
-	virtual OptResult optimize(OptFunction &function) = 0;
+	virtual OptResult optimize(OptFunction &function, std::vector<double> initial_params, double tol, int maxeval) = 0;
 	virtual const std::string get_algorithm() const { return ""; }
 	virtual const bool isGradientBased() const { return false; }
 };
@@ -66,7 +66,7 @@ struct ExtraNLOptData {
 
 class NLOptimizer : public Optimizer {
 public:
-  OptResult optimize(OptFunction &function) override;
+  OptResult optimize(OptFunction &function, std::vector<double> initial_params, double tol, int maxeval) override;
   const bool isGradientBased() const override;
   virtual const std::string get_algorithm() const;
 };

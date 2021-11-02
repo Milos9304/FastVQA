@@ -50,12 +50,10 @@ const bool NLOptimizer::isGradientBased() const {
   }
 }
 
-OptResult NLOptimizer::optimize(OptFunction &function) {
+OptResult NLOptimizer::optimize(OptFunction &function, std::vector<double> x, double tol, int maxeval) {
 
   auto dim = function.dimensions();
   nlopt::algorithm algo = nlopt::algorithm::LN_COBYLA;
-  double tol = 1e-6;
-  int maxeval = 1000;
 
   bool maximize = false;
 
@@ -79,11 +77,7 @@ OptResult NLOptimizer::optimize(OptFunction &function) {
     }
   }*/
 
-  tol = 10e-1;
-  maxeval = 10;
-
-  std::vector<double> x(dim);
-  /*if (options.keyExists<std::vector<double>>("initial-parameters")) {
+    /*if (options.keyExists<std::vector<double>>("initial-parameters")) {
     x = options.get_with_throw<std::vector<double>>("initial-parameters");
   } else if (options.keyExists<std::vector<int>>("initial-parameters")) {
     auto tmpx = options.get<std::vector<int>>("initial-parameters");
