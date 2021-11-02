@@ -219,6 +219,27 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 			initial_params.push_back(gate.param->value);
 
 	OptResult result = optimizer->optimize(f, initial_params, 10e-6, 100);
+	double finalCost = result.first;
+	std::string opt_config;
+
+	/*VQEOptimalConfigEvaluator::evaluate(
+	  			  observable,
+	  			  kernel->operator()(result.second),
+	  			  accelerator,
+	  			  nbSamples,
+	  			  nbQubits,
+	  			  m_maximize,
+	  			  buffer,
+	  			  &optimal_energy,
+	  			  &opt_config,
+	  			  &hit_rate);
+	 */
+	acc->finalConfigEvaluator(buffer, result.second, 1024);
+
+	std::cout << "Final opt-val: " << buffer->opt_val << "\n";
+	std::cout << "Final opt-config: " << buffer->opt_config << "\n";
+	std::cout << "Final hit-rate: " << buffer->hit_rate << "\n";
+
 
 	acc->finalize();
 

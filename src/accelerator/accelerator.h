@@ -25,7 +25,7 @@ public:
 	void finalize();
 
 	double calc_expectation(ExperimentBuffer* buffer, Ansatz* ansatz, const std::vector<double> &x);
-
+	void finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<double> final_params, int nbSamples);
 
 private:
 	Qureg qureg;
@@ -34,6 +34,8 @@ private:
     DiagonalOp hamDiag;
     void run(Circuit circuit, const std::vector<double> &x);
     void apply_gate(Gate gate, double param);
+
+    double evaluate_assignment(PauliHamil isingHam, std::string measurement);
 
 };
 

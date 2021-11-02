@@ -10,16 +10,9 @@
 
 #include "io/logger.h"
 #include "io/indicators/progress_bar.hpp"
+#include "ExperimentBuffer.h"
 
 using namespace indicators;
-
-class ExperimentBuffer{
-public:
-   double opt_val;
-   std::vector<double> opt_params;
-   double expected_energy;
-   double hit_rate;
-};
 
 const Color colors[9] = {Color::red, Color::green, Color::yellow, Color::blue, Color::magenta, Color::cyan};
 
