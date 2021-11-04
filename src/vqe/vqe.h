@@ -40,7 +40,7 @@ class Vqe{
 			bool overlap_trick,
 			int zero_reference_state);
 */
-		void execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, Hamiltonian* hamiltonian);
+		void execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, Hamiltonian* hamiltonian, int zero_ref_state=0);
 };
 
 #endif /* SRC_QAOA_QAOA_H_ */

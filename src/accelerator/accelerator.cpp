@@ -161,9 +161,13 @@ void Accelerator::set_ansatz(Ansatz* ansatz){
 
 }
 
-double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x){
+double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int zero_reference_state){
 
 	int x_size = x.size();
+	if(env.numRanks > 1){
+		loge("UNIMPLEMENTED");
+		throw;
+	}
 
 	for(int i = 1; i < env.numRanks; ++i){
 		MPI_Send(&x_size, 1, MPI_INT, i, calc_exp_val_tag , MPI_COMM_WORLD);
@@ -174,9 +178,16 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 	MPI_Bcast(&x_copy[0], x_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
 	initZeroState(qureg);
-
 	run(ansatz.circuit, x);
-	return calcExpecDiagonalOp(qureg, hamDiag).real;
+
+	qureg.stateVec.real[0] = 0;
+	qureg.stateVec.imag[0] = 0;
+	double norm=0;
+	for(unsigned long i = 0; i < qureg.numAmpsPerChunk; ++i){
+		norm+=qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[0]*qureg.stateVec.imag[0];
+	}
+
+	return (1/norm)*calcExpecDiagonalOp(qureg, hamDiag).real;
 
 }
 

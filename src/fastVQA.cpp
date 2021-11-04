@@ -204,13 +204,14 @@ int main(int ac, char** av){
 				ProgressBar bar{bar_opts(counter, num_lattices, lattice->name, vqeOptions)};
 
 				vqeOptions->set_default_stats_function(execStats, &bar, lattice);
-				if(vqeOptions->overlap_trick)
-					vqeOptions->zero_reference_state = lattice->getZeroReferenceState();
+				//if(vqeOptions->overlap_trick)
+				vqeOptions->zero_reference_state = lattice->getZeroReferenceState();
 
 				Vqe vqe_instance;
 				ExperimentBuffer buffer;
 
 				Hamiltonian hamiltonian = lattice->getHamiltonian(mapOptions);
+
 
 				logw("Before VQE run");
 				vqe_instance.run_vqe(&buffer, &hamiltonian, lattice->name, &bar, execStats, vqeOptions);

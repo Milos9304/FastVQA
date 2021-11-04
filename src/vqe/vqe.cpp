@@ -179,7 +179,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
    }*/
 
    logd("Executing vqe");
-   execute(buffer, vqeOptions->accelerator, vqeOptions->optimizer, hamiltonian);
+   execute(buffer, vqeOptions->accelerator, vqeOptions->optimizer, hamiltonian, vqeOptions->zero_reference_state);
    logd("Vqe execution done");
 
    if(vqeOptions->saveIntermediate){
@@ -199,7 +199,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 
 }
 
-void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, Hamiltonian* hamiltonian){
+void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, Hamiltonian* hamiltonian, int zero_reference_state){
 
 	acc->initialize(hamiltonian);
 
@@ -208,7 +208,7 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 
 	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
 
-		double expectation = acc->calc_expectation(buffer, x);
+		double expectation = acc->calc_expectation(buffer, x, zero_reference_state);
 		buffer->intermediateEnergies.push_back(expectation);
 		//logw(std::to_string(expectation));
 		return expectation;
