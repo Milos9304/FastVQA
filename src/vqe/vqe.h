@@ -26,7 +26,6 @@ class Vqe{
 	public:
 
 		void run_vqe(ExperimentBuffer* buffer, Hamiltonian* hamiltonian, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, VQEOptions* options);
-		void run_vqe_slave_process();
 
 	private:
 

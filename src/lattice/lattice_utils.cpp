@@ -14,7 +14,7 @@
 Hamiltonian Lattice::getHamiltonian(MapOptions* options){
 
 	Hamiltonian result;
-	this->calcHamiltonian(options, true);
+	this->calcHamiltonian(options, options->verbose);
 
 	if(!qubo_generated){
 		loge("Hamiltonian referenced but not yet generated!");

@@ -15,6 +15,8 @@ public:
    std::string opt_config;
    double expected_energy;
    double hit_rate;
+
+   std::vector<double> intermediateEnergies;
 };
 
 #endif /* SRC_EXPERIMENT_BUFFER_H_ */

@@ -140,11 +140,42 @@ void Accelerator::run(Circuit circuit, const std::vector<double> &x){
 
 }
 
+void Accelerator::set_ansatz(Ansatz* ansatz){
 
-double Accelerator::calc_expectation(ExperimentBuffer* buffer, Ansatz* ansatz, const std::vector<double> &x){
+	this -> ansatz = *ansatz;
+
+	int circuit_size = this->ansatz.circuit.gates.size();
+
+	for(int i = 1; i < env.numRanks; ++i){
+		MPI_Send(&circuit_size, 1, MPI_INT, i, new_circuit_tag , MPI_COMM_WORLD);
+	}
+
+	std::vector<double> gateCodes;
+	for(auto &gate : this->ansatz.circuit.gates){
+		gateCodes.push_back(gate.code);
+		gateCodes.push_back(gate.qubit1);
+		gateCodes.push_back(gate.qubit2);
+	}
+
+	MPI_Bcast(&gateCodes[0], circuit_size*3, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+}
+
+double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x){
+
+	int x_size = x.size();
+
+	for(int i = 1; i < env.numRanks; ++i){
+		MPI_Send(&x_size, 1, MPI_INT, i, calc_exp_val_tag , MPI_COMM_WORLD);
+	}
+
+	std::vector<double> x_copy(x);
+
+	MPI_Bcast(&x_copy[0], x_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
 	initZeroState(qureg);
-	run(ansatz->circuit, x);
+
+	run(ansatz.circuit, x);
 	return calcExpecDiagonalOp(qureg, hamDiag).real;
 
 }
@@ -155,19 +186,126 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 
 	logd("Initializing " + std::to_string(num_qubits) + " qubits");
 
+	for(int i = 1; i < env.numRanks; ++i){
+		MPI_Send(&control_setting_new_seed, 1, MPI_INT, i, control_tag, MPI_COMM_WORLD);
+	}
+
 	unsigned long int keys[1];
 	keys[0] = 1997;
 	seedQuEST(&env, keys, 1);
 	logd("Setting seed to " + std::to_string(keys[0]));
 
+	for(int i = 1; i < env.numRanks; ++i){
+		MPI_Send(&num_qubits, 1, MPI_INT, i, new_qureg_tag , MPI_COMM_WORLD);
+	}
+
 	qureg = createQureg(num_qubits, env);
 
-	hamiltonian = createPauliHamil(num_qubits, hamIn->coeffs.size());
+	int coeffsSize = hamIn->coeffs.size();
+	for(int i = 1; i < env.numRanks; ++i){
+		MPI_Send(&coeffsSize, 1, MPI_INT, i, new_hamiltonian_tag , MPI_COMM_WORLD);
+	}
+
+	hamiltonian = createPauliHamil(num_qubits, coeffsSize);
+
+	MPI_Bcast(&hamIn->coeffs[0], coeffsSize, MPI_QuEST_REAL, 0, MPI_COMM_WORLD);
+	MPI_Bcast(&hamIn->pauliOpts[0], coeffsSize*num_qubits, MPI_INT, 0, MPI_COMM_WORLD);
+
 	hamiltonian.termCoeffs = &hamIn->coeffs[0]; //conversion to c array
 	hamiltonian.pauliCodes = (enum pauliOpType*)(&hamIn->pauliOpts[0]);
 
 	hamDiag = createDiagonalOp(num_qubits, env, 1);
 	initDiagonalOpFromPauliHamil(hamDiag, hamiltonian);
+
+}
+
+void Accelerator::run_vqe_slave_process(){
+
+	int value;
+	MPI_Status status;
+
+	bool quregInitialized = false;
+
+	while(1){
+		MPI_Recv(&value, 1, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+
+		if (status.MPI_TAG == control_tag) {
+			if(value == control_val_exit){
+					logd("Process " + std::to_string(env.rank) + " exiting work loop");
+					break;
+			}else if(value == control_setting_new_seed){
+				unsigned long int keys[1];
+				seedQuEST(&env, keys, 1);
+				logd("Process " + std::to_string(env.rank) + " set seed to " + std::to_string(keys[0]));
+			}else{
+				loge("Invalid control value");
+				throw;
+			}
+
+		}else if(status.MPI_TAG == new_circuit_tag){
+
+			std::vector<double> ansatz_codes;
+
+			ansatz_codes.resize(value*3);
+  			MPI_Bcast(&ansatz_codes[0], value*3, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+			logd("Process " + std::to_string(env.rank) + " received new ansatz codes");
+
+			ansatz.circuit.gates.clear();
+
+			for(int i = 0; i < ansatz_codes.size(); i+=3){
+				ansatz.circuit.addGate(ansatz_codes[i],ansatz_codes[i+1],ansatz_codes[i+2]);
+			}
+
+		}else if(status.MPI_TAG == new_params_tag){
+
+		}else if(status.MPI_TAG == new_qureg_tag){
+
+			if(quregInitialized)
+				destroyQureg(qureg, env);
+
+			qureg = createQureg(value, env);
+			quregInitialized = true;
+
+			logd("Process " + std::to_string(env.rank) + " created new qureg");
+
+		}else if(status.MPI_TAG == new_hamiltonian_tag){
+			std::vector<double> coeffs;
+			std::vector<int> pauliCodes;
+
+			coeffs.resize(value);
+			pauliCodes.resize(value*qureg.numQubitsInStateVec);
+
+			MPI_Bcast(&coeffs[0], value, MPI_QuEST_REAL, 0, MPI_COMM_WORLD);
+			MPI_Bcast(&pauliCodes[0], value*qureg.numQubitsInStateVec, MPI_INT, 0, MPI_COMM_WORLD);
+
+			hamiltonian = createPauliHamil(qureg.numQubitsInStateVec, value);
+			hamiltonian.termCoeffs = &coeffs[0]; //conversion to c array
+			hamiltonian.pauliCodes = (enum pauliOpType*)(&pauliCodes[0]); //conversion to c array
+
+			hamDiag = createDiagonalOp(qureg.numQubitsInStateVec, env, 1);
+			initDiagonalOpFromPauliHamil(hamDiag, hamiltonian);
+
+			logd("Process " + std::to_string(env.rank) + " initialized pauliHamil");
+
+		}else if(status.MPI_TAG == calc_exp_val_tag){
+
+			logd("Process " + std::to_string(env.rank) + " calcExpVal");
+
+			std::vector<double> x(value);
+			MPI_Bcast(&x[0], value, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+			initZeroState(qureg);
+			run(ansatz.circuit, x);
+			calcExpecDiagonalOp(qureg, hamDiag).real;
+
+			//calcExpecDiagonalOp(qureg, hamDiag);
+		}else if(status.MPI_TAG == measure_with_cache_tag){
+
+		}else{
+			loge("Unknown control tag");
+			throw;
+		}
+	}
 
 }
 

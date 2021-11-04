@@ -19,16 +19,15 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
    int max_iters = vqeOptions->max_iters;
    bool verbose = vqeOptions->verbose;
 
-
-   if(vqeOptions->logEnergies){
+   //if(vqeOptions->logEnergies){
 	   //vqeOptions->outfile.rdbuf()->pubsetbuf(0, 0); //disable buffer
-	   vqeOptions->outfile.open("../experiment_files/statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc); //| std::ios_base::trunc);//std::ios_base::app
-   }
+	//   vqeOptions->outfile.open("../experiment_files/statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc); //| std::ios_base::trunc);//std::ios_base::app
+   //}
 
-   if(bar)
-	   vqeOptions->progress_bar = bar;
+   //if(bar)
+	//   vqeOptions->progress_bar = bar;
 
-   vqeOptions->execStats = executionStats;
+   //vqeOptions->execStats = executionStats;
 
    //xacc::setOption("quest-verbose", "true");
    //xacc::setOption("quest-debug", "true");
@@ -134,7 +133,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
          //m.insert("shuffle-terms", /*m_shuffleTerms*/false);
          //ansatz->expand(m);
 
-   	   	   logd("Before ansatz gen");
+   	   	 logd("Before ansatz gen");
 
    	   	 ansatz = getAnsatz("EfficientSU2", num_qubits, 1997);
    	   	 num_params = ansatz.num_params;
@@ -204,10 +203,14 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 
 	acc->initialize(hamiltonian);
 
+	std::vector<double> intermediateEnergies;
+	acc->set_ansatz(&ansatz);
+
 	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
 
-		double expectation = acc->calc_expectation(buffer, &ansatz, x);
-		logw(std::to_string(expectation));
+		double expectation = acc->calc_expectation(buffer, x);
+		buffer->intermediateEnergies.push_back(expectation);
+		//logw(std::to_string(expectation));
 		return expectation;
 
 	}, num_params);
@@ -218,7 +221,7 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 		if(gate.param->name != "")
 			initial_params.push_back(gate.param->value);
 
-	OptResult result = optimizer->optimize(f, initial_params, 10e-6, 100);
+	OptResult result = optimizer->optimize(f, initial_params, 10e-6, 1000);
 	double finalCost = result.first;
 	std::string opt_config;
 
@@ -234,19 +237,12 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 	  			  &opt_config,
 	  			  &hit_rate);
 	 */
-	acc->finalConfigEvaluator(buffer, result.second, 1024);
+	acc->finalConfigEvaluator(buffer, result.second, /*1024*/5000);
 
 	std::cout << "Final opt-val: " << buffer->opt_val << "\n";
 	std::cout << "Final opt-config: " << buffer->opt_config << "\n";
 	std::cout << "Final hit-rate: " << buffer->hit_rate << "\n";
 
-
 	acc->finalize();
 
-}
-
-void Vqe::run_vqe_slave_process(){
-	//auto acc = xacc::getAccelerator("quest");
-	loge("NOT IMPLEMENTED");
-	throw;
 }

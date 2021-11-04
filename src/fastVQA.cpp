@@ -5,6 +5,9 @@
 #include <exception>
 #include <chrono>
 
+#include <fstream>
+#include <iomanip>
+
 #include "popl.hpp"
 #include "executionStatistics.h"
 #include "qaoa/qaoa.h"
@@ -120,10 +123,10 @@ int main(int ac, char** av){
 				if(rank_reduce->value() == 0)
 					i++;
 				else
-					i+=solutionDataset.num_ranks+1;
+					i+=solutionDataset.num_ranks-1;
 
-				logw("Loading only one lattice");
-				break;
+				//logw("Loading only one lattice");
+				//break;
 
 			}std::cout << "\n";
 			num_lattices = lattices.size();
@@ -212,6 +215,56 @@ int main(int ac, char** av){
 				logw("Before VQE run");
 				vqe_instance.run_vqe(&buffer, &hamiltonian, lattice->name, &bar, execStats, vqeOptions);
 				logw("VQE run");
+
+				MatrixInt* current_lattice;
+				int cols;
+
+				if(lattice->lll_preprocessed){
+
+				}else{
+					current_lattice = lattice->get_orig_lattice();
+					cols = current_lattice->c;
+				}
+
+				VectorInt x_vect = lattice->quboToXvector(buffer.opt_config);
+
+				logd("NOW FOLLOWS X VECTOR");
+					for(auto &x:x_vect)
+						std::cerr<<x<<" ";
+					std::cerr<<"\n";
+				//loge("NOW FOLLOWS SHORTEST FOUND VECTOR");
+
+				int double_check=0;
+				for(int c = 0; c < cols; ++c){
+					int res = 0;
+					for(unsigned int r = 0; r < x_vect.size(); ++r){
+						int a = current_lattice->matrix[r][c].get_si();
+						int b = x_vect[r].get_si();
+						res += b * a;
+					}
+					double_check += res*res;
+					//std::cerr<<res<<" ";
+				}//std::cerr<<"\n";
+
+				double passed=true;
+				passed = passed && (double_check == buffer.opt_val);
+
+				logw("Double check: " + std::to_string(double_check) + " passed: " + (passed ? "TRUE" : "FALSE"));
+				//if(!passed)
+				//	throw;
+
+				std::ofstream output_file("../experiment_files/statsfile_"+lattice->name+".txt");
+				output_file << fixed << showpoint;
+				output_file << setprecision(10);
+
+				std::ostream_iterator<double> output_iterator(output_file, "\n");
+				std::copy(buffer.intermediateEnergies.begin(), buffer.intermediateEnergies.end(), output_iterator);
+
+				output_file << buffer.opt_val << " " << buffer.hit_rate << " ";
+				for(auto &x:x_vect)
+					output_file << x << " ";
+
+
 			}else{
 				throw;
 			}
@@ -233,7 +286,13 @@ int main(int ac, char** av){
 				//----------------------------------MSG RECEIVERS------------------------------
 				logd("Hello I am rank " + std::to_string(rank) +"out of " + std::to_string(numRanks) + " and I am waiting for messages");
 				//xacc::Initialize();
-				Qaoa::run_qaoa_slave_process();
+				Vqe vqe_instance;
+
+				Accelerator accelerator("quest");
+				accelerator.env=createQuESTEnv();
+				accelerator.run_vqe_slave_process();
+				destroyQuESTEnv(accelerator.env);
+
 				//xacc::Finalize();
 			}
 		MPI_Finalize();

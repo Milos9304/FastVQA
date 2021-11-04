@@ -44,11 +44,13 @@ public:
 
 		this->code=code;
 		this->qubit1=qubit1;
+		this->qubit2=-1;
+
 		this->param=param;
 	}
 
 	Gate(GateCode code, int qubit1, int qubit2, std::shared_ptr<Parameter> param=blankParam){
-		if(!(code & two_qubit)){
+		if((!(code & two_qubit)) && qubit2 != -1){
 		  loge(std::to_string(code) + "is a one qubit gate");
 		  throw;
 		}
@@ -61,7 +63,7 @@ public:
 
 	GateCode code;
 	bool is_twoQubit(){return code & two_qubit;}
-	int qubit1, qubit2;
+	int qubit1=-1, qubit2=-1;
 	std::shared_ptr<Parameter> param;
 
 	//Gate codes
