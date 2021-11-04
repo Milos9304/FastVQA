@@ -205,12 +205,12 @@ int main(int ac, char** av){
 
 				vqeOptions->set_default_stats_function(execStats, &bar, lattice);
 				//if(vqeOptions->overlap_trick)
-				vqeOptions->zero_reference_state = lattice->getZeroReferenceState();
 
 				Vqe vqe_instance;
 				ExperimentBuffer buffer;
 
 				Hamiltonian hamiltonian = lattice->getHamiltonian(mapOptions);
+				vqeOptions->zero_reference_state = lattice->getZeroReferenceState();
 
 
 				logw("Before VQE run");

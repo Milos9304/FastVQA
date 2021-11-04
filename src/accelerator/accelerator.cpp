@@ -180,14 +180,14 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 	initZeroState(qureg);
 	run(ansatz.circuit, x);
 
-	qureg.stateVec.real[0] = 0;
-	qureg.stateVec.imag[0] = 0;
+	qureg.stateVec.real[1<<zero_reference_state] = 0;
+	qureg.stateVec.imag[1<<zero_reference_state] = 0;
 	double norm=0;
 	for(unsigned long i = 0; i < qureg.numAmpsPerChunk; ++i){
 		norm+=qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[0]*qureg.stateVec.imag[0];
 	}
 
-	return (1/norm)*calcExpecDiagonalOp(qureg, hamDiag).real;
+	return (1/sqrt(norm))*calcExpecDiagonalOp(qureg, hamDiag).real;
 
 }
 
