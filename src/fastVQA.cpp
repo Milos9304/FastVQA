@@ -49,6 +49,11 @@ int main(int ac, char** av){
 
 	int seed = 1997;
 
+	AcceleratorOptions acceleratorOptions;
+	acceleratorOptions.accelerator_type = "quest";
+	acceleratorOptions.reference_energy_approach = true;
+	acceleratorOptions.reference_ratio=0.1;
+
 	//--------------------------------RANK ZERO CODE------------------------------------------
 	if(rank == 0 /*|| strcmp(av[1],"qaoa")*/){
 
@@ -133,7 +138,8 @@ int main(int ac, char** av){
 		}
 
 		logd("Accelerator partial not yet returned");
-		Accelerator accelerator("quest");
+
+		Accelerator accelerator(acceleratorOptions);
 		accelerator.env=createQuESTEnv();
 		logd("Accelerator partial returned");
 
@@ -289,7 +295,8 @@ int main(int ac, char** av){
 				//xacc::Initialize();
 				Vqe vqe_instance;
 
-				Accelerator accelerator("quest");
+				Accelerator accelerator(acceleratorOptions);
+
 				accelerator.env=createQuESTEnv();
 				accelerator.run_vqe_slave_process();
 				destroyQuESTEnv(accelerator.env);

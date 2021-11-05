@@ -15,6 +15,17 @@
 #include "../hamiltonian/hamiltonian.h"
 #include "../ansatz/ansatz.h"
 
+typedef std::pair<qreal, long long int> RefEnergy;
+typedef std::vector<RefEnergy> RefEnergies;
+
+struct AcceleratorOptions{
+	std::string accelerator_type;
+
+	bool reference_energy_approach;
+	double reference_ratio;
+
+};
+
 class Accelerator{
 
 public:
@@ -22,11 +33,11 @@ public:
 	QuESTEnv env;
 	Ansatz ansatz;
 
-	Accelerator(std::string accelerator_type);
-	void initialize(Hamiltonian* hamiltonian);
+	Accelerator(AcceleratorOptions options);
+	void initialize(Hamiltonian* hamiltonian, int zero_reference_state);
 	void finalize();
 
-	double calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int zero_reference_state);
+	double calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x);
 	void finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<double> final_params, int nbSamples);
 
 	void set_ansatz(Ansatz* ansatz);
@@ -34,9 +45,14 @@ public:
 	void run_vqe_slave_process();
 
 private:
+
+	AcceleratorOptions options;
+
 	Qureg qureg;
 
 	PauliHamil hamiltonian;
+	RefEnergies reference_energies_indexes;
+
     DiagonalOp hamDiag;
     void run(Circuit circuit, const std::vector<double> &x);
 

@@ -270,10 +270,11 @@ std::string Lattice::toHamiltonianString(MapOptions* options){
 int Lattice::getZeroReferenceState(){
 	if(!qubo_generated){
 			loge("Hamiltonian referenced but not yet generated!");
-			return 0;
+			throw;
 	}
 
 	int zero_ref_state = 0;
+
 
 	//q_n-1 ... q_0
 
