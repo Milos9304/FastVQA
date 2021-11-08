@@ -21,8 +21,8 @@ typedef std::vector<RefEnergy> RefEnergies;
 struct AcceleratorOptions{
 	std::string accelerator_type;
 
-	bool reference_energy_approach;
-	double reference_ratio;
+	double samples_cut_ratio=1; //1=100% means no cutting is performed
+	int zero_reference_state;
 
 };
 
@@ -33,8 +33,10 @@ public:
 	QuESTEnv env;
 	Ansatz ansatz;
 
+	AcceleratorOptions options;
+
 	Accelerator(AcceleratorOptions options);
-	void initialize(Hamiltonian* hamiltonian, int zero_reference_state);
+	void initialize(Hamiltonian* hamiltonian);
 	void finalize();
 
 	double calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x);
@@ -45,13 +47,9 @@ public:
 	void run_vqe_slave_process();
 
 private:
-
-	AcceleratorOptions options;
-
 	Qureg qureg;
 
 	PauliHamil hamiltonian;
-	RefEnergies reference_energies_indexes;
 
     DiagonalOp hamDiag;
     void run(Circuit circuit, const std::vector<double> &x);

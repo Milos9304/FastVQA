@@ -51,8 +51,7 @@ int main(int ac, char** av){
 
 	AcceleratorOptions acceleratorOptions;
 	acceleratorOptions.accelerator_type = "quest";
-	acceleratorOptions.reference_energy_approach = true;
-	acceleratorOptions.reference_ratio=0.1;
+	acceleratorOptions.samples_cut_ratio=0.1;
 
 	//--------------------------------RANK ZERO CODE------------------------------------------
 	if(rank == 0 /*|| strcmp(av[1],"qaoa")*/){

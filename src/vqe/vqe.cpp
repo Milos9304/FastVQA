@@ -201,7 +201,8 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 
 void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, int zero_reference_state, Hamiltonian* hamiltonian){
 
-	acc->initialize(hamiltonian, zero_reference_state);
+	acc->initialize(hamiltonian);
+	acc->options.zero_reference_state = zero_reference_state;
 
 	std::vector<double> intermediateEnergies;
 	acc->set_ansatz(&ansatz);

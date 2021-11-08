@@ -187,15 +187,38 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		norm+=qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[0]*qureg.stateVec.imag[0];
 	}*/
 
-
-
-	double energy=0;
-	for(auto &refEnergy : reference_energies_indexes){
+	/*for(auto &refEnergy : reference_energies_indexes){
 
 		Complex amp = getAmp(qureg, refEnergy.second);
 		energy += refEnergy.first * (amp.real*amp.real + amp.imag*amp.imag);
 
+	}*/
+
+	std::vector<qreal> amp_norms(qureg.numAmpsPerChunk);
+	for(long long int i = 0; i < qureg.numAmpsPerChunk; ++i){
+		amp_norms[i]=qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
 	}
+
+	long long int num_chosen_after_cut = qureg.numAmpsPerChunk * options.samples_cut_ratio;
+
+	std::vector<int> indexes(num_chosen_after_cut);
+	std::iota(indexes.begin(), indexes.end(), 0); //zip with indices
+	std::sort(indexes.begin(), indexes.end(), [&](int i, int j){return amp_norms > amp_norms;}); //descending
+
+	double energy=0;
+	long long int counter = 0;
+	for(auto &index : indexes){
+		if(counter++ > num_chosen_after_cut)
+			break;
+
+		if(index == options.zero_reference_state){
+			logw("Zero excluded with counter " + std::to_string(counter));
+			continue;
+		}
+
+		energy+=hamDiag.real[index] * amp_norms[index];
+	}
+	loge("Ratio: " + std::to_string((double)counter/indexes.size()));
 
 	//loge("Summing " + std::to_string((double)reference_energies_indexes.size() / qureg.numAmpsPerChunk * 100) + " %");
 
@@ -224,7 +247,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 }
 
-void Accelerator::initialize(Hamiltonian* hamIn, int zero_reference_state){
+void Accelerator::initialize(Hamiltonian* hamIn){
 
 	int num_qubits = hamIn->nbQubits;
 
@@ -261,15 +284,13 @@ void Accelerator::initialize(Hamiltonian* hamIn, int zero_reference_state){
 	hamDiag = createDiagonalOp(num_qubits, env, 1);
 	initDiagonalOpFromPauliHamil(hamDiag, hamiltonian);
 
-	if(!options.reference_energy_approach)
-		return;
-
 	if(env.numRanks>1){
 		loge("UNIMPLEMENTED");
 		throw;
 	}
 
-	reference_energies_indexes.clear();
+
+	/*reference_energies_indexes.clear();
 
 	std::vector<int> indexes(qureg.numAmpsPerChunk);
 	std::iota(indexes.begin(), indexes.end(), 0); //zip with indices
@@ -285,13 +306,13 @@ void Accelerator::initialize(Hamiltonian* hamIn, int zero_reference_state){
 		}counter++;
 
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
-
+	 */
 
 
 		/*reference_energies_indexes.push_back(RefEnergy(hamDiag.real[index], index));
 		if( double(counter++)/indexes.size() > options.reference_ratio)
-			break;*/
-	}
+			break;
+	}*/
 }
 
 void Accelerator::run_vqe_slave_process(){
