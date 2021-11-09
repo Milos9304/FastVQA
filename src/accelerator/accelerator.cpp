@@ -194,34 +194,29 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 	}*/
 
-	std::vector<qreal> amp_norms(qureg.numAmpsPerChunk);
-	for(long long int i = 0; i < qureg.numAmpsPerChunk; ++i){
-		amp_norms[i]=qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
-	}
-
-	long long int num_chosen_after_cut = qureg.numAmpsPerChunk * options.samples_cut_ratio;
-
-	std::vector<int> indexes(num_chosen_after_cut);
-	std::iota(indexes.begin(), indexes.end(), 0); //zip with indices
-	std::sort(indexes.begin(), indexes.end(), [&](int i, int j){return amp_norms > amp_norms;}); //descending
-
 	double energy=0;
-	long long int counter = 0;
-	for(auto &index : indexes){
-		if(counter++ > num_chosen_after_cut)
-			break;
+	double alpha_sum=0;
+	double amp;
 
-		if(index == options.zero_reference_state){
-			logw("Zero excluded with counter " + std::to_string(counter));
-			continue;
+	long long int i = 0;
+	while(alpha_sum < options.samples_cut_ratio){
+
+		 if(i >= ref_hamil_energies.size()){
+			 logw("Probably something ain't alright");
+		 }
+
+		long long int q_index = ref_hamil_energies[i].second;
+		amp = qureg.stateVec.real[q_index]*qureg.stateVec.real[q_index]+qureg.stateVec.imag[q_index]*qureg.stateVec.imag[q_index];
+		alpha_sum += amp;
+		if(i >= ref_hamil_energies.size()){
+			loge("NOT ENOUGH REF ENERGIES STORED IN MEMORY.");
 		}
+		else
+			energy += ref_hamil_energies[i].first * amp;
 
-		energy+=hamDiag.real[index] * amp_norms[index];
+		i++;
 	}
-	loge("Ratio: " + std::to_string((double)counter/indexes.size()));
-
-	//loge("Summing " + std::to_string((double)reference_energies_indexes.size() / qureg.numAmpsPerChunk * 100) + " %");
-
+	energy -= (alpha_sum - options.samples_cut_ratio) * ref_hamil_energies[i-1].first * amp;
 	return energy;
 
 	//QUEST CODE
@@ -289,30 +284,28 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 		throw;
 	}
 
-
-	/*reference_energies_indexes.clear();
+	ref_hamil_energies.clear();
 
 	std::vector<int> indexes(qureg.numAmpsPerChunk);
 	std::iota(indexes.begin(), indexes.end(), 0); //zip with indices
-	std::sort(indexes.begin(), indexes.end(), [&](int i, int j){return hamDiag.real[i] > hamDiag.real[j];}); //descending
+	std::sort(indexes.begin(), indexes.end(), [&](int i, int j){return hamDiag.real[i] < hamDiag.real[j];}); //non-descending
 
-	int counter = 0;loge("d");
+	int counter = 0;
 	for(auto &index : indexes){
 
-		std::cerr<<index << " " << counter << "\n";
-		if(index == zero_reference_state){
-			logw("Zero excluded with counter " + std::to_string(counter));loge("This is totally other way round");throw;
+		if(index == options.zero_reference_state){
+			logw("Zero excluded with counter " + std::to_string(counter));
 			continue;
 		}counter++;
 
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
-	 */
+
+		ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index));
+		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)
+		//	break;
+	}
 
 
-		/*reference_energies_indexes.push_back(RefEnergy(hamDiag.real[index], index));
-		if( double(counter++)/indexes.size() > options.reference_ratio)
-			break;
-	}*/
 }
 
 void Accelerator::run_vqe_slave_process(){

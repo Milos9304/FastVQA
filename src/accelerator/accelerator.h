@@ -50,6 +50,7 @@ private:
 	Qureg qureg;
 
 	PauliHamil hamiltonian;
+	RefEnergies ref_hamil_energies;
 
     DiagonalOp hamDiag;
     void run(Circuit circuit, const std::vector<double> &x);

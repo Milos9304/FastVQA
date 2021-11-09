@@ -51,7 +51,6 @@ int main(int ac, char** av){
 
 	AcceleratorOptions acceleratorOptions;
 	acceleratorOptions.accelerator_type = "quest";
-	acceleratorOptions.samples_cut_ratio=0.1;
 
 	//--------------------------------RANK ZERO CODE------------------------------------------
 	if(rank == 0 /*|| strcmp(av[1],"qaoa")*/){
@@ -77,6 +76,7 @@ int main(int ac, char** av){
 
 		auto paper_exp		 = op.add<Switch>("e", "paperexp", "perform experiment as in the paper");
 		auto rank_reduce 	 = op.add<Value<int>>("r", "", "rank truncation for paperexp", 0);
+		auto cut_ratio_value = op.add<Value<double>>("x", "cut_ratio", "cut ratio for intermediate sampling", 1);
 		auto circ_dir_prefix = op.add<Value<std::string>>("c", "circ-dir-prefix", "", "../experiment_files");
 
 		auto save_ansatz	 = op.add<Switch>("s", "saveAnsatz", "save ansatz files");
@@ -104,6 +104,10 @@ int main(int ac, char** av){
 		std::vector</*AbstractLatticeInput**/Lattice*> lattices;
 
 		if(paper_exp->is_set()){
+
+			acceleratorOptions.samples_cut_ratio=cut_ratio_value->value();
+			logw("Setting accelerator ratio to " + std::to_string(acceleratorOptions.samples_cut_ratio));
+			loge("This won't work for distributed. Change code!");
 
 			loge("Gaussian heuristics not implemented for low rank matrices. Returning 1.");
 
