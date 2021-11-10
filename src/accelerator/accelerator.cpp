@@ -202,7 +202,8 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 	while(alpha_sum < options.samples_cut_ratio){
 
 		 if(i >= ref_hamil_energies.size()){
-			 logw("Probably something ain't alright");
+			 //logw("Probably something ain't alright");
+			 break;
 		 }
 
 		long long int q_index = ref_hamil_energies[i].second;
@@ -217,7 +218,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		i++;
 	}
 	energy -= (alpha_sum - options.samples_cut_ratio) * ref_hamil_energies[i-1].first * amp;
-	return energy;
+	return energy; //normalize
 
 	//QUEST CODE
 		/*Complex localExpec = statevec_calcExpecDiagonalOpLocal(qureg, op);
@@ -294,7 +295,9 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 	for(auto &index : indexes){
 
 		if(index == options.zero_reference_state){
-			logw("Zero excluded with counter " + std::to_string(counter));
+			//logw("Zero excluded with counter " + std::to_string(counter) + " where E(0) = " + std::to_string(hamDiag.real[index]));
+			if(hamDiag.real[index]!=0)
+				loge("Excluded something else than zero ground state!");
 			continue;
 		}counter++;
 
