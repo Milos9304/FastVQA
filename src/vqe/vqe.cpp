@@ -135,7 +135,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 
    	   	 logd("Before ansatz gen");
 
-   	   	 ansatz = getAnsatz("EfficientSU2", num_qubits, 1997);
+   	   	 ansatz = getAnsatz("Ry_CNOT_all2all_Ry", num_qubits, 1997);
    	   	 num_params = ansatz.num_params;
 
  	   	 logd("After ansatz gen");
@@ -201,8 +201,8 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 
 void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, int zero_reference_state, Hamiltonian* hamiltonian){
 
-	acc->initialize(hamiltonian);
 	acc->options.zero_reference_state = zero_reference_state;
+	acc->initialize(hamiltonian);
 
 	std::vector<double> intermediateEnergies;
 	acc->set_ansatz(&ansatz);

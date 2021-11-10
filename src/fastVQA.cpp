@@ -221,7 +221,6 @@ int main(int ac, char** av){
 				Hamiltonian hamiltonian = lattice->getHamiltonian(mapOptions);
 				vqeOptions->zero_reference_state = lattice->getZeroReferenceState();
 
-
 				logw("Before VQE run");
 				vqe_instance.run_vqe(&buffer, &hamiltonian, lattice->name, &bar, execStats, vqeOptions);
 				logw("VQE run");

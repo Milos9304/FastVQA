@@ -22,6 +22,10 @@ void Accelerator::apply_gate(Gate gate, double param){
 		logdd("CNOT " + std::to_string(gate.qubit1) + " " + std::to_string(gate.qubit2));
 		controlledNot(qureg, gate.qubit1, gate.qubit2);
 		break;
+	case Gate::g_CZ:
+		logdd("CZ " + std::to_string(gate.qubit1) + " " + std::to_string(gate.qubit2));
+		controlledPhaseFlip(qureg, gate.qubit1, gate.qubit2);
+		break;
 	default:
 		loge("Unknown gate");
 		throw;

@@ -110,16 +110,14 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 	}else
 		optimalMeasurement = measurements[0];
 
-	int i = 0;
-	int hits = 0;
-	while(i < measurements.size() && abs(measurements[i++].second.second - optimalMeasurement.second.second)<10e-1){
-	  hits += measurements[i-1].second.first;			}
+	int hits = optimalMeasurement.second.first;
 
 	loge("Measurements size = " + std::to_string(measurements.size()));
 
 	buffer->opt_config=optimalMeasurement.first;
 	buffer->opt_val=optimalMeasurement.second.second;
-	buffer->hit_rate=hits / double(nbSamples);
+	logw("Hits " + std::to_string(hits) + " / " + std::to_string(nbSamples));
+	buffer->hit_rate= hits / double(nbSamples);
 
 }
 
@@ -218,6 +216,13 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		i++;
 	}
 	energy -= (alpha_sum - options.samples_cut_ratio) * ref_hamil_energies[i-1].first * amp;
+
+	if(energy == 0){
+		std::cerr<<"kokot " << i-1 << "\n";
+		std::cerr<<ref_hamil_energies[i-1].first << " " << ref_hamil_energies[i-1].second << "\n";
+		throw;
+	}
+
 	return energy; //normalize
 
 	//QUEST CODE
@@ -303,7 +308,10 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
 
-		ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index));
+		if(hamDiag.real[index] == 0){
+			loge("Here we have not exluded zero");
+		}else
+			ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index));
 		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)
 		//	break;
 	}
