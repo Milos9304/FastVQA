@@ -203,6 +203,9 @@ int main(int ac, char** av){
 
 		int counter = 0;
 		int prev_lattice_id=-1;
+
+		int skip[25] = {6, 17, 27, 32, 35, 40, 43, 44, 51, 59, 61, 65, 66, 70, 77, 82, 85, 87, 100, 112, 117, 122, 124, 125, 127};
+
 		for(auto &lattice_abs : lattices){
 
 			int new_id = std::stoi(process(lattice_abs->name));
@@ -212,6 +215,24 @@ int main(int ac, char** av){
 			prev_lattice_id = new_id;
 
 			logi("Running " + lattice_abs->name);
+
+			/*if(counter == 0){
+				counter++;
+				continue;
+			}else if(counter > 1)
+				break;*/
+
+			bool excluded = false;
+			for(int i = 0; i < 25; ++i){
+				if(counter == skip[i])
+					excluded = true;
+			}
+
+			if(excluded){
+				logw("Excluded");
+				counter++;
+				continue;
+			}
 
 			Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 

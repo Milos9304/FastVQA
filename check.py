@@ -29,7 +29,11 @@ with open('paper_experiment/out_higher_dims_small_dims.csv', newline='') as f:
             #print(sol)
             if sol > 1 or sol < 0:
                 exclude.append(len(results)-1)
-        
+                break
+
+#print(exclude)
+#print(len(exclude))
+
 """with open('paper_experiment/out_higher_dims_small_dims_matrices.csv', newline='') as f:
   reader = csv.reader(f, delimiter=';')
   for row in reader:
@@ -70,12 +74,12 @@ for i in range(128):
             opt2=line.split(' ')[0]
 
             if results[i] == int(round(float(opt_energy))):
-                print(results[i],"=",int(round(float(opt_energy))), "    old: ",int(round(float(opt2))) )
+                print(i, ": ", results[i],"=",int(round(float(opt_energy))), "    old: ",int(round(float(opt2))) )
                 success+=1
             else:
                 if results[i] > int(round(float(opt_energy))):
                     print("dopici")
-                print(results[i],"|",int(round(float(opt_energy))), "    old: ",int(round(float(opt2))) )
+                print(i, ": ", results[i],"|",int(round(float(opt_energy))), "    old: ",int(round(float(opt2))) )
                 fail+=1
 print("Success rate = ", float(success)/(success+fail))
 

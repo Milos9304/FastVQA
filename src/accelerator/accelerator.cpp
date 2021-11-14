@@ -56,8 +56,8 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 
 	Qureg qureg_cache = createQureg(qureg.numQubitsInStateVec, env);
 
-	std::string classicalRefState_str(qureg.numQubitsRepresented, '0');
-	classicalRefState_str[qureg.numQubitsRepresented-1]='1';
+	//std::string classicalRefState_str(qureg.numQubitsRepresented, '0');
+	//classicalRefState_str[qureg.numQubitsRepresented-1]='1';
 
 	logd("Performing " + std::to_string(nbSamples) + " samples");
 
@@ -70,6 +70,10 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 			measurementStr += std::to_string(measure(qureg_cache, measureQubit));
 		}
 
+		/*if(measurementStr == "000000000000001"){
+			loge("FUCK WE GOT IT");
+		}*/
+
 		bool found = false;
 		int index = 0;
 		for(auto &instance : measurements){
@@ -79,8 +83,12 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 			}
 			index++;
 		}
-		if(/*!overlapPenalization || */measurementStr != classicalRefState_str){
+
+		//loge(classicalRefState_str);throw;
+
+		if(/*!overlapPenalization || measurementStr != classicalRefState_str*/true){
 			if(!found){
+
 			  measurements.push_back(measurement(measurementStr, // bit string
 									  meas_freq_eval(1, //frequency
 											  evaluate_assignment(hamiltonian, measurementStr))));
@@ -103,10 +111,19 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 				  return a.second.second < b.second.second;
 		});
 
+	for(auto &m : measurements){
+		logw(m.first + " " + std::to_string(m.second.second));
+	}
+
 	measurement optimalMeasurement;
 	if(second_eigenergy && measurements.size() > 1 && measurements[0].second.second == 0.){
 		optimalMeasurement = measurements[1];
 		logd("Returning second highest energy level");
+
+		if(optimalMeasurement.second.second == 0){
+			loge("Second highest energy is still 0!");
+		}
+
 	}else
 		optimalMeasurement = measurements[0];
 
@@ -114,7 +131,10 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 
 	loge("Measurements size = " + std::to_string(measurements.size()));
 
+	//optimalMeasurement.first = "000000000000001";
+
 	buffer->opt_config=optimalMeasurement.first;
+	loge(optimalMeasurement.first);
 	buffer->opt_val=optimalMeasurement.second.second;
 	logw("Hits " + std::to_string(hits) + " / " + std::to_string(nbSamples));
 	buffer->hit_rate= hits / double(nbSamples);
@@ -205,7 +225,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 	double zero_state_amp = qureg.stateVec.real[zero_state_index]*qureg.stateVec.real[zero_state_index]+qureg.stateVec.imag[zero_state_index]*qureg.stateVec.imag[zero_state_index];
 	double zero_state_amp_per_elem = zero_state_amp / qureg.numAmpsPerChunk;
 
-	double alpha = alpha_f(options.samples_cut_ratio, options.final_alpha, iter ation_i, options.max_alpha_iters);
+	double alpha = alpha_f(options.samples_cut_ratio, options.final_alpha, iteration_i, options.max_alpha_iters);
 	//loge(std::to_string(alpha));
 
 	while(alpha_sum < alpha){
