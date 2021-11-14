@@ -16,7 +16,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 		ExecutionStatistics* executionStats,
 		VQEOptions* vqeOptions){
 
-   int max_iters = vqeOptions->max_iters;
+   max_iters = vqeOptions->max_iters;
    bool verbose = vqeOptions->verbose;
 
    //if(vqeOptions->logEnergies){
@@ -207,9 +207,16 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 	std::vector<double> intermediateEnergies;
 	acc->set_ansatz(&ansatz);
 
+	if(acc->alpha_f(0,1,1,1)==0)
+		logw("f: Constant Alpha: " + std::to_string(acc->options.samples_cut_ratio));
+	else
+		logw("f: Linear Init alpha: " + std::to_string(acc->options.samples_cut_ratio) + " Final alpha: " +	std::to_string(acc->options.final_alpha) + " Max iters: " + std::to_string(acc->options.max_alpha_iters));
+
+	int iteration_i = 0;
+
 	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
 
-		double expectation = acc->calc_expectation(buffer, x);
+		double expectation = acc->calc_expectation(buffer, x, iteration_i++);
 		buffer->intermediateEnergies.push_back(expectation);
 		//logw(std::to_string(expectation));
 		return expectation;
@@ -222,7 +229,7 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 		if(gate.param->name != "")
 			initial_params.push_back(gate.param->value);
 
-	OptResult result = optimizer->optimize(f, initial_params, 10e-6, 1000);
+	OptResult result = optimizer->optimize(f, initial_params, 10e-6,max_iters);
 	double finalCost = result.first;
 	std::string opt_config;
 

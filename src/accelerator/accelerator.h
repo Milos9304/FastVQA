@@ -18,11 +18,17 @@
 typedef std::pair<qreal, long long int> RefEnergy;
 typedef std::vector<RefEnergy> RefEnergies;
 
+typedef std::function<double(double init_val, double final_val, int iter_i, int max_iters)> AlphaFunction; //initial val, final_val, and num_iterations in which alpha is being increased
+
 struct AcceleratorOptions{
 	std::string accelerator_type;
+	std::string alpha_f; //constant, linear
 
 	double samples_cut_ratio=1; //1=100% means no cutting is performed
 	int zero_reference_state;
+
+	double final_alpha=1;
+	int max_alpha_iters=1000;
 
 };
 
@@ -33,13 +39,18 @@ public:
 	QuESTEnv env;
 	Ansatz ansatz;
 
+	AlphaFunction alpha_f = alpha_constant_f;
+
+	static AlphaFunction alpha_constant_f;
+	static AlphaFunction alpha_linear_f;
+
 	AcceleratorOptions options;
 
 	Accelerator(AcceleratorOptions options);
 	void initialize(Hamiltonian* hamiltonian);
 	void finalize();
 
-	double calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x);
+	double calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int iteration_i);
 	void finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<double> final_params, int nbSamples);
 
 	void set_ansatz(Ansatz* ansatz);
@@ -47,6 +58,7 @@ public:
 	void run_vqe_slave_process();
 
 private:
+
 	Qureg qureg;
 
 	PauliHamil hamiltonian;

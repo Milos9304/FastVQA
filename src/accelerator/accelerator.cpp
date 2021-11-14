@@ -159,7 +159,7 @@ void Accelerator::set_ansatz(Ansatz* ansatz){
 
 }
 
-double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x){
+double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int iteration_i){
 
 	int x_size = x.size();
 	if(env.numRanks > 1){
@@ -197,7 +197,18 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 	double amp;
 
 	long long int i = 0;
-	while(alpha_sum < options.samples_cut_ratio){
+
+	long long zero_state_index = options.zero_reference_state;
+	if(zero_state_index != 0)
+		logw("Check zero state index!");
+
+	double zero_state_amp = qureg.stateVec.real[zero_state_index]*qureg.stateVec.real[zero_state_index]+qureg.stateVec.imag[zero_state_index]*qureg.stateVec.imag[zero_state_index];
+	double zero_state_amp_per_elem = zero_state_amp / qureg.numAmpsPerChunk;
+
+	double alpha = alpha_f(options.samples_cut_ratio, options.final_alpha, iter ation_i, options.max_alpha_iters);
+	//loge(std::to_string(alpha));
+
+	while(alpha_sum < alpha){
 
 		 if(i >= ref_hamil_energies.size()){
 			 //logw("Probably something ain't alright");
@@ -205,7 +216,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		 }
 
 		long long int q_index = ref_hamil_energies[i].second;
-		amp = qureg.stateVec.real[q_index]*qureg.stateVec.real[q_index]+qureg.stateVec.imag[q_index]*qureg.stateVec.imag[q_index];
+		amp = zero_state_amp_per_elem + qureg.stateVec.real[q_index]*qureg.stateVec.real[q_index]+qureg.stateVec.imag[q_index]*qureg.stateVec.imag[q_index];
 		alpha_sum += amp;
 		if(i >= ref_hamil_energies.size()){
 			loge("NOT ENOUGH REF ENERGIES STORED IN MEMORY.");
@@ -215,15 +226,15 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 		i++;
 	}
-	energy -= (alpha_sum - options.samples_cut_ratio) * ref_hamil_energies[i-1].first * amp;
+	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].first * amp;
 
-	if(energy == 0){
-		std::cerr<<"kokot " << i-1 << "\n";
+	/*if(energy == 0){
+		std::cerr<<"." << i-1 << "\n";
 		std::cerr<<ref_hamil_energies[i-1].first << " " << ref_hamil_energies[i-1].second << "\n";
 		throw;
-	}
+	}*/
 
-	return energy; //normalize
+	return energy / alpha ; //normalize
 
 	//QUEST CODE
 		/*Complex localExpec = statevec_calcExpecDiagonalOpLocal(qureg, op);
@@ -418,6 +429,14 @@ Accelerator::Accelerator(AcceleratorOptions options){
 
 	if(options.accelerator_type != "quest"){
 		loge("No other accelerator than QuEST implemented");
+		throw;
+	}
+	if(options.alpha_f == "constant"){
+		this->alpha_f= alpha_constant_f;
+	}else if(options.alpha_f == "linear"){
+		this->alpha_f= alpha_linear_f;
+	}else{
+		loge("Unknown alpha function name");
 		throw;
 	}
 

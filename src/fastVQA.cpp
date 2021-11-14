@@ -52,6 +52,7 @@ int main(int ac, char** av){
 	AcceleratorOptions acceleratorOptions;
 	acceleratorOptions.accelerator_type = "quest";
 
+
 	//--------------------------------RANK ZERO CODE------------------------------------------
 	if(rank == 0 /*|| strcmp(av[1],"qaoa")*/){
 
@@ -63,7 +64,7 @@ int main(int ac, char** av){
 		//auto enumeration     = op.add<Switch>("", "enum", "enumerate all qubo configurations");
 		auto config 	     = op.add<Value<std::string>>("", "config", "config file location", "");
 		auto lattice_file    = op.add<Value<std::string>>("", "lattice", "lattice file location", "");
-		auto niters          = op.add<Value<int>>("i", "iters", "max num of iterations", 0);
+		auto niters          = op.add<Value<int>>("i", "iters", "max num of iterations", 1000);
 		auto nbSamples 		 = op.add<Value<int>>("n", "nbSamples", "number of samples in var assigmnent", 1024);
 		auto save_hml        = op.add<Value<std::string>>("", "savehml", "save hamiltonian to file", "");
 		auto load_hml        = op.add<Value<std::string>>("", "loadhml", "save hamiltonian to file", "");
@@ -74,13 +75,17 @@ int main(int ac, char** av){
 		auto lll_preprocess  = op.add<Switch>("", "lll", "perform LLL preprocessing on the lattice");
 		auto second_eigval   = op.add<Switch>("", "second", "pick second lowest energy");
 
+		auto initial_alpha   = op.add<Value<double>>("x", "alpha", "initial alpha value", 1);
+		auto linear_alpha    = op.add<Switch>("l", "linear", "linear alpha");
+		auto final_alpha     = op.add<Value<double>>("f", "final_alpha", "final alpha value", 0.5);
+		auto max_alpha_iters = op.add<Value<int>>("m", "max_alpha_iters", "max alpha iters", 1000);
+
 		auto paper_exp		 = op.add<Switch>("e", "paperexp", "perform experiment as in the paper");
 		auto rank_reduce 	 = op.add<Value<int>>("r", "", "rank truncation for paperexp", 0);
-		auto cut_ratio_value = op.add<Value<double>>("x", "cut_ratio", "cut ratio for intermediate sampling", 1);
 		auto circ_dir_prefix = op.add<Value<std::string>>("c", "circ-dir-prefix", "", "../experiment_files");
 
-		auto save_ansatz	 = op.add<Switch>("s", "saveAnsatz", "save ansatz files");
-		auto load_ansatz	 = op.add<Switch>("l", "loadAnsatz", "load ansatz files");
+		auto save_ansatz	 = op.add<Switch>("", "saveAnsatz", "save ansatz files");
+		auto load_ansatz	 = op.add<Switch>("", "loadAnsatz", "load ansatz files");
 
 		auto save_interm  = op.add<Value<std::string>>("", "si", "save intermediate results (for specific experiments only)", "");
 		auto load_interm  = op.add<Value<std::string>>("", "li", "load intermediate results (for specific experiments only)", "");
@@ -105,7 +110,11 @@ int main(int ac, char** av){
 
 		if(paper_exp->is_set()){
 
-			acceleratorOptions.samples_cut_ratio=cut_ratio_value->value();
+			acceleratorOptions.samples_cut_ratio=initial_alpha->value();
+			acceleratorOptions.final_alpha=final_alpha->value();
+			acceleratorOptions.max_alpha_iters=max_alpha_iters->value();
+			acceleratorOptions.alpha_f = linear_alpha->is_set() ? "linear" : "constant";
+
 			logw("Setting accelerator ratio to " + std::to_string(acceleratorOptions.samples_cut_ratio));
 			loge("This won't work for distributed. Change code!");
 

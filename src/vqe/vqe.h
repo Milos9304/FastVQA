@@ -33,6 +33,7 @@ class Vqe{
 
 		int num_qubits;
 		int num_params;
+		int max_iters;
 		/*bool initialize(std::string name, Ansatz* ansatz,
 			Hamiltonian* observable,
 			StatsFunction stats_function,
