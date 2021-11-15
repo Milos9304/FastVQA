@@ -94,17 +94,16 @@ scatter_plots=[]
 fig, ax = plt.subplots()
 plt.subplots_adjust(bottom=.25)
 
-nbSamples = 5000;
-r_init = 0.05;
+nbSamples = 5000
+r_init = 0.05
 ri="{:.3f}".format(r_init)
-
 
 colors = list(map(lambda x: 'green' if x > 1/nbSamples else 'red', hit_rates[ri]))
 for i in range(len(iis)):
 	scatterPlot, = plt.plot(iis[i], hit_rates[ri][i], 'o', markersize=1, color=colors[i])
 	scatter_plots.append(scatterPlot)
 
-text = ax.text(0.05, 1.05, "Success rate with " + str(nbSamples) + " measures:  " + str(colors.count('green')/len(colors)), transform=ax.transAxes)
+text = ax.text(0.05, 1.05, "Success rate with " + str(nbSamples) + " measures and cvar=" + ri + " :  " + str(colors.count('green')/len(colors)), transform=ax.transAxes)
 
 unsucessful = []
 for i in range(len(colors)):
@@ -115,10 +114,13 @@ print("Unsuccessful: ", unsucessful)
 
 def update(val):
 
+	global nbSamples
+	global ri
+
 	nbSamples = val;
 
 	colors=list(map(lambda x: 'green' if x > 1/nbSamples else 'red', hit_rates[ri]))
-	text.set_text("Success rate with " + str(nbSamples) + " measures:  " + str(colors.count('green')/len(colors)))
+	text.set_text("Success rate with " + str(nbSamples) + " measures and cvar=" + ri + " :  " + str(colors.count('green')/len(colors)))
 
 	unsucessful = []
 	for i in range(len(colors)):
@@ -131,13 +133,18 @@ def update(val):
 		scatter_plots[i].set_color(colors[i])
 	fig.canvas.draw_idle()
 	
+	print(ri)
+	
 def update_r(r):
+
+	global nbSamples
+	global ri
 
 	print(hit_rates.keys())
 	ri="{:.3f}".format(r)
 
 	colors=list(map(lambda x: 'green' if x > 1/nbSamples else 'red', hit_rates[ri]))
-	text.set_text("Success rate with " + str(nbSamples) + " measures:  " + str(colors.count('green')/len(colors)))
+	text.set_text("Success rate with " + str(nbSamples) + " measures and cvar=" + ri + " :  " + str(colors.count('green')/len(colors)))
 
 	unsucessful = []
 	for i in range(len(colors)):
@@ -150,7 +157,7 @@ def update_r(r):
 		scatter_plots[i].set_ydata(hit_rates[ri][i])
 		scatter_plots[i].set_color(colors[i])
 	fig.canvas.draw_idle()
-
+	
 axcolor="lightgoldenrodyellow"
 slider = Slider(
 		ax=plt.axes([0.25,0.1,0.65,0.03],facecolor=axcolor),
