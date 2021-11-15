@@ -36,6 +36,14 @@ std::string process(std::string const& s){
     }
 }
 
+std::string to_string_with_precision(double a_value, const int n = 6)
+{
+    std::ostringstream out;
+    out.precision(n);
+    out << std::fixed << a_value;
+    return out.str();
+}
+
 int main(int ac, char** av){
 
 	std::cout << fixed;
@@ -216,10 +224,10 @@ int main(int ac, char** av){
 
 			logi("Running " + lattice_abs->name);
 
-			/*if(counter == 0){
+			/*if(counter < 2){
 				counter++;
 				continue;
-			}else if(counter > 1)
+			}else if(counter > 2)
 				break;*/
 
 			bool excluded = false;
@@ -239,7 +247,6 @@ int main(int ac, char** av){
 			if(qaoa->is_set()){
 
 			}else if(vqe->is_set()){
-
 				ProgressBar bar{bar_opts(counter, num_lattices, lattice->name, vqeOptions)};
 
 				vqeOptions->set_default_stats_function(execStats, &bar, lattice);
@@ -292,7 +299,7 @@ int main(int ac, char** av){
 				//if(!passed)
 				//	throw;
 
-				std::ofstream output_file("../experiment_files/statsfile_"+lattice->name+".txt");
+				std::ofstream output_file("../experiment_files/r_"+to_string_with_precision(initial_alpha->value(),3)+"/statsfile_"+lattice->name+".txt");
 				output_file << fixed << showpoint;
 				output_file << setprecision(10);
 

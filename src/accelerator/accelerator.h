@@ -14,6 +14,7 @@
 #include "../fastVQA.h"
 #include "../hamiltonian/hamiltonian.h"
 #include "../ansatz/ansatz.h"
+#include <bitset>
 
 typedef std::pair<qreal, long long int> RefEnergy;
 typedef std::vector<RefEnergy> RefEnergies;

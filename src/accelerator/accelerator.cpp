@@ -49,7 +49,7 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 
 	bool second_eigenergy = true;
 
-	typedef std::pair<int, double> meas_freq_eval;
+	/*typedef std::pair<int, double> meas_freq_eval;
 	typedef std::pair<std::string, meas_freq_eval> measurement;
 
 	std::vector<measurement> measurements;
@@ -70,10 +70,6 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 			measurementStr += std::to_string(measure(qureg_cache, measureQubit));
 		}
 
-		/*if(measurementStr == "000000000000001"){
-			loge("FUCK WE GOT IT");
-		}*/
-
 		bool found = false;
 		int index = 0;
 		for(auto &instance : measurements){
@@ -86,7 +82,8 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 
 		//loge(classicalRefState_str);throw;
 
-		if(/*!overlapPenalization || measurementStr != classicalRefState_str*/true){
+		//if(!overlapPenalization || measurementStr != classicalRefState_str){
+		if(true)
 			if(!found){
 
 			  measurements.push_back(measurement(measurementStr, // bit string
@@ -97,7 +94,7 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 			}
 		}
 	}
-	if(/*m_maximize*/false)
+	if(false)
 		  std::sort(measurements.begin(), measurements.end(),
 			  [](const std::pair<std::string, std::pair<int, double>>& a, const std::pair<std::string, std::pair<int,int>>& b) {
 				  //sort by global value
@@ -131,13 +128,38 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 
 	loge("Measurements size = " + std::to_string(measurements.size()));
 
-	//optimalMeasurement.first = "000000000000001";
-
 	buffer->opt_config=optimalMeasurement.first;
 	loge(optimalMeasurement.first);
 	buffer->opt_val=optimalMeasurement.second.second;
 	logw("Hits " + std::to_string(hits) + " / " + std::to_string(nbSamples));
 	buffer->hit_rate= hits / double(nbSamples);
+
+*/
+
+	long long int i = 0;
+	while(ref_hamil_energies[i++].first == 0);
+
+	RefEnergy ground_state = ref_hamil_energies[i-1];
+	i = ground_state.second;
+
+	const int max_qubits=40;
+
+	if(qureg.numQubitsInStateVec > max_qubits){
+		loge("Not enough binary places to hold final opt_config. You are simulating more than" + std::to_string(max_qubits) + " qubits. Increase the number in the code.");
+	}
+
+	std::string opt_config = std::bitset<max_qubits>(i).to_string();
+	opt_config=opt_config.substr(max_qubits-qureg.numQubitsInStateVec,qureg.numQubitsInStateVec);
+	std::reverse(opt_config.begin(), opt_config.end());
+	buffer->opt_config=opt_config;
+	buffer->opt_val=ground_state.first;
+	//logw("Hits " + std::to_string(hits) + " / " + std::to_string(nbSamples));
+	buffer->hit_rate= qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
+
+	//std::sort(amps.begin(), amps.end();
+
+
+
 
 }
 
