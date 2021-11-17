@@ -1,0 +1,2825 @@
+[[2021-11-16 16:16:21]][DEBUG] Using seed 1997
+[[2021-11-16 16:16:21]][WARNING] Setting accelerator ratio to 0.175000
+[[2021-11-16 16:16:21]][ERROR] This won't work for distributed. Change code!
+[[2021-11-16 16:16:21]][ERROR] Gaussian heuristics not implemented for low rank matrices. Returning 1.
+0_18 1_18 2_18 3_18 4_18 5_18 6_18 7_18 8_18 9_18 10_18 11_18 12_18 13_18 14_18 15_18 16_18 17_18 18_18 19_18 20_18 21_18 22_18 23_18 24_18 25_18 26_18 27_18 28_18 29_18 30_18 31_18 32_18 33_18 34_18 35_18 36_18 37_18 38_18 39_18 40_18 41_18 42_18 43_18 44_18 45_18 46_18 47_18 48_18 49_18 50_18 51_18 52_18 53_18 54_18 55_18 56_18 57_18 58_18 59_18 60_18 61_18 62_18 63_18 64_18 65_18 66_18 67_18 68_18 69_18 70_18 71_18 72_18 73_18 74_18 75_18 76_18 77_18 78_18 79_18 80_18 81_18 82_18 83_18 84_18 85_18 86_18 87_18 88_18 89_18 90_18 91_18 92_18 93_18 94_18 95_18 96_18 97_18 98_18 99_18 100_18 101_18 102_18 103_18 104_18 105_18 106_18 107_18 108_18 109_18 110_18 111_18 112_18 113_18 114_18 115_18 116_18 117_18 118_18 119_18 120_18 121_18 122_18 123_18 124_18 125_18 126_18 127_18 
+[[2021-11-16 16:16:22]][DEBUG] Accelerator partial not yet returned
+ERROR: Trying to initialize QuESTEnv multiple times. Ignoring...
+[[2021-11-16 16:16:22]][DEBUG] Accelerator partial returned
+[[2021-11-16 16:16:22]][DEBUG] VQAOptions set
+[[2021-11-16 16:16:22]][INFO] Running 0_18
+[[2021-11-16 16:16:22]][WARNING] calc gso
+[[2021-11-16 16:16:22]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:16:22]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:16:22]][WARNING] Before VQE run
+[[2021-11-16 16:16:22]][INFO] 18 qubits
+[[2021-11-16 16:16:22]][DEBUG] Before ansatz gen
+[[2021-11-16 16:16:22]][DEBUG] After ansatz gen
+[[2021-11-16 16:16:22]][DEBUG] Executing vqe
+[[2021-11-16 16:16:22]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:16:22]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:16:22]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 111254450.000000
+Final opt-config: 000000000010000000
+Final hit-rate: 0.000152
+[[2021-11-16 16:17:31]][DEBUG] Destroying qureg
+[[2021-11-16 16:17:31]][DEBUG] Vqe execution done
+Min QUBO: 111254450.000000
+[[2021-11-16 16:17:31]][WARNING] VQE run
+[[2021-11-16 16:17:31]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:17:31]][WARNING] Double check: 111254450 passed: TRUE
+[[2021-11-16 16:17:31]][INFO] Running 1_18
+[[2021-11-16 16:17:31]][WARNING] calc gso
+[[2021-11-16 16:17:31]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:17:31]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:17:31]][WARNING] Before VQE run
+[[2021-11-16 16:17:31]][INFO] 18 qubits
+[[2021-11-16 16:17:31]][DEBUG] Before ansatz gen
+[[2021-11-16 16:17:31]][DEBUG] After ansatz gen
+[[2021-11-16 16:17:31]][DEBUG] Executing vqe
+[[2021-11-16 16:17:31]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:17:31]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:17:32]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 105926735.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000046
+[[2021-11-16 16:18:28]][DEBUG] Destroying qureg
+[[2021-11-16 16:18:28]][DEBUG] Vqe execution done
+Min QUBO: 105926735.000000
+[[2021-11-16 16:18:28]][WARNING] VQE run
+[[2021-11-16 16:18:28]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:18:28]][WARNING] Double check: 105926735 passed: TRUE
+[[2021-11-16 16:18:28]][INFO] Running 2_18
+[[2021-11-16 16:18:28]][WARNING] calc gso
+[[2021-11-16 16:18:28]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:18:28]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:18:28]][WARNING] Before VQE run
+[[2021-11-16 16:18:28]][INFO] 18 qubits
+[[2021-11-16 16:18:28]][DEBUG] Before ansatz gen
+[[2021-11-16 16:18:28]][DEBUG] After ansatz gen
+[[2021-11-16 16:18:28]][DEBUG] Executing vqe
+[[2021-11-16 16:18:28]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:18:28]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:18:28]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 103079913.000000
+Final opt-config: 000010000000000000
+Final hit-rate: 0.175000
+[[2021-11-16 16:19:14]][DEBUG] Destroying qureg
+[[2021-11-16 16:19:14]][DEBUG] Vqe execution done
+Min QUBO: 103079913.000000
+[[2021-11-16 16:19:14]][WARNING] VQE run
+[[2021-11-16 16:19:14]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 
+[[2021-11-16 16:19:14]][WARNING] Double check: 103079913 passed: TRUE
+[[2021-11-16 16:19:14]][INFO] Running 3_18
+[[2021-11-16 16:19:14]][WARNING] calc gso
+[[2021-11-16 16:19:14]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:19:14]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:19:14]][WARNING] Before VQE run
+[[2021-11-16 16:19:14]][INFO] 18 qubits
+[[2021-11-16 16:19:14]][DEBUG] Before ansatz gen
+[[2021-11-16 16:19:14]][DEBUG] After ansatz gen
+[[2021-11-16 16:19:14]][DEBUG] Executing vqe
+[[2021-11-16 16:19:14]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:19:14]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:19:15]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 114304328.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.175001
+[[2021-11-16 16:20:12]][DEBUG] Destroying qureg
+[[2021-11-16 16:20:12]][DEBUG] Vqe execution done
+Min QUBO: 114304328.000000
+[[2021-11-16 16:20:12]][WARNING] VQE run
+[[2021-11-16 16:20:12]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:20:12]][WARNING] Double check: 114304328 passed: TRUE
+[[2021-11-16 16:20:12]][INFO] Running 4_18
+[[2021-11-16 16:20:12]][WARNING] calc gso
+[[2021-11-16 16:20:12]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:20:12]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:20:12]][WARNING] Before VQE run
+[[2021-11-16 16:20:12]][INFO] 18 qubits
+[[2021-11-16 16:20:12]][DEBUG] Before ansatz gen
+[[2021-11-16 16:20:12]][DEBUG] After ansatz gen
+[[2021-11-16 16:20:12]][DEBUG] Executing vqe
+[[2021-11-16 16:20:12]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:20:12]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:20:12]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 125827931.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000062
+[[2021-11-16 16:21:04]][DEBUG] Destroying qureg
+[[2021-11-16 16:21:04]][DEBUG] Vqe execution done
+Min QUBO: 125827931.000000
+[[2021-11-16 16:21:04]][WARNING] VQE run
+[[2021-11-16 16:21:04]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:21:04]][WARNING] Double check: 125827931 passed: TRUE
+[[2021-11-16 16:21:04]][INFO] Running 5_18
+[[2021-11-16 16:21:04]][WARNING] calc gso
+[[2021-11-16 16:21:04]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:21:04]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:21:04]][WARNING] Before VQE run
+[[2021-11-16 16:21:04]][INFO] 18 qubits
+[[2021-11-16 16:21:04]][DEBUG] Before ansatz gen
+[[2021-11-16 16:21:04]][DEBUG] After ansatz gen
+[[2021-11-16 16:21:04]][DEBUG] Executing vqe
+[[2021-11-16 16:21:04]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:21:04]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:21:04]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 97489831.000000
+Final opt-config: 000000110001000001
+Final hit-rate: 0.000000
+[[2021-11-16 16:22:05]][DEBUG] Destroying qureg
+[[2021-11-16 16:22:05]][DEBUG] Vqe execution done
+Min QUBO: 97489831.000000
+[[2021-11-16 16:22:05]][WARNING] VQE run
+[[2021-11-16 16:22:05]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 1 0 0 0 1 1 0 0 0 0 0 0 
+[[2021-11-16 16:22:05]][WARNING] Double check: 97489831 passed: TRUE
+[[2021-11-16 16:22:05]][INFO] Running 6_18
+[[2021-11-16 16:22:05]][WARNING] calc gso
+[[2021-11-16 16:22:05]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:22:05]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:22:05]][WARNING] Before VQE run
+[[2021-11-16 16:22:05]][INFO] 18 qubits
+[[2021-11-16 16:22:05]][DEBUG] Before ansatz gen
+[[2021-11-16 16:22:05]][DEBUG] After ansatz gen
+[[2021-11-16 16:22:05]][DEBUG] Executing vqe
+[[2021-11-16 16:22:05]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:22:05]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:22:05]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 146074051.000000
+Final opt-config: 100000000000000000
+Final hit-rate: 0.003528
+[[2021-11-16 16:22:49]][DEBUG] Destroying qureg
+[[2021-11-16 16:22:49]][DEBUG] Vqe execution done
+Min QUBO: 146074051.000000
+[[2021-11-16 16:22:49]][WARNING] VQE run
+[[2021-11-16 16:22:49]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2021-11-16 16:22:49]][WARNING] Double check: 146074051 passed: TRUE
+[[2021-11-16 16:22:49]][INFO] Running 7_18
+[[2021-11-16 16:22:49]][WARNING] calc gso
+[[2021-11-16 16:22:49]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:22:49]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:22:49]][WARNING] Before VQE run
+[[2021-11-16 16:22:49]][INFO] 18 qubits
+[[2021-11-16 16:22:49]][DEBUG] Before ansatz gen
+[[2021-11-16 16:22:49]][DEBUG] After ansatz gen
+[[2021-11-16 16:22:49]][DEBUG] Executing vqe
+[[2021-11-16 16:22:49]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:22:49]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:22:49]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 104159034.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000002
+[[2021-11-16 16:23:26]][DEBUG] Destroying qureg
+[[2021-11-16 16:23:26]][DEBUG] Vqe execution done
+Min QUBO: 104159034.000000
+[[2021-11-16 16:23:26]][WARNING] VQE run
+[[2021-11-16 16:23:26]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:23:26]][WARNING] Double check: 104159034 passed: TRUE
+[[2021-11-16 16:23:26]][INFO] Running 8_18
+[[2021-11-16 16:23:26]][WARNING] calc gso
+[[2021-11-16 16:23:26]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:23:26]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:23:26]][WARNING] Before VQE run
+[[2021-11-16 16:23:26]][INFO] 18 qubits
+[[2021-11-16 16:23:26]][DEBUG] Before ansatz gen
+[[2021-11-16 16:23:26]][DEBUG] After ansatz gen
+[[2021-11-16 16:23:26]][DEBUG] Executing vqe
+[[2021-11-16 16:23:26]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:23:26]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:23:27]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 99192736.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.005985
+[[2021-11-16 16:24:19]][DEBUG] Destroying qureg
+[[2021-11-16 16:24:19]][DEBUG] Vqe execution done
+Min QUBO: 99192736.000000
+[[2021-11-16 16:24:19]][WARNING] VQE run
+[[2021-11-16 16:24:19]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:24:19]][WARNING] Double check: 99192736 passed: TRUE
+[[2021-11-16 16:24:19]][INFO] Running 9_18
+[[2021-11-16 16:24:19]][WARNING] calc gso
+[[2021-11-16 16:24:19]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:24:19]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:24:19]][WARNING] Before VQE run
+[[2021-11-16 16:24:19]][INFO] 18 qubits
+[[2021-11-16 16:24:19]][DEBUG] Before ansatz gen
+[[2021-11-16 16:24:19]][DEBUG] After ansatz gen
+[[2021-11-16 16:24:19]][DEBUG] Executing vqe
+[[2021-11-16 16:24:19]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:24:19]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:24:19]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 101904368.000000
+Final opt-config: 000000001000000000
+Final hit-rate: 0.002139
+[[2021-11-16 16:25:10]][DEBUG] Destroying qureg
+[[2021-11-16 16:25:10]][DEBUG] Vqe execution done
+Min QUBO: 101904368.000000
+[[2021-11-16 16:25:10]][WARNING] VQE run
+[[2021-11-16 16:25:10]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:25:10]][WARNING] Double check: 101904368 passed: TRUE
+[[2021-11-16 16:25:10]][INFO] Running 10_18
+[[2021-11-16 16:25:10]][WARNING] calc gso
+[[2021-11-16 16:25:10]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:25:10]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:25:10]][WARNING] Before VQE run
+[[2021-11-16 16:25:10]][INFO] 18 qubits
+[[2021-11-16 16:25:10]][DEBUG] Before ansatz gen
+[[2021-11-16 16:25:10]][DEBUG] After ansatz gen
+[[2021-11-16 16:25:10]][DEBUG] Executing vqe
+[[2021-11-16 16:25:10]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:25:10]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:25:11]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 97621325.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.108726
+[[2021-11-16 16:26:45]][DEBUG] Destroying qureg
+[[2021-11-16 16:26:45]][DEBUG] Vqe execution done
+Min QUBO: 97621325.000000
+[[2021-11-16 16:26:45]][WARNING] VQE run
+[[2021-11-16 16:26:45]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:26:45]][WARNING] Double check: 97621325 passed: TRUE
+[[2021-11-16 16:26:45]][INFO] Running 11_18
+[[2021-11-16 16:26:45]][WARNING] calc gso
+[[2021-11-16 16:26:45]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:26:45]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:26:45]][WARNING] Before VQE run
+[[2021-11-16 16:26:45]][INFO] 18 qubits
+[[2021-11-16 16:26:45]][DEBUG] Before ansatz gen
+[[2021-11-16 16:26:45]][DEBUG] After ansatz gen
+[[2021-11-16 16:26:45]][DEBUG] Executing vqe
+[[2021-11-16 16:26:45]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:26:45]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:26:46]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 82435936.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000068
+[[2021-11-16 16:27:35]][DEBUG] Destroying qureg
+[[2021-11-16 16:27:35]][DEBUG] Vqe execution done
+Min QUBO: 82435936.000000
+[[2021-11-16 16:27:35]][WARNING] VQE run
+[[2021-11-16 16:27:35]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:27:35]][WARNING] Double check: 82435936 passed: TRUE
+[[2021-11-16 16:27:35]][INFO] Running 12_18
+[[2021-11-16 16:27:35]][WARNING] calc gso
+[[2021-11-16 16:27:35]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:27:35]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:27:35]][WARNING] Before VQE run
+[[2021-11-16 16:27:35]][INFO] 18 qubits
+[[2021-11-16 16:27:35]][DEBUG] Before ansatz gen
+[[2021-11-16 16:27:35]][DEBUG] After ansatz gen
+[[2021-11-16 16:27:35]][DEBUG] Executing vqe
+[[2021-11-16 16:27:35]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:27:35]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:27:36]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 121028429.000000
+Final opt-config: 000000000100000000
+Final hit-rate: 0.046549
+[[2021-11-16 16:28:16]][DEBUG] Destroying qureg
+[[2021-11-16 16:28:16]][DEBUG] Vqe execution done
+Min QUBO: 121028429.000000
+[[2021-11-16 16:28:16]][WARNING] VQE run
+[[2021-11-16 16:28:16]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:28:16]][WARNING] Double check: 121028429 passed: TRUE
+[[2021-11-16 16:28:16]][INFO] Running 13_18
+[[2021-11-16 16:28:16]][WARNING] calc gso
+[[2021-11-16 16:28:16]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:28:16]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:28:16]][WARNING] Before VQE run
+[[2021-11-16 16:28:16]][INFO] 18 qubits
+[[2021-11-16 16:28:16]][DEBUG] Before ansatz gen
+[[2021-11-16 16:28:16]][DEBUG] After ansatz gen
+[[2021-11-16 16:28:16]][DEBUG] Executing vqe
+[[2021-11-16 16:28:16]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:28:16]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:28:17]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 129461176.000000
+Final opt-config: 100000000000000000
+Final hit-rate: 0.002916
+[[2021-11-16 16:29:19]][DEBUG] Destroying qureg
+[[2021-11-16 16:29:19]][DEBUG] Vqe execution done
+Min QUBO: 129461176.000000
+[[2021-11-16 16:29:19]][WARNING] VQE run
+[[2021-11-16 16:29:19]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2021-11-16 16:29:19]][WARNING] Double check: 129461176 passed: TRUE
+[[2021-11-16 16:29:19]][INFO] Running 14_18
+[[2021-11-16 16:29:19]][WARNING] calc gso
+[[2021-11-16 16:29:19]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:29:19]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:29:19]][WARNING] Before VQE run
+[[2021-11-16 16:29:19]][INFO] 18 qubits
+[[2021-11-16 16:29:19]][DEBUG] Before ansatz gen
+[[2021-11-16 16:29:19]][DEBUG] After ansatz gen
+[[2021-11-16 16:29:19]][DEBUG] Executing vqe
+[[2021-11-16 16:29:19]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:29:19]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:29:20]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 74448188.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.001629
+[[2021-11-16 16:30:16]][DEBUG] Destroying qureg
+[[2021-11-16 16:30:16]][DEBUG] Vqe execution done
+Min QUBO: 74448188.000000
+[[2021-11-16 16:30:16]][WARNING] VQE run
+[[2021-11-16 16:30:16]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:30:16]][WARNING] Double check: 74448188 passed: TRUE
+[[2021-11-16 16:30:16]][INFO] Running 15_18
+[[2021-11-16 16:30:16]][WARNING] calc gso
+[[2021-11-16 16:30:16]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:30:16]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:30:16]][WARNING] Before VQE run
+[[2021-11-16 16:30:16]][INFO] 18 qubits
+[[2021-11-16 16:30:16]][DEBUG] Before ansatz gen
+[[2021-11-16 16:30:16]][DEBUG] After ansatz gen
+[[2021-11-16 16:30:16]][DEBUG] Executing vqe
+[[2021-11-16 16:30:16]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:30:16]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:30:16]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 78262770.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000001
+[[2021-11-16 16:31:15]][DEBUG] Destroying qureg
+[[2021-11-16 16:31:15]][DEBUG] Vqe execution done
+Min QUBO: 78262770.000000
+[[2021-11-16 16:31:15]][WARNING] VQE run
+[[2021-11-16 16:31:15]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:31:15]][WARNING] Double check: 78262770 passed: TRUE
+[[2021-11-16 16:31:15]][INFO] Running 16_18
+[[2021-11-16 16:31:15]][WARNING] calc gso
+[[2021-11-16 16:31:15]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:31:15]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:31:15]][WARNING] Before VQE run
+[[2021-11-16 16:31:15]][INFO] 18 qubits
+[[2021-11-16 16:31:15]][DEBUG] Before ansatz gen
+[[2021-11-16 16:31:15]][DEBUG] After ansatz gen
+[[2021-11-16 16:31:15]][DEBUG] Executing vqe
+[[2021-11-16 16:31:15]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:31:15]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:31:15]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 132184084.000000
+Final opt-config: 000100000000000000
+Final hit-rate: 0.000261
+[[2021-11-16 16:32:30]][DEBUG] Destroying qureg
+[[2021-11-16 16:32:30]][DEBUG] Vqe execution done
+Min QUBO: 132184084.000000
+[[2021-11-16 16:32:30]][WARNING] VQE run
+[[2021-11-16 16:32:30]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 
+[[2021-11-16 16:32:30]][WARNING] Double check: 132184084 passed: TRUE
+[[2021-11-16 16:32:30]][INFO] Running 17_18
+[[2021-11-16 16:32:30]][WARNING] calc gso
+[[2021-11-16 16:32:30]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:32:30]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:32:30]][WARNING] Before VQE run
+[[2021-11-16 16:32:30]][INFO] 18 qubits
+[[2021-11-16 16:32:30]][DEBUG] Before ansatz gen
+[[2021-11-16 16:32:30]][DEBUG] After ansatz gen
+[[2021-11-16 16:32:30]][DEBUG] Executing vqe
+[[2021-11-16 16:32:30]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:32:30]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:32:31]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 115978293.000000
+Final opt-config: 100000000000000000
+Final hit-rate: 0.068243
+[[2021-11-16 16:33:41]][DEBUG] Destroying qureg
+[[2021-11-16 16:33:41]][DEBUG] Vqe execution done
+Min QUBO: 115978293.000000
+[[2021-11-16 16:33:41]][WARNING] VQE run
+[[2021-11-16 16:33:41]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2021-11-16 16:33:41]][WARNING] Double check: 115978293 passed: TRUE
+[[2021-11-16 16:33:41]][INFO] Running 18_18
+[[2021-11-16 16:33:41]][WARNING] calc gso
+[[2021-11-16 16:33:41]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:33:41]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:33:41]][WARNING] Before VQE run
+[[2021-11-16 16:33:41]][INFO] 18 qubits
+[[2021-11-16 16:33:41]][DEBUG] Before ansatz gen
+[[2021-11-16 16:33:41]][DEBUG] After ansatz gen
+[[2021-11-16 16:33:41]][DEBUG] Executing vqe
+[[2021-11-16 16:33:41]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:33:41]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:33:41]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 148983431.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000018
+[[2021-11-16 16:34:29]][DEBUG] Destroying qureg
+[[2021-11-16 16:34:29]][DEBUG] Vqe execution done
+Min QUBO: 148983431.000000
+[[2021-11-16 16:34:29]][WARNING] VQE run
+[[2021-11-16 16:34:29]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:34:29]][WARNING] Double check: 148983431 passed: TRUE
+[[2021-11-16 16:34:29]][INFO] Running 19_18
+[[2021-11-16 16:34:29]][WARNING] calc gso
+[[2021-11-16 16:34:29]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:34:29]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:34:29]][WARNING] Before VQE run
+[[2021-11-16 16:34:29]][INFO] 18 qubits
+[[2021-11-16 16:34:29]][DEBUG] Before ansatz gen
+[[2021-11-16 16:34:29]][DEBUG] After ansatz gen
+[[2021-11-16 16:34:29]][DEBUG] Executing vqe
+[[2021-11-16 16:34:29]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:34:29]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:34:29]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 202737755.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000042
+[[2021-11-16 16:35:44]][DEBUG] Destroying qureg
+[[2021-11-16 16:35:44]][DEBUG] Vqe execution done
+Min QUBO: 202737755.000000
+[[2021-11-16 16:35:44]][WARNING] VQE run
+[[2021-11-16 16:35:44]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:35:44]][WARNING] Double check: 202737755 passed: TRUE
+[[2021-11-16 16:35:44]][INFO] Running 20_18
+[[2021-11-16 16:35:44]][WARNING] calc gso
+[[2021-11-16 16:35:44]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:35:44]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:35:44]][WARNING] Before VQE run
+[[2021-11-16 16:35:44]][INFO] 18 qubits
+[[2021-11-16 16:35:44]][DEBUG] Before ansatz gen
+[[2021-11-16 16:35:44]][DEBUG] After ansatz gen
+[[2021-11-16 16:35:44]][DEBUG] Executing vqe
+[[2021-11-16 16:35:44]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:35:44]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:35:45]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 107602574.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000308
+[[2021-11-16 16:36:23]][DEBUG] Destroying qureg
+[[2021-11-16 16:36:23]][DEBUG] Vqe execution done
+Min QUBO: 107602574.000000
+[[2021-11-16 16:36:23]][WARNING] VQE run
+[[2021-11-16 16:36:23]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:36:23]][WARNING] Double check: 107602574 passed: TRUE
+[[2021-11-16 16:36:23]][INFO] Running 21_18
+[[2021-11-16 16:36:23]][WARNING] calc gso
+[[2021-11-16 16:36:23]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:36:23]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:36:23]][WARNING] Before VQE run
+[[2021-11-16 16:36:23]][INFO] 18 qubits
+[[2021-11-16 16:36:23]][DEBUG] Before ansatz gen
+[[2021-11-16 16:36:23]][DEBUG] After ansatz gen
+[[2021-11-16 16:36:23]][DEBUG] Executing vqe
+[[2021-11-16 16:36:23]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:36:23]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:36:24]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 103717156.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.001601
+[[2021-11-16 16:37:24]][DEBUG] Destroying qureg
+[[2021-11-16 16:37:24]][DEBUG] Vqe execution done
+Min QUBO: 103717156.000000
+[[2021-11-16 16:37:24]][WARNING] VQE run
+[[2021-11-16 16:37:24]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:37:24]][WARNING] Double check: 103717156 passed: TRUE
+[[2021-11-16 16:37:24]][INFO] Running 22_18
+[[2021-11-16 16:37:24]][WARNING] calc gso
+[[2021-11-16 16:37:24]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:37:24]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:37:24]][WARNING] Before VQE run
+[[2021-11-16 16:37:24]][INFO] 18 qubits
+[[2021-11-16 16:37:24]][DEBUG] Before ansatz gen
+[[2021-11-16 16:37:24]][DEBUG] After ansatz gen
+[[2021-11-16 16:37:24]][DEBUG] Executing vqe
+[[2021-11-16 16:37:24]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:37:24]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:37:25]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 104799041.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.006000
+[[2021-11-16 16:38:20]][DEBUG] Destroying qureg
+[[2021-11-16 16:38:20]][DEBUG] Vqe execution done
+Min QUBO: 104799041.000000
+[[2021-11-16 16:38:20]][WARNING] VQE run
+[[2021-11-16 16:38:20]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:38:20]][WARNING] Double check: 104799041 passed: TRUE
+[[2021-11-16 16:38:20]][INFO] Running 23_18
+[[2021-11-16 16:38:20]][WARNING] calc gso
+[[2021-11-16 16:38:20]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:38:20]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:38:20]][WARNING] Before VQE run
+[[2021-11-16 16:38:20]][INFO] 18 qubits
+[[2021-11-16 16:38:20]][DEBUG] Before ansatz gen
+[[2021-11-16 16:38:20]][DEBUG] After ansatz gen
+[[2021-11-16 16:38:20]][DEBUG] Executing vqe
+[[2021-11-16 16:38:20]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:38:20]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:38:21]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 135739765.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.175008
+[[2021-11-16 16:39:07]][DEBUG] Destroying qureg
+[[2021-11-16 16:39:07]][DEBUG] Vqe execution done
+Min QUBO: 135739765.000000
+[[2021-11-16 16:39:07]][WARNING] VQE run
+[[2021-11-16 16:39:07]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:39:07]][WARNING] Double check: 135739765 passed: TRUE
+[[2021-11-16 16:39:07]][INFO] Running 24_18
+[[2021-11-16 16:39:07]][WARNING] calc gso
+[[2021-11-16 16:39:07]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:39:07]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:39:07]][WARNING] Before VQE run
+[[2021-11-16 16:39:07]][INFO] 18 qubits
+[[2021-11-16 16:39:07]][DEBUG] Before ansatz gen
+[[2021-11-16 16:39:07]][DEBUG] After ansatz gen
+[[2021-11-16 16:39:07]][DEBUG] Executing vqe
+[[2021-11-16 16:39:07]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:39:07]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:39:07]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 160052441.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.001034
+[[2021-11-16 16:40:07]][DEBUG] Destroying qureg
+[[2021-11-16 16:40:07]][DEBUG] Vqe execution done
+Min QUBO: 160052441.000000
+[[2021-11-16 16:40:07]][WARNING] VQE run
+[[2021-11-16 16:40:07]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:40:07]][WARNING] Double check: 160052441 passed: TRUE
+[[2021-11-16 16:40:07]][INFO] Running 25_18
+[[2021-11-16 16:40:07]][WARNING] calc gso
+[[2021-11-16 16:40:07]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:40:07]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:40:07]][WARNING] Before VQE run
+[[2021-11-16 16:40:07]][INFO] 18 qubits
+[[2021-11-16 16:40:07]][DEBUG] Before ansatz gen
+[[2021-11-16 16:40:07]][DEBUG] After ansatz gen
+[[2021-11-16 16:40:07]][DEBUG] Executing vqe
+[[2021-11-16 16:40:07]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:40:07]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:40:08]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 129636203.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000028
+[[2021-11-16 16:40:55]][DEBUG] Destroying qureg
+[[2021-11-16 16:40:55]][DEBUG] Vqe execution done
+Min QUBO: 129636203.000000
+[[2021-11-16 16:40:55]][WARNING] VQE run
+[[2021-11-16 16:40:55]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:40:55]][WARNING] Double check: 129636203 passed: TRUE
+[[2021-11-16 16:40:55]][INFO] Running 26_18
+[[2021-11-16 16:40:55]][WARNING] calc gso
+[[2021-11-16 16:40:55]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:40:55]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:40:55]][WARNING] Before VQE run
+[[2021-11-16 16:40:55]][INFO] 18 qubits
+[[2021-11-16 16:40:55]][DEBUG] Before ansatz gen
+[[2021-11-16 16:40:55]][DEBUG] After ansatz gen
+[[2021-11-16 16:40:55]][DEBUG] Executing vqe
+[[2021-11-16 16:40:55]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:40:55]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:40:56]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 112727950.000000
+Final opt-config: 000000010000000000
+Final hit-rate: 0.021337
+[[2021-11-16 16:41:50]][DEBUG] Destroying qureg
+[[2021-11-16 16:41:50]][DEBUG] Vqe execution done
+Min QUBO: 112727950.000000
+[[2021-11-16 16:41:50]][WARNING] VQE run
+[[2021-11-16 16:41:50]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 
+[[2021-11-16 16:41:50]][WARNING] Double check: 112727950 passed: TRUE
+[[2021-11-16 16:41:50]][INFO] Running 27_18
+[[2021-11-16 16:41:50]][WARNING] calc gso
+[[2021-11-16 16:41:50]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:41:50]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:41:50]][WARNING] Before VQE run
+[[2021-11-16 16:41:50]][INFO] 18 qubits
+[[2021-11-16 16:41:50]][DEBUG] Before ansatz gen
+[[2021-11-16 16:41:50]][DEBUG] After ansatz gen
+[[2021-11-16 16:41:50]][DEBUG] Executing vqe
+[[2021-11-16 16:41:50]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:41:50]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:41:51]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 99685227.000000
+Final opt-config: 011001010011001001
+Final hit-rate: 0.000000
+[[2021-11-16 16:42:50]][DEBUG] Destroying qureg
+[[2021-11-16 16:42:50]][DEBUG] Vqe execution done
+Min QUBO: 99685227.000000
+[[2021-11-16 16:42:50]][WARNING] VQE run
+[[2021-11-16 16:42:50]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 1 0 0 1 1 0 0 1 0 1 0 0 1 1 0 
+[[2021-11-16 16:42:50]][WARNING] Double check: 99685227 passed: TRUE
+[[2021-11-16 16:42:50]][INFO] Running 28_18
+[[2021-11-16 16:42:50]][WARNING] calc gso
+[[2021-11-16 16:42:50]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:42:50]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:42:50]][WARNING] Before VQE run
+[[2021-11-16 16:42:50]][INFO] 18 qubits
+[[2021-11-16 16:42:50]][DEBUG] Before ansatz gen
+[[2021-11-16 16:42:50]][DEBUG] After ansatz gen
+[[2021-11-16 16:42:50]][DEBUG] Executing vqe
+[[2021-11-16 16:42:50]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:42:50]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:42:50]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 128042203.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.005580
+[[2021-11-16 16:43:39]][DEBUG] Destroying qureg
+[[2021-11-16 16:43:39]][DEBUG] Vqe execution done
+Min QUBO: 128042203.000000
+[[2021-11-16 16:43:39]][WARNING] VQE run
+[[2021-11-16 16:43:39]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:43:39]][WARNING] Double check: 128042203 passed: TRUE
+[[2021-11-16 16:43:39]][INFO] Running 29_18
+[[2021-11-16 16:43:39]][WARNING] calc gso
+[[2021-11-16 16:43:39]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:43:39]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:43:39]][WARNING] Before VQE run
+[[2021-11-16 16:43:39]][INFO] 18 qubits
+[[2021-11-16 16:43:39]][DEBUG] Before ansatz gen
+[[2021-11-16 16:43:39]][DEBUG] After ansatz gen
+[[2021-11-16 16:43:39]][DEBUG] Executing vqe
+[[2021-11-16 16:43:39]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:43:39]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:43:40]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 123934197.000000
+Final opt-config: 000100100000000000
+Final hit-rate: 0.000000
+[[2021-11-16 16:44:26]][DEBUG] Destroying qureg
+[[2021-11-16 16:44:26]][DEBUG] Vqe execution done
+Min QUBO: 123934197.000000
+[[2021-11-16 16:44:26]][WARNING] VQE run
+[[2021-11-16 16:44:26]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 
+[[2021-11-16 16:44:26]][WARNING] Double check: 123934197 passed: TRUE
+[[2021-11-16 16:44:26]][INFO] Running 30_18
+[[2021-11-16 16:44:26]][WARNING] calc gso
+[[2021-11-16 16:44:26]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:44:26]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:44:26]][WARNING] Before VQE run
+[[2021-11-16 16:44:26]][INFO] 18 qubits
+[[2021-11-16 16:44:26]][DEBUG] Before ansatz gen
+[[2021-11-16 16:44:26]][DEBUG] After ansatz gen
+[[2021-11-16 16:44:26]][DEBUG] Executing vqe
+[[2021-11-16 16:44:26]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:44:26]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:44:27]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 117320466.000000
+Final opt-config: 000000001000000000
+Final hit-rate: 0.003149
+[[2021-11-16 16:45:21]][DEBUG] Destroying qureg
+[[2021-11-16 16:45:21]][DEBUG] Vqe execution done
+Min QUBO: 117320466.000000
+[[2021-11-16 16:45:21]][WARNING] VQE run
+[[2021-11-16 16:45:21]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:45:21]][WARNING] Double check: 117320466 passed: TRUE
+[[2021-11-16 16:45:21]][INFO] Running 31_18
+[[2021-11-16 16:45:21]][WARNING] calc gso
+[[2021-11-16 16:45:21]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:45:21]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:45:21]][WARNING] Before VQE run
+[[2021-11-16 16:45:21]][INFO] 18 qubits
+[[2021-11-16 16:45:21]][DEBUG] Before ansatz gen
+[[2021-11-16 16:45:21]][DEBUG] After ansatz gen
+[[2021-11-16 16:45:21]][DEBUG] Executing vqe
+[[2021-11-16 16:45:21]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:45:21]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:45:21]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 122277620.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000692
+[[2021-11-16 16:46:09]][DEBUG] Destroying qureg
+[[2021-11-16 16:46:09]][DEBUG] Vqe execution done
+Min QUBO: 122277620.000000
+[[2021-11-16 16:46:09]][WARNING] VQE run
+[[2021-11-16 16:46:09]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:46:09]][WARNING] Double check: 122277620 passed: TRUE
+[[2021-11-16 16:46:09]][INFO] Running 32_18
+[[2021-11-16 16:46:09]][WARNING] calc gso
+[[2021-11-16 16:46:09]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:46:09]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:46:09]][WARNING] Before VQE run
+[[2021-11-16 16:46:09]][INFO] 18 qubits
+[[2021-11-16 16:46:09]][DEBUG] Before ansatz gen
+[[2021-11-16 16:46:09]][DEBUG] After ansatz gen
+[[2021-11-16 16:46:09]][DEBUG] Executing vqe
+[[2021-11-16 16:46:09]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:46:09]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:46:09]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 125913674.000000
+Final opt-config: 100000000000000000
+Final hit-rate: 0.058386
+[[2021-11-16 16:47:07]][DEBUG] Destroying qureg
+[[2021-11-16 16:47:07]][DEBUG] Vqe execution done
+Min QUBO: 125913674.000000
+[[2021-11-16 16:47:07]][WARNING] VQE run
+[[2021-11-16 16:47:07]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2021-11-16 16:47:07]][WARNING] Double check: 125913674 passed: TRUE
+[[2021-11-16 16:47:07]][INFO] Running 33_18
+[[2021-11-16 16:47:07]][WARNING] calc gso
+[[2021-11-16 16:47:07]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:47:07]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:47:07]][WARNING] Before VQE run
+[[2021-11-16 16:47:07]][INFO] 18 qubits
+[[2021-11-16 16:47:07]][DEBUG] Before ansatz gen
+[[2021-11-16 16:47:07]][DEBUG] After ansatz gen
+[[2021-11-16 16:47:07]][DEBUG] Executing vqe
+[[2021-11-16 16:47:07]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:47:07]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:47:08]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 82732586.000000
+Final opt-config: 000100000000000000
+Final hit-rate: 0.175000
+[[2021-11-16 16:48:05]][DEBUG] Destroying qureg
+[[2021-11-16 16:48:05]][DEBUG] Vqe execution done
+Min QUBO: 82732586.000000
+[[2021-11-16 16:48:05]][WARNING] VQE run
+[[2021-11-16 16:48:05]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 
+[[2021-11-16 16:48:05]][WARNING] Double check: 82732586 passed: TRUE
+[[2021-11-16 16:48:05]][INFO] Running 34_18
+[[2021-11-16 16:48:05]][WARNING] calc gso
+[[2021-11-16 16:48:05]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:48:05]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:48:05]][WARNING] Before VQE run
+[[2021-11-16 16:48:05]][INFO] 18 qubits
+[[2021-11-16 16:48:05]][DEBUG] Before ansatz gen
+[[2021-11-16 16:48:05]][DEBUG] After ansatz gen
+[[2021-11-16 16:48:05]][DEBUG] Executing vqe
+[[2021-11-16 16:48:05]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:48:05]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:48:05]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 163133997.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000615
+[[2021-11-16 16:48:53]][DEBUG] Destroying qureg
+[[2021-11-16 16:48:53]][DEBUG] Vqe execution done
+Min QUBO: 163133997.000000
+[[2021-11-16 16:48:53]][WARNING] VQE run
+[[2021-11-16 16:48:53]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:48:53]][WARNING] Double check: 163133997 passed: TRUE
+[[2021-11-16 16:48:53]][INFO] Running 35_18
+[[2021-11-16 16:48:53]][WARNING] calc gso
+[[2021-11-16 16:48:53]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:48:53]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:48:53]][WARNING] Before VQE run
+[[2021-11-16 16:48:53]][INFO] 18 qubits
+[[2021-11-16 16:48:53]][DEBUG] Before ansatz gen
+[[2021-11-16 16:48:53]][DEBUG] After ansatz gen
+[[2021-11-16 16:48:53]][DEBUG] Executing vqe
+[[2021-11-16 16:48:53]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:48:53]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:48:54]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 119509466.000000
+Final opt-config: 000000000100000000
+Final hit-rate: 0.175000
+[[2021-11-16 16:49:44]][DEBUG] Destroying qureg
+[[2021-11-16 16:49:44]][DEBUG] Vqe execution done
+Min QUBO: 119509466.000000
+[[2021-11-16 16:49:44]][WARNING] VQE run
+[[2021-11-16 16:49:44]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:49:44]][WARNING] Double check: 119509466 passed: TRUE
+[[2021-11-16 16:49:44]][INFO] Running 36_18
+[[2021-11-16 16:49:44]][WARNING] calc gso
+[[2021-11-16 16:49:44]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:49:44]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:49:44]][WARNING] Before VQE run
+[[2021-11-16 16:49:44]][INFO] 18 qubits
+[[2021-11-16 16:49:44]][DEBUG] Before ansatz gen
+[[2021-11-16 16:49:44]][DEBUG] After ansatz gen
+[[2021-11-16 16:49:44]][DEBUG] Executing vqe
+[[2021-11-16 16:49:44]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:49:44]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:49:45]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 115177220.000000
+Final opt-config: 100000000000000000
+Final hit-rate: 0.024389
+[[2021-11-16 16:50:41]][DEBUG] Destroying qureg
+[[2021-11-16 16:50:41]][DEBUG] Vqe execution done
+Min QUBO: 115177220.000000
+[[2021-11-16 16:50:41]][WARNING] VQE run
+[[2021-11-16 16:50:41]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2021-11-16 16:50:41]][WARNING] Double check: 115177220 passed: TRUE
+[[2021-11-16 16:50:41]][INFO] Running 37_18
+[[2021-11-16 16:50:41]][WARNING] calc gso
+[[2021-11-16 16:50:41]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:50:41]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:50:41]][WARNING] Before VQE run
+[[2021-11-16 16:50:41]][INFO] 18 qubits
+[[2021-11-16 16:50:41]][DEBUG] Before ansatz gen
+[[2021-11-16 16:50:41]][DEBUG] After ansatz gen
+[[2021-11-16 16:50:41]][DEBUG] Executing vqe
+[[2021-11-16 16:50:41]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:50:41]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:50:42]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 132418786.000000
+Final opt-config: 000000000000010000
+Final hit-rate: 0.003034
+[[2021-11-16 16:51:44]][DEBUG] Destroying qureg
+[[2021-11-16 16:51:44]][DEBUG] Vqe execution done
+Min QUBO: 132418786.000000
+[[2021-11-16 16:51:44]][WARNING] VQE run
+[[2021-11-16 16:51:44]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:51:44]][WARNING] Double check: 132418786 passed: TRUE
+[[2021-11-16 16:51:44]][INFO] Running 38_18
+[[2021-11-16 16:51:44]][WARNING] calc gso
+[[2021-11-16 16:51:44]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:51:44]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:51:44]][WARNING] Before VQE run
+[[2021-11-16 16:51:44]][INFO] 18 qubits
+[[2021-11-16 16:51:44]][DEBUG] Before ansatz gen
+[[2021-11-16 16:51:44]][DEBUG] After ansatz gen
+[[2021-11-16 16:51:44]][DEBUG] Executing vqe
+[[2021-11-16 16:51:44]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:51:44]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:51:45]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 108474399.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.008784
+[[2021-11-16 16:52:40]][DEBUG] Destroying qureg
+[[2021-11-16 16:52:40]][DEBUG] Vqe execution done
+Min QUBO: 108474399.000000
+[[2021-11-16 16:52:40]][WARNING] VQE run
+[[2021-11-16 16:52:40]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:52:40]][WARNING] Double check: 108474399 passed: TRUE
+[[2021-11-16 16:52:40]][INFO] Running 39_18
+[[2021-11-16 16:52:40]][WARNING] calc gso
+[[2021-11-16 16:52:40]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:52:40]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:52:40]][WARNING] Before VQE run
+[[2021-11-16 16:52:40]][INFO] 18 qubits
+[[2021-11-16 16:52:40]][DEBUG] Before ansatz gen
+[[2021-11-16 16:52:40]][DEBUG] After ansatz gen
+[[2021-11-16 16:52:40]][DEBUG] Executing vqe
+[[2021-11-16 16:52:40]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:52:40]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:52:40]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 103213627.000000
+Final opt-config: 000001000000000000
+Final hit-rate: 0.000118
+[[2021-11-16 16:53:51]][DEBUG] Destroying qureg
+[[2021-11-16 16:53:51]][DEBUG] Vqe execution done
+Min QUBO: 103213627.000000
+[[2021-11-16 16:53:51]][WARNING] VQE run
+[[2021-11-16 16:53:51]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 
+[[2021-11-16 16:53:51]][WARNING] Double check: 103213627 passed: TRUE
+[[2021-11-16 16:53:51]][INFO] Running 40_18
+[[2021-11-16 16:53:51]][WARNING] calc gso
+[[2021-11-16 16:53:51]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:53:51]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:53:51]][WARNING] Before VQE run
+[[2021-11-16 16:53:51]][INFO] 18 qubits
+[[2021-11-16 16:53:51]][DEBUG] Before ansatz gen
+[[2021-11-16 16:53:51]][DEBUG] After ansatz gen
+[[2021-11-16 16:53:51]][DEBUG] Executing vqe
+[[2021-11-16 16:53:51]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:53:51]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:53:51]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 181631585.000000
+Final opt-config: 000000000000000010
+Final hit-rate: 0.000084
+[[2021-11-16 16:54:59]][DEBUG] Destroying qureg
+[[2021-11-16 16:54:59]][DEBUG] Vqe execution done
+Min QUBO: 181631585.000000
+[[2021-11-16 16:54:59]][WARNING] VQE run
+[[2021-11-16 16:54:59]][DEBUG] NOW FOLLOWS X VECTOR
+0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:54:59]][WARNING] Double check: 181631585 passed: TRUE
+[[2021-11-16 16:54:59]][INFO] Running 41_18
+[[2021-11-16 16:54:59]][WARNING] calc gso
+[[2021-11-16 16:54:59]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:54:59]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:54:59]][WARNING] Before VQE run
+[[2021-11-16 16:54:59]][INFO] 18 qubits
+[[2021-11-16 16:54:59]][DEBUG] Before ansatz gen
+[[2021-11-16 16:54:59]][DEBUG] After ansatz gen
+[[2021-11-16 16:54:59]][DEBUG] Executing vqe
+[[2021-11-16 16:54:59]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:54:59]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:54:59]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 109536134.000000
+Final opt-config: 100000000000000000
+Final hit-rate: 0.008293
+[[2021-11-16 16:55:48]][DEBUG] Destroying qureg
+[[2021-11-16 16:55:48]][DEBUG] Vqe execution done
+Min QUBO: 109536134.000000
+[[2021-11-16 16:55:48]][WARNING] VQE run
+[[2021-11-16 16:55:48]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2021-11-16 16:55:48]][WARNING] Double check: 109536134 passed: TRUE
+[[2021-11-16 16:55:48]][INFO] Running 42_18
+[[2021-11-16 16:55:48]][WARNING] calc gso
+[[2021-11-16 16:55:48]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:55:48]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:55:48]][WARNING] Before VQE run
+[[2021-11-16 16:55:48]][INFO] 18 qubits
+[[2021-11-16 16:55:48]][DEBUG] Before ansatz gen
+[[2021-11-16 16:55:48]][DEBUG] After ansatz gen
+[[2021-11-16 16:55:48]][DEBUG] Executing vqe
+[[2021-11-16 16:55:48]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:55:48]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:55:49]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 112408190.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000002
+[[2021-11-16 16:56:25]][DEBUG] Destroying qureg
+[[2021-11-16 16:56:25]][DEBUG] Vqe execution done
+Min QUBO: 112408190.000000
+[[2021-11-16 16:56:25]][WARNING] VQE run
+[[2021-11-16 16:56:25]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:56:25]][WARNING] Double check: 112408190 passed: TRUE
+[[2021-11-16 16:56:25]][INFO] Running 43_18
+[[2021-11-16 16:56:25]][WARNING] calc gso
+[[2021-11-16 16:56:25]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:56:25]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:56:25]][WARNING] Before VQE run
+[[2021-11-16 16:56:25]][INFO] 18 qubits
+[[2021-11-16 16:56:25]][DEBUG] Before ansatz gen
+[[2021-11-16 16:56:25]][DEBUG] After ansatz gen
+[[2021-11-16 16:56:25]][DEBUG] Executing vqe
+[[2021-11-16 16:56:25]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:56:25]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:56:26]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 118892371.000000
+Final opt-config: 010000000000000000
+Final hit-rate: 0.008483
+[[2021-11-16 16:57:42]][DEBUG] Destroying qureg
+[[2021-11-16 16:57:42]][DEBUG] Vqe execution done
+Min QUBO: 118892371.000000
+[[2021-11-16 16:57:42]][WARNING] VQE run
+[[2021-11-16 16:57:42]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 
+[[2021-11-16 16:57:42]][WARNING] Double check: 118892371 passed: TRUE
+[[2021-11-16 16:57:42]][INFO] Running 44_18
+[[2021-11-16 16:57:42]][WARNING] calc gso
+[[2021-11-16 16:57:42]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:57:42]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:57:42]][WARNING] Before VQE run
+[[2021-11-16 16:57:42]][INFO] 18 qubits
+[[2021-11-16 16:57:42]][DEBUG] Before ansatz gen
+[[2021-11-16 16:57:42]][DEBUG] After ansatz gen
+[[2021-11-16 16:57:42]][DEBUG] Executing vqe
+[[2021-11-16 16:57:42]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:57:42]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:57:42]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 103643648.000000
+Final opt-config: 000001000000000000
+Final hit-rate: 0.000276
+[[2021-11-16 16:58:31]][DEBUG] Destroying qureg
+[[2021-11-16 16:58:31]][DEBUG] Vqe execution done
+Min QUBO: 103643648.000000
+[[2021-11-16 16:58:31]][WARNING] VQE run
+[[2021-11-16 16:58:31]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 
+[[2021-11-16 16:58:31]][WARNING] Double check: 103643648 passed: TRUE
+[[2021-11-16 16:58:31]][INFO] Running 45_18
+[[2021-11-16 16:58:31]][WARNING] calc gso
+[[2021-11-16 16:58:31]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:58:31]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:58:31]][WARNING] Before VQE run
+[[2021-11-16 16:58:31]][INFO] 18 qubits
+[[2021-11-16 16:58:31]][DEBUG] Before ansatz gen
+[[2021-11-16 16:58:31]][DEBUG] After ansatz gen
+[[2021-11-16 16:58:31]][DEBUG] Executing vqe
+[[2021-11-16 16:58:31]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:58:31]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:58:31]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 116374893.000000
+Final opt-config: 000000000001000000
+Final hit-rate: 0.005637
+[[2021-11-16 16:59:17]][DEBUG] Destroying qureg
+[[2021-11-16 16:59:17]][DEBUG] Vqe execution done
+Min QUBO: 116374893.000000
+[[2021-11-16 16:59:17]][WARNING] VQE run
+[[2021-11-16 16:59:17]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 16:59:17]][WARNING] Double check: 116374893 passed: TRUE
+[[2021-11-16 16:59:17]][INFO] Running 46_18
+[[2021-11-16 16:59:17]][WARNING] calc gso
+[[2021-11-16 16:59:17]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 16:59:17]][WARNING] Normalization is probably best solution
+[[2021-11-16 16:59:17]][WARNING] Before VQE run
+[[2021-11-16 16:59:17]][INFO] 18 qubits
+[[2021-11-16 16:59:17]][DEBUG] Before ansatz gen
+[[2021-11-16 16:59:17]][DEBUG] After ansatz gen
+[[2021-11-16 16:59:17]][DEBUG] Executing vqe
+[[2021-11-16 16:59:17]][DEBUG] Initializing 18 qubits
+[[2021-11-16 16:59:17]][DEBUG] Setting seed to 1997
+[[2021-11-16 16:59:17]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 154516013.000000
+Final opt-config: 100000000000000000
+Final hit-rate: 0.000343
+[[2021-11-16 17:00:05]][DEBUG] Destroying qureg
+[[2021-11-16 17:00:05]][DEBUG] Vqe execution done
+Min QUBO: 154516013.000000
+[[2021-11-16 17:00:05]][WARNING] VQE run
+[[2021-11-16 17:00:05]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2021-11-16 17:00:05]][WARNING] Double check: 154516013 passed: TRUE
+[[2021-11-16 17:00:05]][INFO] Running 47_18
+[[2021-11-16 17:00:05]][WARNING] calc gso
+[[2021-11-16 17:00:05]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:00:05]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:00:05]][WARNING] Before VQE run
+[[2021-11-16 17:00:05]][INFO] 18 qubits
+[[2021-11-16 17:00:05]][DEBUG] Before ansatz gen
+[[2021-11-16 17:00:05]][DEBUG] After ansatz gen
+[[2021-11-16 17:00:05]][DEBUG] Executing vqe
+[[2021-11-16 17:00:05]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:00:05]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:00:06]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 130816365.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000001
+[[2021-11-16 17:01:53]][DEBUG] Destroying qureg
+[[2021-11-16 17:01:53]][DEBUG] Vqe execution done
+Min QUBO: 130816365.000000
+[[2021-11-16 17:01:53]][WARNING] VQE run
+[[2021-11-16 17:01:53]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:01:53]][WARNING] Double check: 130816365 passed: TRUE
+[[2021-11-16 17:01:53]][INFO] Running 48_18
+[[2021-11-16 17:01:53]][WARNING] calc gso
+[[2021-11-16 17:01:53]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:01:53]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:01:53]][WARNING] Before VQE run
+[[2021-11-16 17:01:53]][INFO] 18 qubits
+[[2021-11-16 17:01:53]][DEBUG] Before ansatz gen
+[[2021-11-16 17:01:53]][DEBUG] After ansatz gen
+[[2021-11-16 17:01:53]][DEBUG] Executing vqe
+[[2021-11-16 17:01:53]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:01:53]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:01:53]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 96969516.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000011
+[[2021-11-16 17:03:31]][DEBUG] Destroying qureg
+[[2021-11-16 17:03:31]][DEBUG] Vqe execution done
+Min QUBO: 96969516.000000
+[[2021-11-16 17:03:31]][WARNING] VQE run
+[[2021-11-16 17:03:31]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:03:31]][WARNING] Double check: 96969516 passed: TRUE
+[[2021-11-16 17:03:31]][INFO] Running 49_18
+[[2021-11-16 17:03:31]][WARNING] calc gso
+[[2021-11-16 17:03:31]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:03:31]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:03:31]][WARNING] Before VQE run
+[[2021-11-16 17:03:31]][INFO] 18 qubits
+[[2021-11-16 17:03:31]][DEBUG] Before ansatz gen
+[[2021-11-16 17:03:31]][DEBUG] After ansatz gen
+[[2021-11-16 17:03:31]][DEBUG] Executing vqe
+[[2021-11-16 17:03:31]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:03:31]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:03:32]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 75104556.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.004312
+[[2021-11-16 17:05:42]][DEBUG] Destroying qureg
+[[2021-11-16 17:05:42]][DEBUG] Vqe execution done
+Min QUBO: 75104556.000000
+[[2021-11-16 17:05:42]][WARNING] VQE run
+[[2021-11-16 17:05:42]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:05:42]][WARNING] Double check: 75104556 passed: TRUE
+[[2021-11-16 17:05:42]][INFO] Running 50_18
+[[2021-11-16 17:05:42]][WARNING] calc gso
+[[2021-11-16 17:05:42]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:05:42]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:05:42]][WARNING] Before VQE run
+[[2021-11-16 17:05:42]][INFO] 18 qubits
+[[2021-11-16 17:05:42]][DEBUG] Before ansatz gen
+[[2021-11-16 17:05:42]][DEBUG] After ansatz gen
+[[2021-11-16 17:05:42]][DEBUG] Executing vqe
+[[2021-11-16 17:05:42]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:05:42]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:05:43]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 109506651.000000
+Final opt-config: 000010000000000000
+Final hit-rate: 0.175000
+[[2021-11-16 17:08:12]][DEBUG] Destroying qureg
+[[2021-11-16 17:08:12]][DEBUG] Vqe execution done
+Min QUBO: 109506651.000000
+[[2021-11-16 17:08:12]][WARNING] VQE run
+[[2021-11-16 17:08:12]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 
+[[2021-11-16 17:08:12]][WARNING] Double check: 109506651 passed: TRUE
+[[2021-11-16 17:08:12]][INFO] Running 51_18
+[[2021-11-16 17:08:12]][WARNING] calc gso
+[[2021-11-16 17:08:12]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:08:12]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:08:12]][WARNING] Before VQE run
+[[2021-11-16 17:08:12]][INFO] 18 qubits
+[[2021-11-16 17:08:12]][DEBUG] Before ansatz gen
+[[2021-11-16 17:08:12]][DEBUG] After ansatz gen
+[[2021-11-16 17:08:12]][DEBUG] Executing vqe
+[[2021-11-16 17:08:12]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:08:12]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:08:12]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 132622394.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000131
+[[2021-11-16 17:10:13]][DEBUG] Destroying qureg
+[[2021-11-16 17:10:13]][DEBUG] Vqe execution done
+Min QUBO: 132622394.000000
+[[2021-11-16 17:10:13]][WARNING] VQE run
+[[2021-11-16 17:10:13]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:10:13]][WARNING] Double check: 132622394 passed: TRUE
+[[2021-11-16 17:10:13]][INFO] Running 52_18
+[[2021-11-16 17:10:13]][WARNING] calc gso
+[[2021-11-16 17:10:13]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:10:13]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:10:13]][WARNING] Before VQE run
+[[2021-11-16 17:10:13]][INFO] 18 qubits
+[[2021-11-16 17:10:13]][DEBUG] Before ansatz gen
+[[2021-11-16 17:10:13]][DEBUG] After ansatz gen
+[[2021-11-16 17:10:13]][DEBUG] Executing vqe
+[[2021-11-16 17:10:13]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:10:13]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:10:13]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 105275034.000000
+Final opt-config: 000001000000000000
+Final hit-rate: 0.045589
+[[2021-11-16 17:12:11]][DEBUG] Destroying qureg
+[[2021-11-16 17:12:11]][DEBUG] Vqe execution done
+Min QUBO: 105275034.000000
+[[2021-11-16 17:12:11]][WARNING] VQE run
+[[2021-11-16 17:12:11]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 
+[[2021-11-16 17:12:11]][WARNING] Double check: 105275034 passed: TRUE
+[[2021-11-16 17:12:11]][INFO] Running 53_18
+[[2021-11-16 17:12:11]][WARNING] calc gso
+[[2021-11-16 17:12:11]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:12:11]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:12:11]][WARNING] Before VQE run
+[[2021-11-16 17:12:11]][INFO] 18 qubits
+[[2021-11-16 17:12:11]][DEBUG] Before ansatz gen
+[[2021-11-16 17:12:11]][DEBUG] After ansatz gen
+[[2021-11-16 17:12:11]][DEBUG] Executing vqe
+[[2021-11-16 17:12:11]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:12:11]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:12:12]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 122012690.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000008
+[[2021-11-16 17:14:36]][DEBUG] Destroying qureg
+[[2021-11-16 17:14:36]][DEBUG] Vqe execution done
+Min QUBO: 122012690.000000
+[[2021-11-16 17:14:36]][WARNING] VQE run
+[[2021-11-16 17:14:36]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:14:36]][WARNING] Double check: 122012690 passed: TRUE
+[[2021-11-16 17:14:36]][INFO] Running 54_18
+[[2021-11-16 17:14:36]][WARNING] calc gso
+[[2021-11-16 17:14:36]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:14:36]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:14:36]][WARNING] Before VQE run
+[[2021-11-16 17:14:36]][INFO] 18 qubits
+[[2021-11-16 17:14:36]][DEBUG] Before ansatz gen
+[[2021-11-16 17:14:36]][DEBUG] After ansatz gen
+[[2021-11-16 17:14:36]][DEBUG] Executing vqe
+[[2021-11-16 17:14:36]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:14:36]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:14:37]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 103657631.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.002237
+[[2021-11-16 17:16:10]][DEBUG] Destroying qureg
+[[2021-11-16 17:16:10]][DEBUG] Vqe execution done
+Min QUBO: 103657631.000000
+[[2021-11-16 17:16:10]][WARNING] VQE run
+[[2021-11-16 17:16:10]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:16:10]][WARNING] Double check: 103657631 passed: TRUE
+[[2021-11-16 17:16:10]][INFO] Running 55_18
+[[2021-11-16 17:16:10]][WARNING] calc gso
+[[2021-11-16 17:16:10]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:16:10]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:16:10]][WARNING] Before VQE run
+[[2021-11-16 17:16:10]][INFO] 18 qubits
+[[2021-11-16 17:16:10]][DEBUG] Before ansatz gen
+[[2021-11-16 17:16:10]][DEBUG] After ansatz gen
+[[2021-11-16 17:16:10]][DEBUG] Executing vqe
+[[2021-11-16 17:16:10]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:16:10]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:16:11]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 139094858.000000
+Final opt-config: 000000000000001000
+Final hit-rate: 0.000244
+[[2021-11-16 17:17:53]][DEBUG] Destroying qureg
+[[2021-11-16 17:17:53]][DEBUG] Vqe execution done
+Min QUBO: 139094858.000000
+[[2021-11-16 17:17:53]][WARNING] VQE run
+[[2021-11-16 17:17:53]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:17:53]][WARNING] Double check: 139094858 passed: TRUE
+[[2021-11-16 17:17:53]][INFO] Running 56_18
+[[2021-11-16 17:17:53]][WARNING] calc gso
+[[2021-11-16 17:17:53]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:17:53]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:17:53]][WARNING] Before VQE run
+[[2021-11-16 17:17:53]][INFO] 18 qubits
+[[2021-11-16 17:17:53]][DEBUG] Before ansatz gen
+[[2021-11-16 17:17:53]][DEBUG] After ansatz gen
+[[2021-11-16 17:17:53]][DEBUG] Executing vqe
+[[2021-11-16 17:17:53]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:17:53]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:17:53]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 104182535.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000011
+[[2021-11-16 17:18:53]][DEBUG] Destroying qureg
+[[2021-11-16 17:18:53]][DEBUG] Vqe execution done
+Min QUBO: 104182535.000000
+[[2021-11-16 17:18:53]][WARNING] VQE run
+[[2021-11-16 17:18:53]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:18:53]][WARNING] Double check: 104182535 passed: TRUE
+[[2021-11-16 17:18:53]][INFO] Running 57_18
+[[2021-11-16 17:18:53]][WARNING] calc gso
+[[2021-11-16 17:18:53]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:18:53]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:18:53]][WARNING] Before VQE run
+[[2021-11-16 17:18:53]][INFO] 18 qubits
+[[2021-11-16 17:18:53]][DEBUG] Before ansatz gen
+[[2021-11-16 17:18:53]][DEBUG] After ansatz gen
+[[2021-11-16 17:18:53]][DEBUG] Executing vqe
+[[2021-11-16 17:18:53]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:18:53]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:18:54]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 131158670.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000000
+[[2021-11-16 17:21:10]][DEBUG] Destroying qureg
+[[2021-11-16 17:21:10]][DEBUG] Vqe execution done
+Min QUBO: 131158670.000000
+[[2021-11-16 17:21:10]][WARNING] VQE run
+[[2021-11-16 17:21:10]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:21:10]][WARNING] Double check: 131158670 passed: TRUE
+[[2021-11-16 17:21:10]][INFO] Running 58_18
+[[2021-11-16 17:21:10]][WARNING] calc gso
+[[2021-11-16 17:21:10]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:21:10]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:21:10]][WARNING] Before VQE run
+[[2021-11-16 17:21:10]][INFO] 18 qubits
+[[2021-11-16 17:21:10]][DEBUG] Before ansatz gen
+[[2021-11-16 17:21:10]][DEBUG] After ansatz gen
+[[2021-11-16 17:21:10]][DEBUG] Executing vqe
+[[2021-11-16 17:21:10]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:21:10]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:21:11]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 112391432.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000001
+[[2021-11-16 17:22:24]][DEBUG] Destroying qureg
+[[2021-11-16 17:22:24]][DEBUG] Vqe execution done
+Min QUBO: 112391432.000000
+[[2021-11-16 17:22:24]][WARNING] VQE run
+[[2021-11-16 17:22:24]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:22:24]][WARNING] Double check: 112391432 passed: TRUE
+[[2021-11-16 17:22:24]][INFO] Running 59_18
+[[2021-11-16 17:22:24]][WARNING] calc gso
+[[2021-11-16 17:22:24]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:22:24]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:22:24]][WARNING] Before VQE run
+[[2021-11-16 17:22:24]][INFO] 18 qubits
+[[2021-11-16 17:22:24]][DEBUG] Before ansatz gen
+[[2021-11-16 17:22:24]][DEBUG] After ansatz gen
+[[2021-11-16 17:22:24]][DEBUG] Executing vqe
+[[2021-11-16 17:22:24]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:22:24]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:22:24]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 140376674.000000
+Final opt-config: 000000010000000000
+Final hit-rate: 0.121056
+[[2021-11-16 17:23:54]][DEBUG] Destroying qureg
+[[2021-11-16 17:23:54]][DEBUG] Vqe execution done
+Min QUBO: 140376674.000000
+[[2021-11-16 17:23:54]][WARNING] VQE run
+[[2021-11-16 17:23:54]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 
+[[2021-11-16 17:23:54]][WARNING] Double check: 140376674 passed: TRUE
+[[2021-11-16 17:23:54]][INFO] Running 60_18
+[[2021-11-16 17:23:54]][WARNING] calc gso
+[[2021-11-16 17:23:54]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:23:54]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:23:54]][WARNING] Before VQE run
+[[2021-11-16 17:23:54]][INFO] 18 qubits
+[[2021-11-16 17:23:54]][DEBUG] Before ansatz gen
+[[2021-11-16 17:23:54]][DEBUG] After ansatz gen
+[[2021-11-16 17:23:54]][DEBUG] Executing vqe
+[[2021-11-16 17:23:54]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:23:54]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:23:54]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 105409529.000000
+Final opt-config: 000001000000000000
+Final hit-rate: 0.046613
+[[2021-11-16 17:25:41]][DEBUG] Destroying qureg
+[[2021-11-16 17:25:41]][DEBUG] Vqe execution done
+Min QUBO: 105409529.000000
+[[2021-11-16 17:25:41]][WARNING] VQE run
+[[2021-11-16 17:25:41]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 
+[[2021-11-16 17:25:41]][WARNING] Double check: 105409529 passed: TRUE
+[[2021-11-16 17:25:41]][INFO] Running 61_18
+[[2021-11-16 17:25:41]][WARNING] calc gso
+[[2021-11-16 17:25:41]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:25:41]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:25:41]][WARNING] Before VQE run
+[[2021-11-16 17:25:41]][INFO] 18 qubits
+[[2021-11-16 17:25:41]][DEBUG] Before ansatz gen
+[[2021-11-16 17:25:41]][DEBUG] After ansatz gen
+[[2021-11-16 17:25:41]][DEBUG] Executing vqe
+[[2021-11-16 17:25:41]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:25:41]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:25:42]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 133031673.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000009
+[[2021-11-16 17:26:56]][DEBUG] Destroying qureg
+[[2021-11-16 17:26:56]][DEBUG] Vqe execution done
+Min QUBO: 133031673.000000
+[[2021-11-16 17:26:56]][WARNING] VQE run
+[[2021-11-16 17:26:56]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:26:56]][WARNING] Double check: 133031673 passed: TRUE
+[[2021-11-16 17:26:56]][INFO] Running 62_18
+[[2021-11-16 17:26:56]][WARNING] calc gso
+[[2021-11-16 17:26:56]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:26:56]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:26:56]][WARNING] Before VQE run
+[[2021-11-16 17:26:56]][INFO] 18 qubits
+[[2021-11-16 17:26:56]][DEBUG] Before ansatz gen
+[[2021-11-16 17:26:56]][DEBUG] After ansatz gen
+[[2021-11-16 17:26:56]][DEBUG] Executing vqe
+[[2021-11-16 17:26:56]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:26:56]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:26:57]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 84643884.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.174998
+[[2021-11-16 17:28:24]][DEBUG] Destroying qureg
+[[2021-11-16 17:28:24]][DEBUG] Vqe execution done
+Min QUBO: 84643884.000000
+[[2021-11-16 17:28:24]][WARNING] VQE run
+[[2021-11-16 17:28:24]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:28:24]][WARNING] Double check: 84643884 passed: TRUE
+[[2021-11-16 17:28:24]][INFO] Running 63_18
+[[2021-11-16 17:28:24]][WARNING] calc gso
+[[2021-11-16 17:28:24]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:28:24]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:28:24]][WARNING] Before VQE run
+[[2021-11-16 17:28:24]][INFO] 18 qubits
+[[2021-11-16 17:28:24]][DEBUG] Before ansatz gen
+[[2021-11-16 17:28:24]][DEBUG] After ansatz gen
+[[2021-11-16 17:28:24]][DEBUG] Executing vqe
+[[2021-11-16 17:28:24]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:28:24]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:28:25]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 105233740.000000
+Final opt-config: 100000000000000000
+Final hit-rate: 0.032776
+[[2021-11-16 17:30:03]][DEBUG] Destroying qureg
+[[2021-11-16 17:30:03]][DEBUG] Vqe execution done
+Min QUBO: 105233740.000000
+[[2021-11-16 17:30:03]][WARNING] VQE run
+[[2021-11-16 17:30:03]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2021-11-16 17:30:03]][WARNING] Double check: 105233740 passed: TRUE
+[[2021-11-16 17:30:03]][INFO] Running 64_18
+[[2021-11-16 17:30:03]][WARNING] calc gso
+[[2021-11-16 17:30:03]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:30:03]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:30:03]][WARNING] Before VQE run
+[[2021-11-16 17:30:03]][INFO] 18 qubits
+[[2021-11-16 17:30:03]][DEBUG] Before ansatz gen
+[[2021-11-16 17:30:03]][DEBUG] After ansatz gen
+[[2021-11-16 17:30:03]][DEBUG] Executing vqe
+[[2021-11-16 17:30:03]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:30:03]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:30:04]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 96741790.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000202
+[[2021-11-16 17:31:44]][DEBUG] Destroying qureg
+[[2021-11-16 17:31:44]][DEBUG] Vqe execution done
+Min QUBO: 96741790.000000
+[[2021-11-16 17:31:44]][WARNING] VQE run
+[[2021-11-16 17:31:44]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:31:44]][WARNING] Double check: 96741790 passed: TRUE
+[[2021-11-16 17:31:44]][INFO] Running 65_18
+[[2021-11-16 17:31:44]][WARNING] calc gso
+[[2021-11-16 17:31:44]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:31:44]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:31:44]][WARNING] Before VQE run
+[[2021-11-16 17:31:44]][INFO] 18 qubits
+[[2021-11-16 17:31:44]][DEBUG] Before ansatz gen
+[[2021-11-16 17:31:44]][DEBUG] After ansatz gen
+[[2021-11-16 17:31:44]][DEBUG] Executing vqe
+[[2021-11-16 17:31:44]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:31:44]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:31:45]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 137156615.000000
+Final opt-config: 100000000000000000
+Final hit-rate: 0.001353
+[[2021-11-16 17:32:49]][DEBUG] Destroying qureg
+[[2021-11-16 17:32:49]][DEBUG] Vqe execution done
+Min QUBO: 137156615.000000
+[[2021-11-16 17:32:49]][WARNING] VQE run
+[[2021-11-16 17:32:49]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2021-11-16 17:32:49]][WARNING] Double check: 137156615 passed: TRUE
+[[2021-11-16 17:32:49]][INFO] Running 66_18
+[[2021-11-16 17:32:49]][WARNING] calc gso
+[[2021-11-16 17:32:49]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:32:49]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:32:49]][WARNING] Before VQE run
+[[2021-11-16 17:32:49]][INFO] 18 qubits
+[[2021-11-16 17:32:49]][DEBUG] Before ansatz gen
+[[2021-11-16 17:32:49]][DEBUG] After ansatz gen
+[[2021-11-16 17:32:49]][DEBUG] Executing vqe
+[[2021-11-16 17:32:49]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:32:49]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:32:50]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 149012476.000000
+Final opt-config: 100000000000000000
+Final hit-rate: 0.000239
+[[2021-11-16 17:33:54]][DEBUG] Destroying qureg
+[[2021-11-16 17:33:55]][DEBUG] Vqe execution done
+Min QUBO: 149012476.000000
+[[2021-11-16 17:33:55]][WARNING] VQE run
+[[2021-11-16 17:33:55]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2021-11-16 17:33:55]][WARNING] Double check: 149012476 passed: TRUE
+[[2021-11-16 17:33:55]][INFO] Running 67_18
+[[2021-11-16 17:33:55]][WARNING] calc gso
+[[2021-11-16 17:33:55]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:33:55]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:33:55]][WARNING] Before VQE run
+[[2021-11-16 17:33:55]][INFO] 18 qubits
+[[2021-11-16 17:33:55]][DEBUG] Before ansatz gen
+[[2021-11-16 17:33:55]][DEBUG] After ansatz gen
+[[2021-11-16 17:33:55]][DEBUG] Executing vqe
+[[2021-11-16 17:33:55]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:33:55]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:33:55]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 152029955.000000
+Final opt-config: 000000001000000000
+Final hit-rate: 0.000492
+[[2021-11-16 17:35:15]][DEBUG] Destroying qureg
+[[2021-11-16 17:35:15]][DEBUG] Vqe execution done
+Min QUBO: 152029955.000000
+[[2021-11-16 17:35:15]][WARNING] VQE run
+[[2021-11-16 17:35:15]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:35:15]][WARNING] Double check: 152029955 passed: TRUE
+[[2021-11-16 17:35:15]][INFO] Running 68_18
+[[2021-11-16 17:35:15]][WARNING] calc gso
+[[2021-11-16 17:35:15]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:35:15]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:35:15]][WARNING] Before VQE run
+[[2021-11-16 17:35:15]][INFO] 18 qubits
+[[2021-11-16 17:35:15]][DEBUG] Before ansatz gen
+[[2021-11-16 17:35:15]][DEBUG] After ansatz gen
+[[2021-11-16 17:35:15]][DEBUG] Executing vqe
+[[2021-11-16 17:35:15]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:35:15]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:35:16]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 132876209.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.032019
+[[2021-11-16 17:36:38]][DEBUG] Destroying qureg
+[[2021-11-16 17:36:38]][DEBUG] Vqe execution done
+Min QUBO: 132876209.000000
+[[2021-11-16 17:36:38]][WARNING] VQE run
+[[2021-11-16 17:36:38]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:36:38]][WARNING] Double check: 132876209 passed: TRUE
+[[2021-11-16 17:36:38]][INFO] Running 69_18
+[[2021-11-16 17:36:38]][WARNING] calc gso
+[[2021-11-16 17:36:38]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:36:38]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:36:38]][WARNING] Before VQE run
+[[2021-11-16 17:36:38]][INFO] 18 qubits
+[[2021-11-16 17:36:38]][DEBUG] Before ansatz gen
+[[2021-11-16 17:36:38]][DEBUG] After ansatz gen
+[[2021-11-16 17:36:38]][DEBUG] Executing vqe
+[[2021-11-16 17:36:38]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:36:38]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:36:39]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 124809302.000000
+Final opt-config: 001000000000000000
+Final hit-rate: 0.010202
+[[2021-11-16 17:37:45]][DEBUG] Destroying qureg
+[[2021-11-16 17:37:45]][DEBUG] Vqe execution done
+Min QUBO: 124809302.000000
+[[2021-11-16 17:37:45]][WARNING] VQE run
+[[2021-11-16 17:37:45]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 
+[[2021-11-16 17:37:45]][WARNING] Double check: 124809302 passed: TRUE
+[[2021-11-16 17:37:45]][INFO] Running 70_18
+[[2021-11-16 17:37:45]][WARNING] calc gso
+[[2021-11-16 17:37:45]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:37:45]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:37:45]][WARNING] Before VQE run
+[[2021-11-16 17:37:45]][INFO] 18 qubits
+[[2021-11-16 17:37:45]][DEBUG] Before ansatz gen
+[[2021-11-16 17:37:45]][DEBUG] After ansatz gen
+[[2021-11-16 17:37:45]][DEBUG] Executing vqe
+[[2021-11-16 17:37:45]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:37:45]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:37:46]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 252568036.000000
+Final opt-config: 000000100100000000
+Final hit-rate: 0.000019
+[[2021-11-16 17:38:31]][DEBUG] Destroying qureg
+[[2021-11-16 17:38:31]][DEBUG] Vqe execution done
+Min QUBO: 252568036.000000
+[[2021-11-16 17:38:31]][WARNING] VQE run
+[[2021-11-16 17:38:31]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 
+[[2021-11-16 17:38:31]][WARNING] Double check: 252568036 passed: TRUE
+[[2021-11-16 17:38:31]][INFO] Running 71_18
+[[2021-11-16 17:38:31]][WARNING] calc gso
+[[2021-11-16 17:38:31]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:38:31]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:38:31]][WARNING] Before VQE run
+[[2021-11-16 17:38:31]][INFO] 18 qubits
+[[2021-11-16 17:38:31]][DEBUG] Before ansatz gen
+[[2021-11-16 17:38:31]][DEBUG] After ansatz gen
+[[2021-11-16 17:38:31]][DEBUG] Executing vqe
+[[2021-11-16 17:38:31]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:38:31]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:38:32]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 140391805.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000360
+[[2021-11-16 17:39:36]][DEBUG] Destroying qureg
+[[2021-11-16 17:39:36]][DEBUG] Vqe execution done
+Min QUBO: 140391805.000000
+[[2021-11-16 17:39:36]][WARNING] VQE run
+[[2021-11-16 17:39:36]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:39:36]][WARNING] Double check: 140391805 passed: TRUE
+[[2021-11-16 17:39:36]][INFO] Running 72_18
+[[2021-11-16 17:39:36]][WARNING] calc gso
+[[2021-11-16 17:39:36]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:39:36]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:39:36]][WARNING] Before VQE run
+[[2021-11-16 17:39:36]][INFO] 18 qubits
+[[2021-11-16 17:39:36]][DEBUG] Before ansatz gen
+[[2021-11-16 17:39:36]][DEBUG] After ansatz gen
+[[2021-11-16 17:39:36]][DEBUG] Executing vqe
+[[2021-11-16 17:39:36]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:39:36]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:39:37]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 118816270.000000
+Final opt-config: 010000000000000000
+Final hit-rate: 0.000582
+[[2021-11-16 17:40:35]][DEBUG] Destroying qureg
+[[2021-11-16 17:40:35]][DEBUG] Vqe execution done
+Min QUBO: 118816270.000000
+[[2021-11-16 17:40:35]][WARNING] VQE run
+[[2021-11-16 17:40:35]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 
+[[2021-11-16 17:40:35]][WARNING] Double check: 118816270 passed: TRUE
+[[2021-11-16 17:40:35]][INFO] Running 73_18
+[[2021-11-16 17:40:35]][WARNING] calc gso
+[[2021-11-16 17:40:35]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:40:35]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:40:35]][WARNING] Before VQE run
+[[2021-11-16 17:40:35]][INFO] 18 qubits
+[[2021-11-16 17:40:35]][DEBUG] Before ansatz gen
+[[2021-11-16 17:40:35]][DEBUG] After ansatz gen
+[[2021-11-16 17:40:35]][DEBUG] Executing vqe
+[[2021-11-16 17:40:35]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:40:35]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:40:36]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 94881828.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000070
+[[2021-11-16 17:41:33]][DEBUG] Destroying qureg
+[[2021-11-16 17:41:33]][DEBUG] Vqe execution done
+Min QUBO: 94881828.000000
+[[2021-11-16 17:41:33]][WARNING] VQE run
+[[2021-11-16 17:41:33]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:41:33]][WARNING] Double check: 94881828 passed: TRUE
+[[2021-11-16 17:41:33]][INFO] Running 74_18
+[[2021-11-16 17:41:33]][WARNING] calc gso
+[[2021-11-16 17:41:33]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:41:33]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:41:33]][WARNING] Before VQE run
+[[2021-11-16 17:41:33]][INFO] 18 qubits
+[[2021-11-16 17:41:33]][DEBUG] Before ansatz gen
+[[2021-11-16 17:41:33]][DEBUG] After ansatz gen
+[[2021-11-16 17:41:33]][DEBUG] Executing vqe
+[[2021-11-16 17:41:33]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:41:33]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:41:34]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 151099957.000000
+Final opt-config: 010000000000000000
+Final hit-rate: 0.018465
+[[2021-11-16 17:42:50]][DEBUG] Destroying qureg
+[[2021-11-16 17:42:50]][DEBUG] Vqe execution done
+Min QUBO: 151099957.000000
+[[2021-11-16 17:42:50]][WARNING] VQE run
+[[2021-11-16 17:42:50]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 
+[[2021-11-16 17:42:50]][WARNING] Double check: 151099957 passed: TRUE
+[[2021-11-16 17:42:50]][INFO] Running 75_18
+[[2021-11-16 17:42:50]][WARNING] calc gso
+[[2021-11-16 17:42:50]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:42:50]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:42:50]][WARNING] Before VQE run
+[[2021-11-16 17:42:50]][INFO] 18 qubits
+[[2021-11-16 17:42:50]][DEBUG] Before ansatz gen
+[[2021-11-16 17:42:50]][DEBUG] After ansatz gen
+[[2021-11-16 17:42:50]][DEBUG] Executing vqe
+[[2021-11-16 17:42:50]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:42:50]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:42:50]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 117687824.000000
+Final opt-config: 000000010000000000
+Final hit-rate: 0.040463
+[[2021-11-16 17:43:49]][DEBUG] Destroying qureg
+[[2021-11-16 17:43:49]][DEBUG] Vqe execution done
+Min QUBO: 117687824.000000
+[[2021-11-16 17:43:49]][WARNING] VQE run
+[[2021-11-16 17:43:49]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 
+[[2021-11-16 17:43:49]][WARNING] Double check: 117687824 passed: TRUE
+[[2021-11-16 17:43:49]][INFO] Running 76_18
+[[2021-11-16 17:43:49]][WARNING] calc gso
+[[2021-11-16 17:43:49]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:43:49]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:43:49]][WARNING] Before VQE run
+[[2021-11-16 17:43:49]][INFO] 18 qubits
+[[2021-11-16 17:43:49]][DEBUG] Before ansatz gen
+[[2021-11-16 17:43:49]][DEBUG] After ansatz gen
+[[2021-11-16 17:43:49]][DEBUG] Executing vqe
+[[2021-11-16 17:43:49]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:43:49]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:43:49]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 130512812.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.175000
+[[2021-11-16 17:44:38]][DEBUG] Destroying qureg
+[[2021-11-16 17:44:38]][DEBUG] Vqe execution done
+Min QUBO: 130512812.000000
+[[2021-11-16 17:44:38]][WARNING] VQE run
+[[2021-11-16 17:44:38]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:44:38]][WARNING] Double check: 130512812 passed: TRUE
+[[2021-11-16 17:44:38]][INFO] Running 77_18
+[[2021-11-16 17:44:38]][WARNING] calc gso
+[[2021-11-16 17:44:38]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:44:38]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:44:38]][WARNING] Before VQE run
+[[2021-11-16 17:44:38]][INFO] 18 qubits
+[[2021-11-16 17:44:38]][DEBUG] Before ansatz gen
+[[2021-11-16 17:44:38]][DEBUG] After ansatz gen
+[[2021-11-16 17:44:38]][DEBUG] Executing vqe
+[[2021-11-16 17:44:38]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:44:38]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:44:39]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 146915181.000000
+Final opt-config: 000100000000000000
+Final hit-rate: 0.116671
+[[2021-11-16 17:46:10]][DEBUG] Destroying qureg
+[[2021-11-16 17:46:10]][DEBUG] Vqe execution done
+Min QUBO: 146915181.000000
+[[2021-11-16 17:46:10]][WARNING] VQE run
+[[2021-11-16 17:46:10]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 
+[[2021-11-16 17:46:10]][WARNING] Double check: 146915181 passed: TRUE
+[[2021-11-16 17:46:10]][INFO] Running 78_18
+[[2021-11-16 17:46:10]][WARNING] calc gso
+[[2021-11-16 17:46:10]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:46:10]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:46:10]][WARNING] Before VQE run
+[[2021-11-16 17:46:10]][INFO] 18 qubits
+[[2021-11-16 17:46:10]][DEBUG] Before ansatz gen
+[[2021-11-16 17:46:10]][DEBUG] After ansatz gen
+[[2021-11-16 17:46:10]][DEBUG] Executing vqe
+[[2021-11-16 17:46:10]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:46:10]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:46:10]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 132729253.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000002
+[[2021-11-16 17:46:54]][DEBUG] Destroying qureg
+[[2021-11-16 17:46:54]][DEBUG] Vqe execution done
+Min QUBO: 132729253.000000
+[[2021-11-16 17:46:54]][WARNING] VQE run
+[[2021-11-16 17:46:54]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:46:54]][WARNING] Double check: 132729253 passed: TRUE
+[[2021-11-16 17:46:54]][INFO] Running 79_18
+[[2021-11-16 17:46:54]][WARNING] calc gso
+[[2021-11-16 17:46:54]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:46:54]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:46:54]][WARNING] Before VQE run
+[[2021-11-16 17:46:54]][INFO] 18 qubits
+[[2021-11-16 17:46:54]][DEBUG] Before ansatz gen
+[[2021-11-16 17:46:54]][DEBUG] After ansatz gen
+[[2021-11-16 17:46:54]][DEBUG] Executing vqe
+[[2021-11-16 17:46:54]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:46:54]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:46:55]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 127759820.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000067
+[[2021-11-16 17:47:37]][DEBUG] Destroying qureg
+[[2021-11-16 17:47:37]][DEBUG] Vqe execution done
+Min QUBO: 127759820.000000
+[[2021-11-16 17:47:37]][WARNING] VQE run
+[[2021-11-16 17:47:37]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:47:38]][WARNING] Double check: 127759820 passed: TRUE
+[[2021-11-16 17:47:38]][INFO] Running 80_18
+[[2021-11-16 17:47:38]][WARNING] calc gso
+[[2021-11-16 17:47:38]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:47:38]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:47:38]][WARNING] Before VQE run
+[[2021-11-16 17:47:38]][INFO] 18 qubits
+[[2021-11-16 17:47:38]][DEBUG] Before ansatz gen
+[[2021-11-16 17:47:38]][DEBUG] After ansatz gen
+[[2021-11-16 17:47:38]][DEBUG] Executing vqe
+[[2021-11-16 17:47:38]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:47:38]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:47:38]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 132025912.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000109
+[[2021-11-16 17:48:37]][DEBUG] Destroying qureg
+[[2021-11-16 17:48:37]][DEBUG] Vqe execution done
+Min QUBO: 132025912.000000
+[[2021-11-16 17:48:37]][WARNING] VQE run
+[[2021-11-16 17:48:37]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:48:37]][WARNING] Double check: 132025912 passed: TRUE
+[[2021-11-16 17:48:37]][INFO] Running 81_18
+[[2021-11-16 17:48:37]][WARNING] calc gso
+[[2021-11-16 17:48:37]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:48:37]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:48:37]][WARNING] Before VQE run
+[[2021-11-16 17:48:37]][INFO] 18 qubits
+[[2021-11-16 17:48:37]][DEBUG] Before ansatz gen
+[[2021-11-16 17:48:37]][DEBUG] After ansatz gen
+[[2021-11-16 17:48:37]][DEBUG] Executing vqe
+[[2021-11-16 17:48:37]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:48:37]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:48:38]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 141703050.000000
+Final opt-config: 010000000000000000
+Final hit-rate: 0.000001
+[[2021-11-16 17:49:36]][DEBUG] Destroying qureg
+[[2021-11-16 17:49:36]][DEBUG] Vqe execution done
+Min QUBO: 141703050.000000
+[[2021-11-16 17:49:36]][WARNING] VQE run
+[[2021-11-16 17:49:36]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 
+[[2021-11-16 17:49:36]][WARNING] Double check: 141703050 passed: TRUE
+[[2021-11-16 17:49:36]][INFO] Running 82_18
+[[2021-11-16 17:49:36]][WARNING] calc gso
+[[2021-11-16 17:49:36]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:49:36]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:49:36]][WARNING] Before VQE run
+[[2021-11-16 17:49:36]][INFO] 18 qubits
+[[2021-11-16 17:49:36]][DEBUG] Before ansatz gen
+[[2021-11-16 17:49:36]][DEBUG] After ansatz gen
+[[2021-11-16 17:49:36]][DEBUG] Executing vqe
+[[2021-11-16 17:49:36]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:49:36]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:49:37]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 138630701.000000
+Final opt-config: 010000000000000000
+Final hit-rate: 0.000344
+[[2021-11-16 17:50:35]][DEBUG] Destroying qureg
+[[2021-11-16 17:50:35]][DEBUG] Vqe execution done
+Min QUBO: 138630701.000000
+[[2021-11-16 17:50:35]][WARNING] VQE run
+[[2021-11-16 17:50:35]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 
+[[2021-11-16 17:50:35]][WARNING] Double check: 138630701 passed: TRUE
+[[2021-11-16 17:50:35]][INFO] Running 83_18
+[[2021-11-16 17:50:35]][WARNING] calc gso
+[[2021-11-16 17:50:35]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:50:35]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:50:35]][WARNING] Before VQE run
+[[2021-11-16 17:50:35]][INFO] 18 qubits
+[[2021-11-16 17:50:35]][DEBUG] Before ansatz gen
+[[2021-11-16 17:50:35]][DEBUG] After ansatz gen
+[[2021-11-16 17:50:35]][DEBUG] Executing vqe
+[[2021-11-16 17:50:35]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:50:35]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:50:35]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 90807292.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.012060
+[[2021-11-16 17:52:16]][DEBUG] Destroying qureg
+[[2021-11-16 17:52:16]][DEBUG] Vqe execution done
+Min QUBO: 90807292.000000
+[[2021-11-16 17:52:16]][WARNING] VQE run
+[[2021-11-16 17:52:16]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:52:16]][WARNING] Double check: 90807292 passed: TRUE
+[[2021-11-16 17:52:16]][INFO] Running 84_18
+[[2021-11-16 17:52:16]][WARNING] calc gso
+[[2021-11-16 17:52:16]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:52:16]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:52:16]][WARNING] Before VQE run
+[[2021-11-16 17:52:16]][INFO] 18 qubits
+[[2021-11-16 17:52:16]][DEBUG] Before ansatz gen
+[[2021-11-16 17:52:16]][DEBUG] After ansatz gen
+[[2021-11-16 17:52:16]][DEBUG] Executing vqe
+[[2021-11-16 17:52:16]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:52:16]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:52:17]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 144321737.000000
+Final opt-config: 000000100000000000
+Final hit-rate: 0.000228
+[[2021-11-16 17:53:08]][DEBUG] Destroying qureg
+[[2021-11-16 17:53:08]][DEBUG] Vqe execution done
+Min QUBO: 144321737.000000
+[[2021-11-16 17:53:08]][WARNING] VQE run
+[[2021-11-16 17:53:08]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 
+[[2021-11-16 17:53:08]][WARNING] Double check: 144321737 passed: TRUE
+[[2021-11-16 17:53:08]][INFO] Running 85_18
+[[2021-11-16 17:53:08]][WARNING] calc gso
+[[2021-11-16 17:53:08]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:53:08]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:53:08]][WARNING] Before VQE run
+[[2021-11-16 17:53:08]][INFO] 18 qubits
+[[2021-11-16 17:53:08]][DEBUG] Before ansatz gen
+[[2021-11-16 17:53:08]][DEBUG] After ansatz gen
+[[2021-11-16 17:53:08]][DEBUG] Executing vqe
+[[2021-11-16 17:53:08]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:53:08]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:53:08]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 100180763.000000
+Final opt-config: 000000100000000000
+Final hit-rate: 0.000737
+[[2021-11-16 17:54:41]][DEBUG] Destroying qureg
+[[2021-11-16 17:54:41]][DEBUG] Vqe execution done
+Min QUBO: 100180763.000000
+[[2021-11-16 17:54:41]][WARNING] VQE run
+[[2021-11-16 17:54:41]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 
+[[2021-11-16 17:54:41]][WARNING] Double check: 100180763 passed: TRUE
+[[2021-11-16 17:54:41]][INFO] Running 86_18
+[[2021-11-16 17:54:41]][WARNING] calc gso
+[[2021-11-16 17:54:41]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:54:41]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:54:41]][WARNING] Before VQE run
+[[2021-11-16 17:54:41]][INFO] 18 qubits
+[[2021-11-16 17:54:41]][DEBUG] Before ansatz gen
+[[2021-11-16 17:54:41]][DEBUG] After ansatz gen
+[[2021-11-16 17:54:41]][DEBUG] Executing vqe
+[[2021-11-16 17:54:41]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:54:41]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:54:41]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 93906406.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000157
+[[2021-11-16 17:55:28]][DEBUG] Destroying qureg
+[[2021-11-16 17:55:28]][DEBUG] Vqe execution done
+Min QUBO: 93906406.000000
+[[2021-11-16 17:55:28]][WARNING] VQE run
+[[2021-11-16 17:55:28]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:55:28]][WARNING] Double check: 93906406 passed: TRUE
+[[2021-11-16 17:55:28]][INFO] Running 87_18
+[[2021-11-16 17:55:28]][WARNING] calc gso
+[[2021-11-16 17:55:28]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:55:28]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:55:28]][WARNING] Before VQE run
+[[2021-11-16 17:55:28]][INFO] 18 qubits
+[[2021-11-16 17:55:28]][DEBUG] Before ansatz gen
+[[2021-11-16 17:55:28]][DEBUG] After ansatz gen
+[[2021-11-16 17:55:28]][DEBUG] Executing vqe
+[[2021-11-16 17:55:28]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:55:28]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:55:29]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 134430283.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.001440
+[[2021-11-16 17:56:25]][DEBUG] Destroying qureg
+[[2021-11-16 17:56:25]][DEBUG] Vqe execution done
+Min QUBO: 134430283.000000
+[[2021-11-16 17:56:25]][WARNING] VQE run
+[[2021-11-16 17:56:25]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:56:25]][WARNING] Double check: 134430283 passed: TRUE
+[[2021-11-16 17:56:25]][INFO] Running 88_18
+[[2021-11-16 17:56:25]][WARNING] calc gso
+[[2021-11-16 17:56:25]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:56:25]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:56:25]][WARNING] Before VQE run
+[[2021-11-16 17:56:25]][INFO] 18 qubits
+[[2021-11-16 17:56:25]][DEBUG] Before ansatz gen
+[[2021-11-16 17:56:25]][DEBUG] After ansatz gen
+[[2021-11-16 17:56:25]][DEBUG] Executing vqe
+[[2021-11-16 17:56:25]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:56:25]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:56:25]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 97236645.000000
+Final opt-config: 000010000000000000
+Final hit-rate: 0.175000
+[[2021-11-16 17:57:23]][DEBUG] Destroying qureg
+[[2021-11-16 17:57:23]][DEBUG] Vqe execution done
+Min QUBO: 97236645.000000
+[[2021-11-16 17:57:23]][WARNING] VQE run
+[[2021-11-16 17:57:23]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 
+[[2021-11-16 17:57:23]][WARNING] Double check: 97236645 passed: TRUE
+[[2021-11-16 17:57:23]][INFO] Running 89_18
+[[2021-11-16 17:57:23]][WARNING] calc gso
+[[2021-11-16 17:57:23]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:57:23]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:57:23]][WARNING] Before VQE run
+[[2021-11-16 17:57:23]][INFO] 18 qubits
+[[2021-11-16 17:57:23]][DEBUG] Before ansatz gen
+[[2021-11-16 17:57:23]][DEBUG] After ansatz gen
+[[2021-11-16 17:57:23]][DEBUG] Executing vqe
+[[2021-11-16 17:57:23]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:57:23]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:57:24]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 91082152.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.113400
+[[2021-11-16 17:58:18]][DEBUG] Destroying qureg
+[[2021-11-16 17:58:18]][DEBUG] Vqe execution done
+Min QUBO: 91082152.000000
+[[2021-11-16 17:58:18]][WARNING] VQE run
+[[2021-11-16 17:58:18]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:58:18]][WARNING] Double check: 91082152 passed: TRUE
+[[2021-11-16 17:58:18]][INFO] Running 90_18
+[[2021-11-16 17:58:18]][WARNING] calc gso
+[[2021-11-16 17:58:18]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:58:18]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:58:18]][WARNING] Before VQE run
+[[2021-11-16 17:58:18]][INFO] 18 qubits
+[[2021-11-16 17:58:18]][DEBUG] Before ansatz gen
+[[2021-11-16 17:58:18]][DEBUG] After ansatz gen
+[[2021-11-16 17:58:18]][DEBUG] Executing vqe
+[[2021-11-16 17:58:18]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:58:18]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:58:18]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 124379869.000000
+Final opt-config: 000000000010000000
+Final hit-rate: 0.000034
+[[2021-11-16 17:59:18]][DEBUG] Destroying qureg
+[[2021-11-16 17:59:18]][DEBUG] Vqe execution done
+Min QUBO: 124379869.000000
+[[2021-11-16 17:59:18]][WARNING] VQE run
+[[2021-11-16 17:59:18]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:59:18]][WARNING] Double check: 124379869 passed: TRUE
+[[2021-11-16 17:59:18]][INFO] Running 91_18
+[[2021-11-16 17:59:18]][WARNING] calc gso
+[[2021-11-16 17:59:18]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:59:18]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:59:18]][WARNING] Before VQE run
+[[2021-11-16 17:59:18]][INFO] 18 qubits
+[[2021-11-16 17:59:18]][DEBUG] Before ansatz gen
+[[2021-11-16 17:59:18]][DEBUG] After ansatz gen
+[[2021-11-16 17:59:18]][DEBUG] Executing vqe
+[[2021-11-16 17:59:18]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:59:18]][DEBUG] Setting seed to 1997
+[[2021-11-16 17:59:19]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 149117661.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000002
+[[2021-11-16 17:59:59]][DEBUG] Destroying qureg
+[[2021-11-16 17:59:59]][DEBUG] Vqe execution done
+Min QUBO: 149117661.000000
+[[2021-11-16 17:59:59]][WARNING] VQE run
+[[2021-11-16 17:59:59]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 17:59:59]][WARNING] Double check: 149117661 passed: TRUE
+[[2021-11-16 17:59:59]][INFO] Running 92_18
+[[2021-11-16 17:59:59]][WARNING] calc gso
+[[2021-11-16 17:59:59]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 17:59:59]][WARNING] Normalization is probably best solution
+[[2021-11-16 17:59:59]][WARNING] Before VQE run
+[[2021-11-16 17:59:59]][INFO] 18 qubits
+[[2021-11-16 17:59:59]][DEBUG] Before ansatz gen
+[[2021-11-16 17:59:59]][DEBUG] After ansatz gen
+[[2021-11-16 17:59:59]][DEBUG] Executing vqe
+[[2021-11-16 17:59:59]][DEBUG] Initializing 18 qubits
+[[2021-11-16 17:59:59]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:00:00]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 96510506.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.175000
+[[2021-11-16 18:00:49]][DEBUG] Destroying qureg
+[[2021-11-16 18:00:49]][DEBUG] Vqe execution done
+Min QUBO: 96510506.000000
+[[2021-11-16 18:00:49]][WARNING] VQE run
+[[2021-11-16 18:00:49]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:00:49]][WARNING] Double check: 96510506 passed: TRUE
+[[2021-11-16 18:00:49]][INFO] Running 93_18
+[[2021-11-16 18:00:49]][WARNING] calc gso
+[[2021-11-16 18:00:49]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:00:49]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:00:49]][WARNING] Before VQE run
+[[2021-11-16 18:00:49]][INFO] 18 qubits
+[[2021-11-16 18:00:49]][DEBUG] Before ansatz gen
+[[2021-11-16 18:00:49]][DEBUG] After ansatz gen
+[[2021-11-16 18:00:49]][DEBUG] Executing vqe
+[[2021-11-16 18:00:49]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:00:49]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:00:50]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 90958298.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.175002
+[[2021-11-16 18:01:38]][DEBUG] Destroying qureg
+[[2021-11-16 18:01:38]][DEBUG] Vqe execution done
+Min QUBO: 90958298.000000
+[[2021-11-16 18:01:38]][WARNING] VQE run
+[[2021-11-16 18:01:38]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:01:38]][WARNING] Double check: 90958298 passed: TRUE
+[[2021-11-16 18:01:38]][INFO] Running 94_18
+[[2021-11-16 18:01:38]][WARNING] calc gso
+[[2021-11-16 18:01:38]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:01:38]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:01:38]][WARNING] Before VQE run
+[[2021-11-16 18:01:38]][INFO] 18 qubits
+[[2021-11-16 18:01:38]][DEBUG] Before ansatz gen
+[[2021-11-16 18:01:38]][DEBUG] After ansatz gen
+[[2021-11-16 18:01:38]][DEBUG] Executing vqe
+[[2021-11-16 18:01:38]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:01:38]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:01:39]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 135594428.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.018237
+[[2021-11-16 18:02:55]][DEBUG] Destroying qureg
+[[2021-11-16 18:02:55]][DEBUG] Vqe execution done
+Min QUBO: 135594428.000000
+[[2021-11-16 18:02:55]][WARNING] VQE run
+[[2021-11-16 18:02:55]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:02:55]][WARNING] Double check: 135594428 passed: TRUE
+[[2021-11-16 18:02:55]][INFO] Running 95_18
+[[2021-11-16 18:02:55]][WARNING] calc gso
+[[2021-11-16 18:02:55]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:02:55]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:02:55]][WARNING] Before VQE run
+[[2021-11-16 18:02:55]][INFO] 18 qubits
+[[2021-11-16 18:02:55]][DEBUG] Before ansatz gen
+[[2021-11-16 18:02:55]][DEBUG] After ansatz gen
+[[2021-11-16 18:02:55]][DEBUG] Executing vqe
+[[2021-11-16 18:02:55]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:02:55]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:02:55]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 114633708.000000
+Final opt-config: 000000011001100000
+Final hit-rate: 0.000859
+[[2021-11-16 18:03:58]][DEBUG] Destroying qureg
+[[2021-11-16 18:03:58]][DEBUG] Vqe execution done
+Min QUBO: 114633708.000000
+[[2021-11-16 18:03:58]][WARNING] VQE run
+[[2021-11-16 18:03:58]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 1 1 0 0 1 1 0 0 0 0 0 0 0 
+[[2021-11-16 18:03:58]][WARNING] Double check: 114633708 passed: TRUE
+[[2021-11-16 18:03:58]][INFO] Running 96_18
+[[2021-11-16 18:03:58]][WARNING] calc gso
+[[2021-11-16 18:03:58]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:03:58]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:03:58]][WARNING] Before VQE run
+[[2021-11-16 18:03:58]][INFO] 18 qubits
+[[2021-11-16 18:03:58]][DEBUG] Before ansatz gen
+[[2021-11-16 18:03:58]][DEBUG] After ansatz gen
+[[2021-11-16 18:03:58]][DEBUG] Executing vqe
+[[2021-11-16 18:03:58]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:03:58]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:03:58]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 99254528.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.174999
+[[2021-11-16 18:05:14]][DEBUG] Destroying qureg
+[[2021-11-16 18:05:14]][DEBUG] Vqe execution done
+Min QUBO: 99254528.000000
+[[2021-11-16 18:05:14]][WARNING] VQE run
+[[2021-11-16 18:05:14]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:05:14]][WARNING] Double check: 99254528 passed: TRUE
+[[2021-11-16 18:05:14]][INFO] Running 97_18
+[[2021-11-16 18:05:14]][WARNING] calc gso
+[[2021-11-16 18:05:14]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:05:14]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:05:14]][WARNING] Before VQE run
+[[2021-11-16 18:05:14]][INFO] 18 qubits
+[[2021-11-16 18:05:14]][DEBUG] Before ansatz gen
+[[2021-11-16 18:05:14]][DEBUG] After ansatz gen
+[[2021-11-16 18:05:14]][DEBUG] Executing vqe
+[[2021-11-16 18:05:14]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:05:14]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:05:15]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 103026971.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.175000
+[[2021-11-16 18:07:43]][DEBUG] Destroying qureg
+[[2021-11-16 18:07:43]][DEBUG] Vqe execution done
+Min QUBO: 103026971.000000
+[[2021-11-16 18:07:43]][WARNING] VQE run
+[[2021-11-16 18:07:43]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:07:43]][WARNING] Double check: 103026971 passed: TRUE
+[[2021-11-16 18:07:43]][INFO] Running 98_18
+[[2021-11-16 18:07:43]][WARNING] calc gso
+[[2021-11-16 18:07:43]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:07:43]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:07:43]][WARNING] Before VQE run
+[[2021-11-16 18:07:43]][INFO] 18 qubits
+[[2021-11-16 18:07:43]][DEBUG] Before ansatz gen
+[[2021-11-16 18:07:43]][DEBUG] After ansatz gen
+[[2021-11-16 18:07:43]][DEBUG] Executing vqe
+[[2021-11-16 18:07:43]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:07:43]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:07:44]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 105215057.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.175000
+[[2021-11-16 18:09:06]][DEBUG] Destroying qureg
+[[2021-11-16 18:09:06]][DEBUG] Vqe execution done
+Min QUBO: 105215057.000000
+[[2021-11-16 18:09:06]][WARNING] VQE run
+[[2021-11-16 18:09:06]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:09:06]][WARNING] Double check: 105215057 passed: TRUE
+[[2021-11-16 18:09:06]][INFO] Running 99_18
+[[2021-11-16 18:09:06]][WARNING] calc gso
+[[2021-11-16 18:09:06]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:09:06]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:09:06]][WARNING] Before VQE run
+[[2021-11-16 18:09:06]][INFO] 18 qubits
+[[2021-11-16 18:09:06]][DEBUG] Before ansatz gen
+[[2021-11-16 18:09:06]][DEBUG] After ansatz gen
+[[2021-11-16 18:09:06]][DEBUG] Executing vqe
+[[2021-11-16 18:09:06]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:09:06]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:09:07]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 121952490.000000
+Final opt-config: 000000010000000000
+Final hit-rate: 0.071430
+[[2021-11-16 18:10:13]][DEBUG] Destroying qureg
+[[2021-11-16 18:10:13]][DEBUG] Vqe execution done
+Min QUBO: 121952490.000000
+[[2021-11-16 18:10:13]][WARNING] VQE run
+[[2021-11-16 18:10:13]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 
+[[2021-11-16 18:10:13]][WARNING] Double check: 121952490 passed: TRUE
+[[2021-11-16 18:10:13]][INFO] Running 100_18
+[[2021-11-16 18:10:13]][WARNING] calc gso
+[[2021-11-16 18:10:13]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:10:13]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:10:13]][WARNING] Before VQE run
+[[2021-11-16 18:10:13]][INFO] 18 qubits
+[[2021-11-16 18:10:13]][DEBUG] Before ansatz gen
+[[2021-11-16 18:10:13]][DEBUG] After ansatz gen
+[[2021-11-16 18:10:13]][DEBUG] Executing vqe
+[[2021-11-16 18:10:13]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:10:13]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:10:13]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 112406749.000000
+Final opt-config: 000000001000000000
+Final hit-rate: 0.002617
+[[2021-11-16 18:11:11]][DEBUG] Destroying qureg
+[[2021-11-16 18:11:11]][DEBUG] Vqe execution done
+Min QUBO: 112406749.000000
+[[2021-11-16 18:11:11]][WARNING] VQE run
+[[2021-11-16 18:11:11]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:11:11]][WARNING] Double check: 112406749 passed: TRUE
+[[2021-11-16 18:11:11]][INFO] Running 101_18
+[[2021-11-16 18:11:11]][WARNING] calc gso
+[[2021-11-16 18:11:11]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:11:11]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:11:11]][WARNING] Before VQE run
+[[2021-11-16 18:11:11]][INFO] 18 qubits
+[[2021-11-16 18:11:11]][DEBUG] Before ansatz gen
+[[2021-11-16 18:11:11]][DEBUG] After ansatz gen
+[[2021-11-16 18:11:11]][DEBUG] Executing vqe
+[[2021-11-16 18:11:11]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:11:11]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:11:11]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 117566705.000000
+Final opt-config: 000001000000000000
+Final hit-rate: 0.006620
+[[2021-11-16 18:12:27]][DEBUG] Destroying qureg
+[[2021-11-16 18:12:27]][DEBUG] Vqe execution done
+Min QUBO: 117566705.000000
+[[2021-11-16 18:12:27]][WARNING] VQE run
+[[2021-11-16 18:12:27]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 
+[[2021-11-16 18:12:27]][WARNING] Double check: 117566705 passed: TRUE
+[[2021-11-16 18:12:27]][INFO] Running 102_18
+[[2021-11-16 18:12:27]][WARNING] calc gso
+[[2021-11-16 18:12:27]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:12:27]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:12:27]][WARNING] Before VQE run
+[[2021-11-16 18:12:27]][INFO] 18 qubits
+[[2021-11-16 18:12:27]][DEBUG] Before ansatz gen
+[[2021-11-16 18:12:27]][DEBUG] After ansatz gen
+[[2021-11-16 18:12:27]][DEBUG] Executing vqe
+[[2021-11-16 18:12:27]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:12:27]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:12:28]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 76258368.000000
+Final opt-config: 000001000000000000
+Final hit-rate: 0.007775
+[[2021-11-16 18:13:18]][DEBUG] Destroying qureg
+[[2021-11-16 18:13:18]][DEBUG] Vqe execution done
+Min QUBO: 76258368.000000
+[[2021-11-16 18:13:18]][WARNING] VQE run
+[[2021-11-16 18:13:18]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 
+[[2021-11-16 18:13:18]][WARNING] Double check: 76258368 passed: TRUE
+[[2021-11-16 18:13:18]][INFO] Running 103_18
+[[2021-11-16 18:13:18]][WARNING] calc gso
+[[2021-11-16 18:13:18]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:13:18]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:13:18]][WARNING] Before VQE run
+[[2021-11-16 18:13:18]][INFO] 18 qubits
+[[2021-11-16 18:13:18]][DEBUG] Before ansatz gen
+[[2021-11-16 18:13:18]][DEBUG] After ansatz gen
+[[2021-11-16 18:13:18]][DEBUG] Executing vqe
+[[2021-11-16 18:13:18]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:13:18]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:13:18]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 141728060.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.166907
+[[2021-11-16 18:14:27]][DEBUG] Destroying qureg
+[[2021-11-16 18:14:27]][DEBUG] Vqe execution done
+Min QUBO: 141728060.000000
+[[2021-11-16 18:14:27]][WARNING] VQE run
+[[2021-11-16 18:14:27]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:14:27]][WARNING] Double check: 141728060 passed: TRUE
+[[2021-11-16 18:14:27]][INFO] Running 104_18
+[[2021-11-16 18:14:27]][WARNING] calc gso
+[[2021-11-16 18:14:27]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:14:27]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:14:27]][WARNING] Before VQE run
+[[2021-11-16 18:14:27]][INFO] 18 qubits
+[[2021-11-16 18:14:27]][DEBUG] Before ansatz gen
+[[2021-11-16 18:14:27]][DEBUG] After ansatz gen
+[[2021-11-16 18:14:27]][DEBUG] Executing vqe
+[[2021-11-16 18:14:27]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:14:27]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:14:28]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 109431624.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000008
+[[2021-11-16 18:15:23]][DEBUG] Destroying qureg
+[[2021-11-16 18:15:23]][DEBUG] Vqe execution done
+Min QUBO: 109431624.000000
+[[2021-11-16 18:15:23]][WARNING] VQE run
+[[2021-11-16 18:15:23]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:15:23]][WARNING] Double check: 109431624 passed: TRUE
+[[2021-11-16 18:15:23]][INFO] Running 105_18
+[[2021-11-16 18:15:23]][WARNING] calc gso
+[[2021-11-16 18:15:24]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:15:24]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:15:24]][WARNING] Before VQE run
+[[2021-11-16 18:15:24]][INFO] 18 qubits
+[[2021-11-16 18:15:24]][DEBUG] Before ansatz gen
+[[2021-11-16 18:15:24]][DEBUG] After ansatz gen
+[[2021-11-16 18:15:24]][DEBUG] Executing vqe
+[[2021-11-16 18:15:24]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:15:24]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:15:24]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 81331232.000000
+Final opt-config: 010000000000000000
+Final hit-rate: 0.000110
+[[2021-11-16 18:16:42]][DEBUG] Destroying qureg
+[[2021-11-16 18:16:42]][DEBUG] Vqe execution done
+Min QUBO: 81331232.000000
+[[2021-11-16 18:16:42]][WARNING] VQE run
+[[2021-11-16 18:16:42]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 
+[[2021-11-16 18:16:43]][WARNING] Double check: 81331232 passed: TRUE
+[[2021-11-16 18:16:43]][INFO] Running 106_18
+[[2021-11-16 18:16:43]][WARNING] calc gso
+[[2021-11-16 18:16:43]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:16:43]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:16:43]][WARNING] Before VQE run
+[[2021-11-16 18:16:43]][INFO] 18 qubits
+[[2021-11-16 18:16:43]][DEBUG] Before ansatz gen
+[[2021-11-16 18:16:43]][DEBUG] After ansatz gen
+[[2021-11-16 18:16:43]][DEBUG] Executing vqe
+[[2021-11-16 18:16:43]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:16:43]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:16:43]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 96070256.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000004
+[[2021-11-16 18:18:05]][DEBUG] Destroying qureg
+[[2021-11-16 18:18:05]][DEBUG] Vqe execution done
+Min QUBO: 96070256.000000
+[[2021-11-16 18:18:05]][WARNING] VQE run
+[[2021-11-16 18:18:05]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:18:05]][WARNING] Double check: 96070256 passed: TRUE
+[[2021-11-16 18:18:05]][INFO] Running 107_18
+[[2021-11-16 18:18:05]][WARNING] calc gso
+[[2021-11-16 18:18:05]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:18:05]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:18:05]][WARNING] Before VQE run
+[[2021-11-16 18:18:05]][INFO] 18 qubits
+[[2021-11-16 18:18:05]][DEBUG] Before ansatz gen
+[[2021-11-16 18:18:05]][DEBUG] After ansatz gen
+[[2021-11-16 18:18:05]][DEBUG] Executing vqe
+[[2021-11-16 18:18:05]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:18:05]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:18:05]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 104509551.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000394
+[[2021-11-16 18:18:59]][DEBUG] Destroying qureg
+[[2021-11-16 18:19:00]][DEBUG] Vqe execution done
+Min QUBO: 104509551.000000
+[[2021-11-16 18:19:00]][WARNING] VQE run
+[[2021-11-16 18:19:00]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:19:00]][WARNING] Double check: 104509551 passed: TRUE
+[[2021-11-16 18:19:00]][INFO] Running 108_18
+[[2021-11-16 18:19:00]][WARNING] calc gso
+[[2021-11-16 18:19:00]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:19:00]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:19:00]][WARNING] Before VQE run
+[[2021-11-16 18:19:00]][INFO] 18 qubits
+[[2021-11-16 18:19:00]][DEBUG] Before ansatz gen
+[[2021-11-16 18:19:00]][DEBUG] After ansatz gen
+[[2021-11-16 18:19:00]][DEBUG] Executing vqe
+[[2021-11-16 18:19:00]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:19:00]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:19:00]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 134275114.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000006
+[[2021-11-16 18:20:17]][DEBUG] Destroying qureg
+[[2021-11-16 18:20:18]][DEBUG] Vqe execution done
+Min QUBO: 134275114.000000
+[[2021-11-16 18:20:18]][WARNING] VQE run
+[[2021-11-16 18:20:18]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:20:18]][WARNING] Double check: 134275114 passed: TRUE
+[[2021-11-16 18:20:18]][INFO] Running 109_18
+[[2021-11-16 18:20:18]][WARNING] calc gso
+[[2021-11-16 18:20:18]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:20:18]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:20:18]][WARNING] Before VQE run
+[[2021-11-16 18:20:18]][INFO] 18 qubits
+[[2021-11-16 18:20:18]][DEBUG] Before ansatz gen
+[[2021-11-16 18:20:18]][DEBUG] After ansatz gen
+[[2021-11-16 18:20:18]][DEBUG] Executing vqe
+[[2021-11-16 18:20:18]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:20:18]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:20:18]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 106659505.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000001
+[[2021-11-16 18:21:23]][DEBUG] Destroying qureg
+[[2021-11-16 18:21:23]][DEBUG] Vqe execution done
+Min QUBO: 106659505.000000
+[[2021-11-16 18:21:23]][WARNING] VQE run
+[[2021-11-16 18:21:23]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:21:23]][WARNING] Double check: 106659505 passed: TRUE
+[[2021-11-16 18:21:23]][INFO] Running 110_18
+[[2021-11-16 18:21:23]][WARNING] calc gso
+[[2021-11-16 18:21:23]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:21:23]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:21:23]][WARNING] Before VQE run
+[[2021-11-16 18:21:23]][INFO] 18 qubits
+[[2021-11-16 18:21:23]][DEBUG] Before ansatz gen
+[[2021-11-16 18:21:23]][DEBUG] After ansatz gen
+[[2021-11-16 18:21:23]][DEBUG] Executing vqe
+[[2021-11-16 18:21:23]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:21:23]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:21:24]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 88436682.000000
+Final opt-config: 000100000000000000
+Final hit-rate: 0.000037
+[[2021-11-16 18:22:36]][DEBUG] Destroying qureg
+[[2021-11-16 18:22:36]][DEBUG] Vqe execution done
+Min QUBO: 88436682.000000
+[[2021-11-16 18:22:36]][WARNING] VQE run
+[[2021-11-16 18:22:36]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 
+[[2021-11-16 18:22:36]][WARNING] Double check: 88436682 passed: TRUE
+[[2021-11-16 18:22:36]][INFO] Running 111_18
+[[2021-11-16 18:22:36]][WARNING] calc gso
+[[2021-11-16 18:22:36]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:22:36]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:22:36]][WARNING] Before VQE run
+[[2021-11-16 18:22:36]][INFO] 18 qubits
+[[2021-11-16 18:22:36]][DEBUG] Before ansatz gen
+[[2021-11-16 18:22:36]][DEBUG] After ansatz gen
+[[2021-11-16 18:22:36]][DEBUG] Executing vqe
+[[2021-11-16 18:22:36]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:22:36]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:22:36]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 80033196.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000007
+[[2021-11-16 18:23:28]][DEBUG] Destroying qureg
+[[2021-11-16 18:23:28]][DEBUG] Vqe execution done
+Min QUBO: 80033196.000000
+[[2021-11-16 18:23:28]][WARNING] VQE run
+[[2021-11-16 18:23:28]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:23:28]][WARNING] Double check: 80033196 passed: TRUE
+[[2021-11-16 18:23:28]][INFO] Running 112_18
+[[2021-11-16 18:23:28]][WARNING] calc gso
+[[2021-11-16 18:23:28]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:23:28]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:23:28]][WARNING] Before VQE run
+[[2021-11-16 18:23:28]][INFO] 18 qubits
+[[2021-11-16 18:23:28]][DEBUG] Before ansatz gen
+[[2021-11-16 18:23:28]][DEBUG] After ansatz gen
+[[2021-11-16 18:23:28]][DEBUG] Executing vqe
+[[2021-11-16 18:23:28]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:23:28]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:23:29]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 152614607.000000
+Final opt-config: 010000000000000000
+Final hit-rate: 0.175000
+[[2021-11-16 18:24:42]][DEBUG] Destroying qureg
+[[2021-11-16 18:24:42]][DEBUG] Vqe execution done
+Min QUBO: 152614607.000000
+[[2021-11-16 18:24:42]][WARNING] VQE run
+[[2021-11-16 18:24:42]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 
+[[2021-11-16 18:24:43]][WARNING] Double check: 152614607 passed: TRUE
+[[2021-11-16 18:24:43]][INFO] Running 113_18
+[[2021-11-16 18:24:43]][WARNING] calc gso
+[[2021-11-16 18:24:43]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:24:43]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:24:43]][WARNING] Before VQE run
+[[2021-11-16 18:24:43]][INFO] 18 qubits
+[[2021-11-16 18:24:43]][DEBUG] Before ansatz gen
+[[2021-11-16 18:24:43]][DEBUG] After ansatz gen
+[[2021-11-16 18:24:43]][DEBUG] Executing vqe
+[[2021-11-16 18:24:43]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:24:43]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:24:43]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 95423641.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000433
+[[2021-11-16 18:26:01]][DEBUG] Destroying qureg
+[[2021-11-16 18:26:01]][DEBUG] Vqe execution done
+Min QUBO: 95423641.000000
+[[2021-11-16 18:26:01]][WARNING] VQE run
+[[2021-11-16 18:26:01]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:26:01]][WARNING] Double check: 95423641 passed: TRUE
+[[2021-11-16 18:26:01]][INFO] Running 114_18
+[[2021-11-16 18:26:01]][WARNING] calc gso
+[[2021-11-16 18:26:01]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:26:01]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:26:01]][WARNING] Before VQE run
+[[2021-11-16 18:26:01]][INFO] 18 qubits
+[[2021-11-16 18:26:01]][DEBUG] Before ansatz gen
+[[2021-11-16 18:26:01]][DEBUG] After ansatz gen
+[[2021-11-16 18:26:01]][DEBUG] Executing vqe
+[[2021-11-16 18:26:01]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:26:01]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:26:02]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 65919598.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000258
+[[2021-11-16 18:26:50]][DEBUG] Destroying qureg
+[[2021-11-16 18:26:50]][DEBUG] Vqe execution done
+Min QUBO: 65919598.000000
+[[2021-11-16 18:26:50]][WARNING] VQE run
+[[2021-11-16 18:26:50]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:26:50]][WARNING] Double check: 65919598 passed: TRUE
+[[2021-11-16 18:26:50]][INFO] Running 115_18
+[[2021-11-16 18:26:50]][WARNING] calc gso
+[[2021-11-16 18:26:50]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:26:50]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:26:50]][WARNING] Before VQE run
+[[2021-11-16 18:26:50]][INFO] 18 qubits
+[[2021-11-16 18:26:50]][DEBUG] Before ansatz gen
+[[2021-11-16 18:26:50]][DEBUG] After ansatz gen
+[[2021-11-16 18:26:50]][DEBUG] Executing vqe
+[[2021-11-16 18:26:50]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:26:50]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:26:50]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 101278138.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000850
+[[2021-11-16 18:27:38]][DEBUG] Destroying qureg
+[[2021-11-16 18:27:38]][DEBUG] Vqe execution done
+Min QUBO: 101278138.000000
+[[2021-11-16 18:27:38]][WARNING] VQE run
+[[2021-11-16 18:27:38]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:27:38]][WARNING] Double check: 101278138 passed: TRUE
+[[2021-11-16 18:27:38]][INFO] Running 116_18
+[[2021-11-16 18:27:38]][WARNING] calc gso
+[[2021-11-16 18:27:38]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:27:38]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:27:38]][WARNING] Before VQE run
+[[2021-11-16 18:27:38]][INFO] 18 qubits
+[[2021-11-16 18:27:38]][DEBUG] Before ansatz gen
+[[2021-11-16 18:27:38]][DEBUG] After ansatz gen
+[[2021-11-16 18:27:38]][DEBUG] Executing vqe
+[[2021-11-16 18:27:38]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:27:38]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:27:38]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 123258058.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.175000
+[[2021-11-16 18:28:47]][DEBUG] Destroying qureg
+[[2021-11-16 18:28:47]][DEBUG] Vqe execution done
+Min QUBO: 123258058.000000
+[[2021-11-16 18:28:47]][WARNING] VQE run
+[[2021-11-16 18:28:47]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:28:47]][WARNING] Double check: 123258058 passed: TRUE
+[[2021-11-16 18:28:47]][INFO] Running 117_18
+[[2021-11-16 18:28:47]][WARNING] calc gso
+[[2021-11-16 18:28:47]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:28:47]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:28:47]][WARNING] Before VQE run
+[[2021-11-16 18:28:47]][INFO] 18 qubits
+[[2021-11-16 18:28:47]][DEBUG] Before ansatz gen
+[[2021-11-16 18:28:47]][DEBUG] After ansatz gen
+[[2021-11-16 18:28:47]][DEBUG] Executing vqe
+[[2021-11-16 18:28:47]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:28:47]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:28:47]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 140592772.000000
+Final opt-config: 001000000000000000
+Final hit-rate: 0.047567
+[[2021-11-16 18:29:42]][DEBUG] Destroying qureg
+[[2021-11-16 18:29:42]][DEBUG] Vqe execution done
+Min QUBO: 140592772.000000
+[[2021-11-16 18:29:42]][WARNING] VQE run
+[[2021-11-16 18:29:42]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 
+[[2021-11-16 18:29:42]][WARNING] Double check: 140592772 passed: TRUE
+[[2021-11-16 18:29:42]][INFO] Running 118_18
+[[2021-11-16 18:29:42]][WARNING] calc gso
+[[2021-11-16 18:29:42]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:29:42]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:29:42]][WARNING] Before VQE run
+[[2021-11-16 18:29:42]][INFO] 18 qubits
+[[2021-11-16 18:29:42]][DEBUG] Before ansatz gen
+[[2021-11-16 18:29:42]][DEBUG] After ansatz gen
+[[2021-11-16 18:29:42]][DEBUG] Executing vqe
+[[2021-11-16 18:29:42]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:29:42]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:29:42]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 130185213.000000
+Final opt-config: 000010000000000000
+Final hit-rate: 0.175000
+[[2021-11-16 18:30:43]][DEBUG] Destroying qureg
+[[2021-11-16 18:30:43]][DEBUG] Vqe execution done
+Min QUBO: 130185213.000000
+[[2021-11-16 18:30:43]][WARNING] VQE run
+[[2021-11-16 18:30:43]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 
+[[2021-11-16 18:30:43]][WARNING] Double check: 130185213 passed: TRUE
+[[2021-11-16 18:30:43]][INFO] Running 119_18
+[[2021-11-16 18:30:43]][WARNING] calc gso
+[[2021-11-16 18:30:43]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:30:43]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:30:43]][WARNING] Before VQE run
+[[2021-11-16 18:30:43]][INFO] 18 qubits
+[[2021-11-16 18:30:43]][DEBUG] Before ansatz gen
+[[2021-11-16 18:30:43]][DEBUG] After ansatz gen
+[[2021-11-16 18:30:43]][DEBUG] Executing vqe
+[[2021-11-16 18:30:43]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:30:43]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:30:43]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 86622322.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000370
+[[2021-11-16 18:32:06]][DEBUG] Destroying qureg
+[[2021-11-16 18:32:06]][DEBUG] Vqe execution done
+Min QUBO: 86622322.000000
+[[2021-11-16 18:32:06]][WARNING] VQE run
+[[2021-11-16 18:32:06]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:32:06]][WARNING] Double check: 86622322 passed: TRUE
+[[2021-11-16 18:32:06]][INFO] Running 120_18
+[[2021-11-16 18:32:06]][WARNING] calc gso
+[[2021-11-16 18:32:06]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:32:06]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:32:06]][WARNING] Before VQE run
+[[2021-11-16 18:32:06]][INFO] 18 qubits
+[[2021-11-16 18:32:06]][DEBUG] Before ansatz gen
+[[2021-11-16 18:32:06]][DEBUG] After ansatz gen
+[[2021-11-16 18:32:06]][DEBUG] Executing vqe
+[[2021-11-16 18:32:06]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:32:06]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:32:07]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 116250282.000000
+Final opt-config: 000010000000000000
+Final hit-rate: 0.175000
+[[2021-11-16 18:33:12]][DEBUG] Destroying qureg
+[[2021-11-16 18:33:12]][DEBUG] Vqe execution done
+Min QUBO: 116250282.000000
+[[2021-11-16 18:33:12]][WARNING] VQE run
+[[2021-11-16 18:33:12]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 
+[[2021-11-16 18:33:12]][WARNING] Double check: 116250282 passed: TRUE
+[[2021-11-16 18:33:12]][INFO] Running 121_18
+[[2021-11-16 18:33:12]][WARNING] calc gso
+[[2021-11-16 18:33:12]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:33:12]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:33:12]][WARNING] Before VQE run
+[[2021-11-16 18:33:12]][INFO] 18 qubits
+[[2021-11-16 18:33:12]][DEBUG] Before ansatz gen
+[[2021-11-16 18:33:12]][DEBUG] After ansatz gen
+[[2021-11-16 18:33:12]][DEBUG] Executing vqe
+[[2021-11-16 18:33:12]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:33:12]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:33:13]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 119113339.000000
+Final opt-config: 000000100000000000
+Final hit-rate: 0.125257
+[[2021-11-16 18:34:27]][DEBUG] Destroying qureg
+[[2021-11-16 18:34:27]][DEBUG] Vqe execution done
+Min QUBO: 119113339.000000
+[[2021-11-16 18:34:27]][WARNING] VQE run
+[[2021-11-16 18:34:27]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 
+[[2021-11-16 18:34:27]][WARNING] Double check: 119113339 passed: TRUE
+[[2021-11-16 18:34:27]][INFO] Running 122_18
+[[2021-11-16 18:34:27]][WARNING] calc gso
+[[2021-11-16 18:34:27]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:34:27]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:34:27]][WARNING] Before VQE run
+[[2021-11-16 18:34:27]][INFO] 18 qubits
+[[2021-11-16 18:34:27]][DEBUG] Before ansatz gen
+[[2021-11-16 18:34:27]][DEBUG] After ansatz gen
+[[2021-11-16 18:34:27]][DEBUG] Executing vqe
+[[2021-11-16 18:34:27]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:34:27]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:34:27]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 165301689.000000
+Final opt-config: 000000000100000000
+Final hit-rate: 0.028937
+[[2021-11-16 18:35:33]][DEBUG] Destroying qureg
+[[2021-11-16 18:35:33]][DEBUG] Vqe execution done
+Min QUBO: 165301689.000000
+[[2021-11-16 18:35:33]][WARNING] VQE run
+[[2021-11-16 18:35:33]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:35:33]][WARNING] Double check: 165301689 passed: TRUE
+[[2021-11-16 18:35:33]][INFO] Running 123_18
+[[2021-11-16 18:35:33]][WARNING] calc gso
+[[2021-11-16 18:35:33]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:35:33]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:35:33]][WARNING] Before VQE run
+[[2021-11-16 18:35:33]][INFO] 18 qubits
+[[2021-11-16 18:35:33]][DEBUG] Before ansatz gen
+[[2021-11-16 18:35:33]][DEBUG] After ansatz gen
+[[2021-11-16 18:35:33]][DEBUG] Executing vqe
+[[2021-11-16 18:35:33]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:35:33]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:35:34]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 97659030.000000
+Final opt-config: 000000001000000000
+Final hit-rate: 0.006907
+[[2021-11-16 18:36:35]][DEBUG] Destroying qureg
+[[2021-11-16 18:36:35]][DEBUG] Vqe execution done
+Min QUBO: 97659030.000000
+[[2021-11-16 18:36:35]][WARNING] VQE run
+[[2021-11-16 18:36:35]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:36:35]][WARNING] Double check: 97659030 passed: TRUE
+[[2021-11-16 18:36:35]][INFO] Running 124_18
+[[2021-11-16 18:36:35]][WARNING] calc gso
+[[2021-11-16 18:36:35]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:36:35]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:36:35]][WARNING] Before VQE run
+[[2021-11-16 18:36:35]][INFO] 18 qubits
+[[2021-11-16 18:36:35]][DEBUG] Before ansatz gen
+[[2021-11-16 18:36:35]][DEBUG] After ansatz gen
+[[2021-11-16 18:36:35]][DEBUG] Executing vqe
+[[2021-11-16 18:36:35]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:36:35]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:36:36]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 87766193.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000679
+[[2021-11-16 18:37:36]][DEBUG] Destroying qureg
+[[2021-11-16 18:37:36]][DEBUG] Vqe execution done
+Min QUBO: 87766193.000000
+[[2021-11-16 18:37:36]][WARNING] VQE run
+[[2021-11-16 18:37:36]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:37:36]][WARNING] Double check: 87766193 passed: TRUE
+[[2021-11-16 18:37:36]][INFO] Running 125_18
+[[2021-11-16 18:37:36]][WARNING] calc gso
+[[2021-11-16 18:37:36]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:37:36]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:37:36]][WARNING] Before VQE run
+[[2021-11-16 18:37:36]][INFO] 18 qubits
+[[2021-11-16 18:37:36]][DEBUG] Before ansatz gen
+[[2021-11-16 18:37:36]][DEBUG] After ansatz gen
+[[2021-11-16 18:37:36]][DEBUG] Executing vqe
+[[2021-11-16 18:37:36]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:37:36]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:37:36]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 125145046.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000139
+[[2021-11-16 18:38:11]][DEBUG] Destroying qureg
+[[2021-11-16 18:38:11]][DEBUG] Vqe execution done
+Min QUBO: 125145046.000000
+[[2021-11-16 18:38:11]][WARNING] VQE run
+[[2021-11-16 18:38:11]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:38:11]][WARNING] Double check: 125145046 passed: TRUE
+[[2021-11-16 18:38:11]][INFO] Running 126_18
+[[2021-11-16 18:38:11]][WARNING] calc gso
+[[2021-11-16 18:38:11]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:38:11]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:38:11]][WARNING] Before VQE run
+[[2021-11-16 18:38:11]][INFO] 18 qubits
+[[2021-11-16 18:38:11]][DEBUG] Before ansatz gen
+[[2021-11-16 18:38:11]][DEBUG] After ansatz gen
+[[2021-11-16 18:38:11]][DEBUG] Executing vqe
+[[2021-11-16 18:38:11]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:38:11]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:38:12]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 91341179.000000
+Final opt-config: 000000000000000001
+Final hit-rate: 0.000075
+[[2021-11-16 18:39:18]][DEBUG] Destroying qureg
+[[2021-11-16 18:39:18]][DEBUG] Vqe execution done
+Min QUBO: 91341179.000000
+[[2021-11-16 18:39:18]][WARNING] VQE run
+[[2021-11-16 18:39:18]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:39:18]][WARNING] Double check: 91341179 passed: TRUE
+[[2021-11-16 18:39:18]][INFO] Running 127_18
+[[2021-11-16 18:39:18]][WARNING] calc gso
+[[2021-11-16 18:39:18]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2021-11-16 18:39:18]][WARNING] Normalization is probably best solution
+[[2021-11-16 18:39:18]][WARNING] Before VQE run
+[[2021-11-16 18:39:18]][INFO] 18 qubits
+[[2021-11-16 18:39:18]][DEBUG] Before ansatz gen
+[[2021-11-16 18:39:18]][DEBUG] After ansatz gen
+[[2021-11-16 18:39:18]][DEBUG] Executing vqe
+[[2021-11-16 18:39:18]][DEBUG] Initializing 18 qubits
+[[2021-11-16 18:39:18]][DEBUG] Setting seed to 1997
+[[2021-11-16 18:39:18]][WARNING] f: Constant Alpha: 0.175000
+Final opt-val: 112765672.000000
+Final opt-config: 000000001010000001
+Final hit-rate: 0.000001
+[[2021-11-16 18:39:58]][DEBUG] Destroying qureg
+[[2021-11-16 18:39:58]][DEBUG] Vqe execution done
+Min QUBO: 112765672.000000
+[[2021-11-16 18:39:58]][WARNING] VQE run
+[[2021-11-16 18:39:58]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 
+[[2021-11-16 18:39:58]][WARNING] Double check: 112765672 passed: TRUE

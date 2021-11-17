@@ -216,10 +216,12 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 
 	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
 
-		double expectation = acc->calc_expectation(buffer, x, iteration_i++);
+		double ground_state_overlap;
+		double expectation = acc->calc_expectation(buffer, x, iteration_i++, &ground_state_overlap);
 		buffer->intermediateEnergies.push_back(expectation);
+		buffer->intermediateGroundStateOverlaps.push_back(ground_state_overlap);
 		//logw(std::to_string(expectation));
-		return expectation;
+		return (expectation);
 
 	}, num_params);
 
@@ -229,7 +231,7 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 		if(gate.param->name != "")
 			initial_params.push_back(gate.param->value);
 
-	OptResult result = optimizer->optimize(f, initial_params, 10e-6,max_iters);
+	OptResult result = optimizer->optimize(f, initial_params, 10e-6, max_iters);
 	double finalCost = result.first;
 	std::string opt_config;
 

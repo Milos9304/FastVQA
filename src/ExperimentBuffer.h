@@ -17,6 +17,7 @@ public:
    double hit_rate;
 
    std::vector<double> intermediateEnergies;
+   std::vector<double> intermediateGroundStateOverlaps;
 };
 
 #endif /* SRC_EXPERIMENT_BUFFER_H_ */

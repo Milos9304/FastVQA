@@ -212,7 +212,7 @@ int main(int ac, char** av){
 		int counter = 0;
 		int prev_lattice_id=-1;
 
-		int skip[25] = {6, 17, 27, 32, 35, 40, 43, 44, 51, 59, 61, 65, 66, 70, 77, 82, 85, 87, 100, 112, 117, 122, 124, 125, 127};
+		//int skip[25] = {6, 17, 27, 32, 35, 40, 43, 44, 51, 59, 61, 65, 66, 70, 77, 82, 85, 87, 100, 112, 117, 122, 124, 125, 127};
 
 		for(auto &lattice_abs : lattices){
 
@@ -224,17 +224,17 @@ int main(int ac, char** av){
 
 			logi("Running " + lattice_abs->name);
 
-			/*if(counter < 2){
+			/*if(counter < 5){
 				counter++;
 				continue;
-			}else if(counter > 2)
+			}else if(counter > 5)
 				break;*/
 
 			bool excluded = false;
-			for(int i = 0; i < 25; ++i){
+			/*for(int i = 0; i < 25; ++i){
 				if(counter == skip[i])
 					excluded = true;
-			}
+			}*/
 
 			if(excluded){
 				logw("Excluded");
@@ -299,17 +299,21 @@ int main(int ac, char** av){
 				//if(!passed)
 				//	throw;
 
-				std::ofstream output_file("../experiment_files/r_"+to_string_with_precision(initial_alpha->value(),3)+"/statsfile_"+lattice->name+".txt");
+				std::ofstream output_file("../experiment_files/rank_"+std::to_string(current_lattice->r)+"/statsfile_"+lattice->name+".txt");
 				output_file << fixed << showpoint;
 				output_file << setprecision(10);
 
-				std::ostream_iterator<double> output_iterator(output_file, "\n");
-				std::copy(buffer.intermediateEnergies.begin(), buffer.intermediateEnergies.end(), output_iterator);
+				//std::ostream_iterator<double> output_iterator(output_file, "\n");
+				//std::copy(buffer.intermediateEnergies.begin(), buffer.intermediateEnergies.end(), output_iterator);
+				for(int i = 0; i < buffer.intermediateEnergies.size(); ++i){
+					output_file << buffer.intermediateEnergies[i] << " " << buffer.intermediateGroundStateOverlaps[i] << std::endl;
+				}
 
 				output_file << buffer.opt_val << " " << buffer.hit_rate << " ";
 				for(auto &x:x_vect)
 					output_file << x << " ";
 
+				output_file.close();
 
 			}else{
 				throw;

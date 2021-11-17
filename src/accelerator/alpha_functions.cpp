@@ -13,7 +13,7 @@ AlphaFunction Accelerator::alpha_linear_f = [](double init_val, double final_val
 		return init_val+((double)j/max_iters)*(final_val-init_val);
 	}
 	/*if(iter_i < max_iters)
-		return init_val+((double)iter_i/max_iters)*(final_val-init_val);*/;
+		return init_val+((double)iter_i/max_iters)*(final_val-init_val);*/
 
 	return final_val;
 };

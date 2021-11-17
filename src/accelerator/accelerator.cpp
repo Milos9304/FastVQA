@@ -201,7 +201,7 @@ void Accelerator::set_ansatz(Ansatz* ansatz){
 
 }
 
-double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int iteration_i){
+double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int iteration_i, double* ground_state_overlap_out){
 
 	int x_size = x.size();
 	if(env.numRanks > 1){
@@ -219,6 +219,12 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 	initZeroState(qureg);
 	run(ansatz.circuit, x);
+
+	long long int ground_index = ref_hamil_energies[0].second;
+	if(ref_hamil_energies[0].first == 0)
+		loge("Zero not excluded properly!");
+
+	*ground_state_overlap_out = qureg.stateVec.real[ground_index]*qureg.stateVec.real[ground_index]+qureg.stateVec.imag[ground_index]*qureg.stateVec.imag[ground_index];
 
 	/*qureg.stateVec.real[1<<zero_reference_state] = 0;
 	qureg.stateVec.imag[1<<zero_reference_state] = 0;
@@ -245,7 +251,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		logw("Check zero state index!");
 
 	double zero_state_amp = qureg.stateVec.real[zero_state_index]*qureg.stateVec.real[zero_state_index]+qureg.stateVec.imag[zero_state_index]*qureg.stateVec.imag[zero_state_index];
-	double zero_state_amp_per_elem = zero_state_amp / qureg.numAmpsPerChunk;
+	double zero_state_amp_per_elem = zero_state_amp / (qureg.numAmpsPerChunk-1);
 
 	double alpha = alpha_f(options.samples_cut_ratio, options.final_alpha, iteration_i, options.max_alpha_iters);
 	//loge(std::to_string(alpha));
@@ -263,12 +269,24 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		if(i >= ref_hamil_energies.size()){
 			loge("NOT ENOUGH REF ENERGIES STORED IN MEMORY.");
 		}
-		else
-			energy += ref_hamil_energies[i].first * amp;
-
+		else{
+			//loge(std::to_string(alpha));
+			//logw(std::to_string(ref_hamil_energies[i].first) + " * " + std::to_string((amp / alpha)));
+			energy += ref_hamil_energies[i].first * (amp / alpha);
+			//loge(std::to_string(amp / alpha));
+		}
 		i++;
+	}//std::cerr<<".";
+	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].first * (amp / alpha);
+	//loge(std::to_string(-((alpha_sum - alpha))*(amp / alpha)));
+
+	/*bool first=true;
+	while(i--){
+		std::cerr<<ref_hamil_energies[i].second<<" "<<ref_hamil_energies[i].first<<" p: "<<
+		(first?(1-(alpha_sum - alpha)):1) * ((zero_state_amp_per_elem + qureg.stateVec.real[ref_hamil_energies[i].second]*qureg.stateVec.real[ref_hamil_energies[i].second]+qureg.stateVec.imag[ref_hamil_energies[i].second]*qureg.stateVec.imag[ref_hamil_energies[i].second])/alpha)<<"\n";
+		first=false;
 	}
-	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].first * amp;
+	std::cerr<<"\n";*/
 
 	/*if(energy == 0){
 		std::cerr<<"." << i-1 << "\n";
@@ -276,7 +294,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		throw;
 	}*/
 
-	return energy / alpha ; //normalize
+	return energy/* / alpha*/ ; //normalize
 
 	//QUEST CODE
 		/*Complex localExpec = statevec_calcExpecDiagonalOpLocal(qureg, op);

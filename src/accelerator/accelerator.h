@@ -51,7 +51,7 @@ public:
 	void initialize(Hamiltonian* hamiltonian);
 	void finalize();
 
-	double calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int iteration_i);
+	double calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int iteration_i, double* ground_state_overlap_out);
 	void finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<double> final_params, int nbSamples);
 
 	void set_ansatz(Ansatz* ansatz);
