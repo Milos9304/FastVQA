@@ -51,11 +51,6 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 	   logi(std::to_string(num_qubits) + " qubits");
    }
 
-   std::vector<double> initialParams;
-   //std::random_device rd;
-   std::mt19937 gen(1997); //rd() instead of 1997
-   std::uniform_real_distribution<> dis(-2.0, 2.0);
-
    if(vqeOptions->loadIntermediate){
 	   /*double expected_energy, sv_energy, hit_rate;
 	   bool success = loadProgress(vqeOptions->l_intermediateName, &initialParams, &expected_energy, &sv_energy, &hit_rate);
@@ -135,7 +130,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 
    	   	 logd("Before ansatz gen");
 
-   	   	 ansatz = getAnsatz("Ry_CNOT_all2all_Ry", num_qubits, 1997);
+   	   	 ansatz = getAnsatz(vqeOptions->ansatz_name, num_qubits, 1997);
    	   	 num_params = ansatz.num_params;
 
  	   	 logd("After ansatz gen");
@@ -227,9 +222,26 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 
 	std::vector<double> initial_params;
 
-	for(auto &gate : ansatz.circuit.gates)
-		if(gate.param->name != "")
-			initial_params.push_back(gate.param->value);
+	if(ansatz.circuit.qaoa_ansatz){
+
+		int p=1;
+
+		std::vector<double> initialParams;
+		//std::random_device rd;
+		std::mt19937 gen(1997); //rd() instead of 1997
+		std::uniform_real_distribution<> dis(-2.0, 2.0);
+
+
+		for(int i = 0; i < p; ++i){
+			initial_params.push_back(dis(gen));
+			initial_params.push_back(dis(gen));
+		}
+
+	}else{
+		for(auto &gate : ansatz.circuit.gates)
+			if(gate.param->name != "")
+				initial_params.push_back(gate.param->value);
+	}
 
 	OptResult result = optimizer->optimize(f, initial_params, 10e-6, max_iters);
 	double finalCost = result.first;

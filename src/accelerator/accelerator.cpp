@@ -202,7 +202,6 @@ void Accelerator::set_ansatz(Ansatz* ansatz){
 }
 
 double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int iteration_i, double* ground_state_overlap_out){
-
 	int x_size = x.size();
 	if(env.numRanks > 1){
 		loge("UNIMPLEMENTED");
@@ -217,8 +216,25 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 	MPI_Bcast(&x_copy[0], x_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-	initZeroState(qureg);
-	run(ansatz.circuit, x);
+	if(ansatz.circuit.qaoa_ansatz){
+
+		int p=1;
+
+		if(x.size() != p*2){
+			loge("Wrong number of parameters");
+		}
+
+		initPlusState(qureg);
+
+		for(int i = 0; i < p; ++i){
+			applyTrotterCircuit(qureg, hamiltonian,	x[0], 1, 1);
+			multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, x[1]);
+		}
+
+	}else{
+		initZeroState(qureg);
+		run(ansatz.circuit, x);
+	}
 
 	long long int ground_index = ref_hamil_energies[0].second;
 	if(ref_hamil_energies[0].first == 0)
@@ -323,6 +339,14 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 
 	int num_qubits = hamIn->nbQubits;
 
+	qubits_list = new int[num_qubits]();
+	all_x_list = new pauliOpType[num_qubits]();
+
+	for(int i = 0; i < num_qubits; ++i){
+		qubits_list[i]=i;
+		all_x_list[i]=PAULI_X;
+	}
+
 	logd("Initializing " + std::to_string(num_qubits) + " qubits");
 
 	for(int i = 1; i < env.numRanks; ++i){
@@ -386,8 +410,6 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)
 		//	break;
 	}
-
-
 }
 
 void Accelerator::run_vqe_slave_process(){
@@ -464,6 +486,26 @@ void Accelerator::run_vqe_slave_process(){
 
 			std::vector<double> x(value);
 			MPI_Bcast(&x[0], value, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+			/*if(ansatz.circuit.qaoa_ansatz){
+
+				int p=1;
+
+				if(x.size() != p*2){
+					loge("Wrong number of parameters");
+				}
+
+
+
+				initPlusState(qureg);
+				loge("Plus state initialized");
+
+				for(int i = 0; i < p; ++i){
+
+				}
+
+			}else*/
+			loge("MPI not supported. throw");throw;
 
 			initZeroState(qureg);
 			run(ansatz.circuit, x);

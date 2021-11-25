@@ -10,6 +10,10 @@ void Accelerator::apply_gate(Gate gate, double param){
 	std::string message;
 
 	switch(gate.code){
+	case Gate::g_H:
+		logdd("H " + std::to_string(gate.qubit1));
+		hadamard(qureg, gate.qubit1);
+		break;
 	case Gate::g_Ry:
 		logdd("Ry " + std::to_string(gate.qubit1) + " @ " + std::to_string(param));
 		rotateY(qureg, gate.qubit1, param);

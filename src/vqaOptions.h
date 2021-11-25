@@ -38,6 +38,8 @@ class VQAOptions{
 		//bool extendedParametrizedMode = false;
 		bool simplifiedSimulation = true;
 
+		std::string ansatz_name = "Ry_CNOT_all2all_Ry";
+
 		bool saveIntermediate = false;
 		std::string s_intermediateName="";
 		bool loadIntermediate = false;

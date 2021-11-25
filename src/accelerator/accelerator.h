@@ -61,6 +61,8 @@ public:
 private:
 
 	Qureg qureg;
+	int *qubits_list;
+	pauliOpType* all_x_list;
 
 	PauliHamil hamiltonian;
 	RefEnergies ref_hamil_energies;

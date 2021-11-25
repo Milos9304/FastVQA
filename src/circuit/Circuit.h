@@ -16,6 +16,9 @@ typedef std::vector<std::string> Parameters;
 class Circuit{
 
 public:
+
+	bool qaoa_ansatz = false;
+
 	Circuit(){}
 
 	void addGate(GateCode code, int qubit1);

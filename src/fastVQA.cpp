@@ -68,6 +68,7 @@ int main(int ac, char** av){
 		auto help_option     = op.add<Switch>("h", "help", "produce help message");
 		auto qaoa 		     = op.add<Switch>("", "qaoa", "run qaoa algorithm");
 		auto vqe 		     = op.add<Switch>("", "vqe", "run vqe algorithm");
+		auto ansatz_name     = op.add<Value<std::string>>("a", "ansatz","Ry_CNOT_all2all_Ry/qaoa/EfficientSU2", "Ry_CNOT_all2all_Ry");
 		auto seed_option 	 = op.add<Value<int>>("", "seed", "seed for the experiments", seed);
 		//auto enumeration     = op.add<Switch>("", "enum", "enumerate all qubo configurations");
 		auto config 	     = op.add<Value<std::string>>("", "config", "config file location", "");
@@ -187,6 +188,7 @@ int main(int ac, char** av){
 		vqaOptions->nbSamples_calcVarAssignment = nbSamples->value();
 		vqaOptions->save_ansatz = save_ansatz->is_set();
 		vqaOptions->load_ansatz = load_ansatz->is_set();
+		vqaOptions->ansatz_name = ansatz_name->value();
 
 		logd("VQAOptions set");
 
@@ -299,7 +301,7 @@ int main(int ac, char** av){
 				//if(!passed)
 				//	throw;
 
-				std::ofstream output_file("../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/statsfile_"+lattice->name+".txt");
+				std::ofstream output_file("../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/statsfile_qaoa_"+lattice->name+".txt");
 				output_file << fixed << showpoint;
 				output_file << setprecision(10);
 
