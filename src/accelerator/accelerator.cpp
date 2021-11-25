@@ -218,17 +218,17 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 	if(ansatz.circuit.qaoa_ansatz){
 
-		int p=1;
-
-		if(x.size() != p*2){
+		if(x.size() != ansatz.num_params){
 			loge("Wrong number of parameters");
 		}
+
+		int p = ansatz.num_params/2;
 
 		initPlusState(qureg);
 
 		for(int i = 0; i < p; ++i){
-			applyTrotterCircuit(qureg, hamiltonian,	x[0], 1, 1);
-			multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, x[1]);
+			applyTrotterCircuit(qureg, hamiltonian,	x[2*i], 1, 1);
+			multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, x[2*i+1]);
 		}
 
 	}else{
@@ -396,9 +396,12 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 
 		if(index == options.zero_reference_state){
 			//logw("Zero excluded with counter " + std::to_string(counter) + " where E(0) = " + std::to_string(hamDiag.real[index]));
-			if(hamDiag.real[index]!=0)
-				loge("Excluded something else than zero ground state!");
-			continue;
+			if(hamDiag.real[index]!=0){
+				loge("Tried to exclude something else than zero ground state! Did you run qaoa?");
+			}
+			else{
+				continue;
+			}
 		}counter++;
 
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));

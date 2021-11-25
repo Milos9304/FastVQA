@@ -222,29 +222,41 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 
 	std::vector<double> initial_params;
 
-	if(ansatz.circuit.qaoa_ansatz){
+	OptResult result;
 
-		int p=1;
+	if(ansatz.circuit.qaoa_ansatz){
 
 		std::vector<double> initialParams;
 		//std::random_device rd;
 		std::mt19937 gen(1997); //rd() instead of 1997
-		std::uniform_real_distribution<> dis(-2.0, 2.0);
+		std::uniform_real_distribution<> dis(0, 2*3.141592654);
 
-
-		for(int i = 0; i < p; ++i){
+		for(int i = 0; i < ansatz.num_params/2; ++i){
 			initial_params.push_back(dis(gen));
 			initial_params.push_back(dis(gen));
 		}
 
+		std::vector<double> lowerBounds(initial_params.size(), 0);
+		std::vector<double> upperBounds(initial_params.size(), 2*3.141592654);
+
+		result = optimizer->optimize(f, initial_params, 10e-6, max_iters, lowerBounds, upperBounds);
+
 	}else{
+
 		for(auto &gate : ansatz.circuit.gates)
 			if(gate.param->name != "")
 				initial_params.push_back(gate.param->value);
+
+		std::vector<double> lowerBounds(initial_params.size(), -3.141592654);
+		std::vector<double> upperBounds(initial_params.size(),  3.141592654);
+
+		logw("are these really good ones?");
+
+		result = optimizer->optimize(f, initial_params, 10e-6, max_iters, lowerBounds, upperBounds);
 	}
 
-	OptResult result = optimizer->optimize(f, initial_params, 10e-6, max_iters);
 	double finalCost = result.first;
+
 	std::string opt_config;
 
 	/*VQEOptimalConfigEvaluator::evaluate(

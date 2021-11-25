@@ -50,7 +50,7 @@ const bool NLOptimizer::isGradientBased() const {
   }
 }
 
-OptResult NLOptimizer::optimize(OptFunction &function, std::vector<double> x, double tol, int maxeval) {
+OptResult NLOptimizer::optimize(OptFunction &function, std::vector<double> x, double tol, int maxeval, std::vector<double> lowerBounds, std::vector<double> upperBounds) {
 
   auto dim = function.dimensions();
   nlopt::algorithm algo = nlopt::algorithm::LN_COBYLA;
@@ -95,7 +95,7 @@ OptResult NLOptimizer::optimize(OptFunction &function, std::vector<double> x, do
     _opt.set_min_objective(c_wrapper, d);
   }
   // Default lower bounds
-  std::vector<double> lowerBounds(dim, -3.1415926);
+  //std::vector<double> lowerBounds(dim, -3.1415926);
   /*if (options.keyExists<std::vector<double>>("lower-bounds")) {
     lowerBounds = options.get<std::vector<double>>("lower-bounds");
   }
@@ -104,7 +104,7 @@ OptResult NLOptimizer::optimize(OptFunction &function, std::vector<double> x, do
   }*/
 
   // Default upper bounds
-  std::vector<double> upperBounds(dim, 3.1415926);
+  //std::vector<double> upperBounds(dim, 3.1415926);
   /*if (options.keyExists<std::vector<double>>("upper-bounds")) {
     upperBounds = options.get<std::vector<double>>("upper-bounds");
   }
