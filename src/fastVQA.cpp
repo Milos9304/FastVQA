@@ -128,7 +128,7 @@ int main(int ac, char** av){
 
 			loge("Gaussian heuristics not implemented for low rank matrices. Returning 1.");
 
-			SolutionDataset solutionDataset = run_paper_exp(11, 10, 180);
+			SolutionDataset solutionDataset = run_paper_exp(16, 10, 180);
 			std::pair<std::vector<MatrixInt>, std::vector<Solution>> dataset = solutionDataset.getMatricexAndDataset();
 			std::vector<MatrixInt> matrices = std::get<0>(dataset);
 			std::vector<Solution> solutions = std::get<1>(dataset);
@@ -299,7 +299,7 @@ int main(int ac, char** av){
 				//if(!passed)
 				//	throw;
 
-				std::ofstream output_file("../experiment_files/rank_"+std::to_string(current_lattice->r)+"/statsfile_"+lattice->name+".txt");
+				std::ofstream output_file("../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/statsfile_"+lattice->name+".txt");
 				output_file << fixed << showpoint;
 				output_file << setprecision(10);
 

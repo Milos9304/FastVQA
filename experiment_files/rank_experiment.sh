@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for f in rank_*; do
+for f in rank_2*; do
     if [ -d "$f" ]; then
     # $f is a directory
        rank=${f#rank_*}
