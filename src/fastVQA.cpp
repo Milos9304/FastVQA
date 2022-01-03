@@ -148,7 +148,7 @@ int main(int ac, char** av){
 				if(rank_reduce->value() == 0)
 					i++;
 				else
-					i+=solutionDataset.num_ranks-1;
+					i+=solutionDataset.num_ranks;
 
 				//logw("Loading only one lattice");
 				//break;
@@ -244,6 +244,16 @@ int main(int ac, char** av){
 
 			Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 
+			std::string statsfile="../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/statsfile_"+lattice->name+".txt";
+			ifstream ifile;
+			ifile.open(statsfile);
+			if(ifile){
+				logw(statsfile + " exists");
+				counter++;
+				continue;
+			}
+			ifile.close();
+
 			if(qaoa->is_set()){
 
 			}else if(vqe->is_set()){
@@ -299,7 +309,7 @@ int main(int ac, char** av){
 				//if(!passed)
 				//	throw;
 
-				std::ofstream output_file("../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/statsfile_"+lattice->name+".txt");
+				std::ofstream output_file(statsfile);
 				output_file << fixed << showpoint;
 				output_file << setprecision(10);
 
