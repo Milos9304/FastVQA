@@ -129,7 +129,7 @@ int main(int ac, char** av){
 
 			loge("Gaussian heuristics not implemented for low rank matrices. Returning 1.");
 
-			SolutionDataset solutionDataset = run_paper_exp(16, 10, 180);
+			SolutionDataset solutionDataset = run_paper_exp(/*16*/6, /*10*/3, 180);
 			std::pair<std::vector<MatrixInt>, std::vector<Solution>> dataset = solutionDataset.getMatricexAndDataset();
 			std::vector<MatrixInt> matrices = std::get<0>(dataset);
 			std::vector<Solution> solutions = std::get<1>(dataset);
@@ -204,7 +204,7 @@ int main(int ac, char** av){
 		mapOptions->verbose = debug->is_set();
 		mapOptions->num_qbits_per_x=qubits_per_x->value();
 		mapOptions->penalty=overlap_penalty->value();
-		if(overlap_trick->is_set() || overlap_penalty->value() == 0)
+		if(ansatz_name->value()!="qaoa" && (overlap_trick->is_set() || overlap_penalty->value() == 0))
 			mapOptions->pen_mode = MapOptions::no_hml_penalization;
 		else
 			mapOptions->pen_mode = MapOptions::penalty_all;
