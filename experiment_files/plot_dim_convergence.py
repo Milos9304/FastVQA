@@ -79,11 +79,11 @@ for dim in dims:
 means=np.array(means)
 stds=np.array(stds)
 
-print(means)
-print(stds)
-
 plt.errorbar(dims, means, stds, ls='--', capsize=2)
 #plt.fill_between(dims, means-stds, means+stds, alpha=.1)
 plt.fill_between(dims, low_bounds, high_bounds, alpha=.1)
 #plt.ylim((0,1))
+plt.title("Convergence time")
+plt.xlabel("Rank")
+plt.ylabel("Time = number of iterations until convergence")
 plt.show()
