@@ -1,0 +1,418 @@
+[[2022-01-18 15:05:32]][DEBUG] Using seed 1997
+[[2022-01-18 15:05:32]][WARNING] Setting accelerator ratio to 1.000000
+[[2022-01-18 15:05:32]][ERROR] This won't work for distributed. Change code!
+[[2022-01-18 15:05:32]][ERROR] Gaussian heuristics not implemented for low rank matrices. Returning 1.
+0_21 1_21 2_21 3_21 4_21 5_21 6_21 7_21 8_21 9_21 10_21 11_21 12_21 13_21 14_21 15_21 16_21 17_21 18_21 19_21 20_21 21_21 22_21 23_21 24_21 25_21 26_21 27_21 28_21 29_21 30_21 31_21 32_21 33_21 34_21 35_21 36_21 37_21 38_21 39_21 40_21 41_21 42_21 43_21 44_21 45_21 46_21 47_21 48_21 49_21 50_21 51_21 52_21 53_21 54_21 55_21 56_21 57_21 58_21 59_21 60_21 61_21 62_21 63_21 64_21 65_21 66_21 67_21 68_21 69_21 70_21 71_21 72_21 73_21 74_21 75_21 76_21 77_21 78_21 79_21 80_21 81_21 82_21 83_21 84_21 85_21 86_21 87_21 88_21 89_21 90_21 91_21 92_21 93_21 94_21 95_21 96_21 97_21 98_21 99_21 100_21 101_21 102_21 103_21 104_21 105_21 106_21 107_21 108_21 109_21 110_21 111_21 112_21 113_21 114_21 115_21 116_21 117_21 118_21 119_21 120_21 121_21 122_21 123_21 124_21 125_21 126_21 127_21 
+[[2022-01-18 15:05:33]][DEBUG] Accelerator partial not yet returned
+ERROR: Trying to initialize QuESTEnv multiple times. Ignoring...
+[[2022-01-18 15:05:33]][DEBUG] Accelerator partial returned
+[[2022-01-18 15:05:33]][DEBUG] VQAOptions set
+[[2022-01-18 15:05:33]][WARNING] no hml penalization
+[[2022-01-18 15:05:33]][INFO] Running 0_21
+[[2022-01-18 15:05:33]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_0_21.txt
+[[2022-01-18 15:05:33]][WARNING] calc gso
+[[2022-01-18 15:05:33]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:05:33]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:05:33]][ERROR] kokot
+[[2022-01-18 15:05:33]][DEBUG] Executing qaoa
+[[2022-01-18 15:05:33]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:05:33]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:05:42]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 111254450.000000
+Final opt-config: 000000000000010000000
+Final hit-rate: 0.000001
+[[2022-01-18 15:05:49]][DEBUG] Destroying qureg
+[[2022-01-18 15:05:49]][DEBUG] Vqe execution done
+Min QUBO: 111254450.000000
+[[2022-01-18 15:05:49]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:05:49]][WARNING] Double check: 111254450 passed: TRUE
+[[2022-01-18 15:05:49]][INFO] Running 1_21
+[[2022-01-18 15:05:49]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_1_21.txt
+[[2022-01-18 15:05:49]][WARNING] calc gso
+[[2022-01-18 15:05:49]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:05:49]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:05:49]][ERROR] kokot
+[[2022-01-18 15:05:49]][DEBUG] Executing qaoa
+[[2022-01-18 15:05:49]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:05:49]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:05:58]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 105659793.000000
+Final opt-config: 010000000000000000000
+Final hit-rate: 0.000001
+[[2022-01-18 15:06:58]][DEBUG] Destroying qureg
+[[2022-01-18 15:06:58]][DEBUG] Vqe execution done
+Min QUBO: 105659793.000000
+[[2022-01-18 15:06:58]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 
+[[2022-01-18 15:06:58]][WARNING] Double check: 105659793 passed: TRUE
+[[2022-01-18 15:06:58]][INFO] Running 2_21
+[[2022-01-18 15:06:58]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_2_21.txt
+[[2022-01-18 15:06:58]][WARNING] calc gso
+[[2022-01-18 15:06:58]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:06:58]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:06:58]][ERROR] kokot
+[[2022-01-18 15:06:58]][DEBUG] Executing qaoa
+[[2022-01-18 15:06:58]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:06:58]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:07:09]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 103079913.000000
+Final opt-config: 000000010000000000000
+Final hit-rate: 0.000000
+[[2022-01-18 15:07:26]][DEBUG] Destroying qureg
+[[2022-01-18 15:07:26]][DEBUG] Vqe execution done
+Min QUBO: 103079913.000000
+[[2022-01-18 15:07:26]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 
+[[2022-01-18 15:07:26]][WARNING] Double check: 103079913 passed: TRUE
+[[2022-01-18 15:07:26]][INFO] Running 3_21
+[[2022-01-18 15:07:26]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_3_21.txt
+[[2022-01-18 15:07:26]][WARNING] calc gso
+[[2022-01-18 15:07:26]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:07:26]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:07:26]][ERROR] kokot
+[[2022-01-18 15:07:26]][DEBUG] Executing qaoa
+[[2022-01-18 15:07:26]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:07:26]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:07:34]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 114304328.000000
+Final opt-config: 000000000000000000001
+Final hit-rate: 0.000001
+[[2022-01-18 15:07:41]][DEBUG] Destroying qureg
+[[2022-01-18 15:07:41]][DEBUG] Vqe execution done
+Min QUBO: 114304328.000000
+[[2022-01-18 15:07:41]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:07:41]][WARNING] Double check: 114304328 passed: TRUE
+[[2022-01-18 15:07:41]][INFO] Running 4_21
+[[2022-01-18 15:07:41]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_4_21.txt
+[[2022-01-18 15:07:41]][WARNING] calc gso
+[[2022-01-18 15:07:41]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:07:41]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:07:41]][ERROR] kokot
+[[2022-01-18 15:07:41]][DEBUG] Executing qaoa
+[[2022-01-18 15:07:41]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:07:41]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:07:49]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 125827931.000000
+Final opt-config: 000000000000000000001
+Final hit-rate: 0.000000
+[[2022-01-18 15:08:08]][DEBUG] Destroying qureg
+[[2022-01-18 15:08:08]][DEBUG] Vqe execution done
+Min QUBO: 125827931.000000
+[[2022-01-18 15:08:08]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:08:08]][WARNING] Double check: 125827931 passed: TRUE
+[[2022-01-18 15:08:08]][INFO] Running 5_21
+[[2022-01-18 15:08:08]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_5_21.txt
+[[2022-01-18 15:08:08]][WARNING] calc gso
+[[2022-01-18 15:08:08]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:08:08]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:08:08]][ERROR] kokot
+[[2022-01-18 15:08:08]][DEBUG] Executing qaoa
+[[2022-01-18 15:08:08]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:08:08]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:08:17]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 97489831.000000
+Final opt-config: 000000000110001000001
+Final hit-rate: 0.000000
+[[2022-01-18 15:08:29]][DEBUG] Destroying qureg
+[[2022-01-18 15:08:29]][DEBUG] Vqe execution done
+Min QUBO: 97489831.000000
+[[2022-01-18 15:08:29]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 1 0 0 0 1 1 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:08:29]][WARNING] Double check: 97489831 passed: TRUE
+[[2022-01-18 15:08:29]][INFO] Running 6_21
+[[2022-01-18 15:08:29]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_6_21.txt
+[[2022-01-18 15:08:29]][WARNING] calc gso
+[[2022-01-18 15:08:29]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:08:29]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:08:29]][ERROR] kokot
+[[2022-01-18 15:08:29]][DEBUG] Executing qaoa
+[[2022-01-18 15:08:29]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:08:29]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:08:37]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 146074051.000000
+Final opt-config: 000100000000000000000
+Final hit-rate: 0.000000
+[[2022-01-18 15:08:45]][DEBUG] Destroying qureg
+[[2022-01-18 15:08:45]][DEBUG] Vqe execution done
+Min QUBO: 146074051.000000
+[[2022-01-18 15:08:45]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 
+[[2022-01-18 15:08:45]][WARNING] Double check: 146074051 passed: TRUE
+[[2022-01-18 15:08:45]][INFO] Running 7_21
+[[2022-01-18 15:08:45]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_7_21.txt
+[[2022-01-18 15:08:45]][WARNING] calc gso
+[[2022-01-18 15:08:45]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:08:45]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:08:45]][ERROR] kokot
+[[2022-01-18 15:08:45]][DEBUG] Executing qaoa
+[[2022-01-18 15:08:45]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:08:45]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:08:55]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 104159034.000000
+Final opt-config: 000000000000000000001
+Final hit-rate: 0.000001
+[[2022-01-18 15:09:06]][DEBUG] Destroying qureg
+[[2022-01-18 15:09:06]][DEBUG] Vqe execution done
+Min QUBO: 104159034.000000
+[[2022-01-18 15:09:06]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:09:06]][WARNING] Double check: 104159034 passed: TRUE
+[[2022-01-18 15:09:06]][INFO] Running 8_21
+[[2022-01-18 15:09:06]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_8_21.txt
+[[2022-01-18 15:09:06]][WARNING] calc gso
+[[2022-01-18 15:09:06]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:09:06]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:09:06]][ERROR] kokot
+[[2022-01-18 15:09:06]][DEBUG] Executing qaoa
+[[2022-01-18 15:09:06]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:09:06]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:09:15]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 92587916.000000
+Final opt-config: 010000000000000000000
+Final hit-rate: 0.000000
+[[2022-01-18 15:09:32]][DEBUG] Destroying qureg
+[[2022-01-18 15:09:32]][DEBUG] Vqe execution done
+Min QUBO: 92587916.000000
+[[2022-01-18 15:09:32]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 
+[[2022-01-18 15:09:32]][WARNING] Double check: 92587916 passed: TRUE
+[[2022-01-18 15:09:32]][INFO] Running 9_21
+[[2022-01-18 15:09:32]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_9_21.txt
+[[2022-01-18 15:09:32]][WARNING] calc gso
+[[2022-01-18 15:09:32]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:09:32]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:09:32]][ERROR] kokot
+[[2022-01-18 15:09:32]][DEBUG] Executing qaoa
+[[2022-01-18 15:09:32]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:09:32]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:09:41]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 101904368.000000
+Final opt-config: 000000000001000000000
+Final hit-rate: 0.000001
+[[2022-01-18 15:09:57]][DEBUG] Destroying qureg
+[[2022-01-18 15:09:57]][DEBUG] Vqe execution done
+Min QUBO: 101904368.000000
+[[2022-01-18 15:09:57]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:09:57]][WARNING] Double check: 101904368 passed: TRUE
+[[2022-01-18 15:09:57]][INFO] Running 10_21
+[[2022-01-18 15:09:57]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_10_21.txt
+[[2022-01-18 15:09:57]][WARNING] calc gso
+[[2022-01-18 15:09:57]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:09:57]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:09:57]][ERROR] kokot
+[[2022-01-18 15:09:57]][DEBUG] Executing qaoa
+[[2022-01-18 15:09:57]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:09:57]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:10:07]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 97621325.000000
+Final opt-config: 000000000000000000001
+Final hit-rate: 0.000000
+[[2022-01-18 15:10:15]][DEBUG] Destroying qureg
+[[2022-01-18 15:10:15]][DEBUG] Vqe execution done
+Min QUBO: 97621325.000000
+[[2022-01-18 15:10:15]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:10:15]][WARNING] Double check: 97621325 passed: TRUE
+[[2022-01-18 15:10:15]][INFO] Running 11_21
+[[2022-01-18 15:10:15]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_11_21.txt
+[[2022-01-18 15:10:15]][WARNING] calc gso
+[[2022-01-18 15:10:15]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:10:15]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:10:15]][ERROR] kokot
+[[2022-01-18 15:10:15]][DEBUG] Executing qaoa
+[[2022-01-18 15:10:15]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:10:15]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:10:24]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 82435936.000000
+Final opt-config: 000000000000000000001
+Final hit-rate: 0.000001
+[[2022-01-18 15:10:44]][DEBUG] Destroying qureg
+[[2022-01-18 15:10:44]][DEBUG] Vqe execution done
+Min QUBO: 82435936.000000
+[[2022-01-18 15:10:44]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:10:44]][WARNING] Double check: 82435936 passed: TRUE
+[[2022-01-18 15:10:44]][INFO] Running 12_21
+[[2022-01-18 15:10:44]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_12_21.txt
+[[2022-01-18 15:10:44]][WARNING] calc gso
+[[2022-01-18 15:10:44]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:10:44]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:10:44]][ERROR] kokot
+[[2022-01-18 15:10:44]][DEBUG] Executing qaoa
+[[2022-01-18 15:10:44]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:10:44]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:10:52]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 113939477.000000
+Final opt-config: 001000000000000000000
+Final hit-rate: 0.000001
+[[2022-01-18 15:11:03]][DEBUG] Destroying qureg
+[[2022-01-18 15:11:03]][DEBUG] Vqe execution done
+Min QUBO: 113939477.000000
+[[2022-01-18 15:11:03]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 
+[[2022-01-18 15:11:03]][WARNING] Double check: 113939477 passed: TRUE
+[[2022-01-18 15:11:03]][INFO] Running 13_21
+[[2022-01-18 15:11:03]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_13_21.txt
+[[2022-01-18 15:11:03]][WARNING] calc gso
+[[2022-01-18 15:11:03]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:11:03]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:11:03]][ERROR] kokot
+[[2022-01-18 15:11:03]][DEBUG] Executing qaoa
+[[2022-01-18 15:11:03]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:11:03]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:11:13]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 129461176.000000
+Final opt-config: 000100000000000000000
+Final hit-rate: 0.000001
+[[2022-01-18 15:11:21]][DEBUG] Destroying qureg
+[[2022-01-18 15:11:21]][DEBUG] Vqe execution done
+Min QUBO: 129461176.000000
+[[2022-01-18 15:11:21]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 
+[[2022-01-18 15:11:21]][WARNING] Double check: 129461176 passed: TRUE
+[[2022-01-18 15:11:21]][INFO] Running 14_21
+[[2022-01-18 15:11:21]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_14_21.txt
+[[2022-01-18 15:11:21]][WARNING] calc gso
+[[2022-01-18 15:11:21]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:11:21]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:11:21]][ERROR] kokot
+[[2022-01-18 15:11:21]][DEBUG] Executing qaoa
+[[2022-01-18 15:11:21]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:11:21]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:11:31]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 74448188.000000
+Final opt-config: 000000000000000000001
+Final hit-rate: 0.000001
+[[2022-01-18 15:11:42]][DEBUG] Destroying qureg
+[[2022-01-18 15:11:42]][DEBUG] Vqe execution done
+Min QUBO: 74448188.000000
+[[2022-01-18 15:11:42]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:11:42]][WARNING] Double check: 74448188 passed: TRUE
+[[2022-01-18 15:11:42]][INFO] Running 15_21
+[[2022-01-18 15:11:42]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_15_21.txt
+[[2022-01-18 15:11:42]][WARNING] calc gso
+[[2022-01-18 15:11:42]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:11:42]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:11:42]][ERROR] kokot
+[[2022-01-18 15:11:42]][DEBUG] Executing qaoa
+[[2022-01-18 15:11:42]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:11:42]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:11:51]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 78262770.000000
+Final opt-config: 000000000000000000001
+Final hit-rate: 0.000001
+[[2022-01-18 15:12:29]][DEBUG] Destroying qureg
+[[2022-01-18 15:12:29]][DEBUG] Vqe execution done
+Min QUBO: 78262770.000000
+[[2022-01-18 15:12:29]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:12:29]][WARNING] Double check: 78262770 passed: TRUE
+[[2022-01-18 15:12:29]][INFO] Running 16_21
+[[2022-01-18 15:12:29]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_16_21.txt
+[[2022-01-18 15:12:29]][WARNING] calc gso
+[[2022-01-18 15:12:29]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:12:29]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:12:29]][ERROR] kokot
+[[2022-01-18 15:12:29]][DEBUG] Executing qaoa
+[[2022-01-18 15:12:29]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:12:29]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:12:39]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 132184084.000000
+Final opt-config: 000000100000000000000
+Final hit-rate: 0.000000
+[[2022-01-18 15:12:49]][DEBUG] Destroying qureg
+[[2022-01-18 15:12:49]][DEBUG] Vqe execution done
+Min QUBO: 132184084.000000
+[[2022-01-18 15:12:49]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 
+[[2022-01-18 15:12:49]][WARNING] Double check: 132184084 passed: TRUE
+[[2022-01-18 15:12:49]][INFO] Running 17_21
+[[2022-01-18 15:12:49]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_17_21.txt
+[[2022-01-18 15:12:49]][WARNING] calc gso
+[[2022-01-18 15:12:49]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:12:49]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:12:49]][ERROR] kokot
+[[2022-01-18 15:12:49]][DEBUG] Executing qaoa
+[[2022-01-18 15:12:49]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:12:49]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:12:59]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 115978293.000000
+Final opt-config: 000100000000000000000
+Final hit-rate: 0.000000
+[[2022-01-18 15:13:13]][DEBUG] Destroying qureg
+[[2022-01-18 15:13:13]][DEBUG] Vqe execution done
+Min QUBO: 115978293.000000
+[[2022-01-18 15:13:13]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 
+[[2022-01-18 15:13:13]][WARNING] Double check: 115978293 passed: TRUE
+[[2022-01-18 15:13:13]][INFO] Running 18_21
+[[2022-01-18 15:13:13]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_18_21.txt
+[[2022-01-18 15:13:13]][WARNING] calc gso
+[[2022-01-18 15:13:13]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:13:13]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:13:13]][ERROR] kokot
+[[2022-01-18 15:13:13]][DEBUG] Executing qaoa
+[[2022-01-18 15:13:13]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:13:13]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:13:22]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 148983431.000000
+Final opt-config: 000000000000000000001
+Final hit-rate: 0.000000
+[[2022-01-18 15:13:34]][DEBUG] Destroying qureg
+[[2022-01-18 15:13:34]][DEBUG] Vqe execution done
+Min QUBO: 148983431.000000
+[[2022-01-18 15:13:34]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:13:34]][WARNING] Double check: 148983431 passed: TRUE
+[[2022-01-18 15:13:34]][INFO] Running 19_21
+[[2022-01-18 15:13:34]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_19_21.txt
+[[2022-01-18 15:13:34]][WARNING] calc gso
+[[2022-01-18 15:13:34]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:13:34]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:13:34]][ERROR] kokot
+[[2022-01-18 15:13:34]][DEBUG] Executing qaoa
+[[2022-01-18 15:13:34]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:13:34]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:13:42]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 202737755.000000
+Final opt-config: 000000000000000000001
+Final hit-rate: 0.000000
+[[2022-01-18 15:14:20]][DEBUG] Destroying qureg
+[[2022-01-18 15:14:20]][DEBUG] Vqe execution done
+Min QUBO: 202737755.000000
+[[2022-01-18 15:14:20]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:14:20]][WARNING] Double check: 202737755 passed: TRUE
+[[2022-01-18 15:14:20]][INFO] Running 20_21
+[[2022-01-18 15:14:20]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_20_21.txt
+[[2022-01-18 15:14:20]][WARNING] calc gso
+[[2022-01-18 15:14:20]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:14:20]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:14:20]][ERROR] kokot
+[[2022-01-18 15:14:20]][DEBUG] Executing qaoa
+[[2022-01-18 15:14:20]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:14:20]][DEBUG] Setting seed to 1997
+[[2022-01-18 15:14:30]][WARNING] f: Constant Alpha: 1.000000
+Final opt-val: 107602574.000000
+Final opt-config: 000000000000000000001
+Final hit-rate: 0.000000
+[[2022-01-18 15:14:38]][DEBUG] Destroying qureg
+[[2022-01-18 15:14:38]][DEBUG] Vqe execution done
+Min QUBO: 107602574.000000
+[[2022-01-18 15:14:38]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 15:14:38]][WARNING] Double check: 107602574 passed: TRUE
+[[2022-01-18 15:14:38]][INFO] Running 21_21
+[[2022-01-18 15:14:38]][ERROR] ../experiment_files/rank_21/qaoa_statsfile_21_21.txt
+[[2022-01-18 15:14:38]][WARNING] calc gso
+[[2022-01-18 15:14:38]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 15:14:38]][WARNING] Normalization is probably best solution
+[[2022-01-18 15:14:38]][ERROR] kokot
+[[2022-01-18 15:14:38]][DEBUG] Executing qaoa
+[[2022-01-18 15:14:38]][DEBUG] Initializing 21 qubits
+[[2022-01-18 15:14:38]][DEBUG] Setting seed to 1997

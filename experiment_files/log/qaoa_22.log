@@ -1,0 +1,396 @@
+[[2022-01-18 12:27:14]][DEBUG] Using seed 1997
+[[2022-01-18 12:27:14]][WARNING] Setting accelerator ratio to 1.000000
+[[2022-01-18 12:27:14]][ERROR] This won't work for distributed. Change code!
+[[2022-01-18 12:27:14]][ERROR] Gaussian heuristics not implemented for low rank matrices. Returning 1.
+[[2022-01-18 12:27:16]][WARNING] Invalid rank_reduce value. Will fetch the first matrix
+0_15 1_15 2_15 3_15 4_15 5_15 6_15 7_15 8_15 9_15 10_15 11_15 12_15 13_15 14_15 15_15 16_15 17_15 18_15 19_15 20_15 21_15 22_15 23_15 24_15 25_15 26_15 27_15 28_15 29_15 30_15 31_15 32_15 33_15 34_15 35_15 36_15 37_15 38_15 39_15 40_15 41_15 42_15 43_15 44_15 45_15 46_15 47_15 48_15 49_15 50_15 51_15 52_15 53_15 54_15 55_15 56_15 57_15 58_15 59_15 60_15 61_15 62_15 63_15 64_15 65_15 66_15 67_15 68_15 69_15 70_15 71_15 72_15 73_15 74_15 75_15 76_15 77_15 78_15 79_15 80_15 81_15 82_15 83_15 84_15 85_15 86_15 87_15 88_15 89_15 90_15 91_15 92_15 93_15 94_15 95_15 96_15 97_15 98_15 99_15 100_15 101_15 102_15 103_15 104_15 105_15 106_15 107_15 108_15 109_15 110_15 111_15 112_15 113_15 114_15 115_15 116_15 117_15 118_15 119_15 120_15 121_15 122_15 123_15 124_15 125_15 126_15 127_15 [[2022-01-18 12:27:16]][WARNING] Limiting to lower number of instances!
+
+[[2022-01-18 12:27:16]][DEBUG] Accelerator partial not yet returned
+ERROR: Trying to initialize QuESTEnv multiple times. Ignoring...
+[[2022-01-18 12:27:16]][DEBUG] Accelerator partial returned
+[[2022-01-18 12:27:16]][DEBUG] VQAOptions set
+[[2022-01-18 12:27:16]][WARNING] no hml penalization
+[[2022-01-18 12:27:16]][INFO] Running 0_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_0_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_0_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 1_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_1_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_1_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 2_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_2_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_2_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 3_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_3_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_3_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 4_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_4_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_4_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 5_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_5_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_5_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 6_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_6_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_6_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 7_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_7_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_7_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 8_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_8_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_8_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 9_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_9_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_9_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 10_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_10_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_10_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 11_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_11_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_11_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 12_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_12_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_12_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 13_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_13_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_13_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 14_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_14_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_14_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 15_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_15_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_15_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 16_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_16_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_16_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 17_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_17_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_17_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 18_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_18_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_18_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 19_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_19_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_19_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 20_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_20_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_20_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 21_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_21_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_21_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 22_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_22_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_22_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 23_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_23_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_23_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 24_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_24_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_24_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 25_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_25_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_25_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 26_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_26_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_26_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 27_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_27_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_27_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 28_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_28_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_28_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 29_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_29_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_29_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 30_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_30_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_30_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 31_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_31_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_31_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 32_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_32_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_32_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 33_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_33_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_33_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 34_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_34_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_34_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 35_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_35_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_35_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 36_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_36_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_36_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 37_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_37_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_37_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 38_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_38_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_38_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 39_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_39_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_39_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 40_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_40_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_40_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 41_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_41_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_41_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 42_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_42_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_42_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 43_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_43_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_43_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 44_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_44_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_44_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 45_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_45_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_45_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 46_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_46_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_46_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 47_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_47_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_47_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 48_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_48_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_48_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 49_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_49_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_49_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 50_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_50_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_50_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 51_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_51_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_51_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 52_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_52_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_52_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 53_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_53_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_53_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 54_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_54_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_54_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 55_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_55_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_55_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 56_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_56_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_56_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 57_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_57_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_57_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 58_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_58_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_58_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 59_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_59_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_59_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 60_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_60_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_60_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 61_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_61_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_61_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 62_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_62_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_62_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 63_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_63_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_63_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 64_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_64_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_64_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 65_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_65_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_65_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 66_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_66_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_66_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 67_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_67_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_67_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 68_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_68_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_68_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 69_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_69_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_69_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 70_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_70_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_70_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 71_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_71_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_71_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 72_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_72_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_72_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 73_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_73_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_73_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 74_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_74_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_74_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 75_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_75_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_75_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 76_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_76_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_76_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 77_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_77_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_77_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 78_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_78_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_78_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 79_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_79_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_79_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 80_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_80_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_80_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 81_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_81_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_81_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 82_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_82_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_82_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 83_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_83_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_83_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 84_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_84_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_84_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 85_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_85_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_85_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 86_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_86_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_86_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 87_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_87_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_87_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 88_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_88_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_88_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 89_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_89_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_89_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 90_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_90_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_90_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 91_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_91_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_91_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 92_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_92_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_92_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 93_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_93_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_93_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 94_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_94_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_94_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 95_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_95_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_95_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 96_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_96_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_96_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 97_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_97_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_97_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 98_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_98_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_98_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 99_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_99_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_99_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 100_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_100_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_100_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 101_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_101_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_101_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 102_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_102_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_102_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 103_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_103_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_103_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 104_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_104_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_104_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 105_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_105_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_105_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 106_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_106_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_106_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 107_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_107_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_107_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 108_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_108_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_108_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 109_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_109_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_109_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 110_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_110_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_110_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 111_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_111_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_111_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 112_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_112_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_112_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 113_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_113_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_113_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 114_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_114_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_114_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 115_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_115_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_115_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 116_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_116_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_116_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 117_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_117_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_117_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 118_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_118_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_118_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 119_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_119_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_119_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 120_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_120_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_120_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 121_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_121_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_121_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 122_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_122_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_122_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 123_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_123_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_123_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 124_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_124_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_124_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 125_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_125_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_125_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 126_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_126_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_126_15.txt exists
+[[2022-01-18 12:27:16]][INFO] Running 127_15
+[[2022-01-18 12:27:16]][ERROR] ../experiment_files/rank_22/qaoa_statsfile_127_15.txt
+[[2022-01-18 12:27:16]][WARNING] ../experiment_files/rank_22/qaoa_statsfile_127_15.txt exists
