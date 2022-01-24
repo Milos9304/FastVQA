@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 from glob import glob
 
-dims=[15,16,17,18,19,20,21,22,23]
+#dims=[15,16,17,18,19,20,21,22,23,24]
+dims=[19,20,21,22,23,24,25]
 means = []
 variances = []
 stds = []
@@ -24,7 +25,7 @@ for dim in dims:
     hit_rates = []
     solved=[]
 
-    for i in range(127+1):
+    for i in range(104+1):#27+1):
 
         filename = 'rank_'+str(dim)+"/statsfile_"+str(i)+"_"+str(dim)+".txt"
 
@@ -55,6 +56,9 @@ solved_mean=np.array(solved_mean)
 plt.errorbar(dims, means, stds, ls='--', capsize=2)
 #plt.fill_between(dims, lbs, ubs, alpha=.1)
 plt.plot(dims, solved_mean)
+
+print(means)
+print(stds)
 
 plt.ylim((0,1))
 plt.xlabel("Rank")

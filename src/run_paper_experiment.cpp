@@ -2,8 +2,12 @@
 
 SolutionDataset read_experiment_file(int num_ranks, int rank_min, int dim){
 
+	//std::ifstream expFile("../paper_experiment/out_higher_dims_small_dims_rank15_1024.csv");
+	//std::ifstream matrixFile("../paper_experiment/out_higher_dims_small_dims_rank15_1024_matrices.csv");
 	std::ifstream expFile("../paper_experiment/out_higher_dims_small_dims.csv");
 	std::ifstream matrixFile("../paper_experiment/out_higher_dims_small_dims_matrices.csv");
+
+
 	if(expFile.fail() || matrixFile.fail()){
 		loge("Failed opening experiments file");
 	}

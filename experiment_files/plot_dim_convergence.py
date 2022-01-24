@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 from glob import glob
 
-dims=[15,16,17,18,19,20,21,22,23]
+#dims=[15,16,17,18,19,20,21,22,23,24,25]
+dims=[25]
 means = []
 variances = []
 stds = []
@@ -27,7 +28,7 @@ for dim in dims:
     print(dim)
     ctimes = []
 
-    for i in range(127+1):
+    for i in range(104+1):#127+1):
 
         filename = 'rank_'+str(dim)+"/statsfile_"+str(i)+"_"+str(dim)+".txt"
 
@@ -78,6 +79,9 @@ for dim in dims:
 
 means=np.array(means)
 stds=np.array(stds)
+
+print(means)
+print(stds)
 
 plt.errorbar(dims, means, stds, ls='--', capsize=2)
 #plt.fill_between(dims, means-stds, means+stds, alpha=.1)

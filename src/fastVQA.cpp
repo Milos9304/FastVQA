@@ -99,6 +99,8 @@ int main(int ac, char** av){
 		auto save_interm  = op.add<Value<std::string>>("", "si", "save intermediate results (for specific experiments only)", "");
 		auto load_interm  = op.add<Value<std::string>>("", "li", "load intermediate results (for specific experiments only)", "");
 
+        auto statsfile_prefix = op.add<Value<std::string>>("", "prefix", "statsfile prefix", "rank");
+
 		op.parse(ac, av);
 
 		if (help_option->is_set()){
@@ -129,7 +131,7 @@ int main(int ac, char** av){
 
 			loge("Gaussian heuristics not implemented for low rank matrices. Returning 1.");
 
-			SolutionDataset solutionDataset = run_paper_exp(/*16*/6, /*10*/3, 180);
+			SolutionDataset solutionDataset = run_paper_exp(16,10,180);//16, 10, 180);
 			std::pair<std::vector<MatrixInt>, std::vector<Solution>> dataset = solutionDataset.getMatricexAndDataset();
 			std::vector<MatrixInt> matrices = std::get<0>(dataset);
 			std::vector<Solution> solutions = std::get<1>(dataset);
@@ -140,7 +142,15 @@ int main(int ac, char** av){
 				i = 0;
 			}
 
+			int counter = 0;
+			int max_instances = 128;
+
 			for(auto &m: matrices){
+
+				if(counter++>=max_instances){
+					logw("Limiting to lower number of instances!");
+					break;
+				}
 				Lattice* new_lattice = new Lattice(m, std::to_string(solutions[i].lattice_id)+"_"+std::to_string(solutions[i].rank));
 				new_lattice->reduce_rank(solutions[i].rank);
 				lattices.push_back(new_lattice);
@@ -149,7 +159,7 @@ int main(int ac, char** av){
 				if(rank_reduce->value() == 0)
 					i++;
 				else
-					i+=solutionDataset.num_ranks-1;
+					i+=solutionDataset.num_ranks/*-1*/;
 
 				//logw("Loading only one lattice");
 				//break;
@@ -204,11 +214,14 @@ int main(int ac, char** av){
 		mapOptions->verbose = debug->is_set();
 		mapOptions->num_qbits_per_x=qubits_per_x->value();
 		mapOptions->penalty=overlap_penalty->value();
-		if(ansatz_name->value()!="qaoa" && (overlap_trick->is_set() || overlap_penalty->value() == 0))
+		if(!overlap_trick->is_set()){
 			mapOptions->pen_mode = MapOptions::no_hml_penalization;
-		else
+			logw("no hml penalization");
+		}
+		else{
 			mapOptions->pen_mode = MapOptions::penalty_all;
-
+			logw("penalty all");
+		}
 		ExecutionStatistics* execStats = new ExecutionStatistics();
 
 		int counter = 0;
@@ -246,7 +259,8 @@ int main(int ac, char** av){
 
 			Lattice *lattice = static_cast<Lattice*>(lattice_abs);
 
-			std::string statsfile="../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/statsfile_"+lattice->name+".txt";
+			std::string statsfile="../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/"+statsfile_prefix->value()+"_statsfile_"+lattice->name+".txt";
+			loge(statsfile);
 			ifstream ifile;
 			ifile.open(statsfile);
 			if(ifile){
@@ -257,6 +271,79 @@ int main(int ac, char** av){
 			ifile.close();
 
 			if(qaoa->is_set()){
+				Qaoa qaoa_instance;
+				ExperimentBuffer buffer;
+				ProgressBar bar{bar_opts(counter, num_lattices, lattice->name, qaoaOptions)};
+
+				int first_vect_sq_len = 0;
+				for(int c = 0; c < lattice->get_orig_lattice()->c; ++c){
+					int a = lattice->get_orig_lattice()->matrix[0][c].get_si();
+					first_vect_sq_len += a*a;
+				}
+
+				mapOptions->penalty = 2*first_vect_sq_len;
+				logw("Penalty set to " + std::to_string(mapOptions->penalty));
+
+				Hamiltonian hamiltonian = lattice->getHamiltonian(mapOptions);
+
+				qaoa_instance.run_qaoa(&buffer, &hamiltonian, lattice->name, &bar, execStats, qaoaOptions);
+
+
+				MatrixInt* current_lattice;
+								int cols;
+
+								if(lattice->lll_preprocessed){
+
+								}else{
+									current_lattice = lattice->get_orig_lattice();
+									cols = current_lattice->c;
+								}
+
+								VectorInt x_vect = lattice->quboToXvector(buffer.opt_config);
+
+								logd("NOW FOLLOWS X VECTOR");
+									for(auto &x:x_vect)
+										std::cerr<<x<<" ";
+									std::cerr<<"\n";
+								//loge("NOW FOLLOWS SHORTEST FOUND VECTOR");
+
+								int double_check=0;
+								for(int c = 0; c < cols; ++c){
+									int res = 0;
+									for(unsigned int r = 0; r < x_vect.size(); ++r){
+										int a = current_lattice->matrix[r][c].get_si();
+										int b = x_vect[r].get_si();
+										res += b * a;
+									}
+									double_check += res*res;
+									//std::cerr<<res<<" ";
+								}//std::cerr<<"\n";
+
+								double passed=true;
+								passed = passed && (double_check == buffer.opt_val);
+
+								logw("Double check: " + std::to_string(double_check) + " passed: " + (passed ? "TRUE" : "FALSE"));
+								//if(!passed)
+								//	throw;
+
+								std::ofstream output_file("../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/"+statsfile_prefix->value()+"_statsfile_"+lattice->name+".txt");
+								output_file << fixed << showpoint;
+								output_file << setprecision(10);
+
+								//std::ostream_iterator<double> output_iterator(output_file, "\n");
+								//std::copy(buffer.intermediateEnergies.begin(), buffer.intermediateEnergies.end(), output_iterator);
+								for(int i = 0; i < buffer.intermediateEnergies.size(); ++i){
+									output_file << buffer.intermediateEnergies[i] << " " << buffer.intermediateGroundStateOverlaps[i] << std::endl;
+								}
+
+								output_file << buffer.opt_val << " " << buffer.hit_rate << " ";
+								for(auto &x:x_vect)
+									output_file << x << " ";
+
+								output_file.close();
+
+
+
 
 			}else if(vqe->is_set()){
 				ProgressBar bar{bar_opts(counter, num_lattices, lattice->name, vqeOptions)};
@@ -311,7 +398,7 @@ int main(int ac, char** av){
 				//if(!passed)
 				//	throw;
 
-				std::ofstream output_file("../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/statsfile_"+lattice->name+".txt");
+				std::ofstream output_file("../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/"+statsfile_prefix->value()+"_statsfile_"+lattice->name+".txt");
 				output_file << fixed << showpoint;
 				output_file << setprecision(10);
 
