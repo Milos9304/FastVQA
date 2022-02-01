@@ -10,240 +10,688 @@ If you are not interested in CUDA-aware support, then run with
 in CUDA-aware support, then try setting LD_LIBRARY_PATH to the location
 of libcuda.so.1 to get passed this issue.
 --------------------------------------------------------------------------
-[[2022-01-02 12:19:40]][DEBUG] Using seed 1997
-[[2022-01-02 12:19:40]][WARNING] Setting accelerator ratio to 0.175000
-[[2022-01-02 12:19:40]][ERROR] This won't work for distributed. Change code!
-[[2022-01-02 12:19:40]][ERROR] Gaussian heuristics not implemented for low rank matrices. Returning 1.
+[[2022-01-18 10:52:38]][DEBUG] Using seed 1997
+[[2022-01-18 10:52:38]][WARNING] Setting accelerator ratio to 0.175000
+[[2022-01-18 10:52:38]][ERROR] This won't work for distributed. Change code!
+[[2022-01-18 10:52:38]][ERROR] Gaussian heuristics not implemented for low rank matrices. Returning 1.
 0_25 1_25 2_25 3_25 4_25 5_25 6_25 7_25 8_25 9_25 10_25 11_25 12_25 13_25 14_25 15_25 16_25 17_25 18_25 19_25 20_25 21_25 22_25 23_25 24_25 25_25 26_25 27_25 28_25 29_25 30_25 31_25 32_25 33_25 34_25 35_25 36_25 37_25 38_25 39_25 40_25 41_25 42_25 43_25 44_25 45_25 46_25 47_25 48_25 49_25 50_25 51_25 52_25 53_25 54_25 55_25 56_25 57_25 58_25 59_25 60_25 61_25 62_25 63_25 64_25 65_25 66_25 67_25 68_25 69_25 70_25 71_25 72_25 73_25 74_25 75_25 76_25 77_25 78_25 79_25 80_25 81_25 82_25 83_25 84_25 85_25 86_25 87_25 88_25 89_25 90_25 91_25 92_25 93_25 94_25 95_25 96_25 97_25 98_25 99_25 100_25 101_25 102_25 103_25 104_25 105_25 106_25 107_25 108_25 109_25 110_25 111_25 112_25 113_25 114_25 115_25 116_25 117_25 118_25 119_25 120_25 121_25 122_25 123_25 124_25 125_25 126_25 127_25 
-[[2022-01-02 12:19:40]][DEBUG] Accelerator partial not yet returned
+[[2022-01-18 10:52:38]][DEBUG] Accelerator partial not yet returned
 ERROR: Trying to initialize QuESTEnv multiple times. Ignoring...
-[[2022-01-02 12:19:40]][DEBUG] Accelerator partial returned
-[[2022-01-02 12:19:40]][DEBUG] VQAOptions set
-[[2022-01-02 12:19:40]][INFO] Running 0_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_0_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 1_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_1_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 2_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_2_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 3_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_3_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 4_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_4_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 5_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_5_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 6_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_6_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 7_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_7_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 8_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_8_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 9_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_9_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 10_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_10_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 11_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_11_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 12_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_12_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 13_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_13_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 14_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_14_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 15_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_15_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 16_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_16_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 17_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_17_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 18_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_18_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 19_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_19_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 20_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_20_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 21_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_21_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 22_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_22_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 23_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_23_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 24_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_24_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 25_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_25_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 26_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_26_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 27_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_27_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 28_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_28_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 29_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_29_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 30_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_30_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 31_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_31_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 32_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_32_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 33_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_33_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 34_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_34_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 35_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_35_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 36_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_36_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 37_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_37_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 38_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_38_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 39_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_39_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 40_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_40_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 41_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_41_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 42_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_42_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 43_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_43_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 44_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_44_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 45_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_45_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 46_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_46_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 47_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_47_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 48_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_48_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 49_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_49_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 50_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_50_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 51_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_51_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 52_25
-[[2022-01-02 12:19:40]][WARNING] ../experiment_files/rank_25/statsfile_52_25.txt exists
-[[2022-01-02 12:19:40]][INFO] Running 53_25
-[[2022-01-02 12:19:40]][WARNING] calc gso
-[[2022-01-02 12:19:40]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
-[[2022-01-02 12:19:40]][WARNING] Normalization is probably best solution
-[[2022-01-02 12:19:40]][WARNING] Before VQE run
-[[2022-01-02 12:19:40]][INFO] 25 qubits
-[[2022-01-02 12:19:40]][DEBUG] Before ansatz gen
-[[2022-01-02 12:19:40]][DEBUG] After ansatz gen
-[[2022-01-02 12:19:40]][DEBUG] Executing vqe
-[[2022-01-02 12:19:40]][DEBUG] Initializing 25 qubits
-[[2022-01-02 12:19:40]][DEBUG] Setting seed to 1997
-[[2022-01-02 12:21:07]][WARNING] f: Constant Alpha: 0.175000
-Final opt-val: 122012690.000000
+[[2022-01-18 10:52:39]][DEBUG] Accelerator partial returned
+[[2022-01-18 10:52:39]][DEBUG] VQAOptions set
+[[2022-01-18 10:52:39]][INFO] Running 0_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_0_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 1_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_1_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 2_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_2_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 3_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_3_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 4_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_4_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 5_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_5_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 6_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_6_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 7_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_7_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 8_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_8_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 9_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_9_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 10_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_10_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 11_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_11_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 12_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_12_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 13_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_13_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 14_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_14_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 15_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_15_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 16_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_16_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 17_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_17_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 18_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_18_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 19_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_19_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 20_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_20_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 21_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_21_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 22_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_22_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 23_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_23_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 24_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_24_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 25_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_25_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 26_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_26_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 27_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_27_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 28_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_28_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 29_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_29_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 30_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_30_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 31_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_31_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 32_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_32_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 33_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_33_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 34_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_34_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 35_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_35_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 36_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_36_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 37_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_37_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 38_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_38_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 39_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_39_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 40_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_40_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 41_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_41_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 42_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_42_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 43_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_43_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 44_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_44_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 45_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_45_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 46_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_46_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 47_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_47_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 48_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_48_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 49_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_49_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 50_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_50_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 51_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_51_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 52_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_52_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 53_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_53_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 54_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_54_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 55_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_55_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 56_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_56_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 57_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_57_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 58_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_58_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 59_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_59_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 60_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_60_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 61_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_61_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 62_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_62_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 63_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_63_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 64_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_64_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 65_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_65_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 66_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_66_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 67_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_67_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 68_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_68_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 69_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_69_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 70_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_70_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 71_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_71_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 72_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_72_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 73_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_73_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 74_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_74_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 75_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_75_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 76_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_76_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 77_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_77_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 78_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_78_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 79_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_79_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 80_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_80_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 81_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_81_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 82_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_82_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 83_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_83_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 84_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_84_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 85_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_85_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 86_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_86_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 87_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_87_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 88_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_88_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 89_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_89_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 90_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_90_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 91_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_91_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 92_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_92_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 93_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_93_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 94_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_94_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 95_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_95_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 96_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_96_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 97_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_97_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 98_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_98_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 99_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_99_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 100_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_100_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 101_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_101_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 102_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_102_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 103_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_103_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 104_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_104_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 105_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_105_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 106_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_106_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 107_25
+[[2022-01-18 10:52:39]][WARNING] ../experiment_files/rank_25/statsfile_107_25.txt exists
+[[2022-01-18 10:52:39]][INFO] Running 108_25
+[[2022-01-18 10:52:39]][WARNING] calc gso
+[[2022-01-18 10:52:39]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 10:52:39]][WARNING] Normalization is probably best solution
+[[2022-01-18 10:52:39]][WARNING] Before VQE run
+[[2022-01-18 10:52:39]][INFO] 25 qubits
+[[2022-01-18 10:52:39]][DEBUG] Before ansatz gen
+[[2022-01-18 10:52:39]][DEBUG] After ansatz gen
+[[2022-01-18 10:52:39]][DEBUG] Executing vqe
+[[2022-01-18 10:52:39]][DEBUG] Initializing 25 qubits
+[[2022-01-18 10:52:39]][DEBUG] Setting seed to 1997
+[[2022-01-18 10:54:07]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-18 10:54:07]][WARNING] are these really good ones?
+Final opt-val: 106371949.000000
+Final opt-config: 0010000000000000000000000
+Final hit-rate: 0.065961
+[[2022-01-18 19:32:04]][DEBUG] Destroying qureg
+[[2022-01-18 19:32:04]][DEBUG] Vqe execution done
+Min QUBO: 106371949.000000
+[[2022-01-18 19:32:04]][WARNING] VQE run
+[[2022-01-18 19:32:04]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 
+[[2022-01-18 19:32:04]][WARNING] Double check: 106371949 passed: TRUE
+[[2022-01-18 19:32:04]][INFO] Running 109_25
+[[2022-01-18 19:32:04]][WARNING] calc gso
+[[2022-01-18 19:32:04]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 19:32:04]][WARNING] Normalization is probably best solution
+[[2022-01-18 19:32:04]][WARNING] Before VQE run
+[[2022-01-18 19:32:04]][INFO] 25 qubits
+[[2022-01-18 19:32:04]][DEBUG] Before ansatz gen
+[[2022-01-18 19:32:04]][DEBUG] After ansatz gen
+[[2022-01-18 19:32:04]][DEBUG] Executing vqe
+[[2022-01-18 19:32:04]][DEBUG] Initializing 25 qubits
+[[2022-01-18 19:32:04]][DEBUG] Setting seed to 1997
+[[2022-01-18 19:33:44]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-18 19:33:44]][WARNING] are these really good ones?
+Final opt-val: 106659505.000000
+Final opt-config: 0000000000000000000000001
+Final hit-rate: 0.168411
+[[2022-01-18 23:05:26]][DEBUG] Destroying qureg
+[[2022-01-18 23:05:26]][DEBUG] Vqe execution done
+Min QUBO: 106659505.000000
+[[2022-01-18 23:05:26]][WARNING] VQE run
+[[2022-01-18 23:05:26]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-18 23:05:26]][WARNING] Double check: 106659505 passed: TRUE
+[[2022-01-18 23:05:26]][INFO] Running 110_25
+[[2022-01-18 23:05:26]][WARNING] calc gso
+[[2022-01-18 23:05:26]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-18 23:05:26]][WARNING] Normalization is probably best solution
+[[2022-01-18 23:05:26]][WARNING] Before VQE run
+[[2022-01-18 23:05:26]][INFO] 25 qubits
+[[2022-01-18 23:05:26]][DEBUG] Before ansatz gen
+[[2022-01-18 23:05:26]][DEBUG] After ansatz gen
+[[2022-01-18 23:05:26]][DEBUG] Executing vqe
+[[2022-01-18 23:05:26]][DEBUG] Initializing 25 qubits
+[[2022-01-18 23:05:26]][DEBUG] Setting seed to 1997
+[[2022-01-18 23:07:06]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-18 23:07:06]][WARNING] are these really good ones?
+Final opt-val: 76457377.000000
+Final opt-config: 0001000000100000000000010
+Final hit-rate: 0.000124
+[[2022-01-19 05:35:31]][DEBUG] Destroying qureg
+[[2022-01-19 05:35:31]][DEBUG] Vqe execution done
+Min QUBO: 76457377.000000
+[[2022-01-19 05:35:31]][WARNING] VQE run
+[[2022-01-19 05:35:31]][DEBUG] NOW FOLLOWS X VECTOR
+0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 
+[[2022-01-19 05:35:31]][WARNING] Double check: 76457377 passed: TRUE
+[[2022-01-19 05:35:31]][INFO] Running 111_25
+[[2022-01-19 05:35:31]][WARNING] calc gso
+[[2022-01-19 05:35:31]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-19 05:35:31]][WARNING] Normalization is probably best solution
+[[2022-01-19 05:35:31]][WARNING] Before VQE run
+[[2022-01-19 05:35:31]][INFO] 25 qubits
+[[2022-01-19 05:35:31]][DEBUG] Before ansatz gen
+[[2022-01-19 05:35:31]][DEBUG] After ansatz gen
+[[2022-01-19 05:35:31]][DEBUG] Executing vqe
+[[2022-01-19 05:35:31]][DEBUG] Initializing 25 qubits
+[[2022-01-19 05:35:31]][DEBUG] Setting seed to 1997
+[[2022-01-19 05:37:11]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-19 05:37:11]][WARNING] are these really good ones?
+Final opt-val: 80033196.000000
+Final opt-config: 0000000000000000000000001
+Final hit-rate: 0.175000
+[[2022-01-19 09:22:52]][DEBUG] Destroying qureg
+[[2022-01-19 09:22:52]][DEBUG] Vqe execution done
+Min QUBO: 80033196.000000
+[[2022-01-19 09:22:52]][WARNING] VQE run
+[[2022-01-19 09:22:52]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-19 09:22:52]][WARNING] Double check: 80033196 passed: TRUE
+[[2022-01-19 09:22:52]][INFO] Running 112_25
+[[2022-01-19 09:22:52]][WARNING] calc gso
+[[2022-01-19 09:22:52]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-19 09:22:52]][WARNING] Normalization is probably best solution
+[[2022-01-19 09:22:52]][WARNING] Before VQE run
+[[2022-01-19 09:22:52]][INFO] 25 qubits
+[[2022-01-19 09:22:52]][DEBUG] Before ansatz gen
+[[2022-01-19 09:22:52]][DEBUG] After ansatz gen
+[[2022-01-19 09:22:52]][DEBUG] Executing vqe
+[[2022-01-19 09:22:52]][DEBUG] Initializing 25 qubits
+[[2022-01-19 09:22:52]][DEBUG] Setting seed to 1997
+[[2022-01-19 09:24:33]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-19 09:24:33]][WARNING] are these really good ones?
+Final opt-val: 142497452.000000
+Final opt-config: 1000000000000000001000000
+Final hit-rate: 0.000035
+[[2022-01-19 13:36:56]][DEBUG] Destroying qureg
+[[2022-01-19 13:36:56]][DEBUG] Vqe execution done
+Min QUBO: 142497452.000000
+[[2022-01-19 13:36:56]][WARNING] VQE run
+[[2022-01-19 13:36:56]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2022-01-19 13:36:56]][WARNING] Double check: 142497452 passed: TRUE
+[[2022-01-19 13:36:56]][INFO] Running 113_25
+[[2022-01-19 13:36:56]][WARNING] calc gso
+[[2022-01-19 13:36:56]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-19 13:36:56]][WARNING] Normalization is probably best solution
+[[2022-01-19 13:36:56]][WARNING] Before VQE run
+[[2022-01-19 13:36:56]][INFO] 25 qubits
+[[2022-01-19 13:36:56]][DEBUG] Before ansatz gen
+[[2022-01-19 13:36:56]][DEBUG] After ansatz gen
+[[2022-01-19 13:36:56]][DEBUG] Executing vqe
+[[2022-01-19 13:36:56]][DEBUG] Initializing 25 qubits
+[[2022-01-19 13:36:56]][DEBUG] Setting seed to 1997
+[[2022-01-19 13:38:36]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-19 13:38:36]][WARNING] are these really good ones?
+Final opt-val: 95423641.000000
+Final opt-config: 0000000000000000000000001
+Final hit-rate: 0.000018
+[[2022-01-19 18:04:57]][DEBUG] Destroying qureg
+[[2022-01-19 18:04:57]][DEBUG] Vqe execution done
+Min QUBO: 95423641.000000
+[[2022-01-19 18:04:57]][WARNING] VQE run
+[[2022-01-19 18:04:57]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-19 18:04:57]][WARNING] Double check: 95423641 passed: TRUE
+[[2022-01-19 18:04:57]][INFO] Running 114_25
+[[2022-01-19 18:04:57]][WARNING] calc gso
+[[2022-01-19 18:04:57]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-19 18:04:57]][WARNING] Normalization is probably best solution
+[[2022-01-19 18:04:57]][WARNING] Before VQE run
+[[2022-01-19 18:04:57]][INFO] 25 qubits
+[[2022-01-19 18:04:57]][DEBUG] Before ansatz gen
+[[2022-01-19 18:04:57]][DEBUG] After ansatz gen
+[[2022-01-19 18:04:57]][DEBUG] Executing vqe
+[[2022-01-19 18:04:57]][DEBUG] Initializing 25 qubits
+[[2022-01-19 18:04:57]][DEBUG] Setting seed to 1997
+[[2022-01-19 18:06:37]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-19 18:06:37]][WARNING] are these really good ones?
+Final opt-val: 65919598.000000
+Final opt-config: 0000000000000000000000001
+Final hit-rate: 0.000994
+[[2022-01-19 21:50:54]][DEBUG] Destroying qureg
+[[2022-01-19 21:50:54]][DEBUG] Vqe execution done
+Min QUBO: 65919598.000000
+[[2022-01-19 21:50:54]][WARNING] VQE run
+[[2022-01-19 21:50:54]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-19 21:50:54]][WARNING] Double check: 65919598 passed: TRUE
+[[2022-01-19 21:50:54]][INFO] Running 115_25
+[[2022-01-19 21:50:54]][WARNING] calc gso
+[[2022-01-19 21:50:54]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-19 21:50:54]][WARNING] Normalization is probably best solution
+[[2022-01-19 21:50:54]][WARNING] Before VQE run
+[[2022-01-19 21:50:54]][INFO] 25 qubits
+[[2022-01-19 21:50:54]][DEBUG] Before ansatz gen
+[[2022-01-19 21:50:54]][DEBUG] After ansatz gen
+[[2022-01-19 21:50:54]][DEBUG] Executing vqe
+[[2022-01-19 21:50:54]][DEBUG] Initializing 25 qubits
+[[2022-01-19 21:50:54]][DEBUG] Setting seed to 1997
+[[2022-01-19 21:52:34]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-19 21:52:34]][WARNING] are these really good ones?
+Final opt-val: 84582104.000000
+Final opt-config: 0010000000000000000000000
+Final hit-rate: 0.050085
+[[2022-01-20 02:49:13]][DEBUG] Destroying qureg
+[[2022-01-20 02:49:13]][DEBUG] Vqe execution done
+Min QUBO: 84582104.000000
+[[2022-01-20 02:49:13]][WARNING] VQE run
+[[2022-01-20 02:49:13]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 
+[[2022-01-20 02:49:13]][WARNING] Double check: 84582104 passed: TRUE
+[[2022-01-20 02:49:13]][INFO] Running 116_25
+[[2022-01-20 02:49:13]][WARNING] calc gso
+[[2022-01-20 02:49:13]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-20 02:49:13]][WARNING] Normalization is probably best solution
+[[2022-01-20 02:49:13]][WARNING] Before VQE run
+[[2022-01-20 02:49:13]][INFO] 25 qubits
+[[2022-01-20 02:49:13]][DEBUG] Before ansatz gen
+[[2022-01-20 02:49:13]][DEBUG] After ansatz gen
+[[2022-01-20 02:49:13]][DEBUG] Executing vqe
+[[2022-01-20 02:49:13]][DEBUG] Initializing 25 qubits
+[[2022-01-20 02:49:13]][DEBUG] Setting seed to 1997
+[[2022-01-20 02:50:54]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-20 02:50:54]][WARNING] are these really good ones?
+Final opt-val: 123258058.000000
+Final opt-config: 0000000000000000000000001
+Final hit-rate: 0.000075
+[[2022-01-20 06:18:34]][DEBUG] Destroying qureg
+[[2022-01-20 06:18:34]][DEBUG] Vqe execution done
+Min QUBO: 123258058.000000
+[[2022-01-20 06:18:34]][WARNING] VQE run
+[[2022-01-20 06:18:34]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-20 06:18:34]][WARNING] Double check: 123258058 passed: TRUE
+[[2022-01-20 06:18:34]][INFO] Running 117_25
+[[2022-01-20 06:18:34]][WARNING] calc gso
+[[2022-01-20 06:18:34]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-20 06:18:34]][WARNING] Normalization is probably best solution
+[[2022-01-20 06:18:34]][WARNING] Before VQE run
+[[2022-01-20 06:18:34]][INFO] 25 qubits
+[[2022-01-20 06:18:34]][DEBUG] Before ansatz gen
+[[2022-01-20 06:18:34]][DEBUG] After ansatz gen
+[[2022-01-20 06:18:34]][DEBUG] Executing vqe
+[[2022-01-20 06:18:34]][DEBUG] Initializing 25 qubits
+[[2022-01-20 06:18:34]][DEBUG] Setting seed to 1997
+[[2022-01-20 06:20:14]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-20 06:20:14]][WARNING] are these really good ones?
+Final opt-val: 133046856.000000
+Final opt-config: 0000100000000000000000000
+Final hit-rate: 0.029290
+[[2022-01-20 11:09:10]][DEBUG] Destroying qureg
+[[2022-01-20 11:09:10]][DEBUG] Vqe execution done
+Min QUBO: 133046856.000000
+[[2022-01-20 11:09:10]][WARNING] VQE run
+[[2022-01-20 11:09:10]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 
+[[2022-01-20 11:09:10]][WARNING] Double check: 133046856 passed: TRUE
+[[2022-01-20 11:09:10]][INFO] Running 118_25
+[[2022-01-20 11:09:10]][WARNING] calc gso
+[[2022-01-20 11:09:10]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-20 11:09:10]][WARNING] Normalization is probably best solution
+[[2022-01-20 11:09:10]][WARNING] Before VQE run
+[[2022-01-20 11:09:10]][INFO] 25 qubits
+[[2022-01-20 11:09:10]][DEBUG] Before ansatz gen
+[[2022-01-20 11:09:10]][DEBUG] After ansatz gen
+[[2022-01-20 11:09:10]][DEBUG] Executing vqe
+[[2022-01-20 11:09:10]][DEBUG] Initializing 25 qubits
+[[2022-01-20 11:09:10]][DEBUG] Setting seed to 1997
+[[2022-01-20 11:10:50]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-20 11:10:50]][WARNING] are these really good ones?
+Final opt-val: 130185213.000000
+Final opt-config: 0000000000010000000000000
+Final hit-rate: 0.002565
+[[2022-01-20 16:07:56]][DEBUG] Destroying qureg
+[[2022-01-20 16:07:56]][DEBUG] Vqe execution done
+Min QUBO: 130185213.000000
+[[2022-01-20 16:07:56]][WARNING] VQE run
+[[2022-01-20 16:07:56]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-20 16:07:56]][WARNING] Double check: 130185213 passed: TRUE
+[[2022-01-20 16:07:56]][INFO] Running 119_25
+[[2022-01-20 16:07:56]][WARNING] calc gso
+[[2022-01-20 16:07:56]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-20 16:07:56]][WARNING] Normalization is probably best solution
+[[2022-01-20 16:07:56]][WARNING] Before VQE run
+[[2022-01-20 16:07:56]][INFO] 25 qubits
+[[2022-01-20 16:07:56]][DEBUG] Before ansatz gen
+[[2022-01-20 16:07:56]][DEBUG] After ansatz gen
+[[2022-01-20 16:07:56]][DEBUG] Executing vqe
+[[2022-01-20 16:07:56]][DEBUG] Initializing 25 qubits
+[[2022-01-20 16:07:56]][DEBUG] Setting seed to 1997
+[[2022-01-20 16:09:36]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-20 16:09:36]][WARNING] are these really good ones?
+Final opt-val: 86622322.000000
+Final opt-config: 0000000000000000000000001
+Final hit-rate: 0.000477
+[[2022-01-20 19:57:40]][DEBUG] Destroying qureg
+[[2022-01-20 19:57:40]][DEBUG] Vqe execution done
+Min QUBO: 86622322.000000
+[[2022-01-20 19:57:40]][WARNING] VQE run
+[[2022-01-20 19:57:40]][DEBUG] NOW FOLLOWS X VECTOR
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-20 19:57:40]][WARNING] Double check: 86622322 passed: TRUE
+[[2022-01-20 19:57:40]][INFO] Running 120_25
+[[2022-01-20 19:57:40]][WARNING] calc gso
+[[2022-01-20 19:57:40]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-20 19:57:40]][WARNING] Normalization is probably best solution
+[[2022-01-20 19:57:40]][WARNING] Before VQE run
+[[2022-01-20 19:57:40]][INFO] 25 qubits
+[[2022-01-20 19:57:40]][DEBUG] Before ansatz gen
+[[2022-01-20 19:57:40]][DEBUG] After ansatz gen
+[[2022-01-20 19:57:40]][DEBUG] Executing vqe
+[[2022-01-20 19:57:40]][DEBUG] Initializing 25 qubits
+[[2022-01-20 19:57:40]][DEBUG] Setting seed to 1997
+[[2022-01-20 19:59:20]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-20 19:59:20]][WARNING] are these really good ones?
+Final opt-val: 116250282.000000
+Final opt-config: 0000000000010000000000000
+Final hit-rate: 0.000464
+[[2022-01-21 00:25:49]][DEBUG] Destroying qureg
+[[2022-01-21 00:25:49]][DEBUG] Vqe execution done
+Min QUBO: 116250282.000000
+[[2022-01-21 00:25:49]][WARNING] VQE run
+[[2022-01-21 00:25:49]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-21 00:25:49]][WARNING] Double check: 116250282 passed: TRUE
+[[2022-01-21 00:25:49]][INFO] Running 121_25
+[[2022-01-21 00:25:49]][WARNING] calc gso
+[[2022-01-21 00:25:49]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-21 00:25:49]][WARNING] Normalization is probably best solution
+[[2022-01-21 00:25:49]][WARNING] Before VQE run
+[[2022-01-21 00:25:49]][INFO] 25 qubits
+[[2022-01-21 00:25:49]][DEBUG] Before ansatz gen
+[[2022-01-21 00:25:49]][DEBUG] After ansatz gen
+[[2022-01-21 00:25:49]][DEBUG] Executing vqe
+[[2022-01-21 00:25:49]][DEBUG] Initializing 25 qubits
+[[2022-01-21 00:25:49]][DEBUG] Setting seed to 1997
+[[2022-01-21 00:27:29]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-21 00:27:29]][WARNING] are these really good ones?
+Final opt-val: 119113339.000000
+Final opt-config: 0000000000000100000000000
+Final hit-rate: 0.175000
+[[2022-01-21 04:59:25]][DEBUG] Destroying qureg
+[[2022-01-21 04:59:25]][DEBUG] Vqe execution done
+Min QUBO: 119113339.000000
+[[2022-01-21 04:59:25]][WARNING] VQE run
+[[2022-01-21 04:59:25]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[[2022-01-21 04:59:25]][WARNING] Double check: 119113339 passed: TRUE
+[[2022-01-21 04:59:25]][INFO] Running 122_25
+[[2022-01-21 04:59:25]][WARNING] calc gso
+[[2022-01-21 04:59:25]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-21 04:59:25]][WARNING] Normalization is probably best solution
+[[2022-01-21 04:59:25]][WARNING] Before VQE run
+[[2022-01-21 04:59:25]][INFO] 25 qubits
+[[2022-01-21 04:59:25]][DEBUG] Before ansatz gen
+[[2022-01-21 04:59:25]][DEBUG] After ansatz gen
+[[2022-01-21 04:59:25]][DEBUG] Executing vqe
+[[2022-01-21 04:59:25]][DEBUG] Initializing 25 qubits
+[[2022-01-21 04:59:25]][DEBUG] Setting seed to 1997
+[[2022-01-21 05:01:05]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-21 05:01:05]][WARNING] are these really good ones?
+Final opt-val: 129332495.000000
+Final opt-config: 1000000000000000010110000
+Final hit-rate: 0.000002
+[[2022-01-21 10:25:11]][DEBUG] Destroying qureg
+[[2022-01-21 10:25:11]][DEBUG] Vqe execution done
+Min QUBO: 129332495.000000
+[[2022-01-21 10:25:11]][WARNING] VQE run
+[[2022-01-21 10:25:11]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+[[2022-01-21 10:25:11]][WARNING] Double check: 129332495 passed: TRUE
+[[2022-01-21 10:25:11]][INFO] Running 123_25
+[[2022-01-21 10:25:11]][WARNING] calc gso
+[[2022-01-21 10:25:11]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-21 10:25:11]][WARNING] Normalization is probably best solution
+[[2022-01-21 10:25:11]][WARNING] Before VQE run
+[[2022-01-21 10:25:11]][INFO] 25 qubits
+[[2022-01-21 10:25:11]][DEBUG] Before ansatz gen
+[[2022-01-21 10:25:11]][DEBUG] After ansatz gen
+[[2022-01-21 10:25:11]][DEBUG] Executing vqe
+[[2022-01-21 10:25:11]][DEBUG] Initializing 25 qubits
+[[2022-01-21 10:25:11]][DEBUG] Setting seed to 1997
+[[2022-01-21 10:26:51]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-21 10:26:51]][WARNING] are these really good ones?
+Final opt-val: 95531388.000000
+Final opt-config: 0100000000000000000000000
+Final hit-rate: 0.000778
+[[2022-01-21 14:55:51]][DEBUG] Destroying qureg
+[[2022-01-21 14:55:51]][DEBUG] Vqe execution done
+Min QUBO: 95531388.000000
+[[2022-01-21 14:55:51]][WARNING] VQE run
+[[2022-01-21 14:55:51]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 
+[[2022-01-21 14:55:51]][WARNING] Double check: 95531388 passed: TRUE
+[[2022-01-21 14:55:51]][INFO] Running 124_25
+[[2022-01-21 14:55:51]][WARNING] calc gso
+[[2022-01-21 14:55:51]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-21 14:55:51]][WARNING] Normalization is probably best solution
+[[2022-01-21 14:55:51]][WARNING] Before VQE run
+[[2022-01-21 14:55:51]][INFO] 25 qubits
+[[2022-01-21 14:55:51]][DEBUG] Before ansatz gen
+[[2022-01-21 14:55:51]][DEBUG] After ansatz gen
+[[2022-01-21 14:55:51]][DEBUG] Executing vqe
+[[2022-01-21 14:55:51]][DEBUG] Initializing 25 qubits
+[[2022-01-21 14:55:51]][DEBUG] Setting seed to 1997
+[[2022-01-21 14:57:31]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-21 14:57:31]][WARNING] are these really good ones?
+Final opt-val: 87766193.000000
 Final opt-config: 0000000000000000000000001
 Final hit-rate: 0.000000
-[[2022-01-02 16:13:00]][DEBUG] Destroying qureg
-[[2022-01-02 16:13:00]][DEBUG] Vqe execution done
-Min QUBO: 122012690.000000
-[[2022-01-02 16:13:00]][WARNING] VQE run
-[[2022-01-02 16:13:00]][DEBUG] NOW FOLLOWS X VECTOR
+[[2022-01-21 20:33:04]][DEBUG] Destroying qureg
+[[2022-01-21 20:33:05]][DEBUG] Vqe execution done
+Min QUBO: 87766193.000000
+[[2022-01-21 20:33:05]][WARNING] VQE run
+[[2022-01-21 20:33:05]][DEBUG] NOW FOLLOWS X VECTOR
 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-[[2022-01-02 16:13:00]][WARNING] Double check: 122012690 passed: TRUE
-[[2022-01-02 16:13:00]][INFO] Running 54_25
-[[2022-01-02 16:13:00]][WARNING] calc gso
-[[2022-01-02 16:13:00]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
-[[2022-01-02 16:13:00]][WARNING] Normalization is probably best solution
-[[2022-01-02 16:13:00]][WARNING] Before VQE run
-[[2022-01-02 16:13:00]][INFO] 25 qubits
-[[2022-01-02 16:13:00]][DEBUG] Before ansatz gen
-[[2022-01-02 16:13:00]][DEBUG] After ansatz gen
-[[2022-01-02 16:13:00]][DEBUG] Executing vqe
-[[2022-01-02 16:13:00]][DEBUG] Initializing 25 qubits
-[[2022-01-02 16:13:00]][DEBUG] Setting seed to 1997
-[[2022-01-02 16:14:35]][WARNING] f: Constant Alpha: 0.175000
-Final opt-val: 103657631.000000
+[[2022-01-21 20:33:05]][WARNING] Double check: 87766193 passed: TRUE
+[[2022-01-21 20:33:05]][INFO] Running 125_25
+[[2022-01-21 20:33:05]][WARNING] calc gso
+[[2022-01-21 20:33:05]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-21 20:33:05]][WARNING] Normalization is probably best solution
+[[2022-01-21 20:33:05]][WARNING] Before VQE run
+[[2022-01-21 20:33:05]][INFO] 25 qubits
+[[2022-01-21 20:33:05]][DEBUG] Before ansatz gen
+[[2022-01-21 20:33:05]][DEBUG] After ansatz gen
+[[2022-01-21 20:33:05]][DEBUG] Executing vqe
+[[2022-01-21 20:33:05]][DEBUG] Initializing 25 qubits
+[[2022-01-21 20:33:05]][DEBUG] Setting seed to 1997
+[[2022-01-21 20:34:45]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-21 20:34:45]][WARNING] are these really good ones?
+Final opt-val: 125145046.000000
 Final opt-config: 0000000000000000000000001
-Final hit-rate: 0.000124
-[[2022-01-02 20:23:59]][DEBUG] Destroying qureg
-[[2022-01-02 20:23:59]][DEBUG] Vqe execution done
-Min QUBO: 103657631.000000
-[[2022-01-02 20:23:59]][WARNING] VQE run
-[[2022-01-02 20:23:59]][DEBUG] NOW FOLLOWS X VECTOR
+Final hit-rate: 0.013670
+[[2022-01-22 00:10:38]][DEBUG] Destroying qureg
+[[2022-01-22 00:10:38]][DEBUG] Vqe execution done
+Min QUBO: 125145046.000000
+[[2022-01-22 00:10:38]][WARNING] VQE run
+[[2022-01-22 00:10:38]][DEBUG] NOW FOLLOWS X VECTOR
 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-[[2022-01-02 20:23:59]][WARNING] Double check: 103657631 passed: TRUE
-[[2022-01-02 20:23:59]][INFO] Running 55_25
-[[2022-01-02 20:23:59]][WARNING] calc gso
-[[2022-01-02 20:23:59]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
-[[2022-01-02 20:23:59]][WARNING] Normalization is probably best solution
-[[2022-01-02 20:23:59]][WARNING] Before VQE run
-[[2022-01-02 20:23:59]][INFO] 25 qubits
-[[2022-01-02 20:23:59]][DEBUG] Before ansatz gen
-[[2022-01-02 20:23:59]][DEBUG] After ansatz gen
-[[2022-01-02 20:23:59]][DEBUG] Executing vqe
-[[2022-01-02 20:23:59]][DEBUG] Initializing 25 qubits
-[[2022-01-02 20:23:59]][DEBUG] Setting seed to 1997
-[[2022-01-02 20:25:34]][WARNING] f: Constant Alpha: 0.175000
-Final opt-val: 139094858.000000
-Final opt-config: 0000000000000000000001000
-Final hit-rate: 0.125935
-[[2022-01-03 01:14:46]][DEBUG] Destroying qureg
-[[2022-01-03 01:14:46]][DEBUG] Vqe execution done
-Min QUBO: 139094858.000000
-[[2022-01-03 01:14:46]][WARNING] VQE run
-[[2022-01-03 01:14:46]][DEBUG] NOW FOLLOWS X VECTOR
-0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-[[2022-01-03 01:14:46]][WARNING] Double check: 139094858 passed: TRUE
-[[2022-01-03 01:14:46]][INFO] Running 56_25
-[[2022-01-03 01:14:46]][WARNING] calc gso
-[[2022-01-03 01:14:46]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
-[[2022-01-03 01:14:46]][WARNING] Normalization is probably best solution
-[[2022-01-03 01:14:46]][WARNING] Before VQE run
-[[2022-01-03 01:14:46]][INFO] 25 qubits
-[[2022-01-03 01:14:46]][DEBUG] Before ansatz gen
-[[2022-01-03 01:14:46]][DEBUG] After ansatz gen
-[[2022-01-03 01:14:46]][DEBUG] Executing vqe
-[[2022-01-03 01:14:46]][DEBUG] Initializing 25 qubits
-[[2022-01-03 01:14:46]][DEBUG] Setting seed to 1997
-[[2022-01-03 01:16:20]][WARNING] f: Constant Alpha: 0.175000
-Final opt-val: 104182535.000000
+[[2022-01-22 00:10:38]][WARNING] Double check: 125145046 passed: TRUE
+[[2022-01-22 00:10:38]][INFO] Running 126_25
+[[2022-01-22 00:10:38]][WARNING] calc gso
+[[2022-01-22 00:10:38]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-22 00:10:38]][WARNING] Normalization is probably best solution
+[[2022-01-22 00:10:38]][WARNING] Before VQE run
+[[2022-01-22 00:10:38]][INFO] 25 qubits
+[[2022-01-22 00:10:38]][DEBUG] Before ansatz gen
+[[2022-01-22 00:10:38]][DEBUG] After ansatz gen
+[[2022-01-22 00:10:38]][DEBUG] Executing vqe
+[[2022-01-22 00:10:38]][DEBUG] Initializing 25 qubits
+[[2022-01-22 00:10:38]][DEBUG] Setting seed to 1997
+[[2022-01-22 00:12:18]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-22 00:12:18]][WARNING] are these really good ones?
+Final opt-val: 91341179.000000
 Final opt-config: 0000000000000000000000001
-Final hit-rate: 0.048492
-[[2022-01-03 05:42:25]][DEBUG] Destroying qureg
-[[2022-01-03 05:42:25]][DEBUG] Vqe execution done
-Min QUBO: 104182535.000000
-[[2022-01-03 05:42:25]][WARNING] VQE run
-[[2022-01-03 05:42:25]][DEBUG] NOW FOLLOWS X VECTOR
+Final hit-rate: 0.000611
+[[2022-01-22 05:24:51]][DEBUG] Destroying qureg
+[[2022-01-22 05:24:51]][DEBUG] Vqe execution done
+Min QUBO: 91341179.000000
+[[2022-01-22 05:24:51]][WARNING] VQE run
+[[2022-01-22 05:24:51]][DEBUG] NOW FOLLOWS X VECTOR
 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-[[2022-01-03 05:42:25]][WARNING] Double check: 104182535 passed: TRUE
-[[2022-01-03 05:42:25]][INFO] Running 57_25
-[[2022-01-03 05:42:25]][WARNING] calc gso
-[[2022-01-03 05:42:25]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
-[[2022-01-03 05:42:25]][WARNING] Normalization is probably best solution
-[[2022-01-03 05:42:25]][WARNING] Before VQE run
-[[2022-01-03 05:42:25]][INFO] 25 qubits
-[[2022-01-03 05:42:25]][DEBUG] Before ansatz gen
-[[2022-01-03 05:42:25]][DEBUG] After ansatz gen
-[[2022-01-03 05:42:25]][DEBUG] Executing vqe
-[[2022-01-03 05:42:25]][DEBUG] Initializing 25 qubits
-[[2022-01-03 05:42:25]][DEBUG] Setting seed to 1997
-[[2022-01-03 05:43:59]][WARNING] f: Constant Alpha: 0.175000
-Final opt-val: 131158670.000000
-Final opt-config: 0000000000000000000000001
-Final hit-rate: 0.000094
-[[2022-01-03 09:11:54]][DEBUG] Destroying qureg
-[[2022-01-03 09:11:54]][DEBUG] Vqe execution done
-Min QUBO: 131158670.000000
-[[2022-01-03 09:11:54]][WARNING] VQE run
-[[2022-01-03 09:11:54]][DEBUG] NOW FOLLOWS X VECTOR
-1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-[[2022-01-03 09:11:54]][WARNING] Double check: 131158670 passed: TRUE
-[[2022-01-03 09:11:54]][INFO] Running 58_25
-[[2022-01-03 09:11:54]][WARNING] calc gso
-[[2022-01-03 09:11:54]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
-[[2022-01-03 09:11:54]][WARNING] Normalization is probably best solution
-[[2022-01-03 09:11:54]][WARNING] Before VQE run
-[[2022-01-03 09:11:54]][INFO] 25 qubits
-[[2022-01-03 09:11:54]][DEBUG] Before ansatz gen
-[[2022-01-03 09:11:54]][DEBUG] After ansatz gen
-[[2022-01-03 09:11:54]][DEBUG] Executing vqe
-[[2022-01-03 09:11:54]][DEBUG] Initializing 25 qubits
-[[2022-01-03 09:11:54]][DEBUG] Setting seed to 1997
-[[2022-01-03 09:13:28]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-22 05:24:51]][WARNING] Double check: 91341179 passed: TRUE
+[[2022-01-22 05:24:51]][INFO] Running 127_25
+[[2022-01-22 05:24:51]][WARNING] calc gso
+[[2022-01-22 05:24:51]][WARNING] Beware of overflows!! Create gmp qiskit or normalize to lower vals
+[[2022-01-22 05:24:51]][WARNING] Normalization is probably best solution
+[[2022-01-22 05:24:51]][WARNING] Before VQE run
+[[2022-01-22 05:24:51]][INFO] 25 qubits
+[[2022-01-22 05:24:51]][DEBUG] Before ansatz gen
+[[2022-01-22 05:24:51]][DEBUG] After ansatz gen
+[[2022-01-22 05:24:51]][DEBUG] Executing vqe
+[[2022-01-22 05:24:51]][DEBUG] Initializing 25 qubits
+[[2022-01-22 05:24:51]][DEBUG] Setting seed to 1997
+[[2022-01-22 05:26:31]][WARNING] f: Constant Alpha: 0.175000
+[[2022-01-22 05:26:31]][WARNING] are these really good ones?
+Final opt-val: 103268222.000000
+Final opt-config: 0001000000000000000000000
+Final hit-rate: 0.000112
+[[2022-01-22 10:10:56]][DEBUG] Destroying qureg
+[[2022-01-22 10:10:56]][DEBUG] Vqe execution done
+Min QUBO: 103268222.000000
+[[2022-01-22 10:10:56]][WARNING] VQE run
+[[2022-01-22 10:10:56]][DEBUG] NOW FOLLOWS X VECTOR
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 
+[[2022-01-22 10:10:56]][WARNING] Double check: 103268222 passed: TRUE

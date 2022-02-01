@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 from glob import glob
 
-dims=[15,16,17,18,19,20,21,22,23]
+dims=[15,16,17,18,19,20,21,22,23,24,25]
 means = []
 variances = []
 stds = []
@@ -55,6 +55,9 @@ solved_mean=np.array(solved_mean)
 plt.errorbar(dims, means, stds, ls='--', capsize=2)
 #plt.fill_between(dims, lbs, ubs, alpha=.1)
 plt.plot(dims, solved_mean)
+
+print(means)
+print(stds)
 
 plt.ylim((0,1))
 plt.xlabel("Rank")
