@@ -209,12 +209,18 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 
 	int iteration_i = 0;
 
+	std::ofstream output_file("../experiment_files/tempfile.txt",std::fstream::trunc);
+	output_file << fixed << showpoint;
+	output_file << setprecision(10);
+
 	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
 
 		double ground_state_overlap;
 		double expectation = acc->calc_expectation(buffer, x, iteration_i++, &ground_state_overlap);
 		buffer->intermediateEnergies.push_back(expectation);
 		buffer->intermediateGroundStateOverlaps.push_back(ground_state_overlap);
+		output_file<<expectation<<" "<<ground_state_overlap<<"\n";
+		output_file.flush();
 		//logw(std::to_string(expectation));
 		return (expectation);
 

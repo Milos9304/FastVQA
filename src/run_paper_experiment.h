@@ -31,14 +31,17 @@ public:
 	int num_ranks;
 	int rank_min;
 	int dim;
+	std::string dataset_sols, dataset_matrices;
 
 	std::vector<MatrixInt> matrices;
 	std::vector<Solution> dataset;
 
-	SolutionDataset(int num_ranks, int rank_min, int dim){
+	SolutionDataset(int num_ranks, int rank_min, int dim, std::string dataset_name){
 		this->num_ranks = num_ranks;
 		this->rank_min = rank_min;
 		this->dim = dim;
+		this->dataset_sols=dataset_name+".csv";
+		this->dataset_matrices=dataset_name+"_matrices.csv";
 	}
 
 	void addDataset(Solution s){
@@ -55,7 +58,7 @@ public:
 
 };
 
-SolutionDataset read_experiment_file(int num_ranks, int rank_min, int dim);
-SolutionDataset run_paper_exp(int num_ranks, int rank_min, int dim);
+SolutionDataset read_experiment_file(int num_ranks, int rank_min, int dim, std::string dataset_name);
+SolutionDataset run_paper_exp(int num_ranks, int rank_min, int dim, std::string dataset_name);
 
 #endif /* SSRC_RUN_PAPER_EXP_H_ */

@@ -1,13 +1,12 @@
 #include "run_paper_experiment.h"
 
-SolutionDataset read_experiment_file(int num_ranks, int rank_min, int dim){
-
-	std::ifstream expFile("../paper_experiment/out_higher_dims_small_dims.csv");
-	std::ifstream matrixFile("../paper_experiment/out_higher_dims_small_dims_matrices.csv");
+SolutionDataset read_experiment_file(int num_ranks, int rank_min, int dim, std::string dataset_name){
+	std::ifstream expFile("../paper_experiment/"+dataset_name+".csv");
+	std::ifstream matrixFile("../paper_experiment/"+dataset_name+"_matrices.csv");
 	if(expFile.fail() || matrixFile.fail()){
 		loge("Failed opening experiments file");
 	}
-	SolutionDataset solutionDataset(num_ranks, rank_min, dim);
+	SolutionDataset solutionDataset(num_ranks, rank_min, dim, dataset_name);
 
 	std::string line;
 	int inst_counter = 0;
@@ -93,8 +92,8 @@ SolutionDataset read_experiment_file(int num_ranks, int rank_min, int dim){
 	return solutionDataset;
 }
 
-SolutionDataset run_paper_exp(int num_ranks, int rank_min, int dim){
+SolutionDataset run_paper_exp(int num_ranks, int rank_min, int dim, std::string dataset_name){
 
-	return read_experiment_file(num_ranks, rank_min, dim);
+	return read_experiment_file(num_ranks, rank_min, dim, dataset_name);
 
 }

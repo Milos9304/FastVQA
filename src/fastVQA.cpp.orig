@@ -68,7 +68,6 @@ int main(int ac, char** av){
 		auto help_option     = op.add<Switch>("h", "help", "produce help message");
 		auto qaoa 		     = op.add<Switch>("", "qaoa", "run qaoa algorithm");
 		auto vqe 		     = op.add<Switch>("", "vqe", "run vqe algorithm");
-		auto super_instance  = op.add<Switch>("", "superInstance", "");
 		auto ansatz_name     = op.add<Value<std::string>>("a", "ansatz","Ry_CNOT_all2all_Ry/qaoa/EfficientSU2", "Ry_CNOT_all2all_Ry");
 		auto seed_option 	 = op.add<Value<int>>("", "seed", "seed for the experiments", seed);
 		//auto enumeration     = op.add<Switch>("", "enum", "enumerate all qubo configurations");
@@ -118,9 +117,7 @@ int main(int ac, char** av){
 		std::vector<Lattice> lattices_in;
 		std::vector</*AbstractLatticeInput**/Lattice*> lattices;
 
-		std::string qubit_assignment;
-
-		if(paper_exp->is_set() || super_instance->is_set()){
+		if(paper_exp->is_set()){
 
 			acceleratorOptions.samples_cut_ratio=initial_alpha->value();
 			acceleratorOptions.final_alpha=final_alpha->value();
@@ -132,26 +129,13 @@ int main(int ac, char** av){
 
 			loge("Gaussian heuristics not implemented for low rank matrices. Returning 1.");
 
-			std::shared_ptr<SolutionDataset> solutionDataset;
-			if(paper_exp-> is_set())
-				solutionDataset = std::make_shared<SolutionDataset>(run_paper_exp(16, 10, 180, "out_higher_dims_small_dims"));
-			else{
-				//SolutionDataset dataset_temp =
-				qubit_assignment = "   2     2    0     2    2    2     2    2    2    2    0    2    0    2    0    2    0    0    2    0    2    0     2    2    0    0    0    0    0    2";
-				                    (0.0, -1.0, 0.0, -1.0, 1.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
-
-0
-				solutionDataset = std::make_shared<SolutionDataset>(run_paper_exp(30, 1, 180, "super_instance"));
-			}
-
-			loge("here");
-
-			std::pair<std::vector<MatrixInt>, std::vector<Solution>> dataset = solutionDataset->getMatricexAndDataset();
+			SolutionDataset solutionDataset = run_paper_exp(16, 10, 180);
+			std::pair<std::vector<MatrixInt>, std::vector<Solution>> dataset = solutionDataset.getMatricexAndDataset();
 			std::vector<MatrixInt> matrices = std::get<0>(dataset);
 			std::vector<Solution> solutions = std::get<1>(dataset);
 
-			int i = rank_reduce->value() - solutionDataset->rank_min;
-			if(i < 0 || i >= solutionDataset->num_ranks){
+			int i = rank_reduce->value() - solutionDataset.rank_min;
+			if(i < 0 || i >= solutionDataset.num_ranks){
 				logw("Invalid rank_reduce value. Will fetch the first matrix");
 				i = 0;
 			}
@@ -165,7 +149,7 @@ int main(int ac, char** av){
 				if(rank_reduce->value() == 0)
 					i++;
 				else
-					i+=solutionDataset->num_ranks;//-1;
+					i+=solutionDataset.num_ranks;
 
 				//logw("Loading only one lattice");
 				//break;
@@ -220,7 +204,7 @@ int main(int ac, char** av){
 		mapOptions->verbose = debug->is_set();
 		mapOptions->num_qbits_per_x=qubits_per_x->value();
 		mapOptions->penalty=overlap_penalty->value();
-		if(ansatz_name->value()!="qaoa" && (overlap_trick->is_set() || overlap_penalty->value() == 0))
+		if(overlap_trick->is_set() || overlap_penalty->value() == 0)
 			mapOptions->pen_mode = MapOptions::no_hml_penalization;
 		else
 			mapOptions->pen_mode = MapOptions::penalty_all;
@@ -327,7 +311,11 @@ int main(int ac, char** av){
 				//if(!passed)
 				//	throw;
 
-				std::ofstream output_file("../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/statsfile_"+lattice->name+".txt");
+<<<<<<< HEAD
+				std::ofstream output_file(statsfile);
+=======
+				std::ofstream output_file("../experiment_files/rank_"+std::to_string(rank_reduce->value())+"/statsfile_qaoa_"+lattice->name+".txt");
+>>>>>>> f11fa4270dfd70f5e8b53560b02d2339fe29536d
 				output_file << fixed << showpoint;
 				output_file << setprecision(10);
 
