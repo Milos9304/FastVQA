@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 from glob import glob
 
-dims=[15,16,17,18,19,20,21,22,23,24,25]
+#dims=[15,16,17,18,19,20,21,22,23,24]
+dims=[19,20,21,22,23,24,25]
 means = []
 variances = []
 stds = []

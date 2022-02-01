@@ -25,17 +25,19 @@ class Qaoa{
 
 	public:
 
-		static void run_qaoa(ExperimentBuffer* buffer, std::pair<std::vector<double>, std::vector<int>>, std::string name, ExecutionStatistics* execStats, QAOAOptions* options);
-		static void run_qaoa(ExperimentBuffer* buffer, std::string hamiltonian, std::string name, ExecutionStatistics* execStats, QAOAOptions* options);
-		static void run_qaoa(ExperimentBuffer* buffer, std::string hamiltonian, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, QAOAOptions* options);
-		static void run_qaoa(ExperimentBuffer* buffer, std::string hamiltonian, std::pair<std::vector<double>, std::vector<int>> hamiltonian2, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, QAOAOptions* options);
+		void run_qaoa(ExperimentBuffer* buffer, Hamiltonian* hamiltonian, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, QAOAOptions* options);
 
-		static void run_qaoa_slave_process();
+		//static void run_qaoa_slave_process();
 
 	private:
 
-		static void _run_qaoa(ExperimentBuffer* buffer, std::string hamiltonian, std::pair<std::vector<double>, std::vector<int>> hamiltonian2, std::string name, indicators::ProgressBar* bar, ExecutionStatistics* execStats, QAOAOptions* options);
+		Ansatz ansatz;
 
+		int num_qubits;
+		int num_params;
+		int max_iters;
+
+		void execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, int zero_reference_state, Hamiltonian* hamiltonian);
 };
 
 

@@ -10,52 +10,7 @@
 #include "mpi.h"
 
 void Qaoa::run_qaoa(ExperimentBuffer* buffer,
-		std::string hamiltonian,
-		std::string name,
-		ExecutionStatistics* executionStats,
-		QAOAOptions* qaoaOptions){
-
-	Qaoa::_run_qaoa(buffer, hamiltonian, std::pair<std::vector<double>, std::vector<int>>(), name, nullptr, executionStats, qaoaOptions);
-
-}
-
-void Qaoa::run_qaoa(ExperimentBuffer* buffer,
-		std::pair<std::vector<double>, std::vector<int>> hamiltonian,
-		std::string name,
-		ExecutionStatistics* executionStats,
-		QAOAOptions* qaoaOptions){
-
-	Qaoa::_run_qaoa(buffer, "", hamiltonian, name, nullptr, executionStats, qaoaOptions);
-
-}
-
-
-void Qaoa::run_qaoa(ExperimentBuffer* buffer,
-		std::string hamiltonian,
-		std::string name,
-		indicators::ProgressBar* bar,
-		ExecutionStatistics* executionStats,
-		QAOAOptions* qaoaOptions){
-
-	Qaoa::_run_qaoa(buffer, hamiltonian, std::pair<std::vector<double>, std::vector<int>>(), name, bar, executionStats, qaoaOptions);
-
-}
-
-void Qaoa::run_qaoa(ExperimentBuffer* buffer,
-		std::string hamiltonian,
-		std::pair<std::vector<double>, std::vector<int>> hamiltonian2,
-		std::string name,
-		indicators::ProgressBar* bar,
-		ExecutionStatistics* executionStats,
-		QAOAOptions* qaoaOptions){
-
-	Qaoa::_run_qaoa(buffer, hamiltonian, hamiltonian2, name, bar, executionStats, qaoaOptions);
-
-}
-
-void Qaoa::_run_qaoa(ExperimentBuffer* buffer,
-		std::string hamiltonian,
-		std::pair<std::vector<double>, std::vector<int>> hamiltonian2,
+		Hamiltonian* hamiltonian,
 		std::string name,
 		indicators::ProgressBar* bar,
 		ExecutionStatistics* executionStats,
@@ -73,6 +28,31 @@ void Qaoa::_run_qaoa(ExperimentBuffer* buffer,
 	   qaoaOptions->progress_bar = bar;
 
    qaoaOptions->execStats = executionStats;
+
+   loge("kokot");
+   num_qubits = hamiltonian->nbQubits;
+   ansatz = getAnsatz("qaoa", num_qubits, 1997);
+   num_params = ansatz.num_params;
+
+
+   logd("Executing qaoa");
+   execute(buffer, qaoaOptions->accelerator, qaoaOptions->optimizer, qaoaOptions->zero_reference_state, hamiltonian);
+   logd("Vqe execution done");
+
+   if(qaoaOptions->saveIntermediate){
+   std::vector<double> params = buffer->opt_params;
+   double expected_energy = buffer->expected_energy;
+   double sv_energy = buffer->opt_val;
+   double hit_rate = buffer->hit_rate;
+
+   saveProgress(qaoaOptions->s_intermediateName, params, expected_energy, sv_energy, hit_rate);
+   }
+
+	std::cout << "Min QUBO: " << buffer->opt_val << "\n";
+	//std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
+
+	qaoaOptions->outfile.close();
+
 
    //xacc::setOption("quest-verbose", "true");
    //xacc::setOption("quest-debug", "true");
@@ -237,8 +217,80 @@ void Qaoa::_run_qaoa(ExperimentBuffer* buffer,
 */
 }
 
-void Qaoa::run_qaoa_slave_process(){
+void Qaoa::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, int zero_reference_state, Hamiltonian* hamiltonian){
+
+	acc->options.zero_reference_state = zero_reference_state;
+	acc->initialize(hamiltonian);
+
+	std::vector<double> intermediateEnergies;
+	acc->set_ansatz(&ansatz);
+
+	if(acc->alpha_f(0,1,1,1)==0)
+		logw("f: Constant Alpha: " + std::to_string(acc->options.samples_cut_ratio));
+	else
+		logw("f: Linear Init alpha: " + std::to_string(acc->options.samples_cut_ratio) + " Final alpha: " +	std::to_string(acc->options.final_alpha) + " Max iters: " + std::to_string(acc->options.max_alpha_iters));
+
+	int iteration_i = 0;
+
+	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
+
+		double ground_state_overlap;
+		double expectation = acc->calc_expectation(buffer, x, iteration_i++, &ground_state_overlap);
+		buffer->intermediateEnergies.push_back(expectation);
+		buffer->intermediateGroundStateOverlaps.push_back(ground_state_overlap);
+		//logw(std::to_string(expectation));
+		return (expectation);
+
+	}, num_params);
+
+	std::vector<double> initial_params;
+
+	OptResult result;
+
+		std::vector<double> initialParams;
+		//std::random_device rd;
+		std::mt19937 gen(1997); //rd() instead of 1997
+		std::uniform_real_distribution<> dis(0, 2*3.141592654);
+
+		for(int i = 0; i < ansatz.num_params/2; ++i){
+			initial_params.push_back(dis(gen));
+			initial_params.push_back(dis(gen));
+		}
+
+		std::vector<double> lowerBounds(initial_params.size(), 0);
+		std::vector<double> upperBounds(initial_params.size(), 2*3.141592654);
+
+		result = optimizer->optimize(f, initial_params, 10e-6, max_iters, lowerBounds, upperBounds);
+
+	double finalCost = result.first;
+
+	std::string opt_config;
+
+	/*VQEOptimalConfigEvaluator::evaluate(
+	  			  observable,
+	  			  kernel->operator()(result.second),
+	  			  accelerator,
+	  			  nbSamples,
+	  			  nbQubits,
+	  			  m_maximize,
+	  			  buffer,
+	  			  &optimal_energy,
+	  			  &opt_config,
+	  			  &hit_rate);
+	 */
+	acc->finalConfigEvaluator(buffer, result.second, /*1024*/5000);
+
+	std::cout << "Final opt-val: " << buffer->opt_val << "\n";
+	std::cout << "Final opt-config: " << buffer->opt_config << "\n";
+	std::cout << "Final hit-rate: " << buffer->hit_rate << "\n";
+
+	acc->finalize();
+
+}
+
+
+/*void Qaoa::run_qaoa_slave_process(){
 	//auto acc = xacc::getAccelerator("quest");
 	loge("NOT IMPLEMENTED");
 	throw;
-}
+}*/

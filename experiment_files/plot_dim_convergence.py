@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 from glob import glob
 
-dims=[16,17,18,19,20,21,22,23,24,25]
+#dims=[15,16,17,18,19,20,21,22,23,24,25]
+dims=[25]
 means = []
 variances = []
 stds = []
@@ -79,14 +80,13 @@ for dim in dims:
 means=np.array(means)
 stds=np.array(stds)
 
+print(means)
+print(stds)
+
 plt.errorbar(dims, means, stds, ls='--', capsize=2)
 #plt.fill_between(dims, means-stds, means+stds, alpha=.1)
 plt.fill_between(dims, low_bounds, high_bounds, alpha=.1)
 #plt.ylim((0,1))
-
-print(means)
-print(stds)
-
 plt.title("Convergence time")
 plt.xlabel("Rank")
 plt.ylabel("Time = number of iterations until convergence")
