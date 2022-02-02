@@ -171,8 +171,6 @@ int main(int ac, char** av){
 
 			}
 
-			loge("here");
-
 			std::pair<std::vector<MatrixInt>, std::vector<Solution>> dataset = solutionDataset->getMatricexAndDataset();
 			std::vector<MatrixInt> matrices = std::get<0>(dataset);
 			std::vector<Solution> solutions = std::get<1>(dataset);

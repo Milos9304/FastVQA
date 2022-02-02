@@ -209,7 +209,7 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 
 	int iteration_i = 0;
 
-	std::ofstream output_file("../experiment_files/tempfile.txt",std::fstream::trunc);
+	std::ofstream output_file("tempfile.txt",std::fstream::trunc);
 	output_file << fixed << showpoint;
 	output_file << setprecision(10);
 
