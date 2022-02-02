@@ -452,7 +452,7 @@ int main(int ac, char** av){
 				for(int i = 0; i < buffer.intermediateEnergies.size(); ++i){
 					output_file << buffer.intermediateEnergies[i] << " " << buffer.intermediateGroundStateOverlaps[i] << std::endl;
 				}
-
+				std::cerr<<"Final: " << buffer.opt_val << " " << buffer.hit_rate << " ";
 				output_file << buffer.opt_val << " " << buffer.hit_rate << " ";
 				for(auto &x:x_vect)
 					output_file << x << " ";
