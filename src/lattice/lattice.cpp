@@ -100,7 +100,7 @@ void Lattice::penalize_expr(int penalty, MapOptions::penalty_mode mode, bool pri
 }
 
 
-void Lattice::init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, bool print){
+void Lattice::init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, std::vector<int> x_assignment_opt, bool print){
 
 	Z_NR<mpz_t> coeff;
 
@@ -121,21 +121,61 @@ void Lattice::init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, bool pri
 				x_ids.push_back(id);
 			}
 		}
-	}
 
-	for(int i = 0; i < n_rows; ++i){
-		gso_current->get_int_gram(coeff, i, i);
-		expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(i)), coeff.get_data()/*.coeff(i, i)*/); // G_ii*x_i^2
-		for(int j = 0; j < i; ++j){
-			mpz_class c(gso_current->get_int_gram(coeff, i, j).get_data());
+		for(int i = 0; i < n_rows; ++i){
+			gso_current->get_int_gram(coeff, i, i);
+			expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(i)), coeff.get_data()/*.coeff(i, i)*/); // G_ii*x_i^2
+			for(int j = 0; j < i; ++j){
+				mpz_class c(gso_current->get_int_gram(coeff, i, j).get_data());
 
-			//std::cout << "i" << i << " j" << j << " c"<<c << "\n";
+				//std::cout << "i" << i << " j" << j << " c"<<c << "\n";
 
-			expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(j)), 2*c/*.coeff(i, j)*/); //2*G_ij*xi
+				expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(j)), 2*c/*.coeff(i, j)*/); //2*G_ij*xi
+			}
 		}
+	}else if(mode == MapOptions::x_custom){
+
+		for(int i = 0; i < n_rows; ++i){
+			int q = x_assignment_opt[i];
+			loge(std::to_string(n_rows));
+			if(q == 0){
+				//continue;
+				int id = expression_int->addIntegerVar("x"+std::to_string(i), 0, 0);
+				x_ids.push_back(id);
+			}
+			else if(q == 1){
+				int id = expression_int->addBinaryVar("x"+std::to_string(i));
+				x_ids.push_back(id);
+			}else{
+				int lb = -pow(2, q)/ 2 + 1;
+				int ub = 1-lb;
+
+				int id = expression_int->addIntegerVar("x"+std::to_string(i), lb, ub);
+				x_ids.push_back(id);
+			}
+		}
+
+		for(int i = 0; i < n_rows; ++i){
+			if(x_assignment_opt[i] == 0)
+				continue;
+
+			gso_current->get_int_gram(coeff, i, i);
+			expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(i)), coeff.get_data()/*.coeff(i, i)*/); // G_ii*x_i^2
+			for(int j = 0; j < i; ++j){
+				if(x_assignment_opt[j] == 0)
+					continue;
+				mpz_class c(gso_current->get_int_gram(coeff, i, j).get_data());
+				expression_int->addNewTerm(expression_int->getId("x"+std::to_string(i)), expression_int->getId("x"+std::to_string(j)), 2*c/*.coeff(i, j)*/); //2*G_ij*xi
+			}
+
+		}
+
+	}else{
+		loge("Invalid init_x mode");
+		throw;
 	}
 
-	if(print)
+	if(print||true)
 		expression_int->print();
 
 }
@@ -196,7 +236,7 @@ void Lattice::calcHamiltonian(MapOptions* options, bool print){
 		}
 
 		if(!x_initialized){
-			init_x(options->x_mode, options->num_qbits_per_x, print);
+			init_x(options->qubit_assignment_optional.size() == 0 ? options->x_mode : MapOptions::x_custom, options->num_qbits_per_x, options->qubit_assignment_optional, print);
 			x_initialized = true;
 		}
 
@@ -211,7 +251,7 @@ void Lattice::calcHamiltonian(MapOptions* options, bool print){
 		}
 
 		if(!qubo_generated){
-			generate_qubo(print);
+			generate_qubo(print||true);
 			qubo_generated = true;
 		}
 }

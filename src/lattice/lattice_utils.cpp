@@ -109,10 +109,11 @@ VectorInt Lattice::quboToXvector(std::string measurement){
 
 	}
 
+	penalized_varId_map[-1]=1; //to account for identity
 	VectorInt res;
 	for(auto &x: x_ids){
-
 		mpq_class val = 0;
+
 		for(auto &id_val:int_to_bin_map[x]){
 			val += id_val.second * penalized_varId_map[id_val.first]; //binary var times its coeff
 		}

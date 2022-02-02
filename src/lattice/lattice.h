@@ -26,7 +26,7 @@ class MapOptions{
 		 * x_symmetric: x_i \ in [-2^(B-1) + 1 , 2^(B-1)]
 		 *
 		 * */
-		enum x_init_mode { x_symmetric };
+		enum x_init_mode { x_symmetric, x_custom };
 		enum bin_mapping { naive_overapprox };
 
 		/*
@@ -43,6 +43,7 @@ class MapOptions{
 
 		int penalty;
 		int num_qbits_per_x;
+		std::vector<int> qubit_assignment_optional;
 
 		MapOptions(x_init_mode x_mode=x_symmetric,
 				bin_mapping bin_map=naive_overapprox,
@@ -136,7 +137,7 @@ class Lattice {
 		std::map<int, int> qbit_to_varId_map;
 
 		bool x_initialized = false;
-		void init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, bool print=false);
+		void init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, std::vector<int> x_assignment_opt, bool print=false);
 
 		std::vector<int> x_ids;
 		std::map<int, std::map<int, mpq_class>> int_to_bin_map;

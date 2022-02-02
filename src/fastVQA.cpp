@@ -120,7 +120,8 @@ int main(int ac, char** av){
 		std::vector<Lattice> lattices_in;
 		std::vector</*AbstractLatticeInput**/Lattice*> lattices;
 
-		std::string qubit_assignment;
+		std::string qubit_assignment_str;
+		std::vector<int> qubit_assignment;
 
 		if(paper_exp->is_set() || super_instance->is_set()){
 
@@ -139,11 +140,35 @@ int main(int ac, char** av){
 				solutionDataset = std::make_shared<SolutionDataset>(run_paper_exp(16, 10, 180, "out_higher_dims_small_dims"));
 			else{
 				//SolutionDataset dataset_temp =
-				qubit_assignment = "   2     2    0     2    2    2     2    2    2    2    0    2    0    2    0    2    0    0    2    0    2    0     2    2    0    0    0    0    0    2";
-				                    (0.0, -1.0, 0.0, -1.0, 1.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
+				qubit_assignment_str = "     0    2     2    0    0    2    0    2    0    2    2    0     2    2    0    0    2    0    0    2    2    2    0    2    0    0    2    0    0    2";
+				//                        (0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
-0
 				solutionDataset = std::make_shared<SolutionDataset>(run_paper_exp(30, 1, 180, "super_instance"));
+				int num_qubits_assigned = 0;
+
+				for(int i = 0; i < qubit_assignment_str.size(); ++i){
+					switch(qubit_assignment_str[i]){
+						case '0':
+							qubit_assignment.push_back(0);
+							break;
+						case '1':
+							num_qubits_assigned += 1;
+							qubit_assignment.push_back(1);
+							break;
+						case '2':
+							num_qubits_assigned += 2;
+							qubit_assignment.push_back(2);
+							break;
+						case ' ':
+							break;
+						default:
+							loge("Invalid qubit assignment string");
+							throw;
+					}
+				}
+
+				assert(num_qubits_assigned == 30);
+
 			}
 
 			loge("here");
@@ -152,8 +177,8 @@ int main(int ac, char** av){
 			std::vector<MatrixInt> matrices = std::get<0>(dataset);
 			std::vector<Solution> solutions = std::get<1>(dataset);
 
-			int i = rank_reduce->value() - solutionDataset.rank_min;
-			if(i < 0 || i >= solutionDataset.num_ranks){
+			int i = rank_reduce->value() - solutionDataset->rank_min;
+			if(i < 0 || i >= solutionDataset->num_ranks){
 				logw("Invalid rank_reduce value. Will fetch the first matrix");
 				i = 0;
 			}
@@ -230,6 +255,9 @@ int main(int ac, char** av){
 		mapOptions->verbose = debug->is_set();
 		mapOptions->num_qbits_per_x=qubits_per_x->value();
 		mapOptions->penalty=overlap_penalty->value();
+		if(qubit_assignment.size() > 0)
+			mapOptions->qubit_assignment_optional = qubit_assignment;
+
 		if(!overlap_trick->is_set()){
 			mapOptions->pen_mode = MapOptions::no_hml_penalization;
 			logw("no hml penalization");
@@ -386,6 +414,9 @@ int main(int ac, char** av){
 					current_lattice = lattice->get_orig_lattice();
 					cols = current_lattice->c;
 				}
+				//qubit_assignment_str = "     0    2     2    0    0    2    0    2    0    2    2    0     2    2    0    0    2    0    0    2    2    2    0    2    0    0    2    0    0    2";
+				//buffer.opt_config = "000000000000000000000000000000";
+
 
 				VectorInt x_vect = lattice->quboToXvector(buffer.opt_config);
 
