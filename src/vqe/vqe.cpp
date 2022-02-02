@@ -219,7 +219,11 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 		double expectation = acc->calc_expectation(buffer, x, iteration_i++, &ground_state_overlap);
 		buffer->intermediateEnergies.push_back(expectation);
 		buffer->intermediateGroundStateOverlaps.push_back(ground_state_overlap);
-		std::cerr<<expectation<<" "<<ground_state_overlap<<"\n";
+		std::cerr<<setprecision(15)<<expectation<<" "<<ground_state_overlap<<"\n";
+		std::cerr<<"p:";
+		for(auto &ix:x)
+			std::cerr<<ix<<" ";
+		std::cerr<<"\n";
 		//output_file<<expectation<<" "<<ground_state_overlap<<"\n";
 		//output_file.flush();
 		//logw(std::to_string(expectation));
