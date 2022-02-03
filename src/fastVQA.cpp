@@ -400,7 +400,7 @@ int main(int ac, char** av){
 				vqeOptions->zero_reference_state = lattice->getZeroReferenceState();
 
 				logw("Before VQE run");
-				vqe_instance.run_vqe(&buffer, &hamiltonian, lattice->name, &bar, execStats, vqeOptions);
+				vqe_instance.run_vqe(&buffer, &hamiltonian, lattice->name, &bar, execStats, vqeOptions, seed);
 				logw("VQE run");
 
 				MatrixInt* current_lattice;

@@ -14,7 +14,8 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 		std::string name,
 		indicators::ProgressBar* bar,
 		ExecutionStatistics* executionStats,
-		VQEOptions* vqeOptions){
+		VQEOptions* vqeOptions,
+		int seed){
 
    max_iters = vqeOptions->max_iters;
    bool verbose = vqeOptions->verbose;
@@ -130,7 +131,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 
    	   	 logd("Before ansatz gen");
 
-   	   	 ansatz = getAnsatz(vqeOptions->ansatz_name, num_qubits, 1997);
+   	   	 ansatz = getAnsatz(vqeOptions->ansatz_name, num_qubits, seed);
    	   	 num_params = ansatz.num_params;
 
  	   	 logd("After ansatz gen");
