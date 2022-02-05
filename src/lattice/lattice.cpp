@@ -175,7 +175,7 @@ void Lattice::init_x(MapOptions::x_init_mode mode, int num_qbits_per_x, std::vec
 		throw;
 	}
 
-	if(print||true)
+	if(print)
 		expression_int->print();
 
 }
@@ -213,10 +213,15 @@ void Lattice::init_expr_bin(MapOptions::bin_mapping mapping, bool print){
 				int id = expression_bin->addBinaryVar(name + "_b"+std::to_string(i));
 				subs_expr.emplace(id, pow(2, i));
 
-				if(i < lb_in_binary.size())
+				loge(name + "_b"+std::to_string(i));
+				if(i < lb_in_binary.size()){
 					varId_to_zero_ref_map[id] = (lb_in_binary[lb_in_binary.size()-1-i] == '1') ? 1 : 0;
-				else
+					std::cerr<<varId_to_zero_ref_map[id]<<"\n";
+				}
+				else{
 					varId_to_zero_ref_map[id] = 0;
+					std::cerr<<0<<"\n";
+				}
 			}
 
 		}else{
@@ -262,7 +267,7 @@ void Lattice::calcHamiltonian(MapOptions* options, bool print){
 		}
 
 		if(!qubo_generated){
-			generate_qubo(print||true);
+			generate_qubo(print);
 			qubo_generated = true;
 		}
 }
