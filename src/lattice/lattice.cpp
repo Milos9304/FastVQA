@@ -200,12 +200,23 @@ void Lattice::init_expr_bin(MapOptions::bin_mapping mapping, bool print){
 		if(mapping == MapOptions::naive_overapprox){
 
 			subs_expr.emplace(-1, lb); //set lb to identity coeff
+
+			if(lb > 0)
+				loge("POSITIVE LB NOT IMPLEMENTED");
+
+		    std::string lb_in_binary;
+		    int n = -lb;
+		    while(n!=0) {lb_in_binary=(n%2==0 ?"0":"1")+lb_in_binary; n/=2;}
+
 			for(int i = 0; i < ceil(log2(ub-lb+1)); ++i){
 
 				int id = expression_bin->addBinaryVar(name + "_b"+std::to_string(i));
 				subs_expr.emplace(id, pow(2, i));
 
-				varId_to_zero_ref_map[id]=0; //all zero as no constant is involved in naive_overapprox
+				if(i < lb_in_binary.size())
+					varId_to_zero_ref_map[id] = (lb_in_binary[lb_in_binary.size()-1-i] == '1') ? 1 : 0;
+				else
+					varId_to_zero_ref_map[id] = 0;
 			}
 
 		}else{
