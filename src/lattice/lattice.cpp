@@ -337,12 +337,9 @@ int Lattice::getZeroReferenceState(){
 	for(int i = 0; i < this->getNumQubits(); ++i){
 
 		int var_id = qbit_to_varId_map[i];
-		zero_ref_state += varId_to_zero_ref_map[var_id] == 0 ? 0 : (1<<i);
-
+		zero_ref_state += varId_to_zero_ref_map[var_id] == 0 ? 0 : (1<<(this->getNumQubits()-1-i));
 	}
-
 	return zero_ref_state;
-
 }
 
 void Lattice::reduce_rank(int reduced_rank){
