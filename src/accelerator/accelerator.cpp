@@ -393,11 +393,11 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 
 	int counter = 0;
 	for(auto &index : indexes){
-
 		if(index == options.zero_reference_state){
 			//logw("Zero excluded with counter " + std::to_string(counter) + " where E(0) = " + std::to_string(hamDiag.real[index]));
 			if(hamDiag.real[index]!=0){
 				loge("Tried to exclude something else than zero ground state! Did you run qaoa?");
+				std::cerr<<"Tried to exclude index: " << index << " with energy " << hamDiag.real[index] << "\n";
 			}
 			else{
 				continue;
@@ -407,7 +407,7 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
 
 		if(hamDiag.real[index] == 0){
-			loge("Here we have not exluded zero");
+			loge("Here we have not exluded zero with index " + std::to_string(index));
 		}else
 			ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index));
 		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)
