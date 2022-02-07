@@ -263,8 +263,6 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 	long long int i = 0;
 
 	long long zero_state_index = options.zero_reference_state;
-	if(zero_state_index != 0)
-		logw("Check zero state index!");
 
 	double zero_state_amp = qureg.stateVec.real[zero_state_index]*qureg.stateVec.real[zero_state_index]+qureg.stateVec.imag[zero_state_index]*qureg.stateVec.imag[zero_state_index];
 	double zero_state_amp_per_elem = zero_state_amp / (qureg.numAmpsPerChunk-1);
