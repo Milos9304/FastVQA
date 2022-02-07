@@ -237,10 +237,19 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 	}
 
 	long long int ground_index = ref_hamil_energies[0].second;
-	if(ref_hamil_energies[0].first == 0)
+	int ground_energy = ref_hamil_energies[0].first;
+	if(ground_energy == 0)
 		loge("Zero not excluded properly!");
 
-	*ground_state_overlap_out = qureg.stateVec.real[ground_index]*qureg.stateVec.real[ground_index]+qureg.stateVec.imag[ground_index]*qureg.stateVec.imag[ground_index];
+	//code below calculate overlap with the shortest vector as a sum of overlaps over all feasible solutions
+	int j = 0;
+	*ground_state_overlap_out = 0;
+	while(ref_hamil_energies[j].first <= ground_energy){
+		long long int index = ref_hamil_energies[j].second;
+		*ground_state_overlap_out += qureg.stateVec.real[index]*qureg.stateVec.real[index]+qureg.stateVec.imag[index]*qureg.stateVec.imag[index];
+		j++;
+	}
+	std::cerr<<"This time we have " << j << " shortest vectors in the search space\n";
 
 	/*qureg.stateVec.real[1<<zero_reference_state] = 0;
 	qureg.stateVec.imag[1<<zero_reference_state] = 0;
