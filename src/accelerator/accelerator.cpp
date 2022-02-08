@@ -238,6 +238,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 	long long int ground_index = ref_hamil_energies[0].second;
 	int ground_energy = ref_hamil_energies[0].first;
+	logd("Ground energy is " + std::to_string(ground_energy));
 	if(ground_energy == 0)
 		loge("Zero not excluded properly!");
 
