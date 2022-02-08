@@ -239,8 +239,6 @@ int main(int ac, char** av){
 		vqaOptions->load_ansatz = load_ansatz->is_set();
 		vqaOptions->ansatz_name = ansatz_name->value();
 
-		logd("VQAOptions set");
-
 		if(qaoa->is_set()){
 			qaoaOptions = static_cast<QAOAOptions*>(vqaOptions);
 			qaoaOptions->simplifiedSimulation = true;
@@ -313,6 +311,7 @@ int main(int ac, char** av){
 			ifile.close();
 
 			if(qaoa->is_set()){
+				logi("QAOAs");
 				Qaoa qaoa_instance;
 				ExperimentBuffer buffer;
 				ProgressBar bar{bar_opts(counter, num_lattices, lattice->name, qaoaOptions)};
@@ -388,6 +387,7 @@ int main(int ac, char** av){
 
 
 			}else if(vqe->is_set()){
+				logi("VQE");
 				ProgressBar bar{bar_opts(counter, num_lattices, lattice->name, vqeOptions)};
 
 				vqeOptions->set_default_stats_function(execStats, &bar, lattice);

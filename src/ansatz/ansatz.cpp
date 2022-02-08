@@ -49,9 +49,10 @@ Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int seed){
 
 	}else if(ansatz_type == "qaoa"){
 
-		int p = 1;
+		int p = 2;
 		ansatz.circuit.qaoa_ansatz = true;
 		ansatz.num_params = p * 2;
+		logd("Using p="+std::to_string(p)+" qaoa ansatz");
 
 	}else{
 		std::cerr<<"Unknown ansatz type";

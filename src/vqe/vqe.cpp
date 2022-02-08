@@ -241,15 +241,15 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 		std::vector<double> initialParams;
 		//std::random_device rd;
 		std::mt19937 gen(1997); //rd() instead of 1997
-		std::uniform_real_distribution<> dis(0, 2*3.141592654);
+		std::uniform_real_distribution<> dis(-3.141592654, 3.141592654);
 
 		for(int i = 0; i < ansatz.num_params/2; ++i){
 			initial_params.push_back(dis(gen));
 			initial_params.push_back(dis(gen));
 		}
 
-		std::vector<double> lowerBounds(initial_params.size(), 0);
-		std::vector<double> upperBounds(initial_params.size(), 2*3.141592654);
+		std::vector<double> lowerBounds(initial_params.size(), -3.141592654);
+		std::vector<double> upperBounds(initial_params.size(),  3.141592654);
 
 		result = optimizer->optimize(f, initial_params, 10e-6, max_iters, lowerBounds, upperBounds);
 
