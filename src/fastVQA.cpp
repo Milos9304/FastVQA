@@ -137,7 +137,7 @@ int main(int ac, char** av){
 
 			std::shared_ptr<SolutionDataset> solutionDataset;
 			if(paper_exp-> is_set())
-				solutionDataset = std::make_shared<SolutionDataset>(run_paper_exp(16, 10, 180, "out_higher_dims_small_dims"));
+				solutionDataset = std::make_shared<SolutionDataset>(run_paper_exp(/*16*/25, /*10*/25, 180, "out_higher_dims"/*_small_dims"*/));
 			else{
 				//SolutionDataset dataset_temp =
 				qubit_assignment_str = "     0    2     2    0    0    2    0    2    0    2    2    0     2    2    0    0    2    0    0    2    2    2    0    2    0    0    2    0    0    2";
@@ -198,7 +198,7 @@ int main(int ac, char** av){
 				if(rank_reduce->value() == 0)
 					i++;
 				else
-					i+=solutionDataset->num_ranks;//-1;
+					i+=solutionDataset->num_ranks+1;
 
 				//logw("Loading only one lattice");
 				//break;
