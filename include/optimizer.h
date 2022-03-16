@@ -8,6 +8,7 @@
 #ifndef SRC_OPTIMIZER_H_
 #define SRC_OPTIMIZER_H_
 
+#include <vector>
 #include <functional>
 #include <string>
 

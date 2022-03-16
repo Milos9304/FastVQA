@@ -2,6 +2,7 @@
 #include "logger.h"
 #include <iomanip>
 #include <fstream>
+#include <algorithm>
 
 namespace fastVQA{
 

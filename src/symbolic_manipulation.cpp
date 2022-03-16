@@ -6,7 +6,7 @@
  */
 
 #include "symbolic_manipulation.h"
-
+#include <sstream>
 #include <iomanip>
 #include <iostream>
 
