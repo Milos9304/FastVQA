@@ -36,6 +36,8 @@ set(public_headers
     include/gate.h
     include/optimizer.h
     include/symbolic_manipulation.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/quantum_backends/QuEST/QuEST/include/QuEST.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/quantum_backends/QuEST/QuEST/include/QuEST_precision.h
 )
 	        
 set(quest_src
