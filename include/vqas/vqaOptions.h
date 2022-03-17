@@ -45,10 +45,11 @@ class VQAOptions{
 		// Log the intermediate energies to file
 		bool logEnergies = false;
 
-		//int p=1;
-
 		// Number of measurement samples of final ansatz
 		int nbSamples_calcVarAssignment = 1024;
+
+		// Print calculated expectation after each cycle to the standard output
+		bool expectationToStandardOutput = false;
 
 		//bool calcVarAssignment = false;
 		//bool extendedParametrizedMode = false;

@@ -30,7 +30,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 
    num_qubits = hamiltonian->nbQubits;
 
-   logi(std::to_string(num_qubits) + " qubits", log_level);
+   logd("Running VQE with " + std::to_string(num_qubits) + " qubits", log_level);
 
    /*if(vqeOptions->loadIntermediate){
 	   //double expected_energy, sv_energy, hit_rate;
@@ -71,27 +71,27 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 	ansatz = getAnsatz(options->ansatz_name, num_qubits, 1997);
 	num_params = ansatz.num_params;
 
-   logd("Ansatz generated. Executing vqe..");
-   execute(buffer, options->accelerator, options->optimizer, options->zero_reference_states, hamiltonian);
-   logd("Vqe execution done");
+	logd("Ansatz generated. Executing vqe..");
+	execute(buffer, options->accelerator, options->optimizer, options->zero_reference_states, hamiltonian, options->expectationToStandardOutput);
+	logd("Vqe execution done");
 
-   /*if(vqeOptions->saveIntermediate){
+	/*if(vqeOptions->saveIntermediate){
 	   std::vector<double> params = buffer->opt_params;
 	   double expected_energy = buffer->expected_energy;
 	   double sv_energy = buffer->opt_val;
 	   double hit_rate = buffer->hit_rate;
 
 	   saveProgress(vqeOptions->s_intermediateName, params, expected_energy, sv_energy, hit_rate);
-   }*/
+	}*/
 
-   logi("Min QUBO found: " + std::to_string(buffer->opt_val), log_level);
-   //std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
+	logi("Min QUBO found: " + std::to_string(buffer->opt_val), log_level);
+	//std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
 
-   //vqeOptions->outfile.close();
+	//vqeOptions->outfile.close();
 
 }
 
-void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian){
+void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian, bool logExpecStd){
 
 	acc->options.zero_reference_states = zero_reference_states;
 	acc->initialize(hamiltonian);
@@ -112,7 +112,8 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 		double expectation = acc->calc_expectation(buffer, x, iteration_i++, &ground_state_overlap);
 		buffer->intermediateEnergies.push_back(expectation);
 		buffer->intermediateGroundStateOverlaps.push_back(ground_state_overlap);
-		//logw(std::to_string(expectation));
+		if(logExpecStd)
+			std::cout << std::to_string(expectation) << "\n";
 		return (expectation);
 
 	}, num_params);
