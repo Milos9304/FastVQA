@@ -21,7 +21,7 @@ class Vqe{
 
 	public:
 
-		void run_vqe(ExperimentBuffer* buffer, Hamiltonian* hamiltonian, std::string name, VQEOptions* options);
+		void run_vqe(ExperimentBuffer* buffer, Hamiltonian* hamiltonian, VQEOptions* options);
 
 	private:
 

@@ -14,7 +14,6 @@
 namespace fastVQA{
 void Vqe::run_vqe(ExperimentBuffer* buffer,
 		Hamiltonian* hamiltonian,
-		std::string name,
 		VQEOptions* options){
 
    max_iters = options->max_iters;
