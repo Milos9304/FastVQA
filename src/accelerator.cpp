@@ -482,21 +482,21 @@ void Accelerator::finalize(){
 	destroyQureg(qureg, env);
 }
 
-Accelerator::Accelerator(AcceleratorOptions options){
+Accelerator::Accelerator(std::shared_ptr<AcceleratorOptions> options){
 
-	if(options.accelerator_type != "quest"){
+	if(options->accelerator_type != "quest"){
 		loge("No other accelerator than QuEST implemented");
 		throw;
 	}
-	if(options.alpha_f == "constant"){
+	if(options->alpha_f == "constant"){
 		this->alpha_f= alpha_constant_f;
-	}else if(options.alpha_f == "linear"){
+	}else if(options->alpha_f == "linear"){
 		this->alpha_f= alpha_linear_f;
 	}else{
 		loge("Unknown alpha function name");
 		throw;
 	}
 
-	this->options = options;
+	this->options = *options.get();
 }
 }

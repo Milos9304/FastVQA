@@ -54,7 +54,7 @@ public:
 
 	AcceleratorOptions options;
 
-	Accelerator(AcceleratorOptions options);
+	Accelerator(std::shared_ptr<AcceleratorOptions> options);
 	void initialize(Hamiltonian* hamiltonian);
 	void finalize();
 
