@@ -168,33 +168,6 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 	RefEnergy ground_state = ref_hamil_energies[i-1];
 	i = ground_state.second;
 
-	/*
-		 *
-		 */
-
-
-		std::ofstream output_file("../experiment_files/kokotina.txt");
-		output_file << std::fixed << std::showpoint;
-		output_file << std::setprecision(10);
-		for(long long int i = 0; i < qureg.numAmpsTotal; ++i){
-			output_file << qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i] << "\n";
-		}
-
-		output_file << i << "\n";
-
-		output_file.close();
-		loge("kokotina hotova");
-
-		//throw;
-
-		/*
-		 *
-		 */
-
-		//loge("Delete fstream");
-
-
-
 
 	const int max_qubits=40;
 
@@ -211,10 +184,6 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 	buffer->hit_rate= qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
 
 	//std::sort(amps.begin(), amps.end();
-
-
-
-
 }
 
 
@@ -291,27 +260,21 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		run(ansatz.circuit, x);
 	}
 
-
-
 	long long int ground_index = ref_hamil_energies[0].second;
 	if(ref_hamil_energies[0].first == 0)
 		loge("Zero not excluded properly!");
 
 	*ground_state_overlap_out = qureg.stateVec.real[ground_index]*qureg.stateVec.real[ground_index]+qureg.stateVec.imag[ground_index]*qureg.stateVec.imag[ground_index];
 
-
-
 	//loge("Modified calc expec");
-	return calcExpecDiagonalOp(qureg, hamDiag).real;
+	//return calcExpecDiagonalOp(qureg, hamDiag).real;
 
 	/*qureg.stateVec.real[1<<zero_reference_state] = 0;
 	qureg.stateVec.imag[1<<zero_reference_state] = 0;
 
 	for(unsigned long i = 0; i < qureg.numAmpsPerChunk; ++i){
 		norm+=qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[0]*qureg.stateVec.imag[0];
-	}*/
-
-	/*for(auto &refEnergy : reference_energies_indexes){
+	}*//*for(auto &refEnergy : reference_energies_indexes){
 
 		Complex amp = getAmp(qureg, refEnergy.second);
 		energy += refEnergy.first * (amp.real*amp.real + amp.imag*amp.imag);
@@ -449,6 +412,7 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 	int counter = 0;
 	if(options.zero_reference_states.size() > 1)
 		loge("TODO: Add more zero reference states compatibility");
+
 	for(auto &index : indexes){
 
 		//TODO: add more zero_reference states
@@ -461,6 +425,7 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 				continue;
 			}
 		}counter++;
+
 
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
 
