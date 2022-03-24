@@ -112,7 +112,7 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 		buffer->intermediateEnergies.push_back(expectation);
 		buffer->intermediateGroundStateOverlaps.push_back(ground_state_overlap);
 		if(logExpecStd)
-			std::cout << std::to_string(expectation) << "\n";
+			std::cout << std::to_string(expectation) << std::endl;
 		return (expectation);
 
 	}, num_params);
