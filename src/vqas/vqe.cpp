@@ -17,6 +17,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 		VQEOptions* options){
 
    max_iters = options->max_iters;
+   instance_name = options->instance_name;
    nbSamples_calcVarAssignment = options->nbSamples_calcVarAssignment;
    int log_level = options->log_level;
 
@@ -112,7 +113,7 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 		buffer->intermediateEnergies.push_back(expectation);
 		buffer->intermediateGroundStateOverlaps.push_back(ground_state_overlap);
 		if(logExpecStd)
-			std::cout << std::to_string(expectation) << std::endl;
+			std::cout << instance_name << " "<< std::to_string(expectation) << std::endl;
 		return (expectation);
 
 	}, num_params);

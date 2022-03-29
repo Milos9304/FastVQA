@@ -32,6 +32,8 @@ class Vqe{
 		int max_iters;
 		int nbSamples_calcVarAssignment;
 
+		std::string instance_name;
+
 		void execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian, bool logExpecStd=false);
 };
 }
