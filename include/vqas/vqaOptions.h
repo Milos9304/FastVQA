@@ -51,6 +51,9 @@ class VQAOptions{
 		// Print calculated expectation after each cycle to the standard output
 		bool expectationToStandardOutput = false;
 
+		// Instance name
+		std::string instance_name;
+
 		//bool calcVarAssignment = false;
 		//bool extendedParametrizedMode = false;
 		//bool simplifiedSimulation = true;
