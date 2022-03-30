@@ -29,6 +29,7 @@ set(public_headers
     include/vqas/vqaOptions.h
     include/vqas/qaoaOptions.h
     include/ansatz.h
+    include/cost_function.h
     include/accelerator.h
     include/hamiltonian.h
     include/experimentBuffer.h

@@ -8,19 +8,19 @@
 #ifndef VQAS_VQE_H_
 #define VQAS_VQE_H_
 
-/*#include "../lattice/lattice.h"
-#include "../io/logger.h"
-#include "../io/saveProgress.hpp"
-#include "../io/indicators/progress_bar.hpp"*/
 #include "ansatz.h"
-/*#include "../optimizer/optimizer.h"*/
+#include "cost_function.h"
 #include "vqeOptions.h"
 
+#include <functional>
+
 namespace fastVQA{
+
 class Vqe{
 
 	public:
 
+		void run_vqe(ExperimentBuffer* buffer, CostFunction cost_f, int num_qubits, VQEOptions* options);
 		void run_vqe(ExperimentBuffer* buffer, Hamiltonian* hamiltonian, VQEOptions* options);
 
 	private:
@@ -34,7 +34,14 @@ class Vqe{
 
 		std::string instance_name;
 
+		int log_level;
+
+		void __initialize(ExperimentBuffer* buffer, VQEOptions* options);
+
+		void execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, std::vector<long long unsigned int> zero_reference_states, CostFunction cost_f, bool logExpecStd=false);
 		void execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian, bool logExpecStd=false);
+		void __execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, bool logExpecStd);
+
 };
 }
 

@@ -260,41 +260,26 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		run(ansatz.circuit, x);
 	}
 
-	long long int ground_index = ref_hamil_energies[0].second;
 	if(ref_hamil_energies[0].first == 0)
 		loge("Zero not excluded properly!");
 
+	long long int ground_index = ref_hamil_energies[0].second;
 	*ground_state_overlap_out = qureg.stateVec.real[ground_index]*qureg.stateVec.real[ground_index]+qureg.stateVec.imag[ground_index]*qureg.stateVec.imag[ground_index];
-
-	//loge("Modified calc expec");
-	//return calcExpecDiagonalOp(qureg, hamDiag).real;
-
-	/*qureg.stateVec.real[1<<zero_reference_state] = 0;
-	qureg.stateVec.imag[1<<zero_reference_state] = 0;
-
-	for(unsigned long i = 0; i < qureg.numAmpsPerChunk; ++i){
-		norm+=qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[0]*qureg.stateVec.imag[0];
-	}*//*for(auto &refEnergy : reference_energies_indexes){
-
-		Complex amp = getAmp(qureg, refEnergy.second);
-		energy += refEnergy.first * (amp.real*amp.real + amp.imag*amp.imag);
-
-	}*/
 
 	double energy=0;
 	double alpha_sum=0;
-	double amp;
+	double amp=0;
 
 	long long unsigned int i = 0;
 
 	std::vector<long long unsigned int> zero_state_indices = options.zero_reference_states;
-
+	long long unsigned int zero_state_index;
 	if(zero_state_indices.size() > 1){
 		loge("TODO: Multiple zero_state_indices not implemented yet");
-	}long long unsigned int zero_state_index = zero_state_indices[0];
+	}zero_state_index = zero_state_indices.size() > 0 ? zero_state_indices[0] : -1;
 
 	double zero_state_amp;
-	if(ansatz.circuit.qaoa_ansatz)
+	if(ansatz.circuit.qaoa_ansatz || zero_state_indices.size() == 0)
 		zero_state_amp = 0;
 	else
 		zero_state_amp = qureg.stateVec.real[zero_state_index]*qureg.stateVec.real[zero_state_index]+qureg.stateVec.imag[zero_state_index]*qureg.stateVec.imag[zero_state_index];
@@ -302,12 +287,10 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 	double zero_state_amp_per_elem = zero_state_amp / (qureg.numAmpsPerChunk-1);
 
 	double alpha = alpha_f(options.samples_cut_ratio, options.final_alpha, iteration_i, options.max_alpha_iters);
-	//loge(std::to_string(alpha));
 
 	while(alpha_sum < alpha){
 
 		 if(i >= ref_hamil_energies.size()){
-			 //logw("Probably something ain't alright");
 			 break;
 		 }
 
@@ -318,59 +301,48 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 			loge("NOT ENOUGH REF ENERGIES STORED IN MEMORY.");
 		}
 		else{
-			//loge(std::to_string(alpha));
-			//logw(std::to_string(ref_hamil_energies[i].first) + " * " + std::to_string((amp / alpha)));
 			energy += ref_hamil_energies[i].first * (amp / alpha);
-			//loge(std::to_string(amp / alpha));
 		}
 		i++;
-	}//std::cerr<<".";
-	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].first * (amp / alpha);
-	//loge(std::to_string(-((alpha_sum - alpha))*(amp / alpha)));
-
-	/*bool first=true;
-	while(i--){
-		std::cerr<<ref_hamil_energies[i].second<<" "<<ref_hamil_energies[i].first<<" p: "<<
-		(first?(1-(alpha_sum - alpha)):1) * ((zero_state_amp_per_elem + qureg.stateVec.real[ref_hamil_energies[i].second]*qureg.stateVec.real[ref_hamil_energies[i].second]+qureg.stateVec.imag[ref_hamil_energies[i].second]*qureg.stateVec.imag[ref_hamil_energies[i].second])/alpha)<<"\n";
-		first=false;
 	}
-	std::cerr<<"\n";*/
+	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].first * (amp / alpha);
 
-	/*if(energy == 0){
-		std::cerr<<"." << i-1 << "\n";
-		std::cerr<<ref_hamil_energies[i-1].first << " " << ref_hamil_energies[i-1].second << "\n";
-		throw;
-	}*/
+	return energy;
 
-	return energy/* / alpha*/ ; //normalize
+}
 
-	//QUEST CODE
-		/*Complex localExpec = statevec_calcExpecDiagonalOpLocal(qureg, op);
+void Accelerator::__initialize(int num_qubits){
 
+	unsigned long int keys[1];
+	keys[0] = 1997;
+	seedQuEST(&env, keys, 1);
+	logd("Setting seed to " + std::to_string(keys[0]));
+	logd("Initializing " + std::to_string(num_qubits) + " qubits", options.log_level);
+	this->qureg = createQureg(num_qubits, env);
 
-	    if (qureg.numChunks == 1)
-	        return localExpec;
+}
 
-	    qreal localReal = localExpec.real;
-	    qreal localImag = localExpec.imag;
-	    qreal globalReal, globalImag;
-	    MPI_Allreduce(&localReal, &globalReal, 1, MPI_QuEST_REAL, MPI_SUM, MPI_COMM_WORLD);
-	    MPI_Allreduce(&localImag, &globalImag, 1, MPI_QuEST_REAL, MPI_SUM, MPI_COMM_WORLD);
+void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 
-	    Complex globalExpec;
-	    globalExpec.real = globalReal;
-	    globalExpec.imag = globalImag;
-	    return globalExpec;*/
-	  //QUEST CODE END
+	this->hamiltonian_specified = false;
+	this->__initialize(num_qubits);
 
-	//return calcExpecDiagonalOp(qureg, hamDiag).real;
+	ref_hamil_energies.clear();
+	std::vector<long long unsigned int> indexes(qureg.numAmpsPerChunk);
+	std::iota(indexes.begin(), indexes.end(), 0); //zip with indices
+	std::sort(indexes.begin(), indexes.end(), [&](int i, int j){return cost_function(i) < cost_function(j);}); //non-descending
+
+	for(auto &index : indexes)
+		ref_hamil_energies.push_back(RefEnergy(cost_function(index), index));
 
 }
 
 void Accelerator::initialize(Hamiltonian* hamIn){
 
-	int log_level = options.log_level;
+	this->hamiltonian_specified = true;
+
 	int num_qubits = hamIn->nbQubits;
+	this->__initialize(num_qubits);
 
 	qubits_list = new int[num_qubits]();
 	all_x_list = new pauliOpType[num_qubits]();
@@ -379,15 +351,6 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 		qubits_list[i]=i;
 		all_x_list[i]=PAULI_X;
 	}
-
-	logd("Initializing " + std::to_string(num_qubits) + " qubits", log_level);
-
-	unsigned long int keys[1];
-	keys[0] = 1997;
-	seedQuEST(&env, keys, 1);
-	logd("Setting seed to " + std::to_string(keys[0]));
-
-	qureg = createQureg(num_qubits, env);
 
 	int coeffsSize = hamIn->coeffs.size();
 

@@ -16,85 +16,60 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 		Hamiltonian* hamiltonian,
 		VQEOptions* options){
 
-   max_iters = options->max_iters;
-   instance_name = options->instance_name;
-   nbSamples_calcVarAssignment = options->nbSamples_calcVarAssignment;
-   int log_level = options->log_level;
+	this->num_qubits = hamiltonian->nbQubits;
+	this->__initialize(buffer, options);
 
-   //if(vqeOptions->logEnergies){
-	   //vqeOptions->outfile.rdbuf()->pubsetbuf(0, 0); //disable buffer
-	//   vqeOptions->outfile.open("../experiment_files/statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc); //| std::ios_base::trunc);//std::ios_base::app
-   //}
-
-   //vqeOptions->execStats = executionStats;
-
-   num_qubits = hamiltonian->nbQubits;
-
-   logd("Running VQE with " + std::to_string(num_qubits) + " qubits", log_level);
-
-   /*if(vqeOptions->loadIntermediate){
-	   //double expected_energy, sv_energy, hit_rate;
-	   bool success = loadProgress(vqeOptions->l_intermediateName, &initialParams, &expected_energy, &sv_energy, &hit_rate);
-	   if(success){
-		   if(verbose)
-			   logi("Init params loaded from " + vqeOptions->l_intermediateName);
-	   }else{
-		   loge("Problem loading params from " + vqeOptions->l_intermediateName);
-		   return;
-	   }//
-   }else{
-	   // Init random parameters
-	   //for(int i = 0; i < num_params_total; ++i){
-		 //initialParams.emplace_back(dis(gen));
-	//	   double p=dis(gen);logd(std::to_string(p));
-		//   initialParams.emplace_back(p);
-	   //}
-	   //if(verbose)
-	//	   logi("Random params generated");
-   }
-    */
-   //std::function<void(int, double)> stats_function = stats_func;
-
-   // Doesn't require to prepare the same circuit over and over again, but needs to clone statevect.
-   //auto acc = xacc::getAccelerator("quest",
-   //	   {{"nbQbits", observable->nBits()},
-   //		{"startWithPlusState", true},
-   //		{"repeated_measurement_strategy", true},
-   //		{"hamiltonianProvided", vqeOptions->provideHamiltonian},
-   //	    {"hamiltonianCoeffs", hamiltonian->coeffs},
-   //		{"pauliCodes", hamiltonian->pauliOpts}
-   //	   });
-
-  // auto optimizer = xacc::getOptimizer("nlopt",
-//		   {{"initial-parameters", initialParams}, {"nlopt-maxeval", max_iters}});
-
-	ansatz = getAnsatz(options->ansatz_name, num_qubits, 1997);
-	num_params = ansatz.num_params;
-
-	logd("Ansatz generated. Executing vqe..");
+	logd("Ansatz generated. Executing vqe..", log_level);
 	execute(buffer, options->accelerator, options->optimizer, options->zero_reference_states, hamiltonian, options->expectationToStandardOutput);
-	logd("Vqe execution done");
-
-	/*if(vqeOptions->saveIntermediate){
-	   std::vector<double> params = buffer->opt_params;
-	   double expected_energy = buffer->expected_energy;
-	   double sv_energy = buffer->opt_val;
-	   double hit_rate = buffer->hit_rate;
-
-	   saveProgress(vqeOptions->s_intermediateName, params, expected_energy, sv_energy, hit_rate);
-	}*/
-
-	logi("Min QUBO found: " + std::to_string(buffer->opt_val), log_level);
-	//std::vector<double> params = (*buffer)["opt-params"].as<std::vector<double>>();
-
-	//vqeOptions->outfile.close();
+	logd("Vqe execution done", this->log_level);
+	logi("Min QUBO found: " + std::to_string(buffer->opt_val), this->log_level);
 
 }
 
-void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian, bool logExpecStd){
+void Vqe::run_vqe(ExperimentBuffer* buffer,
+		CostFunction cost_function,
+		int num_qubits,
+		VQEOptions* options){
 
+	this->num_qubits = num_qubits;
+	this->__initialize(buffer, options);
+
+	logd("Ansatz generated. Executing vqe..", log_level);
+	execute(buffer, options->accelerator, options->optimizer, options->zero_reference_states, cost_function, options->expectationToStandardOutput);
+	logd("Vqe execution done", this->log_level);
+	logi("Min QUBO found: " + std::to_string(buffer->opt_val), this->log_level);
+
+}
+
+void Vqe::__initialize(ExperimentBuffer* buffer, VQEOptions* options){
+
+	this->max_iters = options->max_iters;
+	this->instance_name = options->instance_name;
+	this->nbSamples_calcVarAssignment = options->nbSamples_calcVarAssignment;
+	this->log_level = options->log_level;
+
+	logd("Running VQE with " + std::to_string(this->num_qubits) + " qubits", log_level);
+
+	this->ansatz = getAnsatz(options->ansatz_name, this->num_qubits, 1997);
+	this->num_params = ansatz.num_params;
+
+}
+
+
+void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian, bool logExpecStd){
 	acc->options.zero_reference_states = zero_reference_states;
 	acc->initialize(hamiltonian);
+	__execute(buffer, acc, optimizer, logExpecStd);
+}
+
+void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, CostFunction cost_function, bool logExpecStd){
+	acc->options.zero_reference_states = zero_reference_states;
+	loge("Num qubits set to 5");
+	acc->initialize(cost_function, 5);
+	__execute(buffer, acc, optimizer, logExpecStd);
+}
+
+void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, bool logExpecStd){
 
 	std::vector<double> intermediateEnergies;
 	acc->set_ansatz(&ansatz);
@@ -107,7 +82,6 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 	int iteration_i = 0;
 
 	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
-
 		double ground_state_overlap;
 		double expectation = acc->calc_expectation(buffer, x, iteration_i++, &ground_state_overlap);
 		buffer->intermediateEnergies.push_back(expectation);
@@ -137,7 +111,7 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 		std::vector<double> lowerBounds(initial_params.size(), -3.141592654);
 		std::vector<double> upperBounds(initial_params.size(), 3.141592654);
 
-		result = optimizer->optimize(f, initial_params, 10e-6, max_iters, lowerBounds, upperBounds);
+		result = optimizer->optimize(f, initial_params, 10e-6, this->max_iters, lowerBounds, upperBounds);
 
 	}else{
 
@@ -149,8 +123,7 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 		std::vector<double> upperBounds(initial_params.size(),  3.141592654);
 
 		logw("are these really good ones?");
-
-		result = optimizer->optimize(f, initial_params, 10e-6, max_iters, lowerBounds, upperBounds);
+		result = optimizer->optimize(f, initial_params, 10e-6, this->max_iters, lowerBounds, upperBounds);
 	}
 
 	//double finalCost = result.first;

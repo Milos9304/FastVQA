@@ -11,10 +11,10 @@
 #include "QuEST.h"
 #include "hamiltonian.h"
 #include "ansatz.h"
+#include "cost_function.h"
 #include "experimentBuffer.h"
 
 #include <vector>
-#include <functional>
 #include <bitset>
 #include <string>
 
@@ -55,6 +55,8 @@ public:
 	AcceleratorOptions options;
 
 	Accelerator(AcceleratorOptions options);
+
+	void initialize(CostFunction cost_function, int num_qubits);
 	void initialize(Hamiltonian* hamiltonian);
 	void finalize();
 
@@ -71,10 +73,19 @@ private:
 	int *qubits_list;
 	pauliOpType* all_x_list;
 
+	//false - hamiltonian is used
+	//true - cost function is used
+	bool hamiltonian_specified;
+
+	CostFunction cost_function;
+
 	PauliHamil hamiltonian;
 	RefEnergies ref_hamil_energies;
 
     DiagonalOp hamDiag;
+
+    void __initialize(int num_qubits);
+
     void run(Circuit circuit, const std::vector<double> &x);
 
     void apply_gate(Gate gate, double param);
