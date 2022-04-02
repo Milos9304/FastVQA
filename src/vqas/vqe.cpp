@@ -71,6 +71,8 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 
 void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, bool logExpecStd){
 
+	std::string instance_prefix = "{{"+instance_name+"}} ";
+
 	std::vector<double> intermediateEnergies;
 	acc->set_ansatz(&ansatz);
 
@@ -87,7 +89,7 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 		buffer->intermediateEnergies.push_back(expectation);
 		buffer->intermediateGroundStateOverlaps.push_back(ground_state_overlap);
 		if(logExpecStd)
-			std::cout << instance_name << " "<< std::to_string(expectation) << std::endl;
+			std::cout << instance_prefix << "e=" << std::to_string(expectation) << std::endl;
 		return (expectation);
 
 	}, num_params);
@@ -132,9 +134,9 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 
 	acc->finalConfigEvaluator(buffer, result.second, nbSamples_calcVarAssignment);
 
-	std::cout << "Final opt-val: " << buffer->opt_val << "\n";
-	std::cout << "Final opt-config: " << buffer->opt_config << "\n";
-	std::cout << "Final hit-rate: " << buffer->hit_rate << "\n";
+	std::cout << instance_prefix << "Final opt-val: " << buffer->opt_val << std::endl;
+	std::cout << instance_prefix << "Final opt-config: " << buffer->opt_config << std::endl;
+	std::cout << instance_prefix << "Final hit-rate: " << buffer->hit_rate << std::endl;
 
 	acc->finalize();
 
