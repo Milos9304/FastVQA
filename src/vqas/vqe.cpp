@@ -64,8 +64,8 @@ void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimiz
 
 void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, CostFunction cost_function, bool logExpecStd){
 	acc->options.zero_reference_states = zero_reference_states;
-	loge("Num qubits set to 5");
-	acc->initialize(cost_function, 5);
+	acc->initialize(cost_function, this->num_qubits);
+	logd("Num qubits set to " + std::to_string(this->num_qubits));
 	__execute(buffer, acc, optimizer, logExpecStd);
 }
 
@@ -77,9 +77,11 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 	acc->set_ansatz(&ansatz);
 
 	if(acc->alpha_f(0,1,1,1)==0)
-		logw("f: Constant Alpha: " + std::to_string(acc->options.samples_cut_ratio));
+		if(log_level <= 2)
+			logw("f: Constant Alpha: " + std::to_string(acc->options.samples_cut_ratio));
 	else
-		logw("f: Linear Init alpha: " + std::to_string(acc->options.samples_cut_ratio) + " Final alpha: " +	std::to_string(acc->options.final_alpha) + " Max iters: " + std::to_string(acc->options.max_alpha_iters));
+		if(log_level <= 2)
+			logw("f: Linear Init alpha: " + std::to_string(acc->options.samples_cut_ratio) + " Final alpha: " +	std::to_string(acc->options.final_alpha) + " Max iters: " + std::to_string(acc->options.max_alpha_iters));
 
 	int iteration_i = 0;
 
@@ -124,19 +126,19 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 		std::vector<double> lowerBounds(initial_params.size(), -3.141592654);
 		std::vector<double> upperBounds(initial_params.size(),  3.141592654);
 
-		logw("are these really good ones?");
+		//logw("are these really good ones?");
 		result = optimizer->optimize(f, initial_params, 10e-6, this->max_iters, lowerBounds, upperBounds);
 	}
 
 	//double finalCost = result.first;
 
 	std::string opt_config;
-
 	acc->finalConfigEvaluator(buffer, result.second, nbSamples_calcVarAssignment);
-
-	std::cout << instance_prefix << "Final opt-val: " << buffer->opt_val << std::endl;
-	std::cout << instance_prefix << "Final opt-config: " << buffer->opt_config << std::endl;
-	std::cout << instance_prefix << "Final hit-rate: " << buffer->hit_rate << std::endl;
+	if(log_level <= 1){
+		logi(instance_prefix + "Final opt-val: " + std::to_string(buffer->opt_val));
+		logi(instance_prefix + "Final opt-config: " + buffer->opt_config);
+		logi(instance_prefix + "Final hit-rate: " + std::to_string(buffer->hit_rate));
+	}
 
 	acc->finalize();
 

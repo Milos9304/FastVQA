@@ -38,6 +38,8 @@ struct AcceleratorOptions{
 	double final_alpha=1;
 	int max_alpha_iters=1000;
 
+	bool exclude_zero_state = false;
+	bool choose_ground_state_with_smallest_index = false;
 };
 
 class Accelerator{
