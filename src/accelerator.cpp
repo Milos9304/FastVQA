@@ -160,14 +160,53 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 
 */
 
-
+	RefEnergy ground_state;
 
 	long long int i = 0;
-	while(ref_hamil_energies[i++].first == 0);
+	if(this->options.exclude_zero_state){
+		while(ref_hamil_energies[i++].first == 0);
+		ground_state = ref_hamil_energies[i-1];
+	}else{
 
-	RefEnergy ground_state = ref_hamil_energies[i-1];
+		if(this->options.choose_ground_state_with_smallest_index){
+
+
+			/*for(int j = 0; j < ref_hamil_energies.size(); ++j){
+				std::cout << ref_hamil_energies[j].first << " " << ref_hamil_energies[j].second << std::endl;
+			}
+
+			double p=0;
+			for(long long j = 0; j < qureg.numAmpsTotal; ++j){
+				p+=qureg.stateVec.real[j]*qureg.stateVec.real[j]+qureg.stateVec.imag[j]*qureg.stateVec.imag[j];
+			}
+
+			logw("Qreg prob=" + std::to_string(p));
+
+			p=0;*/
+
+			//double p = 0;
+			int j = 0;
+			while(ref_hamil_energies[j++].first == 0){
+				//long long index = ref_hamil_energies[j-1].second;
+				//p+=qureg.stateVec.real[index]*qureg.stateVec.real[index]+qureg.stateVec.imag[index]*qureg.stateVec.imag[index];
+			}
+			//loge("Total prob=" + std::to_string(p));
+
+			//std::pair<qreal, long long int>
+			std::sort(ref_hamil_energies.begin(), ref_hamil_energies.begin() + (j-1),
+					[](const RefEnergy& a, const RefEnergy& b) {
+						return a.second < b.second;
+			});
+
+			ground_state = ref_hamil_energies[0];
+
+			//loge("I choose: " + std::to_string(ground_state.second));
+
+		}else
+			ground_state = ref_hamil_energies[i];
+
+	}
 	i = ground_state.second;
-
 
 	const int max_qubits=40;
 
@@ -260,7 +299,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		run(ansatz.circuit, x);
 	}
 
-	if(ref_hamil_energies[0].first == 0)
+	if(this->options.exclude_zero_state && ref_hamil_energies[0].first == 0)
 		loge("Zero not excluded properly!");
 
 	long long int ground_index = ref_hamil_energies[0].second;
@@ -306,7 +345,6 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		i++;
 	}
 	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].first * (amp / alpha);
-
 	return energy;
 
 }
@@ -332,8 +370,11 @@ void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 	std::iota(indexes.begin(), indexes.end(), 0); //zip with indices
 	std::sort(indexes.begin(), indexes.end(), [&](int i, int j){return cost_function(i) < cost_function(j);}); //non-descending
 
-	for(auto &index : indexes)
+	for(auto &index : indexes){
 		ref_hamil_energies.push_back(RefEnergy(cost_function(index), index));
+		//std::cerr<<"."<<cost_function(index)<<" "<<index<<std::endl;
+	}
+
 
 }
 
