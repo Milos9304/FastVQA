@@ -40,6 +40,12 @@ struct AcceleratorOptions{
 
 	bool exclude_zero_state = false;
 	bool choose_ground_state_with_smallest_index = false;
+
+	// Set to false if running repetitive experiments with the same number of qubits. Need to create qureg manually in this case.
+	// If false, need to specify number of qubits.
+	bool createQuregAtEachInilization = true;
+	int createQuregAtEachInilization_num_qubits = -1;
+
 };
 
 class Accelerator{
@@ -68,6 +74,10 @@ public:
 	void set_ansatz(Ansatz* ansatz);
 
 	void run_vqe_slave_process();
+
+	std::shared_ptr<Qureg> getQuregPtr(){
+		return std::make_shared<Qureg>(qureg);
+	}
 
 private:
 

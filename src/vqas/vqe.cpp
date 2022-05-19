@@ -19,8 +19,8 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 	this->num_qubits = hamiltonian->nbQubits;
 	this->__initialize(buffer, options);
 
-	logd("Ansatz generated. Executing vqe..", log_level);
-	execute(buffer, options->accelerator, options->optimizer, options->zero_reference_states, hamiltonian, options->expectationToStandardOutput);
+	logd("Ansatz generated.", log_level);
+	execute(buffer, options->accelerator, options->optimizer, options->zero_reference_states, hamiltonian, options->expectationToStandardOutput, options->keepReferenceToQureg);
 	logd("Vqe execution done", this->log_level);
 	logi("Min QUBO found: " + std::to_string(buffer->opt_val), this->log_level);
 
@@ -34,8 +34,8 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 	this->num_qubits = num_qubits;
 	this->__initialize(buffer, options);
 
-	logd("Ansatz generated. Executing vqe..", log_level);
-	execute(buffer, options->accelerator, options->optimizer, options->zero_reference_states, cost_function, options->expectationToStandardOutput);
+	logd("Ansatz generated.", log_level);
+	execute(buffer, options->accelerator, options->optimizer, options->zero_reference_states, cost_function, options->expectationToStandardOutput, options->keepReferenceToQureg);
 	logd("Vqe execution done", this->log_level);
 	logi("Min QUBO found: " + std::to_string(buffer->opt_val), this->log_level);
 
@@ -56,20 +56,20 @@ void Vqe::__initialize(ExperimentBuffer* buffer, VQEOptions* options){
 }
 
 
-void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian, bool logExpecStd){
+void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian, bool logExpecStd, bool keepQureg){
 	acc->options.zero_reference_states = zero_reference_states;
 	acc->initialize(hamiltonian);
-	__execute(buffer, acc, optimizer, logExpecStd);
+	__execute(buffer, acc, optimizer, logExpecStd, keepQureg);
 }
 
-void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, CostFunction cost_function, bool logExpecStd){
+void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, CostFunction cost_function, bool logExpecStd, bool keepQureg){
 	acc->options.zero_reference_states = zero_reference_states;
 	acc->initialize(cost_function, this->num_qubits);
 	logd("Num qubits set to " + std::to_string(this->num_qubits));
-	__execute(buffer, acc, optimizer, logExpecStd);
+	__execute(buffer, acc, optimizer, logExpecStd, keepQureg);
 }
 
-void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, bool logExpecStd){
+void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, bool logExpecStd, bool keepQureg){
 
 	std::string instance_prefix = "[["+instance_name+"]] ";
 
@@ -141,7 +141,10 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 		logi(instance_prefix + "Final hit-rate: " + std::to_string(buffer->hit_rate));
 	}
 
-	acc->finalize();
+	if(keepQureg)
+		buffer->stateVector = acc->getQuregPtr();
+	else
+		acc->finalize();
 
 }
 }

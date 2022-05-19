@@ -38,9 +38,9 @@ class Vqe{
 
 		void __initialize(ExperimentBuffer* buffer, VQEOptions* options);
 
-		void execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, std::vector<long long unsigned int> zero_reference_states, CostFunction cost_f, bool logExpecStd=false);
-		void execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian, bool logExpecStd=false);
-		void __execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, bool logExpecStd);
+		void execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, std::vector<long long unsigned int> zero_reference_states, CostFunction cost_f, bool logExpecStd=false, bool keepReferenceToQureg = false);
+		void execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian, bool logExpecStd=false, bool keepReferenceToQureg = false);
+		void __execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt, bool logExpecStd, bool keepReferenceToQureg);
 
 };
 }

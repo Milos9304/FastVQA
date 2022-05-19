@@ -61,6 +61,11 @@ class VQAOptions{
 		// Name of the ansatz as defined in FastVQA/ansatz.h
 		std::string ansatz_name = "Ry_CNOT_all2all_Ry";
 
+		// This does not free qureg from memory after run of VQA.
+		// Can be used for post run analysis. Need to destroy the qureg manually
+		// before a new experiment is about to be run.
+		bool keepReferenceToQureg = false;
+
 		//bool saveIntermediate = false;
 		//std::string s_intermediateName="";
 		//bool loadIntermediate = false;

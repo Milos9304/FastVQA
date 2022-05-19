@@ -346,7 +346,6 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 	}
 	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].first * (amp / alpha);
 	return energy;
-
 }
 
 void Accelerator::__initialize(int num_qubits){
@@ -354,13 +353,20 @@ void Accelerator::__initialize(int num_qubits){
 	unsigned long int keys[1];
 	keys[0] = 1997;
 	seedQuEST(&env, keys, 1);
-	logd("Setting seed to " + std::to_string(keys[0]));
-	logd("Initializing " + std::to_string(num_qubits) + " qubits", options.log_level);
-	this->qureg = createQureg(num_qubits, env);
+	logd("Setting seed to " + std::to_string(keys[0]), options.log_level);
+
+	if(options.createQuregAtEachInilization){
+		logd("Initializing " + std::to_string(num_qubits) + " qubits", options.log_level);
+		this->qureg = createQureg(num_qubits, env);
+	}else{
+		logw("Skipping qureg initialization. Be sure you know what you're doing!", options.log_level);
+	}
 
 }
 
 void Accelerator::initialize(CostFunction cost_function, int num_qubits){
+
+	logd("Calculating hamiltonian terms explicitly.", options.log_level);
 
 	this->hamiltonian_specified = false;
 	this->__initialize(num_qubits);
@@ -379,6 +385,8 @@ void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 }
 
 void Accelerator::initialize(Hamiltonian* hamIn){
+
+	logd("Calculating hamiltonian terms explicitly.", options.log_level);
 
 	this->hamiltonian_specified = true;
 
@@ -467,5 +475,19 @@ Accelerator::Accelerator(AcceleratorOptions options){
 	}
 
 	this->options = options;
+	if(!options.createQuregAtEachInilization){
+
+		if(options.createQuregAtEachInilization_num_qubits < 0){
+			loge("If createQuregAtEachInilization=false, need to specify number of qubits by setting createQuregAtEachInilization_num_qubits");
+			throw;
+		}
+		logd("Creating QuEST environment");
+		this->env = createQuESTEnv();
+
+		logd("Initializing " + std::to_string(options.createQuregAtEachInilization_num_qubits) + " qubits", options.log_level);
+		this->qureg = createQureg(options.createQuregAtEachInilization_num_qubits, env);
+	}
+
+
 }
 }
