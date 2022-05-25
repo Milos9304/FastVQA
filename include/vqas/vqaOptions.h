@@ -37,7 +37,10 @@ class VQAOptions{
 		//ExecutionStatistics* execStats;
 
 		// Maximum number of iterations. 0 for unlimited
-		int max_iters = 0;
+		long long int max_iters = 0;
+
+		// Maximum number of iterations. 0 for unlimited
+		double ftol = 10e-6;
 
 		// If a non-zero integer x is set, calculate the final assignment every x iterations.
 		int detailed_log_freq = 0;

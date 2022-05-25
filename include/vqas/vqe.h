@@ -29,7 +29,8 @@ class Vqe{
 
 		int num_qubits;
 		int num_params;
-		int max_iters;
+		long long int max_iters;
+		double ftol;
 		int nbSamples_calcVarAssignment;
 
 		std::string instance_name;

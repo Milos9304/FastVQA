@@ -51,7 +51,7 @@ const bool fastVQA::NLOptimizer::isGradientBased() const {
   }
 }
 
-fastVQA::OptResult fastVQA::NLOptimizer::optimize(OptFunction &function, std::vector<double> x, double tol, int maxeval, std::vector<double> lowerBounds, std::vector<double> upperBounds) {
+fastVQA::OptResult fastVQA::NLOptimizer::optimize(OptFunction &function, std::vector<double> x, double tol, long long int maxeval, std::vector<double> lowerBounds, std::vector<double> upperBounds) {
 
   auto dim = function.dimensions();
   nlopt::algorithm algo = nlopt::algorithm::LN_COBYLA;

@@ -44,6 +44,7 @@ void Vqe::run_vqe(ExperimentBuffer* buffer,
 void Vqe::__initialize(ExperimentBuffer* buffer, VQEOptions* options){
 
 	this->max_iters = options->max_iters;
+	this->ftol = options->ftol;
 	this->instance_name = options->instance_name;
 	this->nbSamples_calcVarAssignment = options->nbSamples_calcVarAssignment;
 	this->log_level = options->log_level;
@@ -115,7 +116,7 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 		std::vector<double> lowerBounds(initial_params.size(), -3.141592654);
 		std::vector<double> upperBounds(initial_params.size(), 3.141592654);
 
-		result = optimizer->optimize(f, initial_params, 10e-6, this->max_iters, lowerBounds, upperBounds);
+		result = optimizer->optimize(f, initial_params, this->ftol, this->max_iters, lowerBounds, upperBounds);
 
 	}else{
 
@@ -127,7 +128,7 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 		std::vector<double> upperBounds(initial_params.size(),  3.141592654);
 
 		//logw("are these really good ones?");
-		result = optimizer->optimize(f, initial_params, 10e-6, this->max_iters, lowerBounds, upperBounds);
+		result = optimizer->optimize(f, initial_params, this->ftol, this->max_iters, lowerBounds, upperBounds);
 	}
 
 	//double finalCost = result.first;
