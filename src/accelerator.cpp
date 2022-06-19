@@ -186,7 +186,7 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 
 			//double p = 0;
 			int j = 0;
-			while(ref_hamil_energies[j++].first == 0){
+			while(ref_hamil_energies[j++].first == ref_hamil_energies[0].first){
 				//long long index = ref_hamil_energies[j-1].second;
 				//p+=qureg.stateVec.real[index]*qureg.stateVec.real[index]+qureg.stateVec.imag[index]*qureg.stateVec.imag[index];
 			}
@@ -199,7 +199,7 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 			});
 
 			ground_state = ref_hamil_energies[0];
-
+			std::cerr<<ground_state.first<<" "<<ground_state.second<<"\n";
 			//loge("I choose: " + std::to_string(ground_state.second));
 
 		}else
