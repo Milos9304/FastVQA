@@ -28,7 +28,7 @@ class Hamiltonian{
 
 		void initializeMinusSigmaXHamiltonian();
 
-		Hamiltonian();
+		Hamiltonian(){}
 		Hamiltonian(int nbQubits){
 			this->nbQubits = nbQubits;
 		}

@@ -53,11 +53,21 @@ public:
 
 private:
 
-	Hamiltonian *h0, *h1;
+	class GeneralIntermediateHamiltonian{
+	public:
+		int nbQubits;
+
+		std::vector<double> coeffs0, coeffs1;
+		std::vector<int> pauliOpts;
+
+		void toPauliHamil(PauliHamil* hamil);
+
+	}hamil_int;
+
 	int nbQubits;
 
 	double _calc_expectation(Hamiltonian *h);
-	Hamiltonian calc_intermediate_hamiltonian(double lambda);
+	Hamiltonian _calc_intermediate_hamiltonian(double lambda);
 
 };
 }
