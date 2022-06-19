@@ -12,7 +12,7 @@
 #include <functional>
 #include <string>
 
-namespace fastVQA{
+namespace FastVQA{
 
 using OptimizerFunctorNoGrad =
     std::function<double(const std::vector<double> &)>;

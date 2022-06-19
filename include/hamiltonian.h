@@ -10,17 +10,35 @@
 
 #include <string>
 #include <vector>
+#include "QuEST.h"
 
-namespace fastVQA{
+namespace FastVQA{
 
-struct Hamiltonian{
-	int nbQubits;
+class Hamiltonian{
 
-	std::string getHamiltonianString(){return "";}
+	public:
 
-	//quest formulation
-	std::vector<double> coeffs;
-	std::vector<int> pauliOpts;
+		int nbQubits;
+
+		std::string getHamiltonianString(){return "";}
+
+		//quest formulation
+		std::vector<double> coeffs;
+		std::vector<int> pauliOpts;
+
+		void initializeMinusSigmaXHamiltonian();
+
+		Hamiltonian();
+		Hamiltonian(int nbQubits){
+			this->nbQubits = nbQubits;
+		}
+		Hamiltonian(int nbQubits, std::vector<double> coeffs, std::vector<int> pauliOpts){
+			this->nbQubits = nbQubits;
+			this->coeffs = coeffs;
+			this->pauliOpts = pauliOpts;
+		}
+
+		void toPauliHamil(PauliHamil* hamil);
 };
 
 }

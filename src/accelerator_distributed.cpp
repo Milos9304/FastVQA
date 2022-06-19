@@ -2,7 +2,7 @@
 #include "logger.h"
 #include <fstream>
 
-namespace fastVQA{
+namespace FastVQA{
 
 double Accelerator::evaluate_assignment(PauliHamil isingHam, std::string measurement){
 

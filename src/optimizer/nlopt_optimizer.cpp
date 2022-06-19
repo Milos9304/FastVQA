@@ -19,11 +19,11 @@ using namespace std::placeholders;
 
 double c_wrapper(const std::vector<double> &x, std::vector<double> &grad,
                  void *extra) {
-  auto e = reinterpret_cast<fastVQA::ExtraNLOptData *>(extra);
+  auto e = reinterpret_cast<FastVQA::ExtraNLOptData *>(extra);
   return e->f(x, grad);
 }
 
-const std::string fastVQA::NLOptimizer::get_algorithm() const {
+const std::string FastVQA::NLOptimizer::get_algorithm() const {
   std::string optimizerAlgo = "cobyla";
   /*if (options.stringExists("algorithm")) {
     optimizerAlgo = options.getString("algorithm");
@@ -34,7 +34,7 @@ const std::string fastVQA::NLOptimizer::get_algorithm() const {
   return optimizerAlgo;
 }
 
-const bool fastVQA::NLOptimizer::isGradientBased() const {
+const bool FastVQA::NLOptimizer::isGradientBased() const {
 
   std::string optimizerAlgo = "cobyla";
   /*if (options.stringExists("algorithm")) {
@@ -51,7 +51,7 @@ const bool fastVQA::NLOptimizer::isGradientBased() const {
   }
 }
 
-fastVQA::OptResult fastVQA::NLOptimizer::optimize(OptFunction &function, std::vector<double> x, double tol, long long int maxeval, std::vector<double> lowerBounds, std::vector<double> upperBounds) {
+FastVQA::OptResult FastVQA::NLOptimizer::optimize(OptFunction &function, std::vector<double> x, double tol, long long int maxeval, std::vector<double> lowerBounds, std::vector<double> upperBounds) {
 
   auto dim = function.dimensions();
   nlopt::algorithm algo = nlopt::algorithm::LN_COBYLA;

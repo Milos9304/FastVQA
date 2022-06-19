@@ -11,7 +11,7 @@
 
 
 //#include "mpi.h"
-namespace fastVQA{
+namespace FastVQA{
 void Vqe::run_vqe(ExperimentBuffer* buffer,
 		Hamiltonian* hamiltonian,
 		VQEOptions* options){

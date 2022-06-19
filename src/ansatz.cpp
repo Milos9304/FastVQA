@@ -1,11 +1,13 @@
 #include "ansatz.h"
 #include "logger.h"
 
-namespace fastVQA{
+const double pi = 3.141592653589793238463;
+
+namespace FastVQA{
 
 Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int seed){
 
-	Ansatz ansatz;
+	Ansatz ansatz(ansatz_type);
     std::mt19937 gen(seed); //rd() instead of seed
 	std::uniform_real_distribution<> dis(-2.0, 2.0);
 
@@ -21,6 +23,8 @@ Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int seed){
 		for(int i = 0; i < num_qubits-1; ++i){
 			ansatz.circuit.addGate(Gate::g_CNOT, i, i+1);
 		}
+		ansatz.circuit.addGate(Gate::g_CNOT, num_qubits-1, 0);
+
 
 		for(int i = 0; i < num_qubits; ++i){
 			double param1 = dis(gen);
@@ -39,18 +43,124 @@ Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int seed){
 		}
 
 		for(int i = 0; i < num_qubits-1; ++i){
-			for(int j = i+1; j < num_qubits-1; ++j)
-				ansatz.circuit.addGate(Gate::g_CZ, i, j);
+			for(int j = i+1; j < num_qubits; ++j)
+				ansatz.circuit.addGate(Gate::g_CNOT, i, j);
 		}
+		ansatz.circuit.addGate(Gate::g_CNOT, num_qubits-1, 0);
 
 		for(int i = 0; i < num_qubits; ++i){
 			double param1 = dis(gen);
-			ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("n"+std::to_string(i), param1)));
+			ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("b"+std::to_string(i), param1)));
 		}
 
 		ansatz.num_params = num_qubits * 2;
 
-	}else if(ansatz_type == "qaoa"){
+	}
+
+
+	else if(ansatz_type == "Ry_CNOT_all2all_Rz"){
+
+			for(int i = 0; i < num_qubits; ++i){
+					double param1 = dis(gen);
+					ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("a"+std::to_string(i), param1)));
+			}
+
+			for(int i = 0; i < num_qubits-1; ++i){
+				for(int j = i+1; j < num_qubits; ++j)
+					ansatz.circuit.addGate(Gate::g_CNOT, i, j);
+			}
+			ansatz.circuit.addGate(Gate::g_CNOT, num_qubits-1, 0);
+
+			for(int i = 0; i < num_qubits; ++i){
+				double param1 = dis(gen);
+				ansatz.circuit.addParametrizedGate(Gate::g_Rz, i, std::shared_ptr<Parameter>(new Parameter("b"+std::to_string(i), param1)));
+			}
+
+			ansatz.num_params = num_qubits * 2;
+
+	}else if(ansatz_type == "Ry_CNOT_nn_Rz"){
+
+		for(int i = 0; i < num_qubits; ++i){
+				double param1 = dis(gen);
+				ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("a"+std::to_string(i), param1)));
+		}
+
+		for(int i = 0; i < num_qubits-1; ++i)
+				ansatz.circuit.addGate(Gate::g_CNOT, i, i+1);
+		ansatz.circuit.addGate(Gate::g_CNOT, num_qubits-1, 0);
+
+		for(int i = 0; i < num_qubits; ++i){
+			double param1 = dis(gen);
+			ansatz.circuit.addParametrizedGate(Gate::g_Rz, i, std::shared_ptr<Parameter>(new Parameter("b"+std::to_string(i), param1)));
+		}
+
+		ansatz.num_params = num_qubits * 2;
+	}else if(ansatz_type == "Ry_Cz_all2all_Ry"){
+
+		for(int i = 0; i < num_qubits; ++i){
+				double param1 = dis(gen);
+				ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("a"+std::to_string(i), param1)));
+		}
+
+		for(int i = 0; i < num_qubits-1; ++i){
+			for(int j = i+1; j < num_qubits; ++j)
+				ansatz.circuit.addGate(Gate::g_CZ, i, j);
+		}
+		ansatz.circuit.addGate(Gate::g_CZ, num_qubits-1, 0);
+
+		for(int i = 0; i < num_qubits; ++i){
+			double param1 = dis(gen);
+			ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("b"+std::to_string(i), param1)));
+		}
+
+		ansatz.num_params = num_qubits * 2;
+
+	}else if(ansatz_type == "Ry_Cz_nn_Ry"){
+
+		for(int i = 0; i < num_qubits; ++i){
+				double param1 = dis(gen);
+				ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("a"+std::to_string(i), param1)));
+		}
+
+		for(int i = 0; i < num_qubits-1; ++i)
+				ansatz.circuit.addGate(Gate::g_CZ, i, i+1);
+		ansatz.circuit.addGate(Gate::g_CZ, num_qubits-1, 0);
+
+		for(int i = 0; i < num_qubits; ++i){
+			double param1 = dis(gen);
+			ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("b"+std::to_string(i), param1)));
+		}
+
+		ansatz.num_params = num_qubits * 2;
+	}else if(ansatz_type == "Ry_CNOT_nn_Rz_CNOT_Rz"){
+
+		for(int i = 0; i < num_qubits; ++i){
+			double param1 = dis(gen);
+			ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("a"+std::to_string(i), param1)));
+		}
+
+		for(int i = 0; i < num_qubits-1; ++i)
+				ansatz.circuit.addGate(Gate::g_CNOT, i, i+1);
+		ansatz.circuit.addGate(Gate::g_CNOT, num_qubits-1, 0);
+
+		for(int i = 0; i < num_qubits; ++i){
+			double param1 = dis(gen);
+			ansatz.circuit.addParametrizedGate(Gate::g_Rz, i, std::shared_ptr<Parameter>(new Parameter("b"+std::to_string(i), param1)));
+		}
+
+		for(int i = 0; i < num_qubits-1; ++i)
+			ansatz.circuit.addGate(Gate::g_CNOT, i, i+1);
+		ansatz.circuit.addGate(Gate::g_CNOT, num_qubits-1, 0);
+
+		for(int i = 0; i < num_qubits; ++i){
+			double param1 = dis(gen);
+			ansatz.circuit.addParametrizedGate(Gate::g_Rz, i, std::shared_ptr<Parameter>(new Parameter("c"+std::to_string(i), param1)));
+		}
+
+		ansatz.num_params = num_qubits * 3;
+	}
+
+	else if(ansatz_type == "qaoa"){
 
 		int p = 5;
 		ansatz.circuit.qaoa_ansatz = true;
@@ -60,5 +170,51 @@ Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int seed){
 		throw_runtime_error("Unknown ansatz type");
 	}
 	return ansatz;
+}
+void initOptimalParamsForMinusSigmaXHamiltonian(Ansatz *ansatz){
+
+	std::vector<std::shared_ptr<Parameter>> params = ansatz->circuit.getParamsPtrs();
+
+	if(ansatz->name == "Ry_CNOT_all2all_Rz" || ansatz->name == "Ry_CNOT_nn_Rz"){
+
+		int i = 0;
+		for(auto &param_ptr:params){
+			if(param_ptr->name == Parameter::blank_param_name)
+				continue;
+
+			if(i++ < ansatz->num_params/2){
+				param_ptr->value = pi/2;
+			}else
+				param_ptr->value = 0;
+		}
+
+	}else if(ansatz->name == "Ry_Cz_all2all_Ry" || ansatz->name == "Ry_Cz_nn_Ry"){
+
+		int i = 0;
+		for(auto &param_ptr:params){
+			if(param_ptr->name == Parameter::blank_param_name)
+				continue;
+
+			if(i++ < ansatz->num_params/2){
+				param_ptr->value = 0;
+			}else
+				param_ptr->value = pi/2;
+		}
+
+	}else if(ansatz->name == "Ry_CNOT_nn_Rz_CNOT_Rz"){
+
+		int i = 0;
+		for(auto &param_ptr:params){
+			if(param_ptr->name == Parameter::blank_param_name)
+				continue;
+
+			if(i++ < ansatz->num_params/3){
+				param_ptr->value = pi/2;
+			}else
+				param_ptr->value = 0;
+		}
+	}else{
+		throw_runtime_error("Optimal -sum_sigma_x parameter selection not implemented for this ansatz");
+	}
 }
 }

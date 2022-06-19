@@ -10,7 +10,7 @@
 
 #include <memory>
 #include <string>
-namespace fastVQA{
+namespace FastVQA{
 
 typedef unsigned char GateCode;
 

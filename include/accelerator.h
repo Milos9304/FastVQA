@@ -10,15 +10,15 @@
 
 #include "QuEST.h"
 #include "hamiltonian.h"
-#include "ansatz.h"
 #include "cost_function.h"
 #include "experimentBuffer.h"
+#include "internal/accelerator_base.h"
 
 #include <vector>
 #include <bitset>
 #include <string>
 
-namespace fastVQA{
+namespace FastVQA{
 
 typedef std::pair<qreal, long long int> RefEnergy;
 typedef std::vector<RefEnergy> RefEnergies;
@@ -27,10 +27,12 @@ typedef std::function<double(double init_val, double final_val, int iter_i, int 
 
 struct AcceleratorOptions{
 
-	int log_level;
+	int log_level=1;
 
 	std::string accelerator_type;
-	std::string alpha_f; //constant, linear
+
+	// Set "linear" for linear CVar. "constant" is default behaviour
+	std::string alpha_f = "constant";
 
 	double samples_cut_ratio=1; //1=100% means no cutting is performed
 	std::vector<long long unsigned int> zero_reference_states;
@@ -48,12 +50,9 @@ struct AcceleratorOptions{
 
 };
 
-class Accelerator{
+class Accelerator:public AcceleratorBase{
 
 public:
-
-	QuESTEnv env;
-	Ansatz ansatz;
 
 	AlphaFunction alpha_f = alpha_constant_f;
 
@@ -66,12 +65,12 @@ public:
 
 	void initialize(CostFunction cost_function, int num_qubits);
 	void initialize(Hamiltonian* hamiltonian);
+	void initialize(int num_qubits);
 	void finalize();
 
+	double calc_expectation(ExperimentBuffer* buffer);
 	double calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int iteration_i, double* ground_state_overlap_out);
 	void finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<double> final_params, int nbSamples);
-
-	void set_ansatz(Ansatz* ansatz);
 
 	void run_vqe_slave_process();
 
@@ -81,7 +80,6 @@ public:
 
 private:
 
-	Qureg qureg;
 	int *qubits_list;
 	pauliOpType* all_x_list;
 
@@ -98,10 +96,9 @@ private:
 
     void __initialize(int num_qubits);
 
-    void run(Circuit circuit, const std::vector<double> &x);
+    void run_with_new_params(Circuit circuit, const std::vector<double> &x);
 
-    void apply_gate(Gate gate, double param);
-
+    double _energy_evaluation(double* ground_state_overlap_out, int iteration_i);
     double evaluate_assignment(PauliHamil isingHam, std::string measurement);
 
     const int control_tag = 42;
@@ -121,4 +118,4 @@ private:
 
 };
 }
-#endif /* SRC_ACCELERATOR_H_ */
+#endif /* FASTVQA_ACCELERATOR_H_ */

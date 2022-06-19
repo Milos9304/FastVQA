@@ -1,5 +1,7 @@
 cmake_minimum_required (VERSION 3.15 FATAL_ERROR)
 
+option(COMPILE_TESTS "Compile tests" ON) #ON by default
+
 project (FastVQA
 	LANGUAGES C CXX
 	DESCRIPTION "High performance variational quantum algorithms simulation framework"
@@ -31,6 +33,7 @@ set(public_headers
     include/ansatz.h
     include/cost_function.h
     include/accelerator.h
+    include/AqcPqcAccelerator.h
     include/hamiltonian.h
     include/experimentBuffer.h
     include/circuit.h
@@ -63,11 +66,13 @@ add_library(${PROJECT_NAME} STATIC)
 target_sources(${PROJECT_NAME}
     PRIVATE
         src/vqas/vqe.cpp
+        src/aqc_pqc/aqc_pqc_accelerator.cpp
         src/gate.cpp
         src/circuit.cpp
         src/ansatz.cpp
         src/accelerator.cpp
-        src/apply_gate.cpp
+        src/hamiltonian.cpp
+        src/accelerator_base.cpp
         src/symbolic_manipulation.cpp
         ${quest_src}
         ${optimizer_src}
@@ -125,5 +130,8 @@ export(EXPORT "${PROJECT_NAME}Targets"
     FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}Targets.cmake"
     NAMESPACE ${namespace}::
 )
+if(COMPILE_TESTS)
+    add_subdirectory(tests)
+endif(COMPILE_TESTS)
+unset(COMPILE_TESTS CACHE)
 
-#add_subdirectory(tests)

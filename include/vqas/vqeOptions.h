@@ -9,7 +9,7 @@
 #define SRC_VQE_VQEOPTIONS_H_
 
 #include "vqaOptions.h"
-namespace fastVQA{
+namespace FastVQA{
 class VQEOptions : public VQAOptions{
 
 

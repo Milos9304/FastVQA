@@ -10,6 +10,7 @@
 
 #include "vqe.h"
 #include "accelerator.h"
+#include "AqcPqcAccelerator.h"
 #include "vqaOptions.h"
 #include "vqeOptions.h"
 #include "qaoaOptions.h"

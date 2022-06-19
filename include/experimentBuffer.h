@@ -9,8 +9,9 @@
 #define FASTVQA_EXPERIMENT_BUFFER_H_
 
 #include "QuEST.h"
+#include <memory>
 
-namespace fastVQA{
+namespace FastVQA{
 
 class ExperimentBuffer{
 public:

@@ -10,7 +10,7 @@
 
 #include "gate.h"
 #include <vector>
-namespace fastVQA{
+namespace FastVQA{
 
 typedef std::vector<std::string> Parameters;
 
@@ -27,6 +27,7 @@ public:
 	void addParametrizedGate(GateCode code, int qubit1, std::shared_ptr<Parameter> param);
 	void addParametrizedGate(GateCode code, int qubit1, int qubit2, std::shared_ptr<Parameter> param);
 
+	std::vector<std::shared_ptr<Parameter>> getParamsPtrs();
 	std::vector<Gate> gates;
 
 };

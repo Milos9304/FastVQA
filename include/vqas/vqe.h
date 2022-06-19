@@ -14,7 +14,7 @@
 
 #include <functional>
 
-namespace fastVQA{
+namespace FastVQA{
 
 class Vqe{
 

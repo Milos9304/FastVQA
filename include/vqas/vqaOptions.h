@@ -24,7 +24,7 @@
 #include "accelerator.h"
 #include "optimizer.h"
 
-namespace fastVQA{
+namespace FastVQA{
 
 class VQAOptions{
 

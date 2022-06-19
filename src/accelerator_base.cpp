@@ -1,11 +1,37 @@
-#include "accelerator.h"
+#include "internal/accelerator_base.h"
 #include "logger.h"
 
-namespace fastVQA{
+namespace FastVQA{
 
-void Accelerator::apply_gate(Gate gate, double param){
+void AcceleratorBase::run_circuit(Circuit circuit, bool init_zero_state){
 
-	std::string message;
+	if(init_zero_state)
+		initZeroState(qureg);
+
+	for(auto &gate : circuit.gates)
+		apply_gate(gate);
+}
+
+void AcceleratorBase::set_ansatz(Ansatz* ansatz){
+
+	this -> ansatz = *ansatz;
+
+	std::vector<double> gateCodes;
+	for(auto &gate : this->ansatz.circuit.gates){
+		gateCodes.push_back(gate.code);
+		gateCodes.push_back(gate.qubit1);
+		gateCodes.push_back(gate.qubit2);
+	}
+}
+
+void AcceleratorBase::apply_gate(Gate gate){
+
+	double param = gate.param->value;
+	apply_gate(gate, param);
+
+}
+
+void AcceleratorBase::apply_gate(Gate gate, double param){
 
 	switch(gate.code){
 	case Gate::g_H:

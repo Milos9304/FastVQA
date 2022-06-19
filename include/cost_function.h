@@ -10,7 +10,7 @@
 
 #include <functional>
 
-namespace fastVQA{
+namespace FastVQA{
 	/*Input:
 		decimal encoding of binary string
 		bit_size
