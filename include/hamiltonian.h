@@ -20,7 +20,7 @@ class Hamiltonian{
 
 		int nbQubits;
 
-		std::string getHamiltonianString(){return "";}
+		std::string getHamiltonianString(int double_precision=2);
 
 		//quest formulation
 		std::vector<double> coeffs;

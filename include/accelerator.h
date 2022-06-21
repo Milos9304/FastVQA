@@ -12,7 +12,7 @@
 #include "hamiltonian.h"
 #include "cost_function.h"
 #include "experimentBuffer.h"
-#include "internal/accelerator_base.h"
+#include "accelerator_base.h"
 
 #include <vector>
 #include <bitset>

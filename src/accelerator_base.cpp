@@ -1,4 +1,4 @@
-#include "internal/accelerator_base.h"
+#include "accelerator_base.h"
 #include "logger.h"
 
 namespace FastVQA{

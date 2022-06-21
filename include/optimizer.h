@@ -5,8 +5,8 @@
  *      Author: Milos Prokop
  */
 
-#ifndef SRC_OPTIMIZER_H_
-#define SRC_OPTIMIZER_H_
+#ifndef FASTVQA__OPTIMIZER_H_
+#define FASTVQA__OPTIMIZER_H_
 
 #include <vector>
 #include <functional>
@@ -73,4 +73,4 @@ public:
   virtual const std::string get_algorithm() const;
 };
 }
-#endif /* SRC_OPTIMIZER_H_ */
+#endif /* FASTVQA__OPTIMIZER_H_ */

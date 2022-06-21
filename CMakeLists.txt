@@ -33,6 +33,7 @@ set(public_headers
     include/ansatz.h
     include/cost_function.h
     include/accelerator.h
+    include/accelerator_base.h
     include/AqcPqcAccelerator.h
     include/hamiltonian.h
     include/experimentBuffer.h
