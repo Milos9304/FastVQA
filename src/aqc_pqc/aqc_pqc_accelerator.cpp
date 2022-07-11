@@ -1,4 +1,4 @@
-#include "AqcPqcAccelerator.h"
+#include "aqc_pqc/AqcPqcAccelerator.h"
 #include "logger.h"
 #include <iomanip>
 #include <fstream>
@@ -14,6 +14,8 @@ AqcPqcAccelerator::AqcPqcAccelerator(AqcPqcAcceleratorOptions options){
 	}
 
 	this->options = options;
+	this->env = createQuESTEnv();
+
 }
 
 void AqcPqcAccelerator::initialize(Hamiltonian* h0, Hamiltonian* h1){
@@ -59,7 +61,6 @@ void AqcPqcAccelerator::initialize(Hamiltonian* h0, Hamiltonian* h1){
 			hamil_int.coeffs1.push_back(h1->coeffs[i]);
 		}
 	}
-
 	if(hamil_int.coeffs0.size() != hamil_int.coeffs1.size())
 		throw_runtime_error("Problem with mixer hamiltonian calculation");
 
@@ -67,8 +68,16 @@ void AqcPqcAccelerator::initialize(Hamiltonian* h0, Hamiltonian* h1){
 	keys[0] = 1997;
 	seedQuEST(&env, keys, 1);
 	logd("Setting seed to " + std::to_string(keys[0]), options.log_level);
-
 	this->qureg = createQureg(this->nbQubits, env);
+
+}
+
+void AqcPqcAccelerator::run(){
+
+	int nbSteps = options.nbSteps;
+	logi(std::to_string(nbSteps) + " steps");
+
+	Ansatz ansatz = getAnsatz(options.ansatz_name, hamil_int.nbQubits);
 
 }
 

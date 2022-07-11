@@ -29,7 +29,14 @@ struct AqcPqcAcceleratorOptions{
 
 	int log_level=1;
 
+	//set to quest
 	std::string accelerator_type;
+
+	//nbSteps
+	int nbSteps;
+
+	// Name of the ansatz as defined in FastVQA/ansatz.h
+	std::string ansatz_name = "Ry_CNOT_all2all_Rz";
 
 };
 
@@ -42,6 +49,7 @@ public:
 	AqcPqcAccelerator(AqcPqcAcceleratorOptions options);
 
 	void initialize(Hamiltonian* h0, Hamiltonian* h1);
+	void run();
 	void finalize();
 
 	double calc_intermediate_expectation(ExperimentBuffer* buffer, double lambda, bool init_zero_state=true);

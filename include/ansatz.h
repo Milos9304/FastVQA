@@ -24,7 +24,7 @@ public:
 	}
 
 };
-Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int seed);
+Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int seed=0);
 void initOptimalParamsForMinusSigmaXHamiltonian(Ansatz *ansatz);
 
 }

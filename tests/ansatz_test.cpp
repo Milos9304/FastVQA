@@ -53,7 +53,6 @@ TEST(ansatz_test, initializeMinusSigmaXHamiltonian){
 	hamiltonian.initializeMinusSigmaXHamiltonian();
 
 	FastVQA::AqcPqcAccelerator accelerator(acceleratorOptions);
-	accelerator.env = createQuESTEnv();
 
 	accelerator.initialize(&hamiltonian, &hamiltonian);
 

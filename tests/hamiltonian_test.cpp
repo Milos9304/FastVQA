@@ -14,9 +14,6 @@
 TEST(hamiltonian_test, initializeMinusSigmaXHamiltonian){
 
 
-
-
-
 }
 
 int main(int argc, char **argv) {

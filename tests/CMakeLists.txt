@@ -4,6 +4,7 @@ add_subdirectory(googletest)
 
 include_directories(../include
 					../include/vqas
+					../include/aqc_pqc
 					../quantum_backends/QuEST/QuEST/include/)
                       
 add_executable(ansatz_test ansatz_test.cpp)

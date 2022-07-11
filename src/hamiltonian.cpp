@@ -27,14 +27,11 @@ std::string Hamiltonian::getHamiltonianString(int double_precision){
 		if(this->coeffs[i] == 0)
 			continue;
 
-		if(this->coeffs[i] > 0){
+		if(this->coeffs[i] > 0){//std::cerr<<"jebo"<<this->coeffs[i]<<"   ";
 			if(!start)
 				res+="+ ";
-			start = false;
-		}else{
-			res+="- ";
-			start = false;
 		}
+		start = false;
 
 		res+=to_string_with_precision(this->coeffs[i], double_precision)+" ";
 		for(int q = 0; q < this->nbQubits; ++q){

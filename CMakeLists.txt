@@ -34,7 +34,7 @@ set(public_headers
     include/cost_function.h
     include/accelerator.h
     include/accelerator_base.h
-    include/AqcPqcAccelerator.h
+    include/aqc_pqc/AqcPqcAccelerator.h
     include/hamiltonian.h
     include/experimentBuffer.h
     include/circuit.h
@@ -83,6 +83,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
         ${CMAKE_CURRENT_SOURCE_DIR}/include/internal/vqas
+         ${CMAKE_CURRENT_SOURCE_DIR}/include/internal/aqc_pqc
         ${CMAKE_CURRENT_SOURCE_DIR}/src/optimizer/nlopt/src/api
         ${CMAKE_CURRENT_SOURCE_DIR}/quantum_backends/QuEST/QuEST/include
         ${CMAKE_CURRENT_SOURCE_DIR}/quantum_backends/QuEST/QuEST/src
