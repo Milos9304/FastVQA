@@ -12,7 +12,7 @@ void AcceleratorBase::run_circuit(Circuit circuit, bool init_zero_state){
 		apply_gate(gate);
 }
 
-void AcceleratorBase::set_ansatz(Ansatz* ansatz){
+void AcceleratorBase::set_ansatz(Ansatz *ansatz){
 
 	this -> ansatz = *ansatz;
 

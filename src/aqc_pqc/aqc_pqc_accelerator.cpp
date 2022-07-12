@@ -1,8 +1,13 @@
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include "aqc_pqc/AqcPqcAccelerator.h"
 #include "logger.h"
 #include <iomanip>
 #include <fstream>
 #include <algorithm>
+
+
 
 namespace FastVQA{
 
@@ -12,6 +17,8 @@ AqcPqcAccelerator::AqcPqcAccelerator(AqcPqcAcceleratorOptions options){
 		loge("No other accelerator than QuEST implemented");
 		throw;
 	}
+
+	logi("Using " + options.ansatz_name + " ansatz");
 
 	this->options = options;
 	this->env = createQuESTEnv();
@@ -24,6 +31,7 @@ void AqcPqcAccelerator::initialize(Hamiltonian* h0, Hamiltonian* h1){
 	if(this->nbQubits != h1->nbQubits)
 		throw_runtime_error("Dimensions of initial and final Hamiltonian do not match");
 
+	hamil_int.nbQubits = nbQubits;
 	hamil_int.coeffs0 = h0->coeffs;
 	hamil_int.pauliOpts = h0->pauliOpts;
 
@@ -75,9 +83,67 @@ void AqcPqcAccelerator::initialize(Hamiltonian* h0, Hamiltonian* h1){
 void AqcPqcAccelerator::run(){
 
 	int nbSteps = options.nbSteps;
+	std::cerr<<hamil_int.nbQubits<<"xx\n";
+	this->ansatz = getAnsatz(options.ansatz_name, hamil_int.nbQubits);
+
+	std::vector<std::shared_ptr<Parameter>> parameters = ansatz.circuit.getParamsPtrs();
+
 	logi(std::to_string(nbSteps) + " steps");
 
-	Ansatz ansatz = getAnsatz(options.ansatz_name, hamil_int.nbQubits);
+	double *first_order_terms = (double*) malloc(parameters.size() * sizeof(double));
+	double *second_order_terms[parameters.size()];
+	for(int i = 0; i < parameters.size(); i++)
+		second_order_terms[i] = (double*)malloc(parameters.size() * sizeof(double));
+
+	for(int k = 0; k < nbSteps; ++k){
+
+		Hamiltonian h = this->_calc_intermediate_hamiltonian((double)k/nbSteps);
+
+		for(int i = 0; i < parameters.size(); ++i){
+
+			double original_i = parameters[i]->value;
+
+			parameters[i]->value += M_PI_2;
+			double a = _calc_expectation(&h);
+			parameters[i]->value -= M_PI;
+			double b = _calc_expectation(&h);
+			parameters[i]->value = original_i;
+
+			first_order_terms[i]=0.5*(a-b);
+
+			for(int j = 0; j <= i; ++j){
+
+				double original_j = parameters[i]->value;
+
+				parameters[i]->value += M_PI_2;
+				parameters[j]->value += M_PI_2;
+				double a = _calc_expectation(&h);
+
+				parameters[j]->value -= M_PI;
+				double b = _calc_expectation(&h);
+
+				parameters[i]->value -= M_PI;
+				parameters[j]->value += M_PI;
+				double c = _calc_expectation(&h);
+
+				parameters[j]->value -= M_PI;
+				double d = _calc_expectation(&h);
+
+				second_order_terms[i][j] = 0.25 * (a-b-c+d);
+
+				//WARNING, LEAVING THE UPPER TRIANGLE BLANK
+				/*if(i != j)
+					second_order_terms[j][i] = second_order_terms[i][j];*/
+
+			}
+
+		}
+
+	}
+
+	free(first_order_terms);
+    for (int i = 0; i < parameters.size(); i++)
+    	free(second_order_terms[i]);
 
 }
 

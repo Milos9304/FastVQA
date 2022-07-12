@@ -24,7 +24,7 @@ public:
 	QuESTEnv env;
 	Ansatz ansatz{""};
 
-	void set_ansatz(Ansatz* ansatz);
+	void set_ansatz(Ansatz *ansatz);
 	void run_circuit(Circuit circuit, bool init_zero_state=true);
 
 protected:
