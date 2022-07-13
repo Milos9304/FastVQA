@@ -6,7 +6,8 @@
 #include <iomanip>
 #include <fstream>
 #include <algorithm>
-
+#include <nlopt.h>
+#include <Eigen/Dense>
 
 
 namespace FastVQA{
@@ -80,6 +81,20 @@ void AqcPqcAccelerator::initialize(Hamiltonian* h0, Hamiltonian* h1){
 
 }
 
+
+double myfunc(unsigned n, const double *x, double *grad, void *my_func_data)
+{
+    if (grad) {
+    	//UNIMPLEMENTED
+        /*grad[0] = 0.0;
+        grad[1] = 0.5 / sqrt(x[1]);*/
+    }
+    double ret=0;
+    for(int i = 0; i < n; ++i)
+    	ret += x[i]*x[i];
+    return ret;//sqrt(x[1]);
+}
+
 void AqcPqcAccelerator::run(){
 
 	int nbSteps = options.nbSteps;
@@ -90,10 +105,13 @@ void AqcPqcAccelerator::run(){
 
 	logi(std::to_string(nbSteps) + " steps");
 
-	double *first_order_terms = (double*) malloc(parameters.size() * sizeof(double));
-	double *second_order_terms[parameters.size()];
-	for(int i = 0; i < parameters.size(); i++)
-		second_order_terms[i] = (double*)malloc(parameters.size() * sizeof(double));
+	//double *first_order_terms = (double*) malloc(parameters.size() * sizeof(double));
+	//double *second_order_terms[parameters.size()];
+	//for(int i = 0; i < parameters.size(); i++)
+	//	second_order_terms[i] = (double*)malloc((i+1) * sizeof(double));
+
+	Eigen::VectorXd minus_q(parameters.size());
+	Eigen::MatrixXd A(parameters.size(), parameters.size());
 
 	for(int k = 0; k < nbSteps; ++k){
 
@@ -109,7 +127,7 @@ void AqcPqcAccelerator::run(){
 			double b = _calc_expectation(&h);
 			parameters[i]->value = original_i;
 
-			first_order_terms[i]=0.5*(a-b);
+			minus_q(i)=-0.5*(a-b);
 
 			for(int j = 0; j <= i; ++j){
 
@@ -129,21 +147,21 @@ void AqcPqcAccelerator::run(){
 				parameters[j]->value -= M_PI;
 				double d = _calc_expectation(&h);
 
-				second_order_terms[i][j] = 0.25 * (a-b-c+d);
+				A(i,j) = 0.25 * (a-b-c+d);
 
-				//WARNING, LEAVING THE UPPER TRIANGLE BLANK
-				/*if(i != j)
-					second_order_terms[j][i] = second_order_terms[i][j];*/
-
+				if(i != j)
+					A(j,i) = A(i,j);
 			}
-
 		}
 
+		Eigen::VectorXd eps(parameters.size());
+		eps = A.fullPivHouseholderQr().solve(minus_q);
+		std::cout<<eps<<"\n";
 	}
 
-	free(first_order_terms);
+	/*free(first_order_terms);
     for (int i = 0; i < parameters.size(); i++)
-    	free(second_order_terms[i]);
+    	free(second_order_terms[i]);*/
 
 }
 

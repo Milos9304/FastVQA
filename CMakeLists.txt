@@ -19,6 +19,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
 include(GNUInstallDirs)
 
+find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+ 
 message(
 	STATUS
 	"CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}"
@@ -92,8 +94,9 @@ target_include_directories(${PROJECT_NAME}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
+
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${public_headers}")
-target_link_libraries(${PROJECT_NAME} PRIVATE nlopt)
+target_link_libraries(${PROJECT_NAME} PRIVATE nlopt Eigen3::Eigen)
 
 install(TARGETS ${PROJECT_NAME} nlopt
    EXPORT "${PROJECT_NAME}Targets"
