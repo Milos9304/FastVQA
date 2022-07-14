@@ -81,16 +81,27 @@ void AqcPqcAccelerator::initialize(Hamiltonian* h0, Hamiltonian* h1){
 
 }
 
+typedef struct {
+	Eigen::VectorXd Xi;
+    Eigen::MatrixXd N;
+} OptData;
 
-double myfunc(unsigned n, const double *x, double *grad, void *my_func_data)
-{
+double lin_system_f(unsigned n, const double *z, double *grad, void *data){
+
+	OptData *d = (OptData *) data;
+
     if (grad) {
     	//UNIMPLEMENTED
         /*grad[0] = 0.0;
         grad[1] = 0.5 / sqrt(x[1]);*/
     }
+
     double ret=0;
+    Eigen::VectorXd z_vect(n);
     for(int i = 0; i < n; ++i)
+    	z_vect(i)=z[i];
+    Eigen::VectorXd x = d->Xi+d->N*z_vect;
+    for(int i = 0; i < d->Xi.rows(); ++i)
     	ret += x[i]*x[i];
     return ret;//sqrt(x[1]);
 }
@@ -98,7 +109,6 @@ double myfunc(unsigned n, const double *x, double *grad, void *my_func_data)
 void AqcPqcAccelerator::run(){
 
 	int nbSteps = options.nbSteps;
-	std::cerr<<hamil_int.nbQubits<<"xx\n";
 	this->ansatz = getAnsatz(options.ansatz_name, hamil_int.nbQubits);
 
 	std::vector<std::shared_ptr<Parameter>> parameters = ansatz.circuit.getParamsPtrs();
@@ -112,6 +122,7 @@ void AqcPqcAccelerator::run(){
 
 	Eigen::VectorXd minus_q(parameters.size());
 	Eigen::MatrixXd A(parameters.size(), parameters.size());
+	nlopt_opt opt;
 
 	for(int k = 0; k < nbSteps; ++k){
 
@@ -127,11 +138,12 @@ void AqcPqcAccelerator::run(){
 			double b = _calc_expectation(&h);
 			parameters[i]->value = original_i;
 
+			//std::cerr<<a<<" "<<b<<"\n";
 			minus_q(i)=-0.5*(a-b);
 
 			for(int j = 0; j <= i; ++j){
 
-				double original_j = parameters[i]->value;
+				double original_j = parameters[j]->value;
 
 				parameters[i]->value += M_PI_2;
 				parameters[j]->value += M_PI_2;
@@ -147,6 +159,9 @@ void AqcPqcAccelerator::run(){
 				parameters[j]->value -= M_PI;
 				double d = _calc_expectation(&h);
 
+				parameters[i]->value = original_i;
+				parameters[j]->value = original_j;
+
 				A(i,j) = 0.25 * (a-b-c+d);
 
 				if(i != j)
@@ -154,11 +169,57 @@ void AqcPqcAccelerator::run(){
 			}
 		}
 
-		Eigen::VectorXd eps(parameters.size());
-		eps = A.fullPivHouseholderQr().solve(minus_q);
-		std::cout<<eps<<"\n";
-	}
+		Eigen::VectorXd Xi(parameters.size());
+		Xi = A.fullPivHouseholderQr().solve(minus_q);
 
+		Eigen::FullPivLU<Eigen::MatrixXd> lu(A);
+		Eigen::MatrixXd A_null_space = lu.kernel();
+		//for faster way see https://stackoverflow.com/questions/34662940/how-to-compute-basis-of-nullspace-with-eigen-library
+
+		int opt_dim = A_null_space.cols();
+
+		opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+		OptData data {Xi, A_null_space};
+		double *lb = (double*) malloc(opt_dim * sizeof(double));
+		double *ub = (double*) malloc(opt_dim * sizeof(double));
+		for(int i = 0; i < opt_dim; ++i){
+			lb[i] = -HUGE_VAL;ub[i]=-lb[i];
+		}
+		nlopt_set_lower_bounds(opt, lb);
+		nlopt_set_upper_bounds(opt, ub);
+		nlopt_set_min_objective(opt, lin_system_f, &data);
+		nlopt_set_xtol_rel(opt, 1e-4);
+		nlopt_set_xtol_abs1(opt, 1e-4);
+
+		//double x[2] = { 1.234, 5.678 };  /* some initial guess */
+		double *eps = (double*) malloc(opt_dim * sizeof(double));
+		for(int i = 0; i < opt_dim; ++i)
+			eps[i] = 0.5;
+		double minf; /* the minimum objective value, upon return */
+
+		int opt_res = nlopt_optimize(opt, eps, &minf);
+		if (opt_res < 0) {
+		    std::cerr<<"nlopt failed! error code: "<< opt_res <<std::endl;
+		}
+		else {
+			 std::cerr<<"found minimum at f("<<eps[0];
+			 for(int i = 1; i < opt_dim; ++i)
+				 std::cerr<<","<<eps[i];
+			 std::cerr<< ")= "<<minf<<"\n";
+
+			 for(int i = 1; i < opt_dim; ++i){
+				 parameters[i]->value += eps[i];
+			 }
+		}
+
+
+
+		free(eps);
+		free(lb);free(ub);
+		nlopt_destroy(opt);
+
+
+	}
 	/*free(first_order_terms);
     for (int i = 0; i < parameters.size(); i++)
     	free(second_order_terms[i]);*/
