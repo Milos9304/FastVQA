@@ -17,6 +17,8 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
+set(CMAKE_BUILD_TYPE Release)
+
 include(GNUInstallDirs)
 
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
