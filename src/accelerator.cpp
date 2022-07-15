@@ -381,7 +381,7 @@ void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 
 }
 
-void Accelerator::initialize(Hamiltonian* hamIn){
+void Accelerator::initialize(PauliHamiltonian* hamIn){
 
 	logd("Calculating hamiltonian terms explicitly.", options.log_level);
 
@@ -400,10 +400,10 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 
 	int coeffsSize = hamIn->coeffs.size();
 
-	hamiltonian = createPauliHamil(num_qubits, coeffsSize);
+	pauliHamiltonian = createPauliHamil(num_qubits, coeffsSize);
 
-	hamiltonian.termCoeffs = &hamIn->coeffs[0]; //conversion to c array
-	hamiltonian.pauliCodes = (enum pauliOpType*)(&hamIn->pauliOpts[0]);
+	pauliHamiltonian.termCoeffs = &hamIn->coeffs[0]; //conversion to c array
+	pauliHamiltonian.pauliCodes = (enum pauliOpType*)(&hamIn->pauliOpts[0]);
 
 	bool diag=true;
 	for(auto &c:hamIn->pauliOpts){ //check for diagonal hamiltonian
@@ -415,7 +415,7 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 
 	if(diag){
 		hamDiag = createDiagonalOp(num_qubits, env, 1);
-		initDiagonalOpFromPauliHamil(hamDiag, hamiltonian);
+		initDiagonalOpFromPauliHamil(hamDiag, pauliHamiltonian);
 	}else{ //assuming PauliHamil
 		throw_runtime_error("TODO: NON DIAGONAL HAMILTONIAN NOT IMPLEMENTED");
 	}

@@ -49,7 +49,7 @@ TEST(ansatz_test, initializeMinusSigmaXHamiltonian){
 	FastVQA::AqcPqcAcceleratorOptions acceleratorOptions;
 	acceleratorOptions.accelerator_type = "quest";
 
-	FastVQA::Hamiltonian hamiltonian(num_qubits);
+	FastVQA::PauliHamiltonian hamiltonian(num_qubits);
 	hamiltonian.initializeMinusSigmaXHamiltonian();
 
 	FastVQA::AqcPqcAccelerator accelerator(acceleratorOptions);

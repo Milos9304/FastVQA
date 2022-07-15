@@ -39,7 +39,7 @@ set(public_headers
     include/accelerator.h
     include/accelerator_base.h
     include/aqc_pqc/AqcPqcAccelerator.h
-    include/hamiltonian.h
+    include/pauliHamiltonian.h
     include/experimentBuffer.h
     include/circuit.h
     include/gate.h
@@ -76,7 +76,7 @@ target_sources(${PROJECT_NAME}
         src/circuit.cpp
         src/ansatz.cpp
         src/accelerator.cpp
-        src/hamiltonian.cpp
+        src/pauliHamiltonian.cpp
         src/accelerator_base.cpp
         src/symbolic_manipulation.cpp
         ${quest_src}

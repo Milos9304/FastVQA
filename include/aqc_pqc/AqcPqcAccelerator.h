@@ -9,10 +9,12 @@
 #define FASTVQA_AQC_PQC_ACCELERATOR_H_
 
 #include "QuEST.h"
-#include "hamiltonian.h"
+#include "pauliHamiltonian.h"
 #include "cost_function.h"
 #include "experimentBuffer.h"
 #include "accelerator_base.h"
+#include <Eigen/Dense>
+
 
 #include <vector>
 #include <bitset>
@@ -38,6 +40,8 @@ struct AqcPqcAcceleratorOptions{
 	// Name of the ansatz as defined in FastVQA/ansatz.h
 	std::string ansatz_name = "Ry_CNOT_all2all_Rz";
 
+	bool compareWithClassicalEigenSolver = false;
+
 };
 
 class AqcPqcAccelerator:public AcceleratorBase{
@@ -48,7 +52,7 @@ public:
 
 	AqcPqcAccelerator(AqcPqcAcceleratorOptions options);
 
-	void initialize(Hamiltonian* h0, Hamiltonian* h1);
+	void initialize(PauliHamiltonian* h0, PauliHamiltonian* h1);
 	void run();
 	void finalize();
 
@@ -61,7 +65,7 @@ public:
 
 private:
 
-	class GeneralIntermediateHamiltonian{
+	class GeneralIntermediatePauliHamiltonian{
 	public:
 		int nbQubits;
 
@@ -74,8 +78,10 @@ private:
 
 	int nbQubits;
 
-	double _calc_expectation(Hamiltonian *h);
-	Hamiltonian _calc_intermediate_hamiltonian(double lambda);
+	Eigen::MatrixXd getIntermediateMatrixRepresentation(PauliHamiltonian* h, double* id_coeff);
+
+	double _calc_expectation(PauliHamiltonian *h);
+	PauliHamiltonian _calc_intermediate_hamiltonian(double lambda);
 
 };
 }

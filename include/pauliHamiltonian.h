@@ -11,16 +11,18 @@
 #include <string>
 #include <vector>
 #include "QuEST.h"
+#include <Eigen/Dense>
 
 namespace FastVQA{
 
-class Hamiltonian{
+class PauliHamiltonian{
 
 	public:
 
 		int nbQubits;
 
-		std::string getHamiltonianString(int double_precision=2);
+		std::string getPauliHamiltonianString(int double_precision=2);
+		Eigen::MatrixXd getMatrixRepresentation(bool diagonalOp=false);
 
 		//quest formulation
 		std::vector<double> coeffs;
@@ -28,17 +30,17 @@ class Hamiltonian{
 
 		void initializeMinusSigmaXHamiltonian();
 
-		Hamiltonian(){}
-		Hamiltonian(int nbQubits){
+		PauliHamiltonian(){}
+		PauliHamiltonian(int nbQubits){
 			this->nbQubits = nbQubits;
 		}
-		Hamiltonian(int nbQubits, std::vector<double> coeffs, std::vector<int> pauliOpts){
+		PauliHamiltonian(int nbQubits, std::vector<double> coeffs, std::vector<int> pauliOpts){
 			this->nbQubits = nbQubits;
 			this->coeffs = coeffs;
 			this->pauliOpts = pauliOpts;
 		}
 
-		void toPauliHamil(PauliHamil* hamil);
+		void toQuestPauliHamil(PauliHamil* hamil);
 };
 
 }

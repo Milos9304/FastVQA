@@ -9,7 +9,7 @@
 #define FASTVQA_ACCELERATOR_H_
 
 #include "QuEST.h"
-#include "hamiltonian.h"
+#include "pauliHamiltonian.h"
 #include "cost_function.h"
 #include "experimentBuffer.h"
 #include "accelerator_base.h"
@@ -64,7 +64,7 @@ public:
 	Accelerator(AcceleratorOptions options);
 
 	void initialize(CostFunction cost_function, int num_qubits);
-	void initialize(Hamiltonian* hamiltonian);
+	void initialize(PauliHamiltonian* hamIn);
 	void initialize(int num_qubits);
 	void finalize();
 
@@ -83,13 +83,13 @@ private:
 	int *qubits_list;
 	pauliOpType* all_x_list;
 
-	//false - hamiltonian is used
+	//false - PauliHamiltonian is used
 	//true - cost function is used
 	bool hamiltonian_specified;
 
 	CostFunction cost_function;
 
-	PauliHamil hamiltonian;
+	PauliHamil pauliHamiltonian;
 	RefEnergies ref_hamil_energies;
 
     DiagonalOp hamDiag;
@@ -110,7 +110,7 @@ private:
     const int new_qureg_tag = 17;
     const int new_circuit_tag = 18;
     const int new_params_tag = 19;
-    const int new_hamiltonian_tag = 20;
+    const int new_PauliHamiltonian_tag = 20;
     const int calc_exp_val_tag = 21;
     const int measure_with_cache_tag = 22;
 

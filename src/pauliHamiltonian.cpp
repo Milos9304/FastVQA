@@ -1,4 +1,4 @@
-#include "hamiltonian.h"
+#include "pauliHamiltonian.h"
 #include "logger.h"
 
 #include <sstream>
@@ -14,13 +14,13 @@ std::string to_string_with_precision(const T a_value, const int n = 6)
 
 namespace FastVQA{
 
-std::string Hamiltonian::getHamiltonianString(int double_precision){
+std::string PauliHamiltonian::getPauliHamiltonianString(int double_precision){
 
 	std::string res;
 	bool start = true;
 
 	if(this->nbQubits < 1 || this->pauliOpts.size() != this->nbQubits * this->coeffs.size() )
-    	throw_runtime_error("Hamiltonian unitialized");
+    	throw_runtime_error("PauliHamiltonian unitialized");
 
 	for(int i = 0; i < this->coeffs.size(); ++i){
 
@@ -58,7 +58,7 @@ std::string Hamiltonian::getHamiltonianString(int double_precision){
 	return res;
 }
 
-void Hamiltonian::initializeMinusSigmaXHamiltonian(){
+void PauliHamiltonian::initializeMinusSigmaXHamiltonian(){
 
 	this->coeffs = std::vector<double>{-1};
 
@@ -69,12 +69,45 @@ void Hamiltonian::initializeMinusSigmaXHamiltonian(){
 
 }
 
-void Hamiltonian::toPauliHamil(PauliHamil* hamil){
+void PauliHamiltonian::toQuestPauliHamil(PauliHamil* hamil){
 
 	*hamil = createPauliHamil(this->nbQubits, this->coeffs.size());
 
 	hamil->termCoeffs = &(this->coeffs)[0]; //conversion to c array
 	hamil->pauliCodes = (enum pauliOpType*)(&this->pauliOpts[0]);
 }
+
+//WIP
+/*Eigen::MatrixXd PauliHamiltonian::getMatrixRepresentation(bool diagonalOp){
+
+
+	Eigen::MatrixXd m = Eigen::MatrixXd::Zero(this->nbQubits, this->nbQubits);
+
+	if(diagonalOp){
+		logw("Not implemented");
+		return m;
+	}
+
+	if(this->nbQubits < 1 || this->pauliOpts.size() != this->nbQubits * this->coeffs.size() )
+	    	throw_runtime_error("PauliHamiltonian unitialized");
+
+	for(int i = 0; i < this->coeffs.size(); ++i){
+
+		if(this->coeffs[i] == 0)
+			continue;
+
+		bool all_x=true;
+		for(int q = 0; q < this->nbQubits; ++q){
+
+			int opt = this->pauliOpts[i*this->nbQubits + q];
+			if(opt != 1){
+				all_x = false;
+
+			}
+
+		}
+
+	}
+}*/
 
 }

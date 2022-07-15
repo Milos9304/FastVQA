@@ -13,7 +13,7 @@
 //#include "mpi.h"
 namespace FastVQA{
 void Vqe::run_vqe(ExperimentBuffer* buffer,
-		Hamiltonian* hamiltonian,
+		PauliHamiltonian* hamiltonian,
 		VQEOptions* options){
 
 	this->num_qubits = hamiltonian->nbQubits;
@@ -57,9 +57,9 @@ void Vqe::__initialize(ExperimentBuffer* buffer, VQEOptions* options){
 }
 
 
-void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian, bool logExpecStd, bool keepQureg){
+void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, PauliHamiltonian* PauliHamiltonian, bool logExpecStd, bool keepQureg){
 	acc->options.zero_reference_states = zero_reference_states;
-	acc->initialize(hamiltonian);
+	acc->initialize(PauliHamiltonian);
 	__execute(buffer, acc, optimizer, logExpecStd, keepQureg);
 }
 

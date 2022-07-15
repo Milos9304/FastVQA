@@ -7,8 +7,6 @@
 #include <fstream>
 #include <algorithm>
 #include <nlopt.h>
-#include <Eigen/Dense>
-
 
 namespace FastVQA{
 
@@ -26,7 +24,7 @@ AqcPqcAccelerator::AqcPqcAccelerator(AqcPqcAcceleratorOptions options){
 
 }
 
-void AqcPqcAccelerator::initialize(Hamiltonian* h0, Hamiltonian* h1){
+void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
 
 	this->nbQubits = h0->nbQubits;
 	if(this->nbQubits != h1->nbQubits)
@@ -38,7 +36,7 @@ void AqcPqcAccelerator::initialize(Hamiltonian* h0, Hamiltonian* h1){
 
 	std::vector<std::string> sequences;
 
-	for(int i = 0; i < hamil_int.coeffs0.size(); ++i){
+	for(std::vector<double>::size_type i = 0; i < hamil_int.coeffs0.size(); ++i){
 		std::string s;
 
 		for(int j = 0; j < nbQubits; ++j)
@@ -51,7 +49,7 @@ void AqcPqcAccelerator::initialize(Hamiltonian* h0, Hamiltonian* h1){
 		hamil_int.coeffs1.push_back(0);
 	}
 
-	for(int i = 0; i < h1->coeffs.size(); ++i){
+	for(std::vector<double>::size_type i = 0; i < h1->coeffs.size(); ++i){
 		std::string s;
 
 		for(int j = 0; j < nbQubits; ++j)
@@ -98,7 +96,7 @@ double lin_system_f(unsigned n, const double *z, double *grad, void *data){
 
     double ret=0;
     Eigen::VectorXd z_vect(n);
-    for(int i = 0; i < n; ++i)
+    for(unsigned int i = 0; i < n; ++i)
     	z_vect(i)=z[i];
     Eigen::VectorXd x = d->Xi+d->N*z_vect;
     for(int i = 0; i < d->Xi.rows(); ++i)
@@ -110,6 +108,7 @@ void AqcPqcAccelerator::run(){
 
 	int nbSteps = options.nbSteps;
 	this->ansatz = getAnsatz(options.ansatz_name, hamil_int.nbQubits);
+	initOptimalParamsForMinusSigmaXHamiltonian(&ansatz);
 
 	std::vector<std::shared_ptr<Parameter>> parameters = ansatz.circuit.getParamsPtrs();
 
@@ -126,11 +125,12 @@ void AqcPqcAccelerator::run(){
 
 	for(int k = 0; k < nbSteps; ++k){
 
-		Hamiltonian h = this->_calc_intermediate_hamiltonian((double)k/nbSteps);
+		PauliHamiltonian h = this->_calc_intermediate_hamiltonian((double)k/(nbSteps-1));
 
-		for(int i = 0; i < parameters.size(); ++i){
+		for(std::vector<std::shared_ptr<FastVQA::Parameter>>::size_type i = 0; i < parameters.size(); ++i){
 
 			double original_i = parameters[i]->value;
+			std::cerr<<original_i<<" ";
 
 			parameters[i]->value += M_PI_2;
 			double a = _calc_expectation(&h);
@@ -141,7 +141,7 @@ void AqcPqcAccelerator::run(){
 			//std::cerr<<a<<" "<<b<<"\n";
 			minus_q(i)=-0.5*(a-b);
 
-			for(int j = 0; j <= i; ++j){
+			for(unsigned int j = 0; j <= i; ++j){
 
 				double original_j = parameters[j]->value;
 
@@ -167,7 +167,7 @@ void AqcPqcAccelerator::run(){
 				if(i != j)
 					A(j,i) = A(i,j);
 			}
-		}
+		}std::cerr<<"\n";
 
 		Eigen::VectorXd Xi(parameters.size());
 		Xi = A.fullPivHouseholderQr().solve(minus_q);
@@ -191,11 +191,10 @@ void AqcPqcAccelerator::run(){
 		nlopt_set_xtol_rel(opt, 1e-4);
 		nlopt_set_xtol_abs1(opt, 1e-4);
 
-		//double x[2] = { 1.234, 5.678 };  /* some initial guess */
 		double *eps = (double*) malloc(opt_dim * sizeof(double));
 		for(int i = 0; i < opt_dim; ++i)
 			eps[i] = 0.5;
-		double minf; /* the minimum objective value, upon return */
+		double minf;
 
 		int opt_res = nlopt_optimize(opt, eps, &minf);
 		if (opt_res < 0) {
@@ -212,11 +211,24 @@ void AqcPqcAccelerator::run(){
 			 }
 		}
 
-
+		std::cerr<<"Energy: " << _calc_expectation(&h) <<"\n";
 
 		free(eps);
 		free(lb);free(ub);
 		nlopt_destroy(opt);
+
+		if(options.compareWithClassicalEigenSolver){
+
+			double id_term;
+			Eigen::MatrixXd m = getIntermediateMatrixRepresentation(&h, &id_term);
+			Eigen::VectorXcd evals = m.eigenvalues();
+
+			std::vector<std::complex>(evals.size);
+			for(int i = 0; i < evals.size(); ++i){
+
+			}
+
+		}
 
 
 	}
@@ -226,15 +238,15 @@ void AqcPqcAccelerator::run(){
 
 }
 
-Hamiltonian AqcPqcAccelerator::_calc_intermediate_hamiltonian(double lambda){
+PauliHamiltonian AqcPqcAccelerator::_calc_intermediate_hamiltonian(double lambda){
 
 	std::vector<double> coeffs;
 
-	for(int i = 0; i < hamil_int.coeffs0.size(); ++i){
+	for(std::vector<double>::size_type i = 0; i < hamil_int.coeffs0.size(); ++i){
 		coeffs.push_back((1-lambda)*hamil_int.coeffs0[i]+lambda*hamil_int.coeffs1[i]);
 	}
 
-	Hamiltonian res(nbQubits, coeffs, hamil_int.pauliOpts);
+	PauliHamiltonian res(nbQubits, coeffs, hamil_int.pauliOpts);
 
 	return res;
 }
@@ -244,18 +256,85 @@ double AqcPqcAccelerator::calc_intermediate_expectation(ExperimentBuffer* buffer
 	if(lambda < 0 || lambda > 1)
 		throw_runtime_error("Invalid lambda value");
 
-	Hamiltonian h = _calc_intermediate_hamiltonian(lambda);
+	PauliHamiltonian h = _calc_intermediate_hamiltonian(lambda);
 	return _calc_expectation(&h);
 
 }
 
-double AqcPqcAccelerator::_calc_expectation(Hamiltonian *h){
+double AqcPqcAccelerator::_calc_expectation(PauliHamiltonian *h){
 	initZeroState(qureg);
 	run_circuit(ansatz.circuit);
 	Qureg workspace = createQureg(nbQubits, env);
 	PauliHamil hamil;
-	h->toPauliHamil(&hamil);
+	h->toQuestPauliHamil(&hamil);
 	return calcExpecPauliHamil(qureg, hamil, workspace);
+}
+
+Eigen::MatrixXd AqcPqcAccelerator::getIntermediateMatrixRepresentation(PauliHamiltonian* h, double* id_coeff){
+
+	Eigen::MatrixXd m = Eigen::MatrixXd::Zero((1LL<<h->nbQubits), (1LL<<h->nbQubits));
+	DiagonalOp diagOp = createDiagonalOp(h->nbQubits, env, true);
+
+	PauliHamil h_cpy;
+	h_cpy.numQubits = h->nbQubits;
+	std::vector<double> coeffs;
+	std::vector<int> codes;
+
+	double x_coeff=0;
+	*id_coeff=0;
+
+	for(std::vector<double>::size_type i = 0; i < h->coeffs.size(); ++i){
+
+		if(h->coeffs[i] == 0)
+			continue;
+
+		bool all_x=true, all_i=true;
+		bool x_coeff_seen=false;bool id_coeff_seen=false;
+
+		for(int q = 0; q < h->nbQubits; ++q){
+
+			int opt = h->pauliOpts[i*h->nbQubits + q];
+			if(opt != 1){
+				all_x = false;
+			}
+			if(opt != 0){
+				all_i = false;
+			}
+		}
+
+		if(!all_x && !all_i){
+			coeffs.push_back(h->coeffs[i]);
+			for(int q = 0; q < h->nbQubits; ++q)
+				codes.push_back(h->pauliOpts[i*h->nbQubits + q]);
+		}else if(!all_i){
+			if(x_coeff_seen)
+				throw_runtime_error("Two all x terms");
+			x_coeff = h->coeffs[i];
+			x_coeff_seen=true;
+		}else{
+			if(id_coeff_seen)
+				throw_runtime_error("Two id coeffs terms");
+			*id_coeff=h->coeffs[i];
+			id_coeff_seen = true;
+		}
+	}
+
+	h_cpy.numSumTerms = coeffs.size();
+	h_cpy.termCoeffs = &coeffs[0]; //conversion to c array
+	h_cpy.pauliCodes = (enum pauliOpType*)(&codes[0]);
+
+	if(h_cpy.numSumTerms > 0)
+		initDiagonalOpFromPauliHamil(diagOp, h_cpy);
+
+	//logw("Not distributed", options.log_level);
+	for(long long i = 0; i < m.rows(); ++i){
+
+		if(h_cpy.numSumTerms > 0)
+			m.diagonal()[i] = diagOp.real[i];
+		m(i, m.rows()-1-i) += x_coeff;
+	}
+	destroyDiagonalOp(diagOp, env);
+	return m;
 }
 
 }

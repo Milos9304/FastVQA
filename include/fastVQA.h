@@ -15,7 +15,7 @@
 #include "vqeOptions.h"
 #include "qaoaOptions.h"
 #include "optimizer.h"
-#include "hamiltonian.h"
+#include "pauliHamiltonian.h"
 
 /*#include "io/logger.h"
 #include "io/indicators/progress_bar.hpp"
