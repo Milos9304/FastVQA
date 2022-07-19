@@ -15,10 +15,11 @@
 #include "accelerator_base.h"
 #include <Eigen/Dense>
 
-
 #include <vector>
 #include <bitset>
 #include <string>
+#include <fstream>
+
 
 namespace FastVQA{
 
@@ -42,6 +43,9 @@ struct AqcPqcAcceleratorOptions{
 
 	bool compareWithClassicalEigenSolver = false;
 
+	bool outputLogToFile = false;
+	std::string logFileName = "log";
+
 };
 
 class AqcPqcAccelerator:public AcceleratorBase{
@@ -51,10 +55,10 @@ public:
 	AqcPqcAcceleratorOptions options;
 
 	AqcPqcAccelerator(AqcPqcAcceleratorOptions options);
+	~AqcPqcAccelerator();
 
 	void initialize(PauliHamiltonian* h0, PauliHamiltonian* h1);
 	void run();
-	void finalize();
 
 	double calc_intermediate_expectation(ExperimentBuffer* buffer, double lambda, bool init_zero_state=true);
 	void finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<double> final_params, int nbSamples);
@@ -64,6 +68,9 @@ public:
 	}
 
 private:
+
+	bool initialized = false;
+	void finalize();
 
 	class GeneralIntermediatePauliHamiltonian{
 	public:
@@ -82,6 +89,10 @@ private:
 
 	double _calc_expectation(PauliHamiltonian *h);
 	PauliHamiltonian _calc_intermediate_hamiltonian(double lambda);
+
+	Qureg workspace;
+
+	std::ofstream logFile;
 
 };
 }

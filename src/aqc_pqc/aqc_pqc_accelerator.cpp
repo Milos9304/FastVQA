@@ -24,7 +24,18 @@ AqcPqcAccelerator::AqcPqcAccelerator(AqcPqcAcceleratorOptions options){
 
 }
 
+AqcPqcAccelerator::~AqcPqcAccelerator(){
+
+	if(initialized){
+		this->finalize();
+		initialized = false;
+	}
+}
+
 void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
+
+	if(initialized)
+		throw_runtime_error("AqcPqcAccelerator has already been initialized!");
 
 	this->nbQubits = h0->nbQubits;
 	if(this->nbQubits != h1->nbQubits)
@@ -76,7 +87,24 @@ void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
 	seedQuEST(&env, keys, 1);
 	logd("Setting seed to " + std::to_string(keys[0]), options.log_level);
 	this->qureg = createQureg(this->nbQubits, env);
+	workspace = createQureg(this->nbQubits, env);
 
+	if(options.outputLogToFile){
+		logFile.open(options.logFileName);
+		if(!logFile.is_open())
+			throw_runtime_error("Error opening log file " + options.logFileName);
+
+		logFile << std::fixed << std::setprecision(10);
+
+	}
+
+	initialized = true;
+
+}
+
+void AqcPqcAccelerator::finalize(){
+	destroyQureg(workspace, env);
+	logFile.close();
 }
 
 typedef struct {
@@ -130,7 +158,6 @@ void AqcPqcAccelerator::run(){
 		for(std::vector<std::shared_ptr<FastVQA::Parameter>>::size_type i = 0; i < parameters.size(); ++i){
 
 			double original_i = parameters[i]->value;
-			std::cerr<<original_i<<" ";
 
 			parameters[i]->value += M_PI_2;
 			double a = _calc_expectation(&h);
@@ -138,7 +165,6 @@ void AqcPqcAccelerator::run(){
 			double b = _calc_expectation(&h);
 			parameters[i]->value = original_i;
 
-			//std::cerr<<a<<" "<<b<<"\n";
 			minus_q(i)=-0.5*(a-b);
 
 			for(unsigned int j = 0; j <= i; ++j){
@@ -167,7 +193,7 @@ void AqcPqcAccelerator::run(){
 				if(i != j)
 					A(j,i) = A(i,j);
 			}
-		}std::cerr<<"\n";
+		}
 
 		Eigen::VectorXd Xi(parameters.size());
 		Xi = A.fullPivHouseholderQr().solve(minus_q);
@@ -201,17 +227,18 @@ void AqcPqcAccelerator::run(){
 		    std::cerr<<"nlopt failed! error code: "<< opt_res <<std::endl;
 		}
 		else {
-			 std::cerr<<"found minimum at f("<<eps[0];
+			 /*std::cerr<<"found minimum at f("<<eps[0];
 			 for(int i = 1; i < opt_dim; ++i)
 				 std::cerr<<","<<eps[i];
-			 std::cerr<< ")= "<<minf<<"\n";
+			 std::cerr<< ")= "<<minf<<"\n";*/
 
 			 for(int i = 1; i < opt_dim; ++i){
 				 parameters[i]->value += eps[i];
 			 }
 		}
 
-		std::cerr<<"Energy: " << _calc_expectation(&h) <<"\n";
+		double expectation = _calc_expectation(&h);
+		//logi("Energy: " + std::to_string(expectation));
 
 		free(eps);
 		free(lb);free(ub);
@@ -221,10 +248,22 @@ void AqcPqcAccelerator::run(){
 
 			double id_term;
 			Eigen::MatrixXd m = getIntermediateMatrixRepresentation(&h, &id_term);
-			Eigen::VectorXcd evals = m.eigenvalues();
+			Eigen::VectorXcd evals_vect = m.eigenvalues();
 
-			std::vector<std::complex>(evals.size);
-			for(int i = 0; i < evals.size(); ++i){
+			std::vector<double> evals(evals_vect.size());
+			for(int i = 0; i < evals_vect.size(); ++i){
+				std::complex c = evals_vect.coeff(i);
+				if(c.imag() != 0)
+					loge("Imaginary part of eigenvalue is non-zero: " + std::to_string(c.imag()));
+				evals[i] = c.real();
+			}
+
+			std::sort(evals.begin(), evals.end());
+			//logi("Exact ground state: " + std::to_string(evals[0]) + "    (diff="+std::to_string(std::abs(evals[0]-expectation))+")");
+
+			if(options.outputLogToFile){
+
+				logFile << evals[0] << " " << expectation << "\n";
 
 			}
 
@@ -264,7 +303,6 @@ double AqcPqcAccelerator::calc_intermediate_expectation(ExperimentBuffer* buffer
 double AqcPqcAccelerator::_calc_expectation(PauliHamiltonian *h){
 	initZeroState(qureg);
 	run_circuit(ansatz.circuit);
-	Qureg workspace = createQureg(nbQubits, env);
 	PauliHamil hamil;
 	h->toQuestPauliHamil(&hamil);
 	return calcExpecPauliHamil(qureg, hamil, workspace);
