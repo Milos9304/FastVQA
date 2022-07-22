@@ -38,6 +38,8 @@ struct AqcPqcAcceleratorOptions{
 	//nbSteps
 	int nbSteps;
 
+	bool checkHessian = true;
+
 	// Name of the ansatz as defined in FastVQA/ansatz.h
 	std::string ansatz_name = "Ry_CNOT_all2all_Rz";
 

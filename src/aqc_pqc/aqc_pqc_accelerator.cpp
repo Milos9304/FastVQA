@@ -112,6 +112,18 @@ typedef struct {
     Eigen::MatrixXd N;
 } OptData;
 
+template <class MatrixT>
+bool isPsd(const MatrixT& A) {
+  if (!A.isApprox(A.transpose())) {
+    return false;
+  }
+  const auto ldlt = A.template selfadjointView<Eigen::Upper>().ldlt();
+  if (ldlt.info() == Eigen::NumericalIssue || !ldlt.isPositive()) {
+    return false;
+  }
+  return true;
+}
+
 double lin_system_f(unsigned n, const double *z, double *grad, void *data){
 
 	OptData *d = (OptData *) data;
@@ -132,6 +144,17 @@ double lin_system_f(unsigned n, const double *z, double *grad, void *data){
     return ret;//sqrt(x[1]);
 }
 
+double eq_constraint(unsigned n, const double *x, double *grad, void *data){
+    //my_constraint_data *d = (my_constraint_data *) data;
+    //double a = d->a, b = d->b;
+    if (grad) {
+    	//UNIMPLEMENTED
+    }
+
+    	return 50000*x[0]-8000*x[1]+100;
+}
+
+
 void AqcPqcAccelerator::run(){
 
 	int nbSteps = options.nbSteps;
@@ -149,7 +172,7 @@ void AqcPqcAccelerator::run(){
 
 	Eigen::VectorXd minus_q(parameters.size());
 	Eigen::MatrixXd A(parameters.size(), parameters.size());
-	nlopt_opt opt;
+	nlopt_opt opt, lopt;
 
 	for(int k = 0; k < nbSteps; ++k){
 
@@ -204,18 +227,40 @@ void AqcPqcAccelerator::run(){
 
 		int opt_dim = A_null_space.cols();
 
-		opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+		double *lb, *ub;
 		OptData data {Xi, A_null_space};
-		double *lb = (double*) malloc(opt_dim * sizeof(double));
-		double *ub = (double*) malloc(opt_dim * sizeof(double));
-		for(int i = 0; i < opt_dim; ++i){
-			lb[i] = -HUGE_VAL;ub[i]=-lb[i];
+
+		if(options.checkHessian){
+			opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+			//opt = nlopt_create(NLOPT_LN_AUGLAG_EQ, opt_dim);
+			//lopt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+			//nlopt_set_local_optimizer(opt, lopt);
+			nlopt_add_equality_constraint(opt, eq_constraint, nullptr, 10e-15);
+
+			lb = (double*) malloc(opt_dim * sizeof(double));
+			ub = (double*) malloc(opt_dim * sizeof(double));
+			for(int i = 0; i < opt_dim; ++i){
+				lb[i] = -HUGE_VAL;ub[i]=-lb[i];
+			}
+			nlopt_set_lower_bounds(opt, lb);
+			nlopt_set_upper_bounds(opt, ub);
+			nlopt_set_min_objective(opt, lin_system_f, &data);
+			nlopt_set_xtol_rel(opt, 1e-4);
+			nlopt_set_xtol_abs1(opt, 1e-4);
+
+		}else{
+			opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+			lb = (double*) malloc(opt_dim * sizeof(double));
+			ub = (double*) malloc(opt_dim * sizeof(double));
+			for(int i = 0; i < opt_dim; ++i){
+				lb[i] = -HUGE_VAL;ub[i]=-lb[i];
+			}
+			nlopt_set_lower_bounds(opt, lb);
+			nlopt_set_upper_bounds(opt, ub);
+			nlopt_set_min_objective(opt, lin_system_f, &data);
+			nlopt_set_xtol_rel(opt, 1e-4);
+			nlopt_set_xtol_abs1(opt, 1e-4);
 		}
-		nlopt_set_lower_bounds(opt, lb);
-		nlopt_set_upper_bounds(opt, ub);
-		nlopt_set_min_objective(opt, lin_system_f, &data);
-		nlopt_set_xtol_rel(opt, 1e-4);
-		nlopt_set_xtol_abs1(opt, 1e-4);
 
 		double *eps = (double*) malloc(opt_dim * sizeof(double));
 		for(int i = 0; i < opt_dim; ++i)
@@ -242,7 +287,7 @@ void AqcPqcAccelerator::run(){
 
 		free(eps);
 		free(lb);free(ub);
-		nlopt_destroy(opt);
+		nlopt_destroy(opt);//nlopt_destroy(lopt);
 
 		if(options.compareWithClassicalEigenSolver){
 
@@ -259,7 +304,7 @@ void AqcPqcAccelerator::run(){
 			}
 
 			std::sort(evals.begin(), evals.end());
-			//logi("Exact ground state: " + std::to_string(evals[0]) + "    (diff="+std::to_string(std::abs(evals[0]-expectation))+")");
+			logi("Exact ground state: " + std::to_string(evals[0]) + "    (diff="+std::to_string(std::abs(evals[0]-expectation))+")");
 
 			if(options.outputLogToFile){
 
