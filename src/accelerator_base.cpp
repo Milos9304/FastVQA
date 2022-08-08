@@ -26,12 +26,12 @@ void AcceleratorBase::set_ansatz(Ansatz *ansatz){
 
 void AcceleratorBase::apply_gate(Gate gate){
 
-	double param = gate.param->value;
+	qreal param = gate.param->value;
 	apply_gate(gate, param);
 
 }
 
-void AcceleratorBase::apply_gate(Gate gate, double param){
+void AcceleratorBase::apply_gate(Gate gate, qreal param){
 
 	switch(gate.code){
 	case Gate::g_H:

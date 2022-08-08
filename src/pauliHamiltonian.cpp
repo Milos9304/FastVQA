@@ -60,7 +60,7 @@ std::string PauliHamiltonian::getPauliHamiltonianString(int double_precision){
 
 void PauliHamiltonian::initializeMinusSigmaXHamiltonian(){
 
-	this->coeffs = std::vector<double>{-1};
+	this->coeffs = std::vector<qreal>{-1};
 
 	std::vector<int> pauliOpts(this->nbQubits);
 	for(int i = 0; i < this->nbQubits; ++i)
@@ -75,6 +75,7 @@ void PauliHamiltonian::toQuestPauliHamil(PauliHamil* hamil){
 
 	hamil->termCoeffs = &(this->coeffs)[0]; //conversion to c array
 	hamil->pauliCodes = (enum pauliOpType*)(&this->pauliOpts[0]);
+
 }
 
 //WIP

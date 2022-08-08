@@ -69,7 +69,7 @@ Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int seed){
 				for(int j = i+1; j < num_qubits; ++j)
 					ansatz.circuit.addGate(Gate::g_CNOT, i, j);
 			}
-			ansatz.circuit.addGate(Gate::g_CNOT, num_qubits-1, 0);std::cerr<<num_qubits-1<<" "<<0<<"\n";
+			ansatz.circuit.addGate(Gate::g_CNOT, num_qubits-1, 0);
 
 			for(int i = 0; i < num_qubits; ++i){
 				double param1 = dis(gen);

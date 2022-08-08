@@ -97,6 +97,11 @@ target_include_directories(${PROJECT_NAME}
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+target_compile_definitions(${PROJECT_NAME}
+    PUBLIC
+    QuEST_PREC=4
+)
+
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${public_headers}")
 target_link_libraries(${PROJECT_NAME} PRIVATE nlopt Eigen3::Eigen)
 

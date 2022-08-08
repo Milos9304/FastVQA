@@ -12,10 +12,11 @@ namespace FastVQA{
 
 AqcPqcAccelerator::AqcPqcAccelerator(AqcPqcAcceleratorOptions options){
 
-	if(options.accelerator_type != "quest"){
-		loge("No other accelerator than QuEST implemented");
-		throw;
-	}
+	if(options.accelerator_type != "quest")
+		throw_runtime_error("No other accelerator than QuEST implemented");
+
+	if(options.printGroundStateOverlap && options.initialGroundState == InitialGroundState::None)
+		throw_runtime_error("printGroundStateOverlap=true but initial ground state not specified");
 
 	logi("Using " + options.ansatz_name + " ansatz");
 
@@ -89,6 +90,7 @@ void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
 	this->qureg = createQureg(this->nbQubits, env);
 	workspace = createQureg(this->nbQubits, env);
 
+
 	if(options.outputLogToFile){
 		logFile.open(options.logFileName);
 		if(!logFile.is_open())
@@ -103,7 +105,8 @@ void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
 }
 
 void AqcPqcAccelerator::finalize(){
-	destroyQureg(workspace, env);
+	destroyQureg(this->qureg, env);
+	destroyQureg(this->workspace, env);
 	logFile.close();
 }
 
@@ -111,6 +114,13 @@ typedef struct {
 	Eigen::VectorXd Xi;
     Eigen::MatrixXd N;
 } OptData;
+
+typedef struct {
+	std::vector<std::shared_ptr<Parameter>> *parameters;
+	AqcPqcAccelerator *acc;
+	PauliHamiltonian *h;
+	OptData *optData;
+} ConstrData;
 
 template <class MatrixT>
 bool isPsd(const MatrixT& A) {
@@ -151,7 +161,51 @@ double eq_constraint(unsigned n, const double *x, double *grad, void *data){
     	//UNIMPLEMENTED
     }
 
-    	return 50000*x[0]-8000*x[1]+100;
+    ConstrData *d = (ConstrData *) data;
+    Eigen::MatrixXd H(d->parameters->size(), d->parameters->size());
+
+    Eigen::VectorXd eps_vect(n);
+	for(unsigned int i = 0; i < n; ++i)
+		eps_vect(i)=x[i];
+	Eigen::VectorXd res_eps = d->optData->Xi+d->optData->N*eps_vect;
+
+	for(unsigned int i = 0; i < d->parameters->size(); ++i){
+		(*d->parameters)[i]->value += res_eps[i];
+		double original_i = (*d->parameters)[i]->value;
+
+		for(unsigned int j = 0; j <= i; ++j){
+
+			double original_j = (*d->parameters)[j]->value;
+
+			(*d->parameters)[i]->value += M_PI_2;
+			(*d->parameters)[j]->value += M_PI_2;
+			double a = d->acc->_calc_expectation(d->h);
+
+			(*d->parameters)[j]->value -= M_PI;
+			double b = d->acc->_calc_expectation(d->h);
+
+			(*d->parameters)[i]->value -= M_PI;
+			(*d->parameters)[j]->value += M_PI;
+			double c = d->acc->_calc_expectation(d->h);
+
+			(*d->parameters)[j]->value -= M_PI;
+			double dd = d->acc->_calc_expectation(d->h);
+
+			(*d->parameters)[i]->value = original_i;
+			(*d->parameters)[j]->value = original_j;
+
+			H(i,j) = 0.25 * (a-b-c+dd);
+
+			if(i != j)
+				H(j,i) = H(i,j);
+		}
+	}
+
+	for(unsigned int i = 0; i < d->parameters->size(); ++i){
+		(*d->parameters)[i]->value -= res_eps[i];
+	}
+
+	return isPsd(H)?0:1000;
 }
 
 
@@ -176,19 +230,30 @@ void AqcPqcAccelerator::run(){
 
 	for(int k = 0; k < nbSteps; ++k){
 
-		PauliHamiltonian h = this->_calc_intermediate_hamiltonian((double)k/(nbSteps-1));
+		/*for(int i = 0; i < parameters.size(); ++i)
+			std::cerr<<parameters[i]->value<<" ";
+		std::cerr<<"\n";*/
+
+		double theta = (double)k/(nbSteps-1);
+
+		PauliHamiltonian h = this->_calc_intermediate_hamiltonian(theta);
+		logd("theta="+std::to_string(theta), options.log_level);
+		logd(h.getPauliHamiltonianString(2), options.log_level);
 
 		for(std::vector<std::shared_ptr<FastVQA::Parameter>>::size_type i = 0; i < parameters.size(); ++i){
 
-			double original_i = parameters[i]->value;
+			qreal original_i = parameters[i]->value;std::cerr<<parameters[i]->name;
 
 			parameters[i]->value += M_PI_2;
-			double a = _calc_expectation(&h);
+			qreal a = _calc_expectation(&h);
 			parameters[i]->value -= M_PI;
-			double b = _calc_expectation(&h);
+			qreal b = _calc_expectation(&h);
 			parameters[i]->value = original_i;
 
 			minus_q(i)=-0.5*(a-b);
+			std::cerr<<std::setprecision(20)<<a<<" "<<b<<" "<<-0.5*(a-b) << " \n";
+
+			parameters[i]->value = original_i;
 
 			for(unsigned int j = 0; j <= i; ++j){
 
@@ -217,6 +282,7 @@ void AqcPqcAccelerator::run(){
 					A(j,i) = A(i,j);
 			}
 		}
+		std::cerr<<-minus_q<<std::endl;throw;
 
 		Eigen::VectorXd Xi(parameters.size());
 		Xi = A.fullPivHouseholderQr().solve(minus_q);
@@ -235,7 +301,8 @@ void AqcPqcAccelerator::run(){
 			//opt = nlopt_create(NLOPT_LN_AUGLAG_EQ, opt_dim);
 			//lopt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
 			//nlopt_set_local_optimizer(opt, lopt);
-			nlopt_add_equality_constraint(opt, eq_constraint, nullptr, 10e-15);
+			ConstrData constr_data {&parameters, this, &h, &data};
+			nlopt_add_equality_constraint(opt, eq_constraint, &constr_data, 10e-1);
 
 			lb = (double*) malloc(opt_dim * sizeof(double));
 			ub = (double*) malloc(opt_dim * sizeof(double));
@@ -277,10 +344,17 @@ void AqcPqcAccelerator::run(){
 				 std::cerr<<","<<eps[i];
 			 std::cerr<< ")= "<<minf<<"\n";*/
 
-			 for(int i = 1; i < opt_dim; ++i){
-				 parameters[i]->value += eps[i];
-			 }
+			Eigen::VectorXd eps_vect(opt_dim);
+			for(unsigned int i = 0; i < opt_dim; ++i)
+				eps_vect(i)=eps[i];
+			Eigen::VectorXd res_eps = Xi+A_null_space*eps_vect;
+			for(int i = 0; i < parameters.size(); ++i){
+				parameters[i]->value += res_eps[i];
+			}
+			//std::cerr<<"x"<<A*res_eps-minus_q<<std::endl;
 		}
+
+
 
 		double expectation = _calc_expectation(&h);
 		//logi("Energy: " + std::to_string(expectation));
@@ -304,13 +378,65 @@ void AqcPqcAccelerator::run(){
 			}
 
 			std::sort(evals.begin(), evals.end());
-			logi("Exact ground state: " + std::to_string(evals[0]) + "    (diff="+std::to_string(std::abs(evals[0]-expectation))+")");
+
+			std::string str_groundStateOverlap = "";
+			std::string str_finalGroundStateOverlap = "";
+
+			double gsOverlap, fgsOverlap;
+
+			if(options.printGroundStateOverlap){
+
+				if(options.solution == -1)
+					throw_runtime_error("printGroundStateOverlap=true but final ground state is not set.");
+
+				switch(options.initialGroundState){
+				case PlusState:{
+					double overlap_val_real = 0;
+					double overlap_val_imag = 0;
+					double p = (1-theta)*(1/sqrt(qureg.numAmpsTotal));
+					for(long long int i = 0; i < qureg.numAmpsTotal; ++i){
+
+						//std::cout << qureg.stateVec.real[i] << "+" << qureg.stateVec.imag[i] << "i  ";
+
+						if(i == options.solution){
+							overlap_val_real += (p + theta) * qureg.stateVec.real[i];
+							overlap_val_imag += (p + theta) * qureg.stateVec.imag[i];
+						}else{
+							overlap_val_real += p * qureg.stateVec.real[i];
+							overlap_val_imag += p * qureg.stateVec.imag[i];
+						}
+					}
+					gsOverlap = pow(overlap_val_real,2)+pow(overlap_val_imag, 2);
+					fgsOverlap = pow(qureg.stateVec.real[options.solution],2)+pow(qureg.stateVec.imag[options.solution], 2);
+					str_groundStateOverlap = " GS overlap= " + std::to_string(gsOverlap);
+					str_finalGroundStateOverlap = " GS overlap= " + std::to_string(fgsOverlap);
+					break;}
+				case None:
+				default:
+					throw_runtime_error("Not implemented. Err code: 11");
+					break;
+				}
+			}
+
+			std::ostringstream oss;
+			oss << std::fixed;
+			oss << std::setprecision(2);
+			oss << ((int)(theta*10000))/100.;
+
+			logi(oss.str()+"% "+"Exact ground state: " + std::to_string(evals[0]) + " calculated: " + std::to_string(expectation) + "    (diff="+std::to_string(std::abs(evals[0]-expectation))+")  " + str_groundStateOverlap + " " + str_finalGroundStateOverlap);
 
 			if(options.outputLogToFile){
-
-				logFile << evals[0] << " " << expectation << "\n";
-
+				logFile << evals[0] << " " << expectation << " " << (options.printGroundStateOverlap ? std::to_string(gsOverlap) + " " : "") << (options.printGroundStateOverlap ? std::to_string(fgsOverlap) : "") << std::endl;
 			}
+
+			int i_max = 0;double maxd = 0;
+
+			for(int i = 0; i < qureg.numAmpsTotal;++i)
+				if(pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2) > maxd){
+					maxd=pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
+					i_max = i;
+				}
+			std::cerr<< /*pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.real[i], 2)*/i_max <<" ";
 
 		}
 
@@ -324,7 +450,7 @@ void AqcPqcAccelerator::run(){
 
 PauliHamiltonian AqcPqcAccelerator::_calc_intermediate_hamiltonian(double lambda){
 
-	std::vector<double> coeffs;
+	std::vector<qreal> coeffs;
 
 	for(std::vector<double>::size_type i = 0; i < hamil_int.coeffs0.size(); ++i){
 		coeffs.push_back((1-lambda)*hamil_int.coeffs0[i]+lambda*hamil_int.coeffs1[i]);
@@ -335,7 +461,7 @@ PauliHamiltonian AqcPqcAccelerator::_calc_intermediate_hamiltonian(double lambda
 	return res;
 }
 
-double AqcPqcAccelerator::calc_intermediate_expectation(ExperimentBuffer* buffer, double lambda, bool init_zero_state){
+qreal AqcPqcAccelerator::calc_intermediate_expectation(ExperimentBuffer* buffer, double lambda, bool init_zero_state){
 
 	if(lambda < 0 || lambda > 1)
 		throw_runtime_error("Invalid lambda value");
@@ -345,9 +471,9 @@ double AqcPqcAccelerator::calc_intermediate_expectation(ExperimentBuffer* buffer
 
 }
 
-double AqcPqcAccelerator::_calc_expectation(PauliHamiltonian *h){
+qreal AqcPqcAccelerator::_calc_expectation(PauliHamiltonian *h){
 	initZeroState(qureg);
-	run_circuit(ansatz.circuit);
+	run_circuit(ansatz.circuit, false);
 	PauliHamil hamil;
 	h->toQuestPauliHamil(&hamil);
 	return calcExpecPauliHamil(qureg, hamil, workspace);
@@ -360,7 +486,7 @@ Eigen::MatrixXd AqcPqcAccelerator::getIntermediateMatrixRepresentation(PauliHami
 
 	PauliHamil h_cpy;
 	h_cpy.numQubits = h->nbQubits;
-	std::vector<double> coeffs;
+	std::vector<qreal> coeffs;
 	std::vector<int> codes;
 
 	double x_coeff=0;

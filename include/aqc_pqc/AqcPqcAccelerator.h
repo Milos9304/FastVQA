@@ -28,6 +28,8 @@ typedef std::vector<RefEnergy> RefEnergies;
 
 typedef std::function<double(double init_val, double final_val, int iter_i, int max_iters)> AlphaFunction; //initial val, final_val, and num_iterations in which alpha is being increased
 
+enum InitialGroundState {None, PlusState};
+
 struct AqcPqcAcceleratorOptions{
 
 	int log_level=1;
@@ -48,6 +50,11 @@ struct AqcPqcAcceleratorOptions{
 	bool outputLogToFile = false;
 	std::string logFileName = "log";
 
+	bool printGroundStateOverlap = false;
+	InitialGroundState initialGroundState = None;
+
+	long long int solution = -1;
+
 };
 
 class AqcPqcAccelerator:public AcceleratorBase{
@@ -62,12 +69,14 @@ public:
 	void initialize(PauliHamiltonian* h0, PauliHamiltonian* h1);
 	void run();
 
-	double calc_intermediate_expectation(ExperimentBuffer* buffer, double lambda, bool init_zero_state=true);
-	void finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<double> final_params, int nbSamples);
+	qreal calc_intermediate_expectation(ExperimentBuffer* buffer, double lambda, bool init_zero_state=true);
+	void finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<qreal> final_params, int nbSamples);
 
 	std::shared_ptr<Qureg> getQuregPtr(){
 		return std::make_shared<Qureg>(qureg);
 	}
+
+	qreal _calc_expectation(PauliHamiltonian *h);
 
 private:
 
@@ -78,10 +87,12 @@ private:
 	public:
 		int nbQubits;
 
-		std::vector<double> coeffs0, coeffs1;
+		std::vector<qreal> coeffs0, coeffs1;
 		std::vector<int> pauliOpts;
 
 		void toPauliHamil(PauliHamil* hamil);
+
+		Qureg getIntermediateGroundState(double lambda);
 
 	}hamil_int;
 
@@ -89,7 +100,6 @@ private:
 
 	Eigen::MatrixXd getIntermediateMatrixRepresentation(PauliHamiltonian* h, double* id_coeff);
 
-	double _calc_expectation(PauliHamiltonian *h);
 	PauliHamiltonian _calc_intermediate_hamiltonian(double lambda);
 
 	Qureg workspace;

@@ -32,7 +32,7 @@ protected:
 	Qureg qureg;
 
 	void apply_gate(Gate gate);
-	void apply_gate(Gate gate, double param);
+	void apply_gate(Gate gate, qreal param);
 };
 
 }

@@ -22,7 +22,8 @@ void Circuit::addParametrizedGate(GateCode code, int qubit1, int qubit2, std::sh
 std::vector<std::shared_ptr<Parameter>> Circuit::getParamsPtrs(){
 	std::vector<std::shared_ptr<Parameter>> res;
 	for(auto &gate : gates){
-		res.push_back(gate.param);
+		if(gate.param->name != Parameter::blank_param_name)
+			res.push_back(gate.param);
 	}
 	return res;
 }

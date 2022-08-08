@@ -25,7 +25,7 @@ class PauliHamiltonian{
 		Eigen::MatrixXd getMatrixRepresentation(bool diagonalOp=false);
 
 		//quest formulation
-		std::vector<double> coeffs;
+		std::vector<qreal> coeffs;
 		std::vector<int> pauliOpts;
 
 		void initializeMinusSigmaXHamiltonian();
@@ -34,7 +34,7 @@ class PauliHamiltonian{
 		PauliHamiltonian(int nbQubits){
 			this->nbQubits = nbQubits;
 		}
-		PauliHamiltonian(int nbQubits, std::vector<double> coeffs, std::vector<int> pauliOpts){
+		PauliHamiltonian(int nbQubits, std::vector<qreal> coeffs, std::vector<int> pauliOpts){
 			this->nbQubits = nbQubits;
 			this->coeffs = coeffs;
 			this->pauliOpts = pauliOpts;

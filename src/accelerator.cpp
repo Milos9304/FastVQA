@@ -199,7 +199,7 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 			});
 
 			ground_state = ref_hamil_energies[0];
-			std::cerr<<ground_state.first<<" "<<ground_state.second<<"\n";
+			//std::cerr<<ground_state.first<<" "<<ground_state.second<<"\n";
 			//loge("I choose: " + std::to_string(ground_state.second));
 
 		}else

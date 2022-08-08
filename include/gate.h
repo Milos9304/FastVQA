@@ -19,7 +19,7 @@ public:
 	static const std::string blank_param_name;
 
 	std::string name;
-	double value;
+	long double value;
 	Parameter(std::string name, double value){
 		this->name = name;
 		this->value = value;
