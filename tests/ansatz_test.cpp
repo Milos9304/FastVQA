@@ -18,9 +18,10 @@ TEST(ansatz_test, initOptimalParamsForMinusSigmaXHamiltonian){
 
 	FastVQA::AcceleratorOptions acceleratorOptions;
 	acceleratorOptions.accelerator_type = "quest";
+	//acceleratorOptions.createQuregAtEachInilization = false;
+	//acceleratorOptions.createQuregAtEachInilization_num_qubits = 1;
 
 	FastVQA::Accelerator accelerator(acceleratorOptions);
-	accelerator.env = createQuESTEnv();
 
 	accelerator.initialize(num_qubits);
 
@@ -33,7 +34,7 @@ TEST(ansatz_test, initOptimalParamsForMinusSigmaXHamiltonian){
 		std::shared_ptr<Qureg> qureg = accelerator.getQuregPtr();
 
 		//Should return all plus state
-		double plus_elem = sqrt(1./qureg->numAmpsTotal);
+		qreal plus_elem = sqrt(1./qureg->numAmpsTotal);
 		for(long long i = 0; i < qureg->numAmpsTotal; ++i){
 			ASSERT_DOUBLE_EQ(plus_elem, qureg->stateVec.real[i]);
 			ASSERT_DOUBLE_EQ(0., qureg->stateVec.imag[i]);
@@ -50,7 +51,7 @@ TEST(ansatz_test, initializeMinusSigmaXHamiltonian){
 	acceleratorOptions.accelerator_type = "quest";
 
 	FastVQA::PauliHamiltonian hamiltonian(num_qubits);
-	hamiltonian.initializeMinusSigmaXHamiltonian();
+	hamiltonian.initializeSumMinusSigmaXHamiltonian();
 
 	FastVQA::AqcPqcAccelerator accelerator(acceleratorOptions);
 
@@ -64,7 +65,7 @@ TEST(ansatz_test, initializeMinusSigmaXHamiltonian){
 		FastVQA::ExperimentBuffer buffer;
 		accelerator.set_ansatz(&ansatz);
 		double expectation = accelerator.calc_intermediate_expectation(&buffer, 0);
-		ASSERT_DOUBLE_EQ(expectation, -1);
+		ASSERT_DOUBLE_EQ(expectation, -1*num_qubits);
 	}
 
 }

@@ -22,12 +22,12 @@ std::string PauliHamiltonian::getPauliHamiltonianString(int double_precision){
 	if(this->nbQubits < 1 || this->pauliOpts.size() != this->nbQubits * this->coeffs.size() )
     	throw_runtime_error("PauliHamiltonian unitialized");
 
-	for(int i = 0; i < this->coeffs.size(); ++i){
+	for(unsigned int i = 0; i < this->coeffs.size(); ++i){
 
 		if(this->coeffs[i] == 0)
 			continue;
 
-		if(this->coeffs[i] > 0){//std::cerr<<"jebo"<<this->coeffs[i]<<"   ";
+		if(this->coeffs[i] > 0){
 			if(!start)
 				res+="+ ";
 		}
@@ -66,6 +66,23 @@ void PauliHamiltonian::initializeMinusSigmaXHamiltonian(){
 	for(int i = 0; i < this->nbQubits; ++i)
 		pauliOpts[i] = 1;
 	this->pauliOpts =pauliOpts;
+
+	this->type = PauliHamiltonianType::MinusSigmaX;
+
+}
+
+void PauliHamiltonian::initializeSumMinusSigmaXHamiltonian(){
+
+	this->coeffs = std::vector<qreal>(this->nbQubits);
+	this->pauliOpts = std::vector<int>(this->nbQubits * this->nbQubits);
+
+	for(int i = 0; i < this->nbQubits; ++i){
+		this->coeffs[i] = -1;
+		for(int j = i * this->nbQubits; j < (i+1)*this->nbQubits; ++j)
+			this->pauliOpts[j] = i == (j-(i * this->nbQubits)) ? 1 : 0;
+	}
+
+	this->type = PauliHamiltonianType::SumMinusSigmaX;
 
 }
 

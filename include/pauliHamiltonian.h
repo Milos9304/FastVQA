@@ -10,16 +10,20 @@
 
 #include <string>
 #include <vector>
-#include "QuEST.h"
 #include <Eigen/Dense>
+#include "QuEST.h"
+
 
 namespace FastVQA{
+
+enum PauliHamiltonianType {General, MinusSigmaX, SumMinusSigmaX};
 
 class PauliHamiltonian{
 
 	public:
 
 		int nbQubits;
+		PauliHamiltonianType type = PauliHamiltonianType::General;
 
 		std::string getPauliHamiltonianString(int double_precision=2);
 		Eigen::MatrixXd getMatrixRepresentation(bool diagonalOp=false);
@@ -29,6 +33,7 @@ class PauliHamiltonian{
 		std::vector<int> pauliOpts;
 
 		void initializeMinusSigmaXHamiltonian();
+		void initializeSumMinusSigmaXHamiltonian();
 
 		PauliHamiltonian(){}
 		PauliHamiltonian(int nbQubits){

@@ -10,6 +10,9 @@
 
 namespace FastVQA{
 
+const long double PI =   3.14159265358979323846264338327950288419716939937510L;
+const long double PI_2 = 1.57079632679489661923132169163975144209858469968755L;
+
 AqcPqcAccelerator::AqcPqcAccelerator(AqcPqcAcceleratorOptions options){
 
 	if(options.accelerator_type != "quest")
@@ -45,6 +48,7 @@ void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
 	hamil_int.nbQubits = nbQubits;
 	hamil_int.coeffs0 = h0->coeffs;
 	hamil_int.pauliOpts = h0->pauliOpts;
+	hamil_int.initial_type = h0->type;
 
 	std::vector<std::string> sequences;
 
@@ -111,8 +115,8 @@ void AqcPqcAccelerator::finalize(){
 }
 
 typedef struct {
-	Eigen::VectorXd Xi;
-    Eigen::MatrixXd N;
+	Eigen::Vector<qreal, Eigen::Dynamic> Xi;
+    Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> N;
 } OptData;
 
 typedef struct {
@@ -144,14 +148,14 @@ double lin_system_f(unsigned n, const double *z, double *grad, void *data){
         grad[1] = 0.5 / sqrt(x[1]);*/
     }
 
-    double ret=0;
-    Eigen::VectorXd z_vect(n);
+    qreal ret=0;
+    Eigen::Vector<qreal, Eigen::Dynamic> z_vect(n);
     for(unsigned int i = 0; i < n; ++i)
     	z_vect(i)=z[i];
-    Eigen::VectorXd x = d->Xi+d->N*z_vect;
+    Eigen::Vector<qreal, Eigen::Dynamic> x = d->Xi+d->N*z_vect;
     for(int i = 0; i < d->Xi.rows(); ++i)
     	ret += x[i]*x[i];
-    return ret;//sqrt(x[1]);
+    return ret;
 }
 
 double eq_constraint(unsigned n, const double *x, double *grad, void *data){
@@ -162,34 +166,34 @@ double eq_constraint(unsigned n, const double *x, double *grad, void *data){
     }
 
     ConstrData *d = (ConstrData *) data;
-    Eigen::MatrixXd H(d->parameters->size(), d->parameters->size());
+    Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> H(d->parameters->size(), d->parameters->size());
 
-    Eigen::VectorXd eps_vect(n);
+    Eigen::Vector<qreal, Eigen::Dynamic> eps_vect(n);
 	for(unsigned int i = 0; i < n; ++i)
 		eps_vect(i)=x[i];
-	Eigen::VectorXd res_eps = d->optData->Xi+d->optData->N*eps_vect;
+	Eigen::Vector<qreal, Eigen::Dynamic> res_eps = d->optData->Xi+d->optData->N*eps_vect;
 
 	for(unsigned int i = 0; i < d->parameters->size(); ++i){
 		(*d->parameters)[i]->value += res_eps[i];
-		double original_i = (*d->parameters)[i]->value;
+		qreal original_i = (*d->parameters)[i]->value;
 
 		for(unsigned int j = 0; j <= i; ++j){
 
-			double original_j = (*d->parameters)[j]->value;
+			qreal original_j = (*d->parameters)[j]->value;
 
-			(*d->parameters)[i]->value += M_PI_2;
-			(*d->parameters)[j]->value += M_PI_2;
-			double a = d->acc->_calc_expectation(d->h);
+			(*d->parameters)[i]->value += PI_2;
+			(*d->parameters)[j]->value += PI_2;
+			qreal a = d->acc->_calc_expectation(d->h);
 
-			(*d->parameters)[j]->value -= M_PI;
-			double b = d->acc->_calc_expectation(d->h);
+			(*d->parameters)[j]->value -= PI;
+			qreal b = d->acc->_calc_expectation(d->h);
 
-			(*d->parameters)[i]->value -= M_PI;
-			(*d->parameters)[j]->value += M_PI;
-			double c = d->acc->_calc_expectation(d->h);
+			(*d->parameters)[i]->value -= PI;
+			(*d->parameters)[j]->value += PI;
+			qreal c = d->acc->_calc_expectation(d->h);
 
-			(*d->parameters)[j]->value -= M_PI;
-			double dd = d->acc->_calc_expectation(d->h);
+			(*d->parameters)[j]->value -= PI;
+			qreal dd = d->acc->_calc_expectation(d->h);
 
 			(*d->parameters)[i]->value = original_i;
 			(*d->parameters)[j]->value = original_j;
@@ -224,17 +228,17 @@ void AqcPqcAccelerator::run(){
 	//for(int i = 0; i < parameters.size(); i++)
 	//	second_order_terms[i] = (double*)malloc((i+1) * sizeof(double));
 
-	Eigen::VectorXd minus_q(parameters.size());
-	Eigen::MatrixXd A(parameters.size(), parameters.size());
-	nlopt_opt opt, lopt;
+	Eigen::Vector<qreal, Eigen::Dynamic> minus_q(parameters.size());
+	Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> A(parameters.size(), parameters.size());
+	nlopt_opt opt/*, lopt*/;
 
-	for(int k = 0; k < nbSteps; ++k){
+	for(int k = 1; k < nbSteps+1; ++k){
 
 		/*for(int i = 0; i < parameters.size(); ++i)
 			std::cerr<<parameters[i]->value<<" ";
 		std::cerr<<"\n";*/
 
-		double theta = (double)k/(nbSteps-1);
+		double theta = (double)(k)/(nbSteps);
 
 		PauliHamiltonian h = this->_calc_intermediate_hamiltonian(theta);
 		logd("theta="+std::to_string(theta), options.log_level);
@@ -242,53 +246,72 @@ void AqcPqcAccelerator::run(){
 
 		for(std::vector<std::shared_ptr<FastVQA::Parameter>>::size_type i = 0; i < parameters.size(); ++i){
 
-			qreal original_i = parameters[i]->value;std::cerr<<parameters[i]->name;
+			qreal original_i = parameters[i]->value;
 
-			parameters[i]->value += M_PI_2;
+			parameters[i]->value += PI_2;
 			qreal a = _calc_expectation(&h);
-			parameters[i]->value -= M_PI;
+			parameters[i]->value -= PI;
 			qreal b = _calc_expectation(&h);
 			parameters[i]->value = original_i;
 
 			minus_q(i)=-0.5*(a-b);
-			std::cerr<<std::setprecision(20)<<a<<" "<<b<<" "<<-0.5*(a-b) << " \n";
+
+			//if(fabsl(minus_q(i)) > 6e-17)
+			//	minus_q(i)=0;
+
 
 			parameters[i]->value = original_i;
 
 			for(unsigned int j = 0; j <= i; ++j){
 
-				double original_j = parameters[j]->value;
+				qreal original_j = parameters[j]->value;
 
-				parameters[i]->value += M_PI_2;
-				parameters[j]->value += M_PI_2;
-				double a = _calc_expectation(&h);
+				/*if(i == j && i == 1){
+					std::cerr<<original_i<<" "<<original_j<<"\n";
+				}else
+					continue;*/
 
-				parameters[j]->value -= M_PI;
-				double b = _calc_expectation(&h);
+				parameters[i]->value += PI_2;
+				parameters[j]->value += PI_2;
 
-				parameters[i]->value -= M_PI;
-				parameters[j]->value += M_PI;
-				double c = _calc_expectation(&h);
+				//for(int p = 0; p < parameters.size(); ++p)
+				//	std::cerr<<parameters[p]->value<<"\n";
 
-				parameters[j]->value -= M_PI;
-				double d = _calc_expectation(&h);
+				qreal a = _calc_expectation(&h);
+
+				parameters[j]->value -= PI;
+				qreal b = _calc_expectation(&h);
+
+				parameters[i]->value -= PI;
+				parameters[j]->value += PI;
+				qreal c = _calc_expectation(&h);
+
+				parameters[j]->value -= PI;
+				qreal d = _calc_expectation(&h);
 
 				parameters[i]->value = original_i;
 				parameters[j]->value = original_j;
 
 				A(i,j) = 0.25 * (a-b-c+d);
+				if(i == j && i == 1){
+					std::cerr<<a<<" "<<b<<" "<<c<<" "<<d<<"\n";
+				}
 
 				if(i != j)
 					A(j,i) = A(i,j);
 			}
 		}
-		std::cerr<<-minus_q<<std::endl;throw;
 
-		Eigen::VectorXd Xi(parameters.size());
+		/*std::cerr<<-minus_q<<std::endl;
+		std::cerr<<A<<std::endl;throw;*/
+
+		Eigen::Vector<qreal, Eigen::Dynamic> Xi(parameters.size());
 		Xi = A.fullPivHouseholderQr().solve(minus_q);
 
-		Eigen::FullPivLU<Eigen::MatrixXd> lu(A);
-		Eigen::MatrixXd A_null_space = lu.kernel();
+		//std::cerr<<"xi"<<Xi<<std::endl<<std::endl;
+
+		Eigen::FullPivLU<Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>> lu(A);
+		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> A_null_space = lu.kernel();
 		//for faster way see https://stackoverflow.com/questions/34662940/how-to-compute-basis-of-nullspace-with-eigen-library
 
 		int opt_dim = A_null_space.cols();
@@ -344,11 +367,18 @@ void AqcPqcAccelerator::run(){
 				 std::cerr<<","<<eps[i];
 			 std::cerr<< ")= "<<minf<<"\n";*/
 
-			Eigen::VectorXd eps_vect(opt_dim);
-			for(unsigned int i = 0; i < opt_dim; ++i)
+			Eigen::Vector<qreal, Eigen::Dynamic> eps_vect(opt_dim);
+			for(int i = 0; i < opt_dim; ++i)
 				eps_vect(i)=eps[i];
-			Eigen::VectorXd res_eps = Xi+A_null_space*eps_vect;
-			for(int i = 0; i < parameters.size(); ++i){
+
+
+			//std::cerr<<eps_vect;
+			//std::cerr<<"A_null:"<<A_null_space;
+			Eigen::Vector<qreal, Eigen::Dynamic> res_eps = Xi+A_null_space*eps_vect;
+
+			//std::cerr<<res_eps;//throw;
+
+			for(unsigned int i = 0; i < parameters.size(); ++i){
 				parameters[i]->value += res_eps[i];
 			}
 			//std::cerr<<"x"<<A*res_eps-minus_q<<std::endl;
@@ -356,18 +386,20 @@ void AqcPqcAccelerator::run(){
 
 
 
-		double expectation = _calc_expectation(&h);
+		qreal expectation = _calc_expectation(&h);
 		//logi("Energy: " + std::to_string(expectation));
 
 		free(eps);
 		free(lb);free(ub);
 		nlopt_destroy(opt);//nlopt_destroy(lopt);
-
+		for(int i = 0; i < qureg.numAmpsTotal; ++i)
+			std::cerr<<qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i]<<" ";
+		std::cerr<<"\n";
 		if(options.compareWithClassicalEigenSolver){
 
 			double id_term;
-			Eigen::MatrixXd m = getIntermediateMatrixRepresentation(&h, &id_term);
-			Eigen::VectorXcd evals_vect = m.eigenvalues();
+			Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> m = getIntermediateMatrixRepresentation(&h, &id_term);
+			Eigen::Vector<std::complex<qreal>, Eigen::Dynamic> evals_vect = m.eigenvalues();
 
 			std::vector<double> evals(evals_vect.size());
 			for(int i = 0; i < evals_vect.size(); ++i){
@@ -479,9 +511,13 @@ qreal AqcPqcAccelerator::_calc_expectation(PauliHamiltonian *h){
 	return calcExpecPauliHamil(qureg, hamil, workspace);
 }
 
-Eigen::MatrixXd AqcPqcAccelerator::getIntermediateMatrixRepresentation(PauliHamiltonian* h, double* id_coeff){
+Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> AqcPqcAccelerator::getIntermediateMatrixRepresentation(PauliHamiltonian* h, double* id_coeff){
 
-	Eigen::MatrixXd m = Eigen::MatrixXd::Zero((1LL<<h->nbQubits), (1LL<<h->nbQubits));
+	if(hamil_int.initial_type == PauliHamiltonianType::General){
+		throw_runtime_error("getIntermediateMatrixRepresentation not implemented for general h0 type");
+	}else if(hamil_int.initial_type == PauliHamiltonianType::MinusSigmaX){
+
+	Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> m = Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>::Zero((1LL<<h->nbQubits), (1LL<<h->nbQubits));
 	DiagonalOp diagOp = createDiagonalOp(h->nbQubits, env, true);
 
 	PauliHamil h_cpy;
@@ -489,7 +525,7 @@ Eigen::MatrixXd AqcPqcAccelerator::getIntermediateMatrixRepresentation(PauliHami
 	std::vector<qreal> coeffs;
 	std::vector<int> codes;
 
-	double x_coeff=0;
+	qreal x_coeff=0;
 	*id_coeff=0;
 
 	for(std::vector<double>::size_type i = 0; i < h->coeffs.size(); ++i){
@@ -544,6 +580,32 @@ Eigen::MatrixXd AqcPqcAccelerator::getIntermediateMatrixRepresentation(PauliHami
 	}
 	destroyDiagonalOp(diagOp, env);
 	return m;
+	}else if(hamil_int.initial_type == PauliHamiltonianType::SumMinusSigmaX){
+		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> m = Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>::Zero(/*(1LL<<h->nbQubits)*/4, 4/*(1LL<<h->nbQubits)*/);
+		std::cerr<<m<<std::endl;
+		std::function<void(int, int, int)> f;
+		f= [&m, &f](int q, int a, int b)->void {
+			if(q == 1){
+				m(a+1, b) = -1;
+				m(a, b+1) = -1;
+			}
+			else{
+				f(q-1, a, b);
+				f(q-1, a, b+(1LL<<(q-1)));
+				f(q-1, a+(1LL<<(q-1)), b);
+				f(q-1, a+(1LL<<(q-1)), b+(1LL<<(q-1)));
+			};
+		};
+
+		f(/*h->nbQubits-1*/2, 0, 0);
+		/*f(h->nbQubits-1, 0, 0);
+		f(h->nbQubits-1, 0, (1LL<<(h->nbQubits-1)));
+		f(h->nbQubits-1, (1LL<<(h->nbQubits-1)), 0);
+		f(h->nbQubits-1, (1LL<<(h->nbQubits-1)), (1LL<<(h->nbQubits-1)));*/
+		std::cerr<<m<<"\n";
+		return m;
+	}
+	throw_runtime_error("Not implemented");
 }
 
 }

@@ -86,6 +86,7 @@ private:
 	class GeneralIntermediatePauliHamiltonian{
 	public:
 		int nbQubits;
+		PauliHamiltonianType initial_type = PauliHamiltonianType::General;
 
 		std::vector<qreal> coeffs0, coeffs1;
 		std::vector<int> pauliOpts;
@@ -98,7 +99,7 @@ private:
 
 	int nbQubits;
 
-	Eigen::MatrixXd getIntermediateMatrixRepresentation(PauliHamiltonian* h, double* id_coeff);
+	Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> getIntermediateMatrixRepresentation(PauliHamiltonian* h, double* id_coeff);
 
 	PauliHamiltonian _calc_intermediate_hamiltonian(double lambda);
 

@@ -25,15 +25,25 @@ void AcceleratorBase::set_ansatz(Ansatz *ansatz){
 }
 
 void AcceleratorBase::apply_gate(Gate gate){
-
 	qreal param = gate.param->value;
 	apply_gate(gate, param);
-
 }
 
 void AcceleratorBase::apply_gate(Gate gate, qreal param){
 
 	switch(gate.code){
+	case Gate::g_X:
+		logd("X " + std::to_string(gate.qubit1));
+		pauliX(qureg, gate.qubit1);
+		break;
+	case Gate::g_Y:
+		logd("Y " + std::to_string(gate.qubit1));
+		pauliY(qureg, gate.qubit1);
+		break;
+	case Gate::g_Z:
+		logd("Z " + std::to_string(gate.qubit1));
+		pauliX(qureg, gate.qubit1);
+		break;
 	case Gate::g_H:
 		logd("H " + std::to_string(gate.qubit1));
 		hadamard(qureg, gate.qubit1);

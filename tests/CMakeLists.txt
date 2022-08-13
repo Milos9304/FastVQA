@@ -15,6 +15,14 @@ find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
 target_link_libraries(ansatz_test PRIVATE FastVQA gtest Eigen3::Eigen)
 target_link_libraries(hamiltonian_test PRIVATE FastVQA gtest Eigen3::Eigen)
+target_compile_definitions(ansatz_test
+    PRIVATE
+    QuEST_PREC=${QUEST_PRECISION}
+)
+target_compile_definitions(hamiltonian_test
+    PRIVATE
+    QuEST_PREC=${QUEST_PRECISION}
+)
 
 add_test(NAME ansatz_test COMMAND ansatz_test)
 add_test(NAME hamiltonian_test COMMAND ansatz_test)

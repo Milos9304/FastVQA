@@ -347,6 +347,8 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 void Accelerator::__initialize(int num_qubits){
 
+	this->env = createQuESTEnv();
+
 	unsigned long int keys[1];
 	keys[0] = 1997;
 	seedQuEST(&env, keys, 1);
@@ -357,7 +359,7 @@ void Accelerator::__initialize(int num_qubits){
 		this->qureg = createQureg(num_qubits, env);
 	}else{
 		logw("Skipping qureg initialization. Be sure you know what you're doing!", options.log_level);
-	}
+	}std::cerr<<"a"<<std::endl;
 
 }
 
