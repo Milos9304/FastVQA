@@ -14,6 +14,8 @@
 #include <algorithm>
 #include <gmpxx.h>
 
+namespace FastVQA{
+
 class Var{
 
 	public:
@@ -194,4 +196,5 @@ class Expression{
 		void print();
 
 };
+}
 #endif /* SRC_SYMBOLIC_MANIPULATION_H_ */

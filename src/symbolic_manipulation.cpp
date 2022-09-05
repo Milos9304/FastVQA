@@ -10,6 +10,8 @@
 #include <iomanip>
 #include <iostream>
 
+namespace FastVQA{
+
 void Expression::substitute(int id, std::map<int, mpq_class> subs_expr){
 
 	std::vector<std::pair<int, int>> toDel;
@@ -103,4 +105,5 @@ void Expression::print(){
 
 	}
 	std::cout << "\n";
+}
 }

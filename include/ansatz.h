@@ -19,6 +19,7 @@ public:
 	Circuit circuit;
 	int num_params;
 
+	Ansatz(){}
 	Ansatz(std::string name){
 		this->name = name;
 	}

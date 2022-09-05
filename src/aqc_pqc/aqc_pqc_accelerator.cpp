@@ -245,7 +245,7 @@ void AqcPqcAccelerator::run(){
 		logd(h.getPauliHamiltonianString(2), options.log_level);
 
 		for(std::vector<std::shared_ptr<FastVQA::Parameter>>::size_type i = 0; i < parameters.size(); ++i){
-
+			std::cerr<<i<<" / "<<parameters.size()<<std::endl;
 			qreal original_i = parameters[i]->value;
 
 			parameters[i]->value += PI_2;
@@ -293,9 +293,6 @@ void AqcPqcAccelerator::run(){
 				parameters[j]->value = original_j;
 
 				A(i,j) = 0.25 * (a-b-c+d);
-				if(i == j && i == 1){
-					std::cerr<<a<<" "<<b<<" "<<c<<" "<<d<<"\n";
-				}
 
 				if(i != j)
 					A(j,i) = A(i,j);
@@ -392,9 +389,9 @@ void AqcPqcAccelerator::run(){
 		free(eps);
 		free(lb);free(ub);
 		nlopt_destroy(opt);//nlopt_destroy(lopt);
-		for(int i = 0; i < qureg.numAmpsTotal; ++i)
-			std::cerr<<qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i]<<" ";
-		std::cerr<<"\n";
+		//for(int i = 0; i < qureg.numAmpsTotal; ++i)
+		//	std::cerr<<qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i]<<" ";
+		//std::cerr<<"\n";
 		if(options.compareWithClassicalEigenSolver){
 
 			double id_term;
@@ -468,7 +465,7 @@ void AqcPqcAccelerator::run(){
 					maxd=pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
 					i_max = i;
 				}
-			std::cerr<< /*pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.real[i], 2)*/i_max <<" ";
+			//std::cerr<< /*pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.real[i], 2)*/i_max <<" ";
 
 		}
 
@@ -582,7 +579,7 @@ Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> AqcPqcAccelerator::getInter
 	return m;
 	}else if(hamil_int.initial_type == PauliHamiltonianType::SumMinusSigmaX){
 		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> m = Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>::Zero(/*(1LL<<h->nbQubits)*/4, 4/*(1LL<<h->nbQubits)*/);
-		std::cerr<<m<<std::endl;
+		//std::cerr<<m<<std::endl;
 		std::function<void(int, int, int)> f;
 		f= [&m, &f](int q, int a, int b)->void {
 			if(q == 1){
@@ -602,7 +599,7 @@ Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> AqcPqcAccelerator::getInter
 		f(h->nbQubits-1, 0, (1LL<<(h->nbQubits-1)));
 		f(h->nbQubits-1, (1LL<<(h->nbQubits-1)), 0);
 		f(h->nbQubits-1, (1LL<<(h->nbQubits-1)), (1LL<<(h->nbQubits-1)));*/
-		std::cerr<<m<<"\n";
+		//std::cerr<<m<<"\n";
 		return m;
 	}
 	throw_runtime_error("Not implemented");
