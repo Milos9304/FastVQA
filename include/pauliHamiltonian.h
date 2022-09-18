@@ -26,7 +26,8 @@ class PauliHamiltonian{
 		PauliHamiltonianType type = PauliHamiltonianType::General;
 
 		std::string getPauliHamiltonianString(int double_precision=2);
-		Eigen::MatrixXd getMatrixRepresentation(bool diagonalOp=false);
+		Eigen::MatrixXd getMatrixRepresentation(bool diagonalOp);
+		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> getMatrixRepresentation2(bool diagonalOp);
 
 		//quest formulation
 		std::vector<qreal> coeffs;

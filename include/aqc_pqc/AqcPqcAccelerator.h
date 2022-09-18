@@ -20,8 +20,10 @@
 #include <string>
 #include <fstream>
 
-
 namespace FastVQA{
+
+const long double PI =   3.14159265358979323846264338327950288419716939937510L;
+const long double PI_2 = 1.57079632679489661923132169163975144209858469968755L;
 
 typedef std::pair<qreal, long long int> RefEnergy;
 typedef std::vector<RefEnergy> RefEnergies;
@@ -53,7 +55,12 @@ struct AqcPqcAcceleratorOptions{
 	bool printGroundStateOverlap = false;
 	InitialGroundState initialGroundState = None;
 
-	long long int solution = -1;
+	bool checkSolutions = false;
+	qreal solutionExpectation;
+	std::vector<long long int> solutions;
+
+	//-1 avoids rounding
+	int roundDecimalPlaces=-1;
 
 };
 
@@ -83,6 +90,9 @@ private:
 	bool initialized = false;
 	void finalize();
 
+	Eigen::Vector<qreal, Eigen::Dynamic> _optimize_with_rank_reduction(PauliHamiltonian *h, Eigen::Vector<qreal, Eigen::Dynamic> *minus_q, Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> *A, std::vector<std::shared_ptr<Parameter>> *parameters);
+	Eigen::Vector<qreal, Eigen::Dynamic> _optimize_trivially(PauliHamiltonian *h, Eigen::Vector<qreal, Eigen::Dynamic> *minus_q, Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> *A, std::vector<std::shared_ptr<Parameter>> *parameters);
+
 	class GeneralIntermediatePauliHamiltonian{
 	public:
 		int nbQubits;
@@ -107,6 +117,22 @@ private:
 
 	std::ofstream logFile;
 
+	qreal __round(qreal x);
+	static double ineq_constraint(unsigned n, const double *x, double *grad, void *data);
+
 };
+
+typedef struct {
+		Eigen::Vector<qreal, Eigen::Dynamic> Xi;
+	    Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> N;
+} OptData;
+
+typedef struct {
+	std::vector<std::shared_ptr<Parameter>> *parameters;
+	AqcPqcAccelerator *acc;
+	PauliHamiltonian *h;
+	OptData *optData;
+} ConstrData;
+
 }
 #endif /* FASTVQA_AQC_PQC_ACCELERATOR_H_ */

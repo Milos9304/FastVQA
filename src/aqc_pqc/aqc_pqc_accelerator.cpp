@@ -7,11 +7,19 @@
 #include <fstream>
 #include <algorithm>
 #include <nlopt.h>
+#include <cmath>
+#include <cstdlib>
 
 namespace FastVQA{
 
-const long double PI =   3.14159265358979323846264338327950288419716939937510L;
-const long double PI_2 = 1.57079632679489661923132169163975144209858469968755L;
+qreal AqcPqcAccelerator::__round(qreal x){
+
+	if(this->options.roundDecimalPlaces == -1)
+		return x;
+
+	int multiple = pow(10, this->options.roundDecimalPlaces);
+	return std::round(x*multiple)/multiple;
+}
 
 AqcPqcAccelerator::AqcPqcAccelerator(AqcPqcAcceleratorOptions options){
 
@@ -104,6 +112,29 @@ void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
 
 	}
 
+	if(options.checkSolutions){
+		//std::cerr<<"expect: " << options.solutionExpectation << "\n";
+
+		bool success = true;
+
+		for(auto &sol: options.solutions){
+			initZeroState(qureg);
+			qureg.stateVec.real[0]=0;
+			qureg.stateVec.real[sol]=1;
+			PauliHamil hamil;
+			h1->toQuestPauliHamil(&hamil);
+			//std::cerr<<sol<<":"<<calcExpecPauliHamil(qureg, hamil, workspace)<<" ";
+			if(std::abs(calcExpecPauliHamil(qureg, hamil, workspace) - options.solutionExpectation) > 0){
+				std::cerr<<sol<<" "<< calcExpecPauliHamil(qureg, hamil, workspace) <<" "<<options.solutionExpectation <<"diff="<<std::abs(calcExpecPauliHamil(qureg, hamil, workspace) - options.solutionExpectation)<<"\n";
+				loge("Solutions check failed");
+				success = false;
+				//break;
+			}std::cerr<<sol<<"p \n";
+		}//std::cerr<<std::endl;
+		if(success)
+			logi("Solutions check passed.");
+	}
+
 	initialized = true;
 
 }
@@ -113,18 +144,6 @@ void AqcPqcAccelerator::finalize(){
 	destroyQureg(this->workspace, env);
 	logFile.close();
 }
-
-typedef struct {
-	Eigen::Vector<qreal, Eigen::Dynamic> Xi;
-    Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> N;
-} OptData;
-
-typedef struct {
-	std::vector<std::shared_ptr<Parameter>> *parameters;
-	AqcPqcAccelerator *acc;
-	PauliHamiltonian *h;
-	OptData *optData;
-} ConstrData;
 
 template <class MatrixT>
 bool isPsd(const MatrixT& A) {
@@ -138,27 +157,8 @@ bool isPsd(const MatrixT& A) {
   return true;
 }
 
-double lin_system_f(unsigned n, const double *z, double *grad, void *data){
-
-	OptData *d = (OptData *) data;
-
-    if (grad) {
-    	//UNIMPLEMENTED
-        /*grad[0] = 0.0;
-        grad[1] = 0.5 / sqrt(x[1]);*/
-    }
-
-    qreal ret=0;
-    Eigen::Vector<qreal, Eigen::Dynamic> z_vect(n);
-    for(unsigned int i = 0; i < n; ++i)
-    	z_vect(i)=z[i];
-    Eigen::Vector<qreal, Eigen::Dynamic> x = d->Xi+d->N*z_vect;
-    for(int i = 0; i < d->Xi.rows(); ++i)
-    	ret += x[i]*x[i];
-    return ret;
-}
-
 double eq_constraint(unsigned n, const double *x, double *grad, void *data){
+	std::cerr<<"e";
     //my_constraint_data *d = (my_constraint_data *) data;
     //double a = d->a, b = d->b;
     if (grad) {
@@ -209,9 +209,73 @@ double eq_constraint(unsigned n, const double *x, double *grad, void *data){
 		(*d->parameters)[i]->value -= res_eps[i];
 	}
 
-	return isPsd(H)?0:1000;
+	bool pass = isPsd(H);
+	std::cerr<<"pass: "<<pass<<"\n";
+	return pass?0:1000;
 }
 
+double AqcPqcAccelerator::ineq_constraint(unsigned n, const double *x, double *grad, void *data){
+		//std::cerr<<"e";
+		//my_constraint_data *d = (my_constraint_data *) data;
+		//double a = d->a, b = d->b;
+		if (grad) {
+			//UNIMPLEMENTED
+		}
+
+		ConstrData *d = (ConstrData *) data;
+		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> H(d->parameters->size(), d->parameters->size());
+
+		Eigen::Vector<qreal, Eigen::Dynamic> eps_vect(n);
+		for(unsigned int i = 0; i < n; ++i)
+			eps_vect(i)=x[i];
+		Eigen::Vector<qreal, Eigen::Dynamic> res_eps = d->optData->Xi+d->optData->N*eps_vect;
+
+		for(unsigned int i = 0; i < d->parameters->size(); ++i){
+			(*d->parameters)[i]->value += res_eps[i];
+			qreal original_i = (*d->parameters)[i]->value;
+
+			for(unsigned int j = 0; j <= i; ++j){
+
+				qreal original_j = (*d->parameters)[j]->value;
+
+				(*d->parameters)[i]->value += PI_2;
+				(*d->parameters)[j]->value += PI_2;
+				qreal a = d->acc->_calc_expectation(d->h);
+
+				(*d->parameters)[j]->value -= PI;
+				qreal b = d->acc->_calc_expectation(d->h);
+
+				(*d->parameters)[i]->value -= PI;
+				(*d->parameters)[j]->value += PI;
+				qreal c = d->acc->_calc_expectation(d->h);
+
+				(*d->parameters)[j]->value -= PI;
+				qreal dd = d->acc->_calc_expectation(d->h);
+
+				(*d->parameters)[i]->value = original_i;
+				(*d->parameters)[j]->value = original_j;
+
+				H(i,j) = 0.25 * (a-b-c+dd);
+
+				if(i != j)
+					H(j,i) = H(i,j);
+			}
+		}
+
+		for(unsigned int i = 0; i < d->parameters->size(); ++i){
+			(*d->parameters)[i]->value -= res_eps[i];
+		}
+
+
+		Eigen::SelfAdjointEigenSolver<Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>> solver(H.rows());
+		solver.compute(H);
+		Eigen::Vector<qreal, Eigen::Dynamic> lambda = solver.eigenvalues().reverse();
+		auto X = solver.eigenvalues();
+
+		//std::cerr<<"pass: "<<X.col(0)[0]<<"\n";
+		std::cerr<<"min eval: "<<X.col(0)[0]<<"\n";
+		return X.col(0)[0];//pass?-1:1;
+	}
 
 void AqcPqcAccelerator::run(){
 
@@ -230,7 +294,6 @@ void AqcPqcAccelerator::run(){
 
 	Eigen::Vector<qreal, Eigen::Dynamic> minus_q(parameters.size());
 	Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> A(parameters.size(), parameters.size());
-	nlopt_opt opt/*, lopt*/;
 
 	for(int k = 1; k < nbSteps+1; ++k){
 
@@ -238,14 +301,15 @@ void AqcPqcAccelerator::run(){
 			std::cerr<<parameters[i]->value<<" ";
 		std::cerr<<"\n";*/
 
-		double theta = (double)(k)/(nbSteps);
+		//double theta = (double)(k)/(nbSteps);
+		//round to 5 decimal places as Gianni's doing
+		double theta = std::ceil((double)(k)/(nbSteps) * 100000.0) / 100000.0;
 
 		PauliHamiltonian h = this->_calc_intermediate_hamiltonian(theta);
 		logd("theta="+std::to_string(theta), options.log_level);
 		logd(h.getPauliHamiltonianString(2), options.log_level);
-
 		for(std::vector<std::shared_ptr<FastVQA::Parameter>>::size_type i = 0; i < parameters.size(); ++i){
-			std::cerr<<i<<" / "<<parameters.size()<<std::endl;
+			//std::cerr<<i<<" / "<<parameters.size()<<std::endl;
 			qreal original_i = parameters[i]->value;
 
 			parameters[i]->value += PI_2;
@@ -254,11 +318,7 @@ void AqcPqcAccelerator::run(){
 			qreal b = _calc_expectation(&h);
 			parameters[i]->value = original_i;
 
-			minus_q(i)=-0.5*(a-b);
-
-			//if(fabsl(minus_q(i)) > 6e-17)
-			//	minus_q(i)=0;
-
+			minus_q(i)= __round(-0.5*(a-b));
 
 			parameters[i]->value = original_i;
 
@@ -292,38 +352,26 @@ void AqcPqcAccelerator::run(){
 				parameters[i]->value = original_i;
 				parameters[j]->value = original_j;
 
-				A(i,j) = 0.25 * (a-b-c+d);
+				A(i,j) = __round(0.25 * (a-b-c+d));
 
 				if(i != j)
 					A(j,i) = A(i,j);
 			}
 		}
 
-		/*std::cerr<<-minus_q<<std::endl;
-		std::cerr<<A<<std::endl;throw;*/
+		//std::cerr<<-minus_q<<std::endl;
+		//std::cerr<<A<<std::endl;throw;
+		Eigen::Vector<qreal, Eigen::Dynamic> eps = _optimize_with_rank_reduction(&h, &minus_q, &A, &parameters);
 
-		Eigen::Vector<qreal, Eigen::Dynamic> Xi(parameters.size());
-		Xi = A.fullPivHouseholderQr().solve(minus_q);
-
-		//std::cerr<<"xi"<<Xi<<std::endl<<std::endl;
-
-		Eigen::FullPivLU<Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>> lu(A);
-		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> A_null_space = lu.kernel();
-		//for faster way see https://stackoverflow.com/questions/34662940/how-to-compute-basis-of-nullspace-with-eigen-library
-
-		int opt_dim = A_null_space.cols();
-
-		double *lb, *ub;
-		OptData data {Xi, A_null_space};
-
-		if(options.checkHessian){
+		/*if(options.checkHessian){
 			opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+
 			//opt = nlopt_create(NLOPT_LN_AUGLAG_EQ, opt_dim);
 			//lopt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
 			//nlopt_set_local_optimizer(opt, lopt);
 			ConstrData constr_data {&parameters, this, &h, &data};
-			nlopt_add_equality_constraint(opt, eq_constraint, &constr_data, 10e-1);
-
+			//nlopt_add_equality_constraint(opt, eq_constraint, &constr_data, 0);
+			nlopt_add_inequality_constraint(opt, ineq_constraint, &constr_data, 0);
 			lb = (double*) malloc(opt_dim * sizeof(double));
 			ub = (double*) malloc(opt_dim * sizeof(double));
 			for(int i = 0; i < opt_dim; ++i){
@@ -332,8 +380,8 @@ void AqcPqcAccelerator::run(){
 			nlopt_set_lower_bounds(opt, lb);
 			nlopt_set_upper_bounds(opt, ub);
 			nlopt_set_min_objective(opt, lin_system_f, &data);
-			nlopt_set_xtol_rel(opt, 1e-4);
-			nlopt_set_xtol_abs1(opt, 1e-4);
+			nlopt_set_xtol_rel(opt, 1e-1);
+			nlopt_set_xtol_abs1(opt, 1e-1);
 
 		}else{
 			opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
@@ -345,24 +393,24 @@ void AqcPqcAccelerator::run(){
 			nlopt_set_lower_bounds(opt, lb);
 			nlopt_set_upper_bounds(opt, ub);
 			nlopt_set_min_objective(opt, lin_system_f, &data);
-			nlopt_set_xtol_rel(opt, 1e-4);
-			nlopt_set_xtol_abs1(opt, 1e-4);
+			nlopt_set_xtol_rel(opt, 1e-30);
+			nlopt_set_xtol_abs1(opt, 1e-30);
 		}
 
 		double *eps = (double*) malloc(opt_dim * sizeof(double));
 		for(int i = 0; i < opt_dim; ++i)
 			eps[i] = 0.5;
 		double minf;
-
 		int opt_res = nlopt_optimize(opt, eps, &minf);
 		if (opt_res < 0) {
 		    std::cerr<<"nlopt failed! error code: "<< opt_res <<std::endl;
 		}
 		else {
-			 /*std::cerr<<"found minimum at f("<<eps[0];
-			 for(int i = 1; i < opt_dim; ++i)
-				 std::cerr<<","<<eps[i];
-			 std::cerr<< ")= "<<minf<<"\n";*/
+			std::cerr<<"nlopt success code: "<< opt_res << std::endl;
+			 //std::cerr<<"found minimum at f("<<eps[0];
+			 //for(int i = 1; i < opt_dim; ++i)
+			//	 std::cerr<<","<<eps[i];
+			 //std::cerr<< ")= "<<minf<<"\n";
 
 			Eigen::Vector<qreal, Eigen::Dynamic> eps_vect(opt_dim);
 			for(int i = 0; i < opt_dim; ++i)
@@ -373,22 +421,17 @@ void AqcPqcAccelerator::run(){
 			//std::cerr<<"A_null:"<<A_null_space;
 			Eigen::Vector<qreal, Eigen::Dynamic> res_eps = Xi+A_null_space*eps_vect;
 
-			//std::cerr<<res_eps;//throw;
+			//std::cerr<<res_eps;//throw;*/
 
 			for(unsigned int i = 0; i < parameters.size(); ++i){
-				parameters[i]->value += res_eps[i];
+				parameters[i]->value += eps[i];
 			}
 			//std::cerr<<"x"<<A*res_eps-minus_q<<std::endl;
-		}
-
-
+		//}
 
 		qreal expectation = _calc_expectation(&h);
 		//logi("Energy: " + std::to_string(expectation));
 
-		free(eps);
-		free(lb);free(ub);
-		nlopt_destroy(opt);//nlopt_destroy(lopt);
 		//for(int i = 0; i < qureg.numAmpsTotal; ++i)
 		//	std::cerr<<qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i]<<" ";
 		//std::cerr<<"\n";
@@ -411,11 +454,11 @@ void AqcPqcAccelerator::run(){
 			std::string str_groundStateOverlap = "";
 			std::string str_finalGroundStateOverlap = "";
 
-			double gsOverlap, fgsOverlap;
+			double gsOverlap=0, fgsOverlap=0;
 
 			if(options.printGroundStateOverlap){
 
-				if(options.solution == -1)
+				if(options.solutions.size() == 0)
 					throw_runtime_error("printGroundStateOverlap=true but final ground state is not set.");
 
 				switch(options.initialGroundState){
@@ -426,17 +469,17 @@ void AqcPqcAccelerator::run(){
 					for(long long int i = 0; i < qureg.numAmpsTotal; ++i){
 
 						//std::cout << qureg.stateVec.real[i] << "+" << qureg.stateVec.imag[i] << "i  ";
-
-						if(i == options.solution){
+						if(std::find(options.solutions.begin(), options.solutions.end(), i) != options.solutions.end()) {
 							overlap_val_real += (p + theta) * qureg.stateVec.real[i];
 							overlap_val_imag += (p + theta) * qureg.stateVec.imag[i];
+							fgsOverlap += pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
 						}else{
 							overlap_val_real += p * qureg.stateVec.real[i];
 							overlap_val_imag += p * qureg.stateVec.imag[i];
 						}
 					}
 					gsOverlap = pow(overlap_val_real,2)+pow(overlap_val_imag, 2);
-					fgsOverlap = pow(qureg.stateVec.real[options.solution],2)+pow(qureg.stateVec.imag[options.solution], 2);
+
 					str_groundStateOverlap = " GS overlap= " + std::to_string(gsOverlap);
 					str_finalGroundStateOverlap = " GS overlap= " + std::to_string(fgsOverlap);
 					break;}
@@ -460,12 +503,12 @@ void AqcPqcAccelerator::run(){
 
 			int i_max = 0;double maxd = 0;
 
-			for(int i = 0; i < qureg.numAmpsTotal;++i)
+			/*for(int i = 0; i < qureg.numAmpsTotal;++i)
 				if(pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2) > maxd){
 					maxd=pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
 					i_max = i;
-				}
-			//std::cerr<< /*pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.real[i], 2)*/i_max <<" ";
+				}*/
+			//std::cerr<< pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.real[i], 2)i_max <<" ";
 
 		}
 
@@ -503,8 +546,14 @@ qreal AqcPqcAccelerator::calc_intermediate_expectation(ExperimentBuffer* buffer,
 qreal AqcPqcAccelerator::_calc_expectation(PauliHamiltonian *h){
 	initZeroState(qureg);
 	run_circuit(ansatz.circuit, false);
+	//for(int i = 0; i < qureg.numAmpsTotal; ++i)
+	//	std::cerr<<qureg.stateVec.real[i]<<" "<<qureg.stateVec.imag[i]<<"\n";
+	//throw;
 	PauliHamil hamil;
 	h->toQuestPauliHamil(&hamil);
+
+	//Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> m = h->getMatrixRepresentation2(false);
+
 	return calcExpecPauliHamil(qureg, hamil, workspace);
 }
 
@@ -603,6 +652,7 @@ Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> AqcPqcAccelerator::getInter
 		return m;
 	}
 	throw_runtime_error("Not implemented");
+	return Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>::Zero(0,0);
 }
 
 }

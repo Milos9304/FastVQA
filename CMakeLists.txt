@@ -64,6 +64,8 @@ target_sources(${PROJECT_NAME}
     PRIVATE
         src/vqas/vqe.cpp
         src/aqc_pqc/aqc_pqc_accelerator.cpp
+        src/aqc_pqc/aqc_pqc_opt_rank_reduce.cpp
+        src/aqc_pqc/aqc_pqc_opt_trivial.cpp
         src/gate.cpp
         src/circuit.cpp
         src/ansatz.cpp
