@@ -157,7 +157,7 @@ bool isPsd(const MatrixT& A) {
   return true;
 }
 
-double eq_constraint(unsigned n, const double *x, double *grad, void *data){
+/*double eq_constraint(unsigned n, const double *x, double *grad, void *data){
 	std::cerr<<"e";
     //my_constraint_data *d = (my_constraint_data *) data;
     //double a = d->a, b = d->b;
@@ -212,70 +212,7 @@ double eq_constraint(unsigned n, const double *x, double *grad, void *data){
 	bool pass = isPsd(H);
 	std::cerr<<"pass: "<<pass<<"\n";
 	return pass?0:1000;
-}
-
-double AqcPqcAccelerator::ineq_constraint(unsigned n, const double *x, double *grad, void *data){
-		//std::cerr<<"e";
-		//my_constraint_data *d = (my_constraint_data *) data;
-		//double a = d->a, b = d->b;
-		if (grad) {
-			//UNIMPLEMENTED
-		}
-
-		ConstrData *d = (ConstrData *) data;
-		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> H(d->parameters->size(), d->parameters->size());
-
-		Eigen::Vector<qreal, Eigen::Dynamic> eps_vect(n);
-		for(unsigned int i = 0; i < n; ++i)
-			eps_vect(i)=x[i];
-		Eigen::Vector<qreal, Eigen::Dynamic> res_eps = d->optData->Xi+d->optData->N*eps_vect;
-
-		for(unsigned int i = 0; i < d->parameters->size(); ++i){
-			(*d->parameters)[i]->value += res_eps[i];
-			qreal original_i = (*d->parameters)[i]->value;
-
-			for(unsigned int j = 0; j <= i; ++j){
-
-				qreal original_j = (*d->parameters)[j]->value;
-
-				(*d->parameters)[i]->value += PI_2;
-				(*d->parameters)[j]->value += PI_2;
-				qreal a = d->acc->_calc_expectation(d->h);
-
-				(*d->parameters)[j]->value -= PI;
-				qreal b = d->acc->_calc_expectation(d->h);
-
-				(*d->parameters)[i]->value -= PI;
-				(*d->parameters)[j]->value += PI;
-				qreal c = d->acc->_calc_expectation(d->h);
-
-				(*d->parameters)[j]->value -= PI;
-				qreal dd = d->acc->_calc_expectation(d->h);
-
-				(*d->parameters)[i]->value = original_i;
-				(*d->parameters)[j]->value = original_j;
-
-				H(i,j) = 0.25 * (a-b-c+dd);
-
-				if(i != j)
-					H(j,i) = H(i,j);
-			}
-		}
-
-		for(unsigned int i = 0; i < d->parameters->size(); ++i){
-			(*d->parameters)[i]->value -= res_eps[i];
-		}
-
-
-		Eigen::SelfAdjointEigenSolver<Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>> solver(H.rows());
-		solver.compute(H);
-		Eigen::Vector<qreal, Eigen::Dynamic> lambda = solver.eigenvalues().reverse();
-		auto X = solver.eigenvalues();
-
-		//std::cerr<<"pass: "<<X.col(0)[0]<<"\n";
-		std::cerr<<"min eval: "<<X.col(0)[0]<<"\n";
-		return X.col(0)[0];//pass?-1:1;
-	}
+}*/
 
 void AqcPqcAccelerator::run(){
 
@@ -361,7 +298,14 @@ void AqcPqcAccelerator::run(){
 
 		//std::cerr<<-minus_q<<std::endl;
 		//std::cerr<<A<<std::endl;throw;
-		Eigen::Vector<qreal, Eigen::Dynamic> eps = _optimize_with_rank_reduction(&h, &minus_q, &A, &parameters);
+
+		Eigen::Vector<qreal, Eigen::Dynamic> eps;
+		if(options.optStrategy == 0)
+			eps = _optimize_with_rank_reduction(&h, &minus_q, &A, &parameters);
+		else if(options.optStrategy == 1)
+			eps = _optimize_trivially(&h, &minus_q, &A, &parameters);
+		else
+			throw_runtime_error("optStrategy unimplemented");
 
 		/*if(options.checkHessian){
 			opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);

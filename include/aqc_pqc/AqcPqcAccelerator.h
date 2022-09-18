@@ -62,6 +62,8 @@ struct AqcPqcAcceleratorOptions{
 	//-1 avoids rounding
 	int roundDecimalPlaces=-1;
 
+	int optStrategy = 0;
+
 };
 
 class AqcPqcAccelerator:public AcceleratorBase{
@@ -118,21 +120,8 @@ private:
 	std::ofstream logFile;
 
 	qreal __round(qreal x);
-	static double ineq_constraint(unsigned n, const double *x, double *grad, void *data);
 
 };
-
-typedef struct {
-		Eigen::Vector<qreal, Eigen::Dynamic> Xi;
-	    Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> N;
-} OptData;
-
-typedef struct {
-	std::vector<std::shared_ptr<Parameter>> *parameters;
-	AqcPqcAccelerator *acc;
-	PauliHamiltonian *h;
-	OptData *optData;
-} ConstrData;
 
 }
 #endif /* FASTVQA_AQC_PQC_ACCELERATOR_H_ */
