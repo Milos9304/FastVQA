@@ -128,25 +128,38 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 		return AqcPqcAccelerator::ineq_constraint(n,x,grad,data);
 	};*/
 
-	Eigen::Vector<qreal, Eigen::Dynamic> AqcPqcAccelerator::_optimize_with_rank_reduction(PauliHamiltonian *h, Eigen::Vector<qreal, Eigen::Dynamic> *minus_q, Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> *A, std::vector<std::shared_ptr<Parameter>> *parameters){
+	Eigen::Vector<qreal, Eigen::Dynamic> AqcPqcAccelerator::_optimize_with_rank_reduction(PauliHamiltonian *h, Eigen::Vector<qreal, Eigen::Dynamic> *Q, Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> *A, std::vector<std::shared_ptr<Parameter>> *parameters){
 
-		double threshold = 0.1;
 
-		Eigen::Vector<qreal, Eigen::Dynamic> Xi(minus_q->rows());
-		Xi = A->fullPivHouseholderQr().solve(-(*minus_q));
-		//std::cerr<<"A: "<<A<< ""<<" -Q: "<<minus_q<<" Xi: "<<Xi<<std::endl;
-		//bool solution_exists = (A*Xi).isApprox(minus_q, 10e-4);
+
+		Eigen::Vector<qreal, Eigen::Dynamic> Xi(Q->rows());
+		Xi = A->fullPivHouseholderQr().solve(*Q);
+		//std::cerr<<"A: "<<A<< ""<<" -Q: "<<Q<<" Xi: "<<Xi<<std::endl;
+		//bool solution_exists = (A*Xi).isApprox(Q, 10e-4);
 		//std::cerr<<"exists:"<<solution_exists<<" ";
-		Eigen::FullPivLU<Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>> lu(*A);
+
+		//Eigen::FullPivLU<Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>> lu(*A);
+
+
 		//lu.setThreshold(this->options.roundDecimalPlaces == -1 ? 10e-6 : pow(10, -(this->options.roundDecimalPlaces+1)));
-		lu.setThreshold(threshold);
-		std::cerr<<"Rank = " << lu.rank()<<std::endl;
+		//lu.setThreshold(threshold);
+		//std::cerr<<"Rank = " << lu.rank()<<std::endl;
 		//Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> A_null_space = lu.kernel();
 		//for faster way see https://stackoverflow.com/questions/34662940/how-to-compute-basis-of-nullspace-with-eigen-library
 
 		Eigen::CompleteOrthogonalDecomposition<Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>> cod;
-		cod.setThreshold(threshold);
-		cod.compute(*A);
+
+		double rank;
+		double threshold = 0;
+		do{
+			threshold += 0.01;
+			cod.setThreshold(threshold);
+			cod.compute(*A);
+			rank = cod.rank();
+		}while(rank == 10);
+		std::cerr<<"Rank = " << rank <<std::endl;
+
+
 		// Find URV^T
 		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> V = cod.matrixZ().transpose();
 		//std::cerr<<"V:"<<V<<std::endl;std::cerr<<cod.rank()<<" "<<V.rows() <<  V.cols() <<V.cols() - cod.rank() <<std::endl;
@@ -214,7 +227,7 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 
 			//std::cerr<<"Solution found: " << Xi+A_null_space*eps_vect << "\n";
 			//std::cerr<<"Min eval: " << ineq_constraint_rank_reduce(opt_dim, eps, NULL, &constr_data)<<"\n";
-			//std::cerr<<"This should be zero: " << (*A)*(Xi+A_null_space*eps_vect)-(*minus_q) << "\n";
+			//std::cerr<<"This should be zero: " << (*A)*(Xi+A_null_space*eps_vect)-(*Q) << "\n";
 			//std::cerr<<"A_null:"<<A_null_space;
 
 			free(eps);
@@ -224,7 +237,7 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 
 			//std::cerr<<res_eps;//throw;
 
-			//std::cerr<<"x"<<A*res_eps-minus_q<<std::endl;
+			//std::cerr<<"x"<<A*res_eps-Q<<std::endl;
 		}
 	}
 

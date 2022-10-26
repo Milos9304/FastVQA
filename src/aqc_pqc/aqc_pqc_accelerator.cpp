@@ -232,7 +232,7 @@ void AqcPqcAccelerator::run(){
 	//for(int i = 0; i < parameters.size(); i++)
 	//	second_order_terms[i] = (double*)malloc((i+1) * sizeof(double));
 
-	Eigen::Vector<qreal, Eigen::Dynamic> minus_q(parameters.size());
+	Eigen::Vector<qreal, Eigen::Dynamic> Q(parameters.size());
 	Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> A(parameters.size(), parameters.size());
 
 	for(int k = 1; k < nbSteps+1; ++k){
@@ -263,7 +263,7 @@ void AqcPqcAccelerator::run(){
 			qreal b = _calc_expectation(&h);
 			parameters[i]->value = original_i;
 
-			minus_q(i)= __round(-0.5*(a-b));
+			Q(i)= __round(-0.5*(a-b));
 
 			parameters[i]->value = original_i;
 
@@ -304,14 +304,14 @@ void AqcPqcAccelerator::run(){
 			}
 		}
 
-		//std::cerr<<-minus_q<<std::endl;
+		//std::cerr<<-Q<<std::endl;
 		//std::cerr<<A<<std::endl;throw;
 
 		Eigen::Vector<qreal, Eigen::Dynamic> eps;
 		if(options.optStrategy == 0)
-			eps = _optimize_trivially(&h, &minus_q, &A, &parameters);
+			eps = _optimize_trivially(&h, &Q, &A, &parameters);
 		else if(options.optStrategy == 1)
-			eps = _optimize_with_rank_reduction(&h, &minus_q, &A, &parameters);
+			eps = _optimize_with_rank_reduction(&h, &Q, &A, &parameters);
 
 		else
 			throw_runtime_error("optStrategy unimplemented");
@@ -378,7 +378,7 @@ void AqcPqcAccelerator::run(){
 			for(unsigned int i = 0; i < parameters.size(); ++i){
 				parameters[i]->value += eps[i];
 			}
-			//std::cerr<<"x"<<A*res_eps-minus_q<<std::endl;
+			//std::cerr<<"x"<<A*res_eps-Q<<std::endl;
 		//}
 
 		qreal expectation = _calc_expectation(&h);
