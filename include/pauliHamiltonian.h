@@ -13,7 +13,6 @@
 #include <Eigen/Dense>
 #include "QuEST.h"
 
-
 namespace FastVQA{
 
 enum PauliHamiltonianType {General, MinusSigmaX, SumMinusSigmaX};
