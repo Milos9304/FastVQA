@@ -58,7 +58,7 @@ void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
 	hamil_int.pauliOpts = h0->pauliOpts;
 	hamil_int.initial_type = h0->type;
 
-	std::cerr<<"Make this nicer\n";
+	std::cerr<<"For MILOS: Make this line nicer (aqc_pqc_accelerator.cpp\n";
 	hamil_int.h1 = *h1;
 
 	std::vector<std::string> sequences;

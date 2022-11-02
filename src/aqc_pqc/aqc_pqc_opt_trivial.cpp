@@ -75,6 +75,12 @@ typedef struct {
 
 
 		if (grad) {
+			for(unsigned int i = 0; i < d->parameters->size(); ++i){
+
+				double e0_aij = 0;
+
+
+			}
 			std::cerr<<solver.eigenvectors().col(0)<<std::endl;
 			throw;
 			//UNIMPLEMENTED
@@ -112,8 +118,8 @@ typedef struct {
 	Eigen::Vector<qreal, Eigen::Dynamic> AqcPqcAccelerator::_optimize_trivially(PauliHamiltonian *h, Eigen::Vector<qreal, Eigen::Dynamic> *Q, Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> *A, std::vector<std::shared_ptr<Parameter>> *parameters){
 
 		int opt_dim = Q->rows();
-		//nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
-		nlopt_opt opt = nlopt_create(NLOPT_LD_SLSQP, opt_dim);
+		nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+		//nlopt_opt opt = nlopt_create(NLOPT_LD_SLSQP, opt_dim);
 		OptData data {Q, A};
 
 		//std::cerr<<"A: " << *A << "\n" << "q: " << -(*Q)<<std::endl;throw;
@@ -135,7 +141,7 @@ typedef struct {
 
 		nlopt_set_xtol_rel(opt, options.xtol);
 		nlopt_set_xtol_abs1(opt, options.xtol);
-		std::cerr<<"WARNING: xtol disabled"<<std::endl;
+
 		nlopt_set_maxtime(opt, 90);
 		//nlopt_set_maxeval(opt, 500);
 		double *eps = (double*) malloc(opt_dim * sizeof(double));
@@ -157,7 +163,7 @@ typedef struct {
 			for(int i = 0; i < opt_dim; ++i)
 				eps_vect(i)=eps[i];
 
-			std::cerr<<eps_vect<<std::endl;
+			//std::cerr<<eps_vect<<std::endl;
 			//std::cerr<<"A_null:"<<A_null_space;
 
 			free(eps);
