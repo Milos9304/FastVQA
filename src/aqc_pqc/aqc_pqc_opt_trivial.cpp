@@ -7,21 +7,9 @@
 
 namespace FastVQA{
 
-typedef struct {
-		Eigen::Vector<qreal, Eigen::Dynamic> *Q;
-	    Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>* A;
-} OptData;
-
-typedef struct {
-	std::vector<std::shared_ptr<Parameter>> *parameters;
-	AqcPqcAccelerator *acc;
-	PauliHamiltonian *h;
-	OptData *optData;
-} ConstrData;
-
 	double ineq_constraint_trivial(unsigned n, const double *x, double *grad, void *data){
 
-		ConstrData *d = (ConstrData *) data;
+		ConstrData_trivial *d = (ConstrData_trivial *) data;
 		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> H(d->parameters->size(), d->parameters->size());
 
 		Eigen::Vector<qreal, Eigen::Dynamic> res_eps(n);
@@ -75,15 +63,25 @@ typedef struct {
 
 
 		if (grad) {
-			for(unsigned int i = 0; i < d->parameters->size(); ++i){
 
-				double e0_aij = 0;
+			Eigen::Vector<qreal, Eigen::Dynamic> e_vect = solver.eigenvectors().col(0);
 
+			for(unsigned int p = 0; p < d->parameters->size(); ++p){
 
+				double e0_p = 0;
+
+				for(int i = 0; i < d->parameters->size(); ++i){ //num rows of Hessian H
+					double e0_Aip = e_vect(i)*e_vect(p);
+					e0_p += 2*e0_Aip * d->acc->calc_third_derivative(i,p,p,d);//* Aip_p;
+
+					//the above becomes factor of two above
+					//double e0_Api = e0_Aip;
+					//e0_p += e0_Api * Api_p;
+				}
+
+				grad[p] = e0_p;
+				std::cerr << "grad_"<<p<<"="<<e0_p<<std::endl;
 			}
-			std::cerr<<solver.eigenvectors().col(0)<<std::endl;
-			throw;
-			//UNIMPLEMENTED
 
 		}
 
@@ -91,7 +89,7 @@ typedef struct {
 	}
 
 	double lin_system_f_trivial(unsigned n, const double *z, double *grad, void *data){
-			OptData *dt = (OptData *) data;
+			OptData_trivial *dt = (OptData_trivial *) data;
 
 			Eigen::Vector<qreal, Eigen::Dynamic> z_vect(n);
 			for(unsigned int i = 0; i < n; ++i)
@@ -109,6 +107,7 @@ typedef struct {
 						g1+=z[k]*gram_m(d,k);
 						g2+=(*(dt->A))(k,d);
 					}
+					std::cerr<<"eq_grad="<<2*(g1+(*(dt->Q))[d]*g2);
 					grad[d]=2*(g1+(*(dt->Q))[d]*g2);
 				}
 			}
@@ -118,13 +117,15 @@ typedef struct {
 	Eigen::Vector<qreal, Eigen::Dynamic> AqcPqcAccelerator::_optimize_trivially(PauliHamiltonian *h, Eigen::Vector<qreal, Eigen::Dynamic> *Q, Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> *A, std::vector<std::shared_ptr<Parameter>> *parameters){
 
 		int opt_dim = Q->rows();
-		nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+		//nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
 		//nlopt_opt opt = nlopt_create(NLOPT_LD_SLSQP, opt_dim);
-		OptData data {Q, A};
+		nlopt_opt opt = nlopt_create(NLOPT_LD_TNEWTON_PRECOND_RESTART, opt_dim);
+
+		OptData_trivial data {Q, A};
 
 		//std::cerr<<"A: " << *A << "\n" << "q: " << -(*Q)<<std::endl;throw;
 
-	    ConstrData constr_data {parameters, this, h, &data};
+	    ConstrData_trivial constr_data {parameters, this, h, &data};
 		//nlopt_add_equality_constraint(opt, eq_constraint, &constr_data, 0);
 		nlopt_add_inequality_constraint(opt, ineq_constraint_trivial, &constr_data, 0.0002);
 		double* lb = (double*) malloc(opt_dim * sizeof(double));

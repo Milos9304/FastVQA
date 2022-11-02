@@ -66,6 +66,7 @@ target_sources(${PROJECT_NAME}
         src/aqc_pqc/aqc_pqc_accelerator.cpp
         src/aqc_pqc/aqc_pqc_opt_rank_reduce.cpp
         src/aqc_pqc/aqc_pqc_opt_trivial.cpp
+        src/aqc_pqc/derivatives_evaluation.cpp
         src/gate.cpp
         src/circuit.cpp
         src/ansatz.cpp

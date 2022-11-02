@@ -7,24 +7,12 @@
 
 namespace FastVQA{
 
-typedef struct {
-		Eigen::Vector<qreal, Eigen::Dynamic> Xi;
-	    Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> N;
-} OptData;
-
-typedef struct {
-	std::vector<std::shared_ptr<Parameter>> *parameters;
-	AqcPqcAccelerator *acc;
-	PauliHamiltonian *h;
-	OptData *optData;
-} ConstrData;
-
 double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, void *data){
 		//std::cerr<<"e";
 		//my_constraint_data *d = (my_constraint_data *) data;
 		//double a = d->a, b = d->b;
 
-		ConstrData *d = (ConstrData *) data;
+		ConstrData_rank_reduce *d = (ConstrData_rank_reduce *) data;
 		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> H(d->parameters->size(), d->parameters->size());
 
 		Eigen::Vector<qreal, Eigen::Dynamic> eps_vect(n);
@@ -91,7 +79,7 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 	}
 
 	double lin_system_f_rank_reduce(unsigned n, const double *z, double *grad, void *data){
-		OptData *d = (OptData *) data;
+		OptData_rank_reduce *d = (OptData_rank_reduce *) data;
 		//std::cerr<< "probably wrong derivative";
 		//std::cerr<<"g";
 		if (grad) {
@@ -180,14 +168,14 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 		std::cerr<<"d:"<<opt_dim<<std::endl;
 
 		double *lb, *ub;
-		OptData data {Xi, A_null_space};
+		OptData_rank_reduce data {Xi, A_null_space};
 
 		nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
 
 		//opt = nlopt_create(NLOPT_LN_AUGLAG_EQ, opt_dim);
 		//lopt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
 		//nlopt_set_local_optimizer(opt, lopt);
-		ConstrData constr_data {parameters, this, h, &data};
+		ConstrData_rank_reduce constr_data {parameters, this, h, &data};
 		//nlopt_add_equality_constraint(opt, eq_constraint, &constr_data, 0);
 		nlopt_add_inequality_constraint(opt, ineq_constraint_rank_reduce, &constr_data, 0);
 		lb = (double*) malloc(opt_dim * sizeof(double));
