@@ -64,8 +64,6 @@ struct AqcPqcAcceleratorOptions{
 
 	int optStrategy = 0;
 
-	double xtol = 10e-5;
-
 };
 
 class AqcPqcAccelerator:public AcceleratorBase{
@@ -105,8 +103,6 @@ private:
 		std::vector<qreal> coeffs0, coeffs1;
 		std::vector<int> pauliOpts;
 
-		PauliHamiltonian h1;
-
 		void toPauliHamil(PauliHamil* hamil);
 
 		Qureg getIntermediateGroundState(double lambda);
@@ -115,7 +111,7 @@ private:
 
 	int nbQubits;
 
-	Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> getIntermediateMatrixRepresentation(PauliHamiltonian* h, double* id_coeff, double theta);
+	Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> getIntermediateMatrixRepresentation(PauliHamiltonian* h, double* id_coeff);
 
 	PauliHamiltonian _calc_intermediate_hamiltonian(double lambda);
 

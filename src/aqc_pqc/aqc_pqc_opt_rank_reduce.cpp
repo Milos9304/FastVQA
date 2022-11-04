@@ -23,6 +23,9 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 		//std::cerr<<"e";
 		//my_constraint_data *d = (my_constraint_data *) data;
 		//double a = d->a, b = d->b;
+		if (grad) {
+			//UNIMPLEMENTED
+		}
 
 		ConstrData *d = (ConstrData *) data;
 		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> H(d->parameters->size(), d->parameters->size());
@@ -73,26 +76,14 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 		solver.compute(H);
 		Eigen::Vector<qreal, Eigen::Dynamic> lambda = solver.eigenvalues().reverse();
 		auto X = solver.eigenvalues();
-		auto E = solver.eigenvectors();
 
 		//std::cerr<<"pass: "<<X.col(0)[0]<<"\n";
-		//std::cerr<<"min eval: "<<X.col(0)[0]<<"\n";
-
-		if (grad) {
-			std::cerr<<"e_grad";
-			std::cerr<<E.col(0)<<std::endl;throw;
-			//for(unsigned int k = 0; k < n; ++k){
-			//	//grad[k] =
-			//}
-
-		}
-
+		std::cerr<<"min eval: "<<X.col(0)[0]<<"\n";
 		return -X.col(0)[0];//pass?-1:1;
 	}
 
 	double lin_system_f_rank_reduce(unsigned n, const double *z, double *grad, void *data){
 		OptData *d = (OptData *) data;
-		//std::cerr<< "probably wrong derivative";
 		//std::cerr<<"g";
 		if (grad) {
 			std::cerr<<"grad";
@@ -120,7 +111,7 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 		for(int i = 0; i < d->Xi.rows(); ++i)
 			ret += x[i]*x[i];//std::cerr<<"-"<<ret<<"-";
 		//std::cerr<<std::setprecision (50)<<" "<<ret<<"\n";
-		//std::cerr<<ret<<" ";
+		std::cerr<<ret<<" ";
 		return ret;
 	}
 
@@ -130,12 +121,21 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 
 	Eigen::Vector<qreal, Eigen::Dynamic> AqcPqcAccelerator::_optimize_with_rank_reduction(PauliHamiltonian *h, Eigen::Vector<qreal, Eigen::Dynamic> *Q, Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> *A, std::vector<std::shared_ptr<Parameter>> *parameters){
 
+<<<<<<< HEAD
 
 
 		Eigen::Vector<qreal, Eigen::Dynamic> Xi(Q->rows());
 		Xi = A->fullPivHouseholderQr().solve(*Q);
 		//std::cerr<<"A: "<<A<< ""<<" -Q: "<<Q<<" Xi: "<<Xi<<std::endl;
 		//bool solution_exists = (A*Xi).isApprox(Q, 10e-4);
+=======
+		double threshold = 0.4;
+
+		Eigen::Vector<qreal, Eigen::Dynamic> Xi(minus_q->rows());
+		Xi = A->fullPivHouseholderQr().solve(*minus_q);
+		//std::cerr<<"A: "<<A<< ""<<" -Q: "<<minus_q<<" Xi: "<<Xi<<std::endl;
+		//bool solution_exists = (A*Xi).isApprox(minus_q, 10e-4);
+>>>>>>> parent of 48e08745 (bug fixes)
 		//std::cerr<<"exists:"<<solution_exists<<" ";
 
 		//Eigen::FullPivLU<Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>> lu(*A);
@@ -182,32 +182,33 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 		double *lb, *ub;
 		OptData data {Xi, A_null_space};
 
-		nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+		nlopt_opt opt;
+		//if(options.checkHessian){
+					opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
 
-		//opt = nlopt_create(NLOPT_LN_AUGLAG_EQ, opt_dim);
-		//lopt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
-		//nlopt_set_local_optimizer(opt, lopt);
-		ConstrData constr_data {parameters, this, h, &data};
-		//nlopt_add_equality_constraint(opt, eq_constraint, &constr_data, 0);
-		nlopt_add_inequality_constraint(opt, ineq_constraint_rank_reduce, &constr_data, 0);
-		lb = (double*) malloc(opt_dim * sizeof(double));
-		ub = (double*) malloc(opt_dim * sizeof(double));
-		for(int i = 0; i < opt_dim; ++i){
-			lb[i] = -HUGE_VAL;ub[i]=-lb[i];
-		}
-		nlopt_set_lower_bounds(opt, lb);
-		nlopt_set_upper_bounds(opt, ub);
-		nlopt_set_min_objective(opt, lin_system_f_rank_reduce, &data);
-		nlopt_set_xtol_rel(opt, options.xtol);
-		nlopt_set_xtol_abs1(opt, options.xtol);
-		nlopt_set_maxtime(opt, 90);
+					//opt = nlopt_create(NLOPT_LN_AUGLAG_EQ, opt_dim);
+					//lopt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+					//nlopt_set_local_optimizer(opt, lopt);
+					ConstrData constr_data {parameters, this, h, &data};
+					//nlopt_add_equality_constraint(opt, eq_constraint, &constr_data, 0);
+					nlopt_add_inequality_constraint(opt, ineq_constraint_rank_reduce, &constr_data, 0);
+					lb = (double*) malloc(opt_dim * sizeof(double));
+					ub = (double*) malloc(opt_dim * sizeof(double));
+					for(int i = 0; i < opt_dim; ++i){
+						lb[i] = -HUGE_VAL;ub[i]=-lb[i];
+					}
+					nlopt_set_lower_bounds(opt, lb);
+					nlopt_set_upper_bounds(opt, ub);
+					nlopt_set_min_objective(opt, lin_system_f_rank_reduce, &data);
+					nlopt_set_xtol_rel(opt, /*1e-2*/-1);
+					nlopt_set_xtol_abs1(opt, 1e-2);
 
 		//		}else
 		//			throw;
 
 		double *eps = (double*) malloc(opt_dim * sizeof(double));
 		for(int i = 0; i < opt_dim; ++i)
-			eps[i] = 0;
+			eps[i] = 0.5;
 		double minf;
 		int opt_res = nlopt_optimize(opt, eps, &minf);
 		if (opt_res < 0) {
@@ -225,9 +226,15 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 			for(int i = 0; i < opt_dim; ++i)
 				eps_vect(i)=eps[i];
 
+<<<<<<< HEAD
 			//std::cerr<<"Solution found: " << Xi+A_null_space*eps_vect << "\n";
 			//std::cerr<<"Min eval: " << ineq_constraint_rank_reduce(opt_dim, eps, NULL, &constr_data)<<"\n";
 			//std::cerr<<"This should be zero: " << (*A)*(Xi+A_null_space*eps_vect)-(*Q) << "\n";
+=======
+			std::cerr<<"Solution found: " << Xi+A_null_space*eps_vect << "\n";
+			std::cerr<<"Min eval: " << ineq_constraint_rank_reduce(opt_dim, eps, NULL, &constr_data)<<"\n";
+			std::cerr<<"This should be zero: " << (*A)*(Xi+A_null_space*eps_vect)-(*minus_q) << "\n";
+>>>>>>> parent of 48e08745 (bug fixes)
 			//std::cerr<<"A_null:"<<A_null_space;
 
 			free(eps);

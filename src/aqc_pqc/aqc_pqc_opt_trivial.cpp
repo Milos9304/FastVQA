@@ -71,6 +71,7 @@ typedef struct {
 		auto X = solver.eigenvalues();
 
 		//std::cerr<<"pass: "<<X.col(0)[0]<<"\n";
+<<<<<<< HEAD
 		//std::cerr<<"min eval: "<<X.col(0)[0]<<"\n";
 
 
@@ -88,6 +89,10 @@ typedef struct {
 		}
 
 		return -X.col(0)[0];//pass?-1:1;
+=======
+		std::cerr<<"min eval: "<<X.col(0)[0]<<"\n";
+		return X.col(0)[0];//pass?-1:1;
+>>>>>>> parent of 48e08745 (bug fixes)
 	}
 
 	double lin_system_f_trivial(unsigned n, const double *z, double *grad, void *data){
@@ -97,6 +102,7 @@ typedef struct {
 			for(unsigned int i = 0; i < n; ++i)
 				z_vect(i)=z[i];
 
+<<<<<<< HEAD
 			Eigen::Vector<qreal, Eigen::Dynamic> x = *(dt->Q)+*(dt->A)*z_vect;
 
 			Eigen::Vector<qreal, Eigen::Dynamic> gram_m = (*(dt->A)).transpose() * (*(dt->A));
@@ -112,6 +118,11 @@ typedef struct {
 					grad[d]=2*(g1+(*(dt->Q))[d]*g2);
 				}
 			}
+=======
+			Eigen::Vector<qreal, Eigen::Dynamic> x = *(d->minusQ)+*(d->A)*z_vect;
+
+			std::cerr<<(x.transpose()*x)<<"\n";
+>>>>>>> parent of 48e08745 (bug fixes)
 			return (x.transpose()*x)(0,0);
 		}
 
@@ -119,14 +130,18 @@ typedef struct {
 
 		int opt_dim = Q->rows();
 		nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+<<<<<<< HEAD
 		//nlopt_opt opt = nlopt_create(NLOPT_LD_SLSQP, opt_dim);
 		OptData data {Q, A};
 
 		//std::cerr<<"A: " << *A << "\n" << "q: " << -(*Q)<<std::endl;throw;
 
+=======
+		OptData data {minus_q, A};
+>>>>>>> parent of 48e08745 (bug fixes)
 	    ConstrData constr_data {parameters, this, h, &data};
 		//nlopt_add_equality_constraint(opt, eq_constraint, &constr_data, 0);
-		nlopt_add_inequality_constraint(opt, ineq_constraint_trivial, &constr_data, 0.0002);
+		nlopt_add_inequality_constraint(opt, ineq_constraint_trivial, &constr_data, 0);
 		double* lb = (double*) malloc(opt_dim * sizeof(double));
 		double* ub = (double*) malloc(opt_dim * sizeof(double));
 		for(int i = 0; i < opt_dim; ++i){
@@ -135,7 +150,10 @@ typedef struct {
 		nlopt_set_lower_bounds(opt, lb);
 		nlopt_set_upper_bounds(opt, ub);
 		nlopt_set_min_objective(opt, lin_system_f_trivial, &data);
+		nlopt_set_xtol_rel(opt, 1e-1);
+		nlopt_set_xtol_abs1(opt, 1e-1);
 
+<<<<<<< HEAD
 		//nlopt_set_ftol_rel(opt, options.xtol);
 		//nlopt_set_ftol_abs(opt, options.xtol);
 
@@ -144,9 +162,11 @@ typedef struct {
 
 		nlopt_set_maxtime(opt, 90);
 		//nlopt_set_maxeval(opt, 500);
+=======
+>>>>>>> parent of 48e08745 (bug fixes)
 		double *eps = (double*) malloc(opt_dim * sizeof(double));
 		for(int i = 0; i < opt_dim; ++i)
-			eps[i] = 0;
+			eps[i] = 0.5;
 		double minf;
 		int opt_res = nlopt_optimize(opt, eps, &minf);
 		if (opt_res < 0) {
@@ -163,7 +183,11 @@ typedef struct {
 			for(int i = 0; i < opt_dim; ++i)
 				eps_vect(i)=eps[i];
 
+<<<<<<< HEAD
 			//std::cerr<<eps_vect<<std::endl;
+=======
+			//std::cerr<<eps_vect;
+>>>>>>> parent of 48e08745 (bug fixes)
 			//std::cerr<<"A_null:"<<A_null_space;
 
 			free(eps);

@@ -58,9 +58,12 @@ void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
 	hamil_int.pauliOpts = h0->pauliOpts;
 	hamil_int.initial_type = h0->type;
 
+<<<<<<< HEAD
 	std::cerr<<"For MILOS: Make this line nicer (aqc_pqc_accelerator.cpp\n";
 	hamil_int.h1 = *h1;
 
+=======
+>>>>>>> parent of 48e08745 (bug fixes)
 	std::vector<std::string> sequences;
 
 	for(std::vector<double>::size_type i = 0; i < hamil_int.coeffs0.size(); ++i){
@@ -243,15 +246,10 @@ void AqcPqcAccelerator::run(){
 
 		//double theta = (double)(k)/(nbSteps);
 		//round to 5 decimal places as Gianni's doing
-		double lambda = (double)(k)/(nbSteps);
+		double theta = std::ceil((double)(k)/(nbSteps) * 100000.0) / 100000.0;
 
-
-		PauliHamiltonian h = this->_calc_intermediate_hamiltonian(lambda);
-
-		//std::cerr<<(this->_calc_intermediate_hamiltonian(1)).getMatrixRepresentation2(false)<< std::endl;throw;
-		//std::cerr<<h.getMatrixRepresentation2(false) << std::endl;throw;
-
-		logd("lambda="+std::to_string(lambda), options.log_level);
+		PauliHamiltonian h = this->_calc_intermediate_hamiltonian(theta);
+		logd("theta="+std::to_string(theta), options.log_level);
 		logd(h.getPauliHamiltonianString(2), options.log_level);
 		for(std::vector<std::shared_ptr<FastVQA::Parameter>>::size_type i = 0; i < parameters.size(); ++i){
 			//std::cerr<<i<<" / "<<parameters.size()<<std::endl;
@@ -309,10 +307,16 @@ void AqcPqcAccelerator::run(){
 
 		Eigen::Vector<qreal, Eigen::Dynamic> eps;
 		if(options.optStrategy == 0)
+<<<<<<< HEAD
 			eps = _optimize_trivially(&h, &Q, &A, &parameters);
 		else if(options.optStrategy == 1)
 			eps = _optimize_with_rank_reduction(&h, &Q, &A, &parameters);
 
+=======
+			eps = _optimize_with_rank_reduction(&h, &minus_q, &A, &parameters);
+		else if(options.optStrategy == 1)
+			eps = _optimize_trivially(&h, &minus_q, &A, &parameters);
+>>>>>>> parent of 48e08745 (bug fixes)
 		else
 			throw_runtime_error("optStrategy unimplemented");
 
@@ -321,6 +325,7 @@ void AqcPqcAccelerator::run(){
 
 			//opt = nlopt_create(NLOPT_LN_AUGLAG_EQ, opt_dim);
 			//lopt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+			//nlopt_set_local_optimizer(opt, lopt);
 			ConstrData constr_data {&parameters, this, &h, &data};
 			//nlopt_add_equality_constraint(opt, eq_constraint, &constr_data, 0);
 			nlopt_add_inequality_constraint(opt, ineq_constraint, &constr_data, 0);
@@ -390,7 +395,7 @@ void AqcPqcAccelerator::run(){
 		if(options.compareWithClassicalEigenSolver){
 
 			double id_term;
-			Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> m = getIntermediateMatrixRepresentation(&h, &id_term, lambda);
+			Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> m = getIntermediateMatrixRepresentation(&h, &id_term);
 			Eigen::Vector<std::complex<qreal>, Eigen::Dynamic> evals_vect = m.eigenvalues();
 
 			std::vector<double> evals(evals_vect.size());
@@ -417,13 +422,13 @@ void AqcPqcAccelerator::run(){
 				case PlusState:{
 					double overlap_val_real = 0;
 					double overlap_val_imag = 0;
-					double p = (1-lambda)*(1/sqrt(qureg.numAmpsTotal));
+					double p = (1-theta)*(1/sqrt(qureg.numAmpsTotal));
 					for(long long int i = 0; i < qureg.numAmpsTotal; ++i){
 
 						//std::cout << qureg.stateVec.real[i] << "+" << qureg.stateVec.imag[i] << "i  ";
 						if(std::find(options.solutions.begin(), options.solutions.end(), i) != options.solutions.end()) {
-							overlap_val_real += (p + lambda) * qureg.stateVec.real[i];
-							overlap_val_imag += (p + lambda) * qureg.stateVec.imag[i];
+							overlap_val_real += (p + theta) * qureg.stateVec.real[i];
+							overlap_val_imag += (p + theta) * qureg.stateVec.imag[i];
 							fgsOverlap += pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
 						}else{
 							overlap_val_real += p * qureg.stateVec.real[i];
@@ -445,7 +450,7 @@ void AqcPqcAccelerator::run(){
 			std::ostringstream oss;
 			oss << std::fixed;
 			oss << std::setprecision(2);
-			oss << ((int)(lambda*10000))/100.;
+			oss << ((int)(theta*10000))/100.;
 
 			logi(oss.str()+"% "+"Exact ground state: " + std::to_string(evals[0]) + " calculated: " + std::to_string(expectation) + "    (diff="+std::to_string(std::abs(evals[0]-expectation))+")  " + str_groundStateOverlap + " " + str_finalGroundStateOverlap);
 
@@ -509,7 +514,7 @@ qreal AqcPqcAccelerator::_calc_expectation(PauliHamiltonian *h){
 	return calcExpecPauliHamil(qureg, hamil, workspace);
 }
 
-Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> AqcPqcAccelerator::getIntermediateMatrixRepresentation(PauliHamiltonian* h, double* id_coeff, double theta){
+Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> AqcPqcAccelerator::getIntermediateMatrixRepresentation(PauliHamiltonian* h, double* id_coeff){
 
 	if(hamil_int.initial_type == PauliHamiltonianType::General){
 		throw_runtime_error("getIntermediateMatrixRepresentation not implemented for general h0 type");
@@ -579,8 +584,7 @@ Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> AqcPqcAccelerator::getInter
 	destroyDiagonalOp(diagOp, env);
 	return m;
 	}else if(hamil_int.initial_type == PauliHamiltonianType::SumMinusSigmaX){
-
-		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> m = Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>::Zero((1LL<<h->nbQubits), (1LL<<h->nbQubits));
+		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> m = Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>::Zero(/*(1LL<<h->nbQubits)*/4, 4/*(1LL<<h->nbQubits)*/);
 		//std::cerr<<m<<std::endl;
 		std::function<void(int, int, int)> f;
 		f= [&m, &f](int q, int a, int b)->void {
@@ -590,22 +594,19 @@ Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> AqcPqcAccelerator::getInter
 			}
 			else{
 				f(q-1, a, b);
-				for(int i = 0; i < (1LL<<(q-1)); ++i){
-					m(a+(1LL<<(q-1))+i, b+i) = -1;
-					m(a+i, b+(1LL<<(q-1))+i) = -1;
-				}
-
+				f(q-1, a, b+(1LL<<(q-1)));
+				f(q-1, a+(1LL<<(q-1)), b);
 				f(q-1, a+(1LL<<(q-1)), b+(1LL<<(q-1)));
 			};
 		};
 
-		f(h->nbQubits-1, 0, 0);
-		for(int i = 0; i < (1LL<<(h->nbQubits-1)); ++i){
-			m((1LL<<(h->nbQubits-1))+i, i) = -1;
-			m(i, (1LL<<(h->nbQubits-1))+i) = -1;
-		}
-		f(h->nbQubits-1, (1LL<<(h->nbQubits-1)), (1LL<<(h->nbQubits-1)));
-		return (1-theta)*m+theta*hamil_int.h1.getMatrixRepresentation2(true);
+		f(/*h->nbQubits-1*/2, 0, 0);
+		/*f(h->nbQubits-1, 0, 0);
+		f(h->nbQubits-1, 0, (1LL<<(h->nbQubits-1)));
+		f(h->nbQubits-1, (1LL<<(h->nbQubits-1)), 0);
+		f(h->nbQubits-1, (1LL<<(h->nbQubits-1)), (1LL<<(h->nbQubits-1)));*/
+		//std::cerr<<m<<"\n";
+		return m;
 	}
 	throw_runtime_error("Not implemented");
 	return Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>::Zero(0,0);
