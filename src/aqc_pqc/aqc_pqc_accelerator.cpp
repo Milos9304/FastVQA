@@ -263,7 +263,7 @@ void AqcPqcAccelerator::run(){
 			qreal b = _calc_expectation(&h);
 			parameters[i]->value = original_i;
 
-			Q(i)= __round(-0.5*(a-b));
+			Q(i)= __round(0.5*(a-b));
 
 			parameters[i]->value = original_i;
 
