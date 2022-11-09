@@ -94,11 +94,9 @@ namespace FastVQA{
 			Eigen::Vector<qreal, Eigen::Dynamic> z_vect(n);
 			for(unsigned int i = 0; i < n; ++i)
 				z_vect(i)=z[i];
-
+			
 			Eigen::Vector<qreal, Eigen::Dynamic> x = *(dt->Q)+*(dt->A)*z_vect;
-
-			Eigen::Vector<qreal, Eigen::Dynamic> gram_m = (*(dt->A)).transpose() * (*(dt->A));
-
+			Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> gram_m = (*(dt->A)).transpose() * (*(dt->A));
 			//in trivial, A is symmetric, so nxn
 			if (grad) {
 				for(int d = 0; d < n; ++d){
