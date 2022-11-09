@@ -111,8 +111,10 @@ void PauliHamiltonian::initializeSumMinusSigmaXHamiltonian(){
 
 void PauliHamiltonian::toQuestPauliHamil(PauliHamil* hamil){
 
-	*hamil = createPauliHamil(this->nbQubits, this->coeffs.size());
+	//*hamil = createPauliHamil(this->nbQubits, this->coeffs.size());
 
+	hamil->numQubits = nbQubits;
+	hamil->numSumTerms = this->coeffs.size();
 	hamil->termCoeffs = &(this->coeffs)[0]; //conversion to c array
 	hamil->pauliCodes = (enum pauliOpType*)(&this->pauliOpts[0]);
 
@@ -171,12 +173,15 @@ Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> PauliHamiltonian::getMatrix
 		this->toQuestPauliHamil(&hamil);
 		DiagonalOp hamDiag = createDiagonalOp(this->nbQubits, env, 1);
 		initDiagonalOpFromPauliHamil(hamDiag, hamil);
-		destroyQuESTEnv(env);
+
 
 		for(int i = 0; i < 1ULL<<(this->nbQubits); ++i){
 			m(i,i) = hamDiag.real[i];
 			//std::cerr<<hamDiag.real[i]<<". ";
 		}
+
+		destroyDiagonalOp(hamDiag, env);
+		destroyQuESTEnv(env);
 		return m;
 	}
 
