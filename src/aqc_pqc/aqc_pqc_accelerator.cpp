@@ -451,6 +451,10 @@ void AqcPqcAccelerator::run(){
 
 			if(options.outputLogToFile){
 				logFile << evals[0] << " " << expectation << " " << (options.printGroundStateOverlap ? std::to_string(gsOverlap) + " " : "") << (options.printGroundStateOverlap ? std::to_string(fgsOverlap) : "") << std::endl;
+				logFile << "HES:";
+				for(auto &eval: evals)
+					logFile << " " << eval;
+				logFile << std::endl;
 			}
 
 			int i_max = 0;double maxd = 0;
