@@ -440,23 +440,21 @@ void AqcPqcAccelerator::run(){
 					throw_runtime_error("Not implemented. Err code: 11");
 					break;
 				}
+				std::ostringstream oss;
+				oss << std::fixed;
+				oss << std::setprecision(2);
+				oss << ((int)(lambda*10000))/100.;
+
+				logi(oss.str()+"% "+"Exact ground state: " + std::to_string(evals[0]) + " calculated: " + std::to_string(expectation) + "    (diff="+std::to_string(std::abs(evals[0]-expectation))+")  " + str_groundStateOverlap + " " + str_finalGroundStateOverlap);
+
+				if(options.outputLogToFile){
+					logFile << "f: " << evals[0] << " " << expectation << " " << (options.printGroundStateOverlap ? std::to_string(gsOverlap) + " " : "") << (options.printGroundStateOverlap ? std::to_string(fgsOverlap) : "") << std::endl;
+					logFile << "HES:";
+					for(auto &eval: evals)
+						logFile << " " << eval;
+					logFile << std::endl;
+				}
 			}
-
-			std::ostringstream oss;
-			oss << std::fixed;
-			oss << std::setprecision(2);
-			oss << ((int)(lambda*10000))/100.;
-
-			logi(oss.str()+"% "+"Exact ground state: " + std::to_string(evals[0]) + " calculated: " + std::to_string(expectation) + "    (diff="+std::to_string(std::abs(evals[0]-expectation))+")  " + str_groundStateOverlap + " " + str_finalGroundStateOverlap);
-
-			if(options.outputLogToFile){
-				logFile << evals[0] << " " << expectation << " " << (options.printGroundStateOverlap ? std::to_string(gsOverlap) + " " : "") << (options.printGroundStateOverlap ? std::to_string(fgsOverlap) : "") << std::endl;
-				logFile << "HES:";
-				for(auto &eval: evals)
-					logFile << " " << eval;
-				logFile << std::endl;
-			}
-
 			int i_max = 0;double maxd = 0;
 
 			/*for(int i = 0; i < qureg.numAmpsTotal;++i)
@@ -467,8 +465,16 @@ void AqcPqcAccelerator::run(){
 			//std::cerr<< pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.real[i], 2)i_max <<" ";
 
 		}
-
-
+		else{
+			std::ostringstream oss;
+			oss << std::fixed;
+			oss << std::setprecision(2);
+			oss << ((int)(lambda*10000))/100.;
+			logi(oss.str()+"% "+"Expectation: " + std::to_string(expectation));
+			if(options.outputLogToFile){
+				logFile << "exp: " << expectation << std::endl;
+			}
+		}
 	}
 	/*free(first_order_terms);
     for (int i = 0; i < parameters.size(); i++)
