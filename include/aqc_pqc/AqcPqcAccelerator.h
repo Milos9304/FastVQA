@@ -65,6 +65,9 @@ struct AqcPqcAcceleratorOptions{
 	//print epsilons
 	bool printEpsilons = false;
 
+	//time limit per step in seconds
+	int time_limit_step = 90;
+
 	int optStrategy = 0;
 
 	double xtol = 10e-5;

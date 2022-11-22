@@ -17,6 +17,9 @@ typedef struct {
 	AqcPqcAccelerator *acc;
 	PauliHamiltonian *h;
 	OptData *optData;
+
+	bool printConstraint;
+	double outConstraint;
 } ConstrData;
 
 	double ineq_constraint_trivial(unsigned n, const double *x, double *grad, void *data){
@@ -87,6 +90,9 @@ typedef struct {
 
 		}
 
+		if(d->printConstraint)
+			d->outConstraint = X.col(0)[0];
+
 		return -X.col(0)[0];//pass?-1:1;
 	}
 
@@ -122,7 +128,7 @@ typedef struct {
 
 		//std::cerr<<"A: " << *A << "\n" << "q: " << -(*Q)<<std::endl;throw;
 
-	    ConstrData constr_data {parameters, this, h, &data};
+	    ConstrData constr_data {parameters, this, h, &data, options.printEpsilons, 0};
 		//nlopt_add_equality_constraint(opt, eq_constraint, &constr_data, 0);
 		nlopt_add_inequality_constraint(opt, ineq_constraint_trivial, &constr_data, 0.0002);
 		double* lb = (double*) malloc(opt_dim * sizeof(double));
@@ -140,7 +146,7 @@ typedef struct {
 		nlopt_set_xtol_rel(opt, options.xtol);
 		nlopt_set_xtol_abs1(opt, options.xtol);
 
-		nlopt_set_maxtime(opt, 90);
+		nlopt_set_maxtime(opt, options.time_limit_step);
 		//nlopt_set_maxeval(opt, 500);
 		double *eps = (double*) malloc(opt_dim * sizeof(double));
 		for(int i = 0; i < opt_dim; ++i)
@@ -156,6 +162,9 @@ typedef struct {
 			 //for(int i = 1; i < opt_dim; ++i)
 			//	 std::cerr<<","<<eps[i];
 			 //std::cerr<< ")= "<<minf<<"\n";
+
+			if(options.printEpsilons)
+				std::cerr<<"Constraint: " << constr_data.outConstraint << std::endl;
 
 			Eigen::Vector<qreal, Eigen::Dynamic> eps_vect(opt_dim);
 			for(int i = 0; i < opt_dim; ++i)
