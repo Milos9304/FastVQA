@@ -62,6 +62,9 @@ struct AqcPqcAcceleratorOptions{
 	//-1 avoids rounding
 	int roundDecimalPlaces=-1;
 
+	//print epsilons
+	bool printEpsilons = false;
+
 	int optStrategy = 0;
 
 	double xtol = 10e-5;

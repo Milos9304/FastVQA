@@ -316,6 +316,15 @@ void AqcPqcAccelerator::run(){
 		else
 			throw_runtime_error("optStrategy unimplemented");
 
+		if(options.printEpsilons){
+			std::cerr<<"Epsilons: \n" << eps << std::endl;
+			double length = 0;
+			for(unsigned int i = 0; i < parameters.size(); ++i){
+				length += eps[i]*eps[i];
+			}
+			std::cerr<<"squared length: " << length << std::endl;
+		}
+
 		/*if(options.checkHessian){
 			opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
 
