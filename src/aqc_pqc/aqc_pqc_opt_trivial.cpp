@@ -10,6 +10,8 @@ namespace FastVQA{
 typedef struct {
 		Eigen::Vector<qreal, Eigen::Dynamic> *Q;
 	    Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>* A;
+
+	    int num_steps;
 } OptData;
 
 typedef struct {
@@ -98,6 +100,7 @@ typedef struct {
 
 	double lin_system_f_trivial(unsigned n, const double *z, double *grad, void *data){
 			OptData *dt = (OptData *) data;
+			dt->num_steps++;
 
 			Eigen::Vector<qreal, Eigen::Dynamic> z_vect(n);
 			for(unsigned int i = 0; i < n; ++i)
@@ -124,7 +127,7 @@ typedef struct {
 		int opt_dim = Q->rows();
 		nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
 		//nlopt_opt opt = nlopt_create(NLOPT_LD_SLSQP, opt_dim);
-		OptData data {Q, A};
+		OptData data {Q, A, 0};
 
 		//std::cerr<<"A: " << *A << "\n" << "q: " << -(*Q)<<std::endl;throw;
 
@@ -152,12 +155,12 @@ typedef struct {
 		for(int i = 0; i < opt_dim; ++i)
 			eps[i] = 0;
 		double minf;
-		int opt_res = nlopt_optimize(opt, eps, &minf);
+		nlopt_result opt_res = nlopt_optimize(opt, eps, &minf);
 		if (opt_res < 0) {
-			std::cerr<<"nlopt failed! error code: "<< opt_res <<std::endl;
+			std::cerr<<"nlopt failed! error code: "<< opt_res << " = " << nlopt_result_to_string(opt_res) << " #:" << data.num_steps << std::endl;
 		}
 		else {
-			std::cerr<<"nlopt success code: "<< opt_res << std::endl;
+			std::cerr<<"nlopt success code: "<< opt_res << " = " << nlopt_result_to_string(opt_res) << " #:" << data.num_steps << std::endl;
 			 //std::cerr<<"found minimum at f("<<eps[0];
 			 //for(int i = 1; i < opt_dim; ++i)
 			//	 std::cerr<<","<<eps[i];
