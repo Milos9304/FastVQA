@@ -133,7 +133,7 @@ typedef struct {
 
 	    ConstrData constr_data {parameters, this, h, &data, options.printEpsilons, 0};
 		//nlopt_add_equality_constraint(opt, eq_constraint, &constr_data, 0);
-		nlopt_add_inequality_constraint(opt, ineq_constraint_trivial, &constr_data, 0.0002);
+		nlopt_add_inequality_constraint(opt, ineq_constraint_trivial, &constr_data, options.catol);
 		double* lb = (double*) malloc(opt_dim * sizeof(double));
 		double* ub = (double*) malloc(opt_dim * sizeof(double));
 		for(int i = 0; i < opt_dim; ++i){

@@ -71,6 +71,7 @@ struct AqcPqcAcceleratorOptions{
 	int optStrategy = 0;
 
 	double xtol = 10e-5;
+	double catol = 0.0002;
 
 };
 
