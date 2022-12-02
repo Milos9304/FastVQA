@@ -30,11 +30,14 @@ typedef struct {
 		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> H(d->parameters->size(), d->parameters->size());
 
 		Eigen::Vector<qreal, Eigen::Dynamic> res_eps(n);
-		for(unsigned int i = 0; i < n; ++i)
+
+		for(unsigned int i = 0; i < n; ++i){
 			res_eps(i)=x[i];
+			(*d->parameters)[i]->value += res_eps[i];
+		}
 
 		for(unsigned int i = 0; i < d->parameters->size(); ++i){
-			(*d->parameters)[i]->value += res_eps[i];
+
 			qreal original_i = (*d->parameters)[i]->value;
 
 			for(unsigned int j = 0; j <= i; ++j){
@@ -43,6 +46,7 @@ typedef struct {
 
 				(*d->parameters)[i]->value += PI_2;
 				(*d->parameters)[j]->value += PI_2;
+
 				qreal a = d->acc->_calc_expectation(d->h);
 
 				(*d->parameters)[j]->value -= PI;
@@ -77,7 +81,6 @@ typedef struct {
 
 		//std::cerr<<"pass: "<<X.col(0)[0]<<"\n";
 		//std::cerr<<"min eval: "<<X.col(0)[0]<<"\n";
-
 
 		if (grad) {
 			for(unsigned int i = 0; i < d->parameters->size(); ++i){
@@ -142,7 +145,6 @@ typedef struct {
 		nlopt_set_lower_bounds(opt, lb);
 		nlopt_set_upper_bounds(opt, ub);
 		nlopt_set_min_objective(opt, lin_system_f_trivial, &data);
-
 		//nlopt_set_ftol_rel(opt, options.xtol);
 		//nlopt_set_ftol_abs(opt, options.xtol);
 

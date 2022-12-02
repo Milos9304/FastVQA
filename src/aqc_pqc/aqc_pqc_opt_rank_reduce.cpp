@@ -32,8 +32,12 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 			eps_vect(i)=x[i];
 		Eigen::Vector<qreal, Eigen::Dynamic> res_eps = d->optData->Xi+d->optData->N*eps_vect;
 
-		for(unsigned int i = 0; i < d->parameters->size(); ++i){
+		for(unsigned int i = 0; i < n; ++i){
+			res_eps(i)=x[i];
 			(*d->parameters)[i]->value += res_eps[i];
+		}
+
+		for(unsigned int i = 0; i < d->parameters->size(); ++i){
 			qreal original_i = (*d->parameters)[i]->value;
 
 			for(unsigned int j = 0; j <= i; ++j){
