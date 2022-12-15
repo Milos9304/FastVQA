@@ -128,8 +128,8 @@ double ineq_constraint_trivial(unsigned n, const double *x, double *grad, void *
 	Eigen::Vector<qreal, Eigen::Dynamic> AqcPqcAccelerator::_optimize_trivially(PauliHamiltonian *h, Eigen::Vector<qreal, Eigen::Dynamic> *Q, Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> *A, std::vector<std::shared_ptr<Parameter>> *parameters){
 
 		int opt_dim = Q->rows();
-		//nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
-		nlopt_opt opt = nlopt_create(NLOPT_LD_SLSQP, opt_dim);
+		nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+		//nlopt_opt opt = nlopt_create(NLOPT_LD_SLSQP, opt_dim);
 		OptData data {Q, A, 0};
 
 		//std::cerr<<"A: " << *A << "\n" << "q: " << -(*Q)<<std::endl;throw;
