@@ -10,6 +10,8 @@ namespace FastVQA{
 typedef struct {
 		Eigen::Vector<qreal, Eigen::Dynamic> Xi;
 	    Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> N;
+
+	    int num_steps;
 } OptData;
 
 typedef struct {
@@ -17,12 +19,12 @@ typedef struct {
 	AqcPqcAccelerator *acc;
 	PauliHamiltonian *h;
 	OptData *optData;
+
+	bool printConstraint;
+	double outConstraint;
 } ConstrData;
 
 double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, void *data){
-		//std::cerr<<"e";
-		//my_constraint_data *d = (my_constraint_data *) data;
-		//double a = d->a, b = d->b;
 
 		ConstrData *d = (ConstrData *) data;
 		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> H(d->parameters->size(), d->parameters->size());
@@ -33,7 +35,6 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 		Eigen::Vector<qreal, Eigen::Dynamic> res_eps = d->optData->Xi+d->optData->N*eps_vect;
 
 		for(unsigned int i = 0; i < n; ++i){
-			res_eps(i)=x[i];
 			(*d->parameters)[i]->value += res_eps[i];
 		}
 
@@ -77,27 +78,27 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 		solver.compute(H);
 		Eigen::Vector<qreal, Eigen::Dynamic> lambda = solver.eigenvalues().reverse();
 		auto X = solver.eigenvalues();
-		auto E = solver.eigenvectors();
-
-		//std::cerr<<"pass: "<<X.col(0)[0]<<"\n";
-		//std::cerr<<"min eval: "<<X.col(0)[0]<<"\n";
+		//auto E = solver.eigenvectors();
 
 		if (grad) {
 			std::cerr<<"e_grad";
-			std::cerr<<E.col(0)<<std::endl;throw;
+			//std::cerr<<E.col(0)<<std::endl;
+			throw;
 			//for(unsigned int k = 0; k < n; ++k){
 			//	//grad[k] =
 			//}
 
 		}
 
+		if(d->printConstraint)
+			d->outConstraint = X.col(0)[0];
+
 		return -X.col(0)[0];//pass?-1:1;
 	}
 
 	double lin_system_f_rank_reduce(unsigned n, const double *z, double *grad, void *data){
 		OptData *d = (OptData *) data;
-		//std::cerr<< "probably wrong derivative";
-		//std::cerr<<"g";
+
 		if (grad) {
 			std::cerr<<"grad";
 			for(unsigned int k = 0; k < n; ++k){
@@ -110,7 +111,7 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 					s += d->Xi[j]*d->N(j,k) + 2*s1*d->N(j,k)*z[k];
 				}
 				grad[k] = (double)s;
-			}
+			}throw;
 		}
 
 		qreal ret=0;
@@ -156,11 +157,11 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 		double rank;
 		double threshold = 0;
 		do{
-			threshold += 0.01;
+			threshold += 0.001;
 			cod.setThreshold(threshold);
 			cod.compute(*A);
 			rank = cod.rank();
-		}while(rank == 10);
+		}while(rank > 1/*Q->rows() / 2*/);
 		std::cerr<<"Rank = " << rank <<std::endl;
 
 
@@ -204,7 +205,9 @@ double ineq_constraint_rank_reduce(unsigned n, const double *x, double *grad, vo
 		nlopt_set_min_objective(opt, lin_system_f_rank_reduce, &data);
 		nlopt_set_xtol_rel(opt, options.xtol);
 		nlopt_set_xtol_abs1(opt, options.xtol);
-		nlopt_set_maxtime(opt, 90);
+
+		//nlopt_set_maxtime(opt, options.time_limit_step);
+		nlopt_set_maxeval(opt, options.eval_limit_step);
 
 		//		}else
 		//			throw;

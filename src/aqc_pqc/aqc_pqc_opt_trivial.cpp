@@ -24,7 +24,7 @@ typedef struct {
 	double outConstraint;
 } ConstrData;
 
-	double ineq_constraint_trivial(unsigned n, const double *x, double *grad, void *data){
+double ineq_constraint_trivial(unsigned n, const double *x, double *grad, void *data){
 
 		ConstrData *d = (ConstrData *) data;
 		Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> H(d->parameters->size(), d->parameters->size());
@@ -120,7 +120,7 @@ typedef struct {
 						g2+=(*(dt->A))(k,d);
 					}
 					grad[d]=2*(g1+(*(dt->Q))[d]*g2);
-				}
+				}throw;
 			}
 			return (x.transpose()*x)(0,0);
 		}
@@ -128,8 +128,8 @@ typedef struct {
 	Eigen::Vector<qreal, Eigen::Dynamic> AqcPqcAccelerator::_optimize_trivially(PauliHamiltonian *h, Eigen::Vector<qreal, Eigen::Dynamic> *Q, Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> *A, std::vector<std::shared_ptr<Parameter>> *parameters){
 
 		int opt_dim = Q->rows();
-		nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
-		//nlopt_opt opt = nlopt_create(NLOPT_LD_SLSQP, opt_dim);
+		//nlopt_opt opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
+		nlopt_opt opt = nlopt_create(NLOPT_LD_SLSQP, opt_dim);
 		OptData data {Q, A, 0};
 
 		//std::cerr<<"A: " << *A << "\n" << "q: " << -(*Q)<<std::endl;throw;
@@ -151,8 +151,9 @@ typedef struct {
 		nlopt_set_xtol_rel(opt, options.xtol);
 		nlopt_set_xtol_abs1(opt, options.xtol);
 
-		nlopt_set_maxtime(opt, options.time_limit_step);
-		//nlopt_set_maxeval(opt, 500);
+		//nlopt_set_maxtime(opt, options.time_limit_step);
+		nlopt_set_maxeval(opt, options.eval_limit_step);
+
 		double *eps = (double*) malloc(opt_dim * sizeof(double));
 		for(int i = 0; i < opt_dim; ++i)
 			eps[i] = 0;
