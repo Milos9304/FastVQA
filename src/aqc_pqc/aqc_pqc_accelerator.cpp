@@ -484,6 +484,27 @@ void AqcPqcAccelerator::run(){
 			}
 		}
 	}
+	if(options.outputLogToFile){
+
+		double fgsOverlap = 0;
+		switch(options.initialGroundState){
+			case PlusState:{
+				for(long long int i = 0; i < qureg.numAmpsTotal; ++i){
+					if(std::find(options.solutions.begin(), options.solutions.end(), i) != options.solutions.end()) {
+						fgsOverlap += pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
+					}
+				}
+				break;}
+			case None:
+			default:
+				throw_runtime_error("Not implemented. Err code: 11");
+				break;
+			}
+
+		logFile << "Overlap: " << fgsOverlap << std::endl;
+
+
+	}
 	/*free(first_order_terms);
     for (int i = 0; i < parameters.size(); i++)
     	free(second_order_terms[i]);*/
