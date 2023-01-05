@@ -414,7 +414,7 @@ void AqcPqcAccelerator::run(){
 			std::string str_groundStateOverlap = "";
 			std::string str_finalGroundStateOverlap = "";
 
-			double gsOverlap=0, fgsOverlap=0;
+			double gsOverlap=0, gsOverlap_real=0, gsOverlap_imag=0, fgsOverlap=0;
 
 			if(options.printGroundStateOverlap){
 
@@ -430,18 +430,19 @@ void AqcPqcAccelerator::run(){
 
 						//std::cout << qureg.stateVec.real[i] << "+" << qureg.stateVec.imag[i] << "i  ";
 						if(std::find(options.solutions.begin(), options.solutions.end(), i) != options.solutions.end()) {
-							overlap_val_real += (p + lambda) * qureg.stateVec.real[i];
-							overlap_val_imag += (p + lambda) * qureg.stateVec.imag[i];
+							overlap_val_real += qureg.stateVec.real[i];
+							overlap_val_imag += qureg.stateVec.imag[i];
 							fgsOverlap += pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
-						}else{
-							overlap_val_real += p * qureg.stateVec.real[i];
-							overlap_val_imag += p * qureg.stateVec.imag[i];
 						}
+						gsOverlap_real += qureg.stateVec.real[i] * p;
+						gsOverlap_imag += qureg.stateVec.imag[i] * p;
+
 					}
-					gsOverlap = pow(overlap_val_real,2)+pow(overlap_val_imag, 2);
+					fgsOverlap *= lambda;
+					gsOverlap = pow(gsOverlap_real,2)+pow(gsOverlap_imag, 2) + fgsOverlap;
 
 					str_groundStateOverlap = " GS overlap= " + std::to_string(gsOverlap);
-					str_finalGroundStateOverlap = " GS overlap= " + std::to_string(fgsOverlap);
+					str_finalGroundStateOverlap = " FGS overlap= " + std::to_string(fgsOverlap);
 					break;}
 				case None:
 				default:
