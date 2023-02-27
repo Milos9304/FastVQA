@@ -43,7 +43,7 @@ std::string PauliHamiltonian::getPauliHamiltonianString(int double_precision){
 	bool start = true;
 
 	if(this->nbQubits < 1 || this->pauliOpts.size() != this->nbQubits * this->coeffs.size() )
-    	throw_runtime_error("PauliHamiltonian unitialized");
+    	throw_runtime_error("PauliHamiltonian uninitialized");
 
 	for(unsigned int i = 0; i < this->coeffs.size(); ++i){
 
@@ -142,7 +142,7 @@ Eigen::MatrixXd PauliHamiltonian::getMatrixRepresentation(bool diagonalOp){
 	}
 	throw_runtime_error("Not implemented");
 	/*if(this->nbQubits < 1 || this->pauliOpts.size() != this->nbQubits * this->coeffs.size() )
-	    	throw_runtime_error("PauliHamiltonian unitialized");
+	    	throw_runtime_error("PauliHamiltonian uninitialized");
 
 	for(int i = 0; i < this->coeffs.size(); ++i){
 
@@ -187,7 +187,7 @@ Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> PauliHamiltonian::getMatrix
 
 
 	if(this->nbQubits < 1 || this->pauliOpts.size() != this->nbQubits * this->coeffs.size() )
-	    	throw_runtime_error("PauliHamiltonian unitialized");
+	    	throw_runtime_error("PauliHamiltonian uninitialized");
 
 	Eigen::Matrix<qreal, 2, 2> PAULI_I {{1,0},{0,1}};
 	Eigen::Matrix<qreal, 2, 2> PAULI_X {{0,1},{1,0}};
