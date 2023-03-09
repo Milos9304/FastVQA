@@ -73,6 +73,13 @@ struct AqcPqcAcceleratorOptions{
 	double xtol = 10e-5;
 	double catol = 0.0002;
 
+	//Below is for backup loading
+	bool backup = false;
+	bool newly_created_backup=true;
+	std::string backup_name = "backup.bkp";
+	int start_with_step = 0;
+	std::vector <long double> init_angles;
+
 };
 
 class AqcPqcAccelerator:public AcceleratorBase{

@@ -29,6 +29,9 @@ AqcPqcAccelerator::AqcPqcAccelerator(AqcPqcAcceleratorOptions options){
 	if(options.printGroundStateOverlap && options.initialGroundState == InitialGroundState::None)
 		throw_runtime_error("printGroundStateOverlap=true but initial ground state not specified");
 
+	if(options.start_with_step > 0 && options.backup == false)
+		throw_runtime_error("Backup option must be set to true if starting froman intermediate step");
+
 	logi("Using " + options.ansatz_name + " ansatz");
 
 	this->options = options;
@@ -106,7 +109,11 @@ void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
 
 
 	if(options.outputLogToFile){
-		logFile.open(options.logFileName);
+		if(options.backup && options.start_with_step > 0)
+			logFile.open(options.logFileName, std::ofstream::out | std::ofstream::app);
+		else
+			logFile.open(options.logFileName);
+
 		if(!logFile.is_open())
 			throw_runtime_error("Error opening log file " + options.logFileName);
 
@@ -220,9 +227,17 @@ void AqcPqcAccelerator::run(){
 
 	int nbSteps = options.nbSteps;
 	this->ansatz = getAnsatz(options.ansatz_name, hamil_int.nbQubits);
-	initOptimalParamsForMinusSigmaXHamiltonian(&ansatz);
-
 	std::vector<std::shared_ptr<Parameter>> parameters = ansatz.circuit.getParamsPtrs();
+
+	if(options.start_with_step == 0)
+		initOptimalParamsForMinusSigmaXHamiltonian(&ansatz);
+	else{
+		int i = 0;
+		for(auto &ptr: parameters){
+			ptr->value = options.init_angles[i++];
+		}
+		logi("Loaded " + std::to_string(options.start_with_step) + " steps with " + std::to_string(i) + " parameters" );
+	}
 
 	logi(std::to_string(nbSteps) + " steps");
 
@@ -234,7 +249,24 @@ void AqcPqcAccelerator::run(){
 	Eigen::Vector<qreal, Eigen::Dynamic> Q(parameters.size());
 	Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> A(parameters.size(), parameters.size());
 
-	for(int k = 1; k < nbSteps+1; ++k){
+	std::ofstream bkp_file;
+	if(options.backup)
+		bkp_file.open(options.backup_name, std::ofstream::out | std::ofstream::app);
+
+	bool newly_created_backup = options.newly_created_backup;
+	for(int k = options.start_with_step + 1; k < nbSteps+1; ++k){
+
+		std::cerr<<"Step "<<k<<" opt params: ";
+		for(std::vector<std::shared_ptr<FastVQA::Parameter>>::size_type i = 0; i < parameters.size(); ++i)
+			std::cerr<<parameters[i]->value<<" ";
+
+		if(options.backup && newly_created_backup){
+			bkp_file << k << " ";
+			for(unsigned int i = 0; i < parameters.size(); ++i){
+				bkp_file << parameters[i]->value << " ";
+			}
+			bkp_file << std::endl << std::flush;
+		}newly_created_backup=true;
 
 		/*for(int i = 0; i < parameters.size(); ++i)
 			std::cerr<<parameters[i]->value<<" ";
@@ -509,6 +541,9 @@ void AqcPqcAccelerator::run(){
 	/*free(first_order_terms);
     for (int i = 0; i < parameters.size(); i++)
     	free(second_order_terms[i]);*/
+
+	if(options.backup)
+		bkp_file.close();
 
 }
 
