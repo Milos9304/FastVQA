@@ -241,11 +241,6 @@ void AqcPqcAccelerator::run(){
 
 	logi(std::to_string(nbSteps) + " steps");
 
-	//double *first_order_terms = (double*) malloc(parameters.size() * sizeof(double));
-	//double *second_order_terms[parameters.size()];
-	//for(int i = 0; i < parameters.size(); i++)
-	//	second_order_terms[i] = (double*)malloc((i+1) * sizeof(double));
-
 	Eigen::Vector<qreal, Eigen::Dynamic> Q(parameters.size());
 	Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> A(parameters.size(), parameters.size());
 
@@ -255,10 +250,6 @@ void AqcPqcAccelerator::run(){
 
 	bool newly_created_backup = options.newly_created_backup;
 	for(int k = options.start_with_step + 1; k < nbSteps+1; ++k){
-
-		std::cerr<<"Step "<<k<<" opt params: ";
-		for(std::vector<std::shared_ptr<FastVQA::Parameter>>::size_type i = 0; i < parameters.size(); ++i)
-			std::cerr<<parameters[i]->value<<" ";
 
 		if(options.backup && newly_created_backup){
 			bkp_file << k << " ";
