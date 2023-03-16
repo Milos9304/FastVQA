@@ -32,7 +32,7 @@ AqcPqcAccelerator::AqcPqcAccelerator(AqcPqcAcceleratorOptions options){
 	if(options.start_with_step > 0 && options.backup == false)
 		throw_runtime_error("Backup option must be set to true if starting froman intermediate step");
 
-	logi("Using " + options.ansatz_name + " ansatz");
+	logi("Using " + options.ansatz_name + " ansatz with depth=" + std::to_string(options.ansatz_depth));
 
 	this->options = options;
 	this->env = createQuESTEnv();
@@ -226,7 +226,7 @@ bool isPsd(const MatrixT& A) {
 void AqcPqcAccelerator::run(){
 
 	int nbSteps = options.nbSteps;
-	this->ansatz = getAnsatz(options.ansatz_name, hamil_int.nbQubits);
+	this->ansatz = getAnsatz(options.ansatz_name, hamil_int.nbQubits, options.ansatz_depth);
 	std::vector<std::shared_ptr<Parameter>> parameters = ansatz.circuit.getParamsPtrs();
 
 	if(options.start_with_step == 0)

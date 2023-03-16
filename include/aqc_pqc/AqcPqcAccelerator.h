@@ -46,6 +46,7 @@ struct AqcPqcAcceleratorOptions{
 
 	// Name of the ansatz as defined in FastVQA/ansatz.h
 	std::string ansatz_name = "Ry_CNOT_all2all_Rz";
+	int ansatz_depth = 1;
 
 	bool compareWithClassicalEigenSolver = false;
 
