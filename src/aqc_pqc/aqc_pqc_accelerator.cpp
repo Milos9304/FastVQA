@@ -252,9 +252,9 @@ void AqcPqcAccelerator::run(){
 	for(int k = options.start_with_step + 1; k < nbSteps+1; ++k){
 
 		if(options.backup && newly_created_backup){
-			bkp_file << k << " ";
+			bkp_file << k << " "  << std::flush;
 			for(unsigned int i = 0; i < parameters.size(); ++i){
-				bkp_file << parameters[i]->value << " ";
+				bkp_file << parameters[i]->value << " " << std::flush;
 			}
 			bkp_file << std::endl << std::flush;
 		}newly_created_backup=true;
@@ -487,9 +487,10 @@ void AqcPqcAccelerator::run(){
 					logFile << std::endl;
 				}
 			}
-			int i_max = 0;double maxd = 0;
 
-			/*for(int i = 0; i < qureg.numAmpsTotal;++i)
+
+			/* int i_max = 0;double maxd = 0;
+			   for(int i = 0; i < qureg.numAmpsTotal;++i)
 				if(pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2) > maxd){
 					maxd=pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
 					i_max = i;
@@ -508,6 +509,19 @@ void AqcPqcAccelerator::run(){
 			}
 		}
 	}
+	if(options.backup){
+		bkp_file << "FINAL: " << std::flush;
+		for(unsigned int i = 0; i < parameters.size(); ++i){
+			bkp_file << parameters[i]->value << " " << std::flush;
+		}
+		bkp_file << std::endl << "PARAMS: " << std::flush;
+		for(unsigned int i = 0; i < parameters.size(); ++i){
+			bkp_file << parameters[i]->name << " " << std::flush;
+		}
+		bkp_file <<std::endl << std::flush;
+		bkp_file.close();
+	}
+
 	if(options.outputLogToFile){
 
 		double fgsOverlap = 0;
@@ -532,9 +546,6 @@ void AqcPqcAccelerator::run(){
 	/*free(first_order_terms);
     for (int i = 0; i < parameters.size(); i++)
     	free(second_order_terms[i]);*/
-
-	if(options.backup)
-		bkp_file.close();
 
 }
 
