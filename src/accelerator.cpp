@@ -4,7 +4,7 @@
 #include <fstream>
 #include <algorithm>
 
-namespace fastVQA{
+namespace FastVQA{
 
 AlphaFunction Accelerator::alpha_constant_f = [](double init_val, double final_val, int iter_i, int max_iters){
 	return init_val;
@@ -199,7 +199,7 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 			});
 
 			ground_state = ref_hamil_energies[0];
-			std::cerr<<ground_state.first<<" "<<ground_state.second<<"\n";
+			//std::cerr<<ground_state.first<<" "<<ground_state.second<<"\n";
 			//loge("I choose: " + std::to_string(ground_state.second));
 
 		}else
@@ -225,8 +225,7 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 	//std::sort(amps.begin(), amps.end();
 }
 
-
-void Accelerator::run(Circuit circuit, const std::vector<double> &x){
+void Accelerator::run_with_new_params(Circuit circuit, const std::vector<double> &x){
 
 	int i = 0;
 	double param_val=0;
@@ -242,65 +241,10 @@ void Accelerator::run(Circuit circuit, const std::vector<double> &x){
 
 }
 
-void Accelerator::set_ansatz(Ansatz* ansatz){
-
-	this -> ansatz = *ansatz;
-
-	//int circuit_size = this->ansatz.circuit.gates.size();
-
-	std::vector<double> gateCodes;
-	for(auto &gate : this->ansatz.circuit.gates){
-		gateCodes.push_back(gate.code);
-		gateCodes.push_back(gate.qubit1);
-		gateCodes.push_back(gate.qubit2);
-	}
-}
-
-double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int iteration_i, double* ground_state_overlap_out){
-	//int x_size = x.size();
-	if(env.numRanks > 1){
-		loge("UNIMPLEMENTED");
-		throw;
-	}
-
-	std::vector<double> x_copy(x);
-
-	if(ansatz.circuit.qaoa_ansatz){
-
-		if(x.size() != (unsigned)ansatz.num_params){
-			loge("Wrong number of parameters");
-		}
-
-		int p = ansatz.num_params/2;
-
-		initPlusState(qureg);
-
-		for(int i = 0; i < p; ++i){
-
-			//applyTrotterCircuit(qureg, hamiltonian,	x[2*i], 1, 1);
-			qreal gamma = x[2*i];
-			for(long long i = 0; i < qureg.numAmpsTotal; ++i){
-				qreal h = hamDiag.real[i];
-
-				qreal a = cos(gamma*h);
-				qreal b = -sin(gamma*h);
-				qreal c = qureg.stateVec.real[i];
-				qreal d = qureg.stateVec.imag[i];
-
-				qureg.stateVec.real[i] = a*c-b*d;
-				qureg.stateVec.imag[i] = b*c+a*d;
-
-			}
-			multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, x[2*i+1]);
-		}
-
-	}else{
-		initZeroState(qureg);
-		run(ansatz.circuit, x);
-	}
+double Accelerator::_energy_evaluation(double* ground_state_overlap_out, int iteration_i){
 
 	if(this->options.exclude_zero_state && ref_hamil_energies[0].first == 0)
-		loge("Zero not excluded properly!");
+			loge("Zero not excluded properly!");
 
 	long long int ground_index = ref_hamil_energies[0].second;
 	*ground_state_overlap_out = qureg.stateVec.real[ground_index]*qureg.stateVec.real[ground_index]+qureg.stateVec.imag[ground_index]*qureg.stateVec.imag[ground_index];
@@ -348,7 +292,62 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 	return energy;
 }
 
+double Accelerator::calc_expectation(ExperimentBuffer* buffer){
+	double overlap;
+	if(ansatz.circuit.qaoa_ansatz){
+		loge("UNIMPLEMENTED");
+		throw;
+	}
+	run_circuit(ansatz.circuit);
+	return _energy_evaluation(&overlap, 0);
+}
+
+double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int iteration_i, double* ground_state_overlap_out){
+	//int x_size = x.size();
+	if(env.numRanks > 1){
+		loge("UNIMPLEMENTED");
+		throw;
+	}
+
+	if(ansatz.circuit.qaoa_ansatz){
+
+		if(x.size() != (unsigned)ansatz.num_params){
+			loge("Wrong number of parameters");
+		}
+
+		int p = ansatz.num_params/2;
+
+		initPlusState(qureg);
+
+		for(int i = 0; i < p; ++i){
+
+			//applyTrotterCircuit(qureg, hamiltonian,	x[2*i], 1, 1);
+			qreal gamma = x[2*i];
+			for(long long i = 0; i < qureg.numAmpsTotal; ++i){
+				qreal h = hamDiag.real[i];
+
+				qreal a = cos(gamma*h);
+				qreal b = -sin(gamma*h);
+				qreal c = qureg.stateVec.real[i];
+				qreal d = qureg.stateVec.imag[i];
+
+				qureg.stateVec.real[i] = a*c-b*d;
+				qureg.stateVec.imag[i] = b*c+a*d;
+
+			}
+			multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, x[2*i+1]);
+		}
+
+	}else{
+		initZeroState(qureg);
+		run_with_new_params(ansatz.circuit, x);
+	}
+	return _energy_evaluation(ground_state_overlap_out, iteration_i);
+}
+
 void Accelerator::__initialize(int num_qubits){
+
+	this->env = createQuESTEnv();
 
 	unsigned long int keys[1];
 	keys[0] = 1997;
@@ -360,7 +359,7 @@ void Accelerator::__initialize(int num_qubits){
 		this->qureg = createQureg(num_qubits, env);
 	}else{
 		logw("Skipping qureg initialization. Be sure you know what you're doing!", options.log_level);
-	}
+	}std::cerr<<"a"<<std::endl;
 
 }
 
@@ -384,7 +383,7 @@ void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 
 }
 
-void Accelerator::initialize(Hamiltonian* hamIn){
+void Accelerator::initialize(PauliHamiltonian* hamIn){
 
 	logd("Calculating hamiltonian terms explicitly.", options.log_level);
 
@@ -403,13 +402,25 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 
 	int coeffsSize = hamIn->coeffs.size();
 
-	hamiltonian = createPauliHamil(num_qubits, coeffsSize);
+	pauliHamiltonian = createPauliHamil(num_qubits, coeffsSize);
 
-	hamiltonian.termCoeffs = &hamIn->coeffs[0]; //conversion to c array
-	hamiltonian.pauliCodes = (enum pauliOpType*)(&hamIn->pauliOpts[0]);
+	pauliHamiltonian.termCoeffs = &hamIn->coeffs[0]; //conversion to c array
+	pauliHamiltonian.pauliCodes = (enum pauliOpType*)(&hamIn->pauliOpts[0]);
 
-	hamDiag = createDiagonalOp(num_qubits, env, 1);
-	initDiagonalOpFromPauliHamil(hamDiag, hamiltonian);
+	bool diag=true;
+	for(auto &c:hamIn->pauliOpts){ //check for diagonal hamiltonian
+		if(c == 1 || c == 2){
+			diag=false;
+			break;
+		}
+	}
+
+	if(diag){
+		hamDiag = createDiagonalOp(num_qubits, env, 1);
+		initDiagonalOpFromPauliHamil(hamDiag, pauliHamiltonian);
+	}else{ //assuming PauliHamil
+		throw_runtime_error("TODO: NON DIAGONAL HAMILTONIAN NOT IMPLEMENTED");
+	}
 
 	if(env.numRanks>1){
 		throw_runtime_error("TODO: UNIMPLEMENTED");
@@ -448,6 +459,11 @@ void Accelerator::initialize(Hamiltonian* hamIn){
 		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)
 		//	break;
 	}
+}
+
+void Accelerator::initialize(int num_qubits){
+	logd("Initializing qureg with " + std::to_string(num_qubits) + " qubits", options.log_level);
+	this->__initialize(num_qubits);
 }
 
 void Accelerator::run_vqe_slave_process(){

@@ -11,9 +11,9 @@
 
 
 //#include "mpi.h"
-namespace fastVQA{
+namespace FastVQA{
 void Vqe::run_vqe(ExperimentBuffer* buffer,
-		Hamiltonian* hamiltonian,
+		PauliHamiltonian* hamiltonian,
 		VQEOptions* options){
 
 	this->num_qubits = hamiltonian->nbQubits;
@@ -57,9 +57,9 @@ void Vqe::__initialize(ExperimentBuffer* buffer, VQEOptions* options){
 }
 
 
-void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, Hamiltonian* hamiltonian, bool logExpecStd, bool keepQureg){
+void Vqe::execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optimizer, std::vector<long long unsigned int> zero_reference_states, PauliHamiltonian* PauliHamiltonian, bool logExpecStd, bool keepQureg){
 	acc->options.zero_reference_states = zero_reference_states;
-	acc->initialize(hamiltonian);
+	acc->initialize(PauliHamiltonian);
 	__execute(buffer, acc, optimizer, logExpecStd, keepQureg);
 }
 
@@ -77,13 +77,13 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 	std::vector<double> intermediateEnergies;
 	acc->set_ansatz(&ansatz);
 
-	if(acc->alpha_f(0,1,1,1)==0)
+	if(acc->alpha_f(0,1,1,1)==0){
 		if(log_level <= 2)
 			logw("f: Constant Alpha: " + std::to_string(acc->options.samples_cut_ratio));
-	else
+	}else{
 		if(log_level <= 2)
 			logw("f: Linear Init alpha: " + std::to_string(acc->options.samples_cut_ratio) + " Final alpha: " +	std::to_string(acc->options.final_alpha) + " Max iters: " + std::to_string(acc->options.max_alpha_iters));
-
+	}
 	int iteration_i = 0;
 
 	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {

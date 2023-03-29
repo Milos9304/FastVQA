@@ -1,4 +1,6 @@
-cmake_minimum_required (VERSION 3.15 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.8 FATAL_ERROR)
+
+option(COMPILE_TESTS "Compile tests" ON) #ON by default
 
 project (FastVQA
 	LANGUAGES C CXX
@@ -11,12 +13,18 @@ set(CMAKE_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
+set(CMAKE_BUILD_TYPE Release)
+
+set(QUEST_PRECISION 4)
+
 include(GNUInstallDirs)
 
+find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+ 
 message(
 	STATUS
 	"CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}"
@@ -31,7 +39,9 @@ set(public_headers
     include/ansatz.h
     include/cost_function.h
     include/accelerator.h
-    include/hamiltonian.h
+    include/accelerator_base.h
+    include/aqc_pqc/AqcPqcAccelerator.h
+    include/pauliHamiltonian.h
     include/experimentBuffer.h
     include/circuit.h
     include/gate.h
@@ -40,17 +50,7 @@ set(public_headers
     ${CMAKE_CURRENT_SOURCE_DIR}/quantum_backends/QuEST/QuEST/include/QuEST.h
     ${CMAKE_CURRENT_SOURCE_DIR}/quantum_backends/QuEST/QuEST/include/QuEST_precision.h
 )
-	        
-set(quest_src
-	quantum_backends/QuEST/QuEST/src/mt19937ar.c
-	quantum_backends/QuEST/QuEST/src/QuEST.c
-	quantum_backends/QuEST/QuEST/src/QuEST_common.c
-	quantum_backends/QuEST/QuEST/src/QuEST_qasm.c
-	quantum_backends/QuEST/QuEST/src/QuEST_validation.c
-	quantum_backends/QuEST/QuEST/src/CPU/QuEST_cpu.c
-	quantum_backends/QuEST/QuEST/src/CPU/QuEST_cpu_local.c
-)	        
-	                                              
+                                              
 if(DEFINED GMP_H_DIR)
 	set (CMAKE_CXX_FLAGS "-I${GMP_H_DIR} -L${GMP_L_DIR} -g3 -Wall -O2")
 else()
@@ -58,18 +58,22 @@ else()
 endif()
 
 add_subdirectory(src/optimizer)
-
+add_subdirectory(quantum_backends)
 add_library(${PROJECT_NAME} STATIC)
 target_sources(${PROJECT_NAME}
     PRIVATE
         src/vqas/vqe.cpp
+        src/aqc_pqc/aqc_pqc_accelerator.cpp
+        src/aqc_pqc/aqc_pqc_opt_rank_reduce.cpp
+        src/aqc_pqc/aqc_pqc_opt_trivial.cpp
         src/gate.cpp
         src/circuit.cpp
         src/ansatz.cpp
         src/accelerator.cpp
-        src/apply_gate.cpp
+        src/pauliHamiltonian.cpp
+        src/accelerator_base.cpp
         src/symbolic_manipulation.cpp
-        ${quest_src}
+        #${quest_src}
         ${optimizer_src}
 )
 
@@ -77,18 +81,25 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
         ${CMAKE_CURRENT_SOURCE_DIR}/include/internal/vqas
+         ${CMAKE_CURRENT_SOURCE_DIR}/include/internal/aqc_pqc
         ${CMAKE_CURRENT_SOURCE_DIR}/src/optimizer/nlopt/src/api
         ${CMAKE_CURRENT_SOURCE_DIR}/quantum_backends/QuEST/QuEST/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/quantum_backends/QuEST/QuEST/src
-        #${CMAKE_CURRENT_SOURCE_DIR}/quantum_backends/QuEST/QuEST/src/CPU
+        #${CMAKE_CURRENT_SOURCE_DIR}/quantum_backends/QuEST/QuEST/include
+        #${CMAKE_CURRENT_SOURCE_DIR}/quantum_backends/QuEST/QuEST/src
+        
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
+#find_package(QuEST)
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${public_headers}")
-target_link_libraries(${PROJECT_NAME} PRIVATE nlopt)
+target_link_libraries(${PROJECT_NAME} PRIVATE QuEST nlopt Eigen3::Eigen)
+target_compile_definitions(${PROJECT_NAME}
+    PRIVATE
+    QuEST_PREC=${QUEST_PRECISION}
+)
 
-install(TARGETS ${PROJECT_NAME} nlopt
+install(TARGETS ${PROJECT_NAME} nlopt QuEST
    EXPORT "${PROJECT_NAME}Targets"
    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
@@ -125,5 +136,8 @@ export(EXPORT "${PROJECT_NAME}Targets"
     FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}Targets.cmake"
     NAMESPACE ${namespace}::
 )
+if(COMPILE_TESTS)
+    add_subdirectory(tests)
+endif(COMPILE_TESTS)
+unset(COMPILE_TESTS CACHE)
 
-#add_subdirectory(tests)

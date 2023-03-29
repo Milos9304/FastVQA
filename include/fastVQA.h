@@ -10,10 +10,12 @@
 
 #include "vqe.h"
 #include "accelerator.h"
+#include "AqcPqcAccelerator.h"
 #include "vqaOptions.h"
 #include "vqeOptions.h"
 #include "qaoaOptions.h"
 #include "optimizer.h"
+#include "pauliHamiltonian.h"
 
 /*#include "io/logger.h"
 #include "io/indicators/progress_bar.hpp"

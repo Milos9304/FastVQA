@@ -1,0 +1,14 @@
+# DO NOT CHANGE VALUE BELOW
+type=qaoa
+#
+# QAOA configuration file for FastVQA
+#
+# lattice_files = paths to lattice files delimited by comma
+#
+#
+#
+# ------------------------ONLY EDIT BELOW------------------------
+
+verbose = true
+
+lattice_files = ../tests/test_files/lattices/example_5.l,../tests/test_files/lattices/q_10_1_20_b.l,../tests/test_files/lattices/q_130_1_20_b.l
