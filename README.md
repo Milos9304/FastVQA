@@ -5,6 +5,7 @@ Simulation framework of variational quantum algorithms focused on performance, p
 - implementation of a Variational Quantum Eigensolver (VQE)
 	- [VQE CVaR version](https://doi.org/10.22331/q-2020-04-20-256)
 	- [VQE Ascending CVaR version](https://arxiv.org/abs/2105.11766)
+- implementation of [Adiabatic Quantum Computation via Parameterized Quantum Circuits](https://arxiv.org/abs/2206.04373)
 - implementation of QAOA (testing)
 - parallelized computation via MPI library (testing)
 
