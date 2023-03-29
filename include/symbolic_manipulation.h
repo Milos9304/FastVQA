@@ -196,5 +196,4 @@ class Expression{
 		void print();
 
 };
-}
 #endif /* SRC_SYMBOLIC_MANIPULATION_H_ */
