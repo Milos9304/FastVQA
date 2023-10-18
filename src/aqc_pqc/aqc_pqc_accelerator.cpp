@@ -29,7 +29,10 @@ AqcPqcAccelerator::AqcPqcAccelerator(AqcPqcAcceleratorOptions options){
 	if(options.printGroundStateOverlap && options.initialGroundState == InitialGroundState::None)
 		throw_runtime_error("printGroundStateOverlap=true but initial ground state not specified");
 
-	logi("Using " + options.ansatz_name + " ansatz");
+	if(options.start_with_step > 0 && options.backup == false)
+		throw_runtime_error("Backup option must be set to true if starting froman intermediate step");
+
+	logi("Using " + options.ansatz_name + " ansatz with depth=" + std::to_string(options.ansatz_depth));
 
 	this->options = options;
 	this->env = createQuESTEnv();
@@ -58,7 +61,6 @@ void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
 	hamil_int.pauliOpts = h0->pauliOpts;
 	hamil_int.initial_type = h0->type;
 
-	std::cerr<<"For MILOS: Make this line nicer (aqc_pqc_accelerator.cpp\n";
 	hamil_int.h1 = *h1;
 
 	std::vector<std::string> sequences;
@@ -107,7 +109,11 @@ void AqcPqcAccelerator::initialize(PauliHamiltonian* h0, PauliHamiltonian* h1){
 
 
 	if(options.outputLogToFile){
-		logFile.open(options.logFileName);
+		if(options.backup && options.start_with_step > 0)
+			logFile.open(options.logFileName, std::ofstream::out | std::ofstream::app);
+		else
+			logFile.open(options.logFileName);
+
 		if(!logFile.is_open())
 			throw_runtime_error("Error opening log file " + options.logFileName);
 
@@ -220,22 +226,38 @@ bool isPsd(const MatrixT& A) {
 void AqcPqcAccelerator::run(){
 
 	int nbSteps = options.nbSteps;
-	this->ansatz = getAnsatz(options.ansatz_name, hamil_int.nbQubits);
-	initOptimalParamsForMinusSigmaXHamiltonian(&ansatz);
-
+	this->ansatz = getAnsatz(options.ansatz_name, hamil_int.nbQubits, options.ansatz_depth);
 	std::vector<std::shared_ptr<Parameter>> parameters = ansatz.circuit.getParamsPtrs();
 
-	logi(std::to_string(nbSteps) + " steps");
+	if(options.start_with_step == 0)
+		initOptimalParamsForMinusSigmaXHamiltonian(&ansatz);
+	else{
+		int i = 0;
+		for(auto &ptr: parameters){
+			ptr->value = options.init_angles[i++];
+		}
+		logi("Loaded " + std::to_string(options.start_with_step) + " steps with " + std::to_string(i) + " parameters" );
+	}
 
-	//double *first_order_terms = (double*) malloc(parameters.size() * sizeof(double));
-	//double *second_order_terms[parameters.size()];
-	//for(int i = 0; i < parameters.size(); i++)
-	//	second_order_terms[i] = (double*)malloc((i+1) * sizeof(double));
+	logi(std::to_string(nbSteps) + " steps");
 
 	Eigen::Vector<qreal, Eigen::Dynamic> Q(parameters.size());
 	Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> A(parameters.size(), parameters.size());
 
-	for(int k = 1; k < nbSteps+1; ++k){
+	std::ofstream bkp_file;
+	if(options.backup)
+		bkp_file.open(options.backup_name, std::ofstream::out | std::ofstream::app);
+
+	bool newly_created_backup = options.newly_created_backup;
+	for(int k = options.start_with_step + 1; k < nbSteps+1; ++k){
+
+		if(options.backup && newly_created_backup){
+			bkp_file << k << " "  << std::flush;
+			for(unsigned int i = 0; i < parameters.size(); ++i){
+				bkp_file << parameters[i]->value << " " << std::flush;
+			}
+			bkp_file << std::endl << std::flush;
+		}newly_created_backup=true;
 
 		/*for(int i = 0; i < parameters.size(); ++i)
 			std::cerr<<parameters[i]->value<<" ";
@@ -244,7 +266,6 @@ void AqcPqcAccelerator::run(){
 		//double theta = (double)(k)/(nbSteps);
 		//round to 5 decimal places as Gianni's doing
 		double lambda = (double)(k)/(nbSteps);
-
 
 		PauliHamiltonian h = this->_calc_intermediate_hamiltonian(lambda);
 
@@ -315,6 +336,15 @@ void AqcPqcAccelerator::run(){
 
 		else
 			throw_runtime_error("optStrategy unimplemented");
+
+		if(options.printEpsilons){
+			std::cerr<<"Epsilons: \n" << eps << std::endl;
+			double length = 0;
+			for(unsigned int i = 0; i < parameters.size(); ++i){
+				length += eps[i]*eps[i];
+			}
+			std::cerr<<"squared length: " << length << std::endl;
+		}
 
 		/*if(options.checkHessian){
 			opt = nlopt_create(NLOPT_LN_COBYLA, opt_dim);
@@ -406,7 +436,7 @@ void AqcPqcAccelerator::run(){
 			std::string str_groundStateOverlap = "";
 			std::string str_finalGroundStateOverlap = "";
 
-			double gsOverlap=0, fgsOverlap=0;
+			double gsOverlap=0, gsOverlap_real=0, gsOverlap_imag=0, fgsOverlap=0;
 
 			if(options.printGroundStateOverlap){
 
@@ -422,40 +452,44 @@ void AqcPqcAccelerator::run(){
 
 						//std::cout << qureg.stateVec.real[i] << "+" << qureg.stateVec.imag[i] << "i  ";
 						if(std::find(options.solutions.begin(), options.solutions.end(), i) != options.solutions.end()) {
-							overlap_val_real += (p + lambda) * qureg.stateVec.real[i];
-							overlap_val_imag += (p + lambda) * qureg.stateVec.imag[i];
+							overlap_val_real += qureg.stateVec.real[i];
+							overlap_val_imag += qureg.stateVec.imag[i];
 							fgsOverlap += pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
-						}else{
-							overlap_val_real += p * qureg.stateVec.real[i];
-							overlap_val_imag += p * qureg.stateVec.imag[i];
 						}
+						gsOverlap_real += qureg.stateVec.real[i] * p;
+						gsOverlap_imag += qureg.stateVec.imag[i] * p;
+
 					}
-					gsOverlap = pow(overlap_val_real,2)+pow(overlap_val_imag, 2);
+					fgsOverlap *= lambda;
+					gsOverlap = pow(gsOverlap_real,2)+pow(gsOverlap_imag, 2) + fgsOverlap;
 
 					str_groundStateOverlap = " GS overlap= " + std::to_string(gsOverlap);
-					str_finalGroundStateOverlap = " GS overlap= " + std::to_string(fgsOverlap);
+					str_finalGroundStateOverlap = " FGS overlap= " + std::to_string(fgsOverlap);
 					break;}
 				case None:
 				default:
 					throw_runtime_error("Not implemented. Err code: 11");
 					break;
 				}
+				std::ostringstream oss;
+				oss << std::fixed;
+				oss << std::setprecision(2);
+				oss << ((int)(lambda*10000))/100.;
+
+				logi(oss.str()+"% "+"Exact ground state: " + std::to_string(evals[0]) + " calculated: " + std::to_string(expectation) + "    (diff="+std::to_string(std::abs(evals[0]-expectation))+")  " + str_groundStateOverlap + " " + str_finalGroundStateOverlap);
+
+				if(options.outputLogToFile){
+					logFile << "f: " << evals[0] << " " << expectation << " " << (options.printGroundStateOverlap ? std::to_string(gsOverlap) + " " : "") << (options.printGroundStateOverlap ? std::to_string(fgsOverlap) : "") << std::endl;
+					logFile << "HES:";
+					for(auto &eval: evals)
+						logFile << " " << eval;
+					logFile << std::endl;
+				}
 			}
 
-			std::ostringstream oss;
-			oss << std::fixed;
-			oss << std::setprecision(2);
-			oss << ((int)(lambda*10000))/100.;
 
-			logi(oss.str()+"% "+"Exact ground state: " + std::to_string(evals[0]) + " calculated: " + std::to_string(expectation) + "    (diff="+std::to_string(std::abs(evals[0]-expectation))+")  " + str_groundStateOverlap + " " + str_finalGroundStateOverlap);
-
-			if(options.outputLogToFile){
-				logFile << evals[0] << " " << expectation << " " << (options.printGroundStateOverlap ? std::to_string(gsOverlap) + " " : "") << (options.printGroundStateOverlap ? std::to_string(fgsOverlap) : "") << std::endl;
-			}
-
-			int i_max = 0;double maxd = 0;
-
-			/*for(int i = 0; i < qureg.numAmpsTotal;++i)
+			/* int i_max = 0;double maxd = 0;
+			   for(int i = 0; i < qureg.numAmpsTotal;++i)
 				if(pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2) > maxd){
 					maxd=pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
 					i_max = i;
@@ -463,6 +497,69 @@ void AqcPqcAccelerator::run(){
 			//std::cerr<< pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.real[i], 2)i_max <<" ";
 
 		}
+		else{
+			std::ostringstream oss;
+			oss << std::fixed;
+			oss << std::setprecision(2);
+			oss << ((int)(lambda*10000))/100.;
+			logi(oss.str()+"% "+"Expectation: " + std::to_string(expectation));
+			if(options.outputLogToFile){
+				logFile << "exp: " << expectation << std::endl;
+			}
+		}
+	}
+	if(options.backup){
+
+		if(options.start_with_step == nbSteps){ //just final evaluation is happening
+			bkp_file.close();
+
+			//PauliHamil hamil;
+			//hamil_int.h1.toQuestPauliHamil(&hamil);
+			//this->_calc_intermediate_hamiltonian(1).toQuestPauliHamil(&hamil);
+			//std::cerr<<sol<<":"<<calcExpecPauliHamil(qureg, hamil, workspace)<<" ";
+			int i = 0;
+			for(auto &ptr: parameters){
+				ptr->value = options.init_angles[i++];
+				std::cerr<<ptr->name<<" "<<ptr->value<<"\n";
+			}
+
+			auto diag = hamil_int.h1.getMatrixRepresentation2(true);
+			for(int i = 0; i < 10; ++i)
+				std::cerr<<" "<<diag(i,i)<<"\n";
+			logi("Final energy using the final parameters in .bkp file: " + std::to_string(_calc_expectation(&hamil_int.h1)));
+
+		}else{
+			bkp_file << "FINAL: " << std::flush;
+			for(unsigned int i = 0; i < parameters.size(); ++i){
+				bkp_file << parameters[i]->value << " " << std::flush;
+			}
+			bkp_file << std::endl << "PARAMS: " << std::flush;
+			for(unsigned int i = 0; i < parameters.size(); ++i){
+				bkp_file << parameters[i]->name << " " << std::flush;
+			}
+			bkp_file <<std::endl << std::flush;
+			bkp_file.close();
+		}
+	}
+
+	if(options.outputLogToFile && options.start_with_step < nbSteps){
+
+		double fgsOverlap = 0;
+		switch(options.initialGroundState){
+			case PlusState:{
+				for(long long int i = 0; i < qureg.numAmpsTotal; ++i){
+					if(std::find(options.solutions.begin(), options.solutions.end(), i) != options.solutions.end()) {
+						fgsOverlap += pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
+					}
+				}
+				break;}
+			case None:
+			default:
+				throw_runtime_error("Not implemented. Err code: 11");
+				break;
+			}
+
+		logFile << "Overlap: " << fgsOverlap << std::endl;
 
 
 	}

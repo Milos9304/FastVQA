@@ -46,6 +46,7 @@ struct AqcPqcAcceleratorOptions{
 
 	// Name of the ansatz as defined in FastVQA/ansatz.h
 	std::string ansatz_name = "Ry_CNOT_all2all_Rz";
+	int ansatz_depth = 1;
 
 	bool compareWithClassicalEigenSolver = false;
 
@@ -62,9 +63,23 @@ struct AqcPqcAcceleratorOptions{
 	//-1 avoids rounding
 	int roundDecimalPlaces=-1;
 
+	//print epsilons
+	bool printEpsilons = false;
+
+	//number of iterations limit per step in seconds
+	int eval_limit_step = 90;
+
 	int optStrategy = 0;
 
 	double xtol = 10e-5;
+	double catol = 0.0002;
+
+	//Below is for backup loading
+	bool backup = false;
+	bool newly_created_backup=true;
+	std::string backup_name = "backup.bkp";
+	int start_with_step = 0;
+	std::vector <long double> init_angles;
 
 };
 

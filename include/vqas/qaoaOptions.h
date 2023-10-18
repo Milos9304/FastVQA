@@ -10,6 +10,7 @@
 
 #include "vqaOptions.h"
 
+
 namespace FastVQA{
 
 class QAOAOptions : public VQAOptions{

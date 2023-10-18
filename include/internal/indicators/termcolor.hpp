@@ -46,6 +46,7 @@
 
 #include <iostream>
 #include <cstdio>
+#include <cstdint>
 
 
 namespace termcolor

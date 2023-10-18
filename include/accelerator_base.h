@@ -22,7 +22,7 @@ class AcceleratorBase{
 
 public:
 	QuESTEnv env;
-	Ansatz ansatz{""};
+	Ansatz ansatz{"", 1};
 
 	void set_ansatz(Ansatz *ansatz);
 	void run_circuit(Circuit circuit, bool init_zero_state=true);

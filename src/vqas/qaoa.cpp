@@ -1,4 +1,5 @@
-#include "qaoa.h"
+#include "vqas/qaoa.h"
+#include "logger.h"
 
 #include <iostream>
 //#include <xacc.hpp>
@@ -9,70 +10,28 @@
 #include <fstream>
 #include "mpi.h"
 
-void Qaoa::run_qaoa(ExperimentBuffer* buffer,
-		std::string hamiltonian,
-		std::string name,
-		ExecutionStatistics* executionStats,
-		QAOAOptions* qaoaOptions){
+namespace FastVQA{
 
-	Qaoa::_run_qaoa(buffer, hamiltonian, std::pair<std::vector<double>, std::vector<int>>(), name, nullptr, executionStats, qaoaOptions);
+void Qaoa::run_qaoa(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAOAOptions* options){
 
-}
+	this->num_qubits = hamiltonian->nbQubits;
+	this->__initialize(buffer, options);
 
-void Qaoa::run_qaoa(ExperimentBuffer* buffer,
-		std::pair<std::vector<double>, std::vector<int>> hamiltonian,
-		std::string name,
-		ExecutionStatistics* executionStats,
-		QAOAOptions* qaoaOptions){
-
-	Qaoa::_run_qaoa(buffer, "", hamiltonian, name, nullptr, executionStats, qaoaOptions);
+	logd("QAOA starting", log_level);
+	__execute(buffer, options->accelerator, options->optimizer);
+	logd("QAOA execution done", this->log_level);
 
 }
 
-
-void Qaoa::run_qaoa(ExperimentBuffer* buffer,
-		std::string hamiltonian,
-		std::string name,
-		indicators::ProgressBar* bar,
-		ExecutionStatistics* executionStats,
-		QAOAOptions* qaoaOptions){
-
-	Qaoa::_run_qaoa(buffer, hamiltonian, std::pair<std::vector<double>, std::vector<int>>(), name, bar, executionStats, qaoaOptions);
-
+void Qaoa::__initialize(ExperimentBuffer* buffer, QAOAOptions* options){
+	this->instance_name = options->instance_name;
+	this->max_iters = options->max_iters;
+    this->log_level = options->log_level;
 }
 
-void Qaoa::run_qaoa(ExperimentBuffer* buffer,
-		std::string hamiltonian,
-		std::pair<std::vector<double>, std::vector<int>> hamiltonian2,
-		std::string name,
-		indicators::ProgressBar* bar,
-		ExecutionStatistics* executionStats,
-		QAOAOptions* qaoaOptions){
+void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt){
 
-	Qaoa::_run_qaoa(buffer, hamiltonian, hamiltonian2, name, bar, executionStats, qaoaOptions);
-
-}
-
-void Qaoa::_run_qaoa(ExperimentBuffer* buffer,
-		std::string hamiltonian,
-		std::pair<std::vector<double>, std::vector<int>> hamiltonian2,
-		std::string name,
-		indicators::ProgressBar* bar,
-		ExecutionStatistics* executionStats,
-		QAOAOptions* qaoaOptions){
-
-   int max_iters = qaoaOptions->max_iters;
-   bool verbose = qaoaOptions->verbose;
-
-   if(qaoaOptions->logEnergies){
-	   //qaoaOptions->outfile.rdbuf()->pubsetbuf(0, 0); //disable buffer
-	   qaoaOptions->outfile.open("../experiment_files/statsfile_"+name+".txt", std::fstream::out | std::ios_base::trunc); //| std::ios_base::trunc);//std::ios_base::app
-   }
-
-   if(bar)
-	   qaoaOptions->progress_bar = bar;
-
-   qaoaOptions->execStats = executionStats;
+   std::string instance_prefix = "[["+this->instance_name+"]] ";
 
    //xacc::setOption("quest-verbose", "true");
    //xacc::setOption("quest-debug", "true");
@@ -237,8 +196,9 @@ void Qaoa::_run_qaoa(ExperimentBuffer* buffer,
 */
 }
 
-void Qaoa::run_qaoa_slave_process(){
+/*void Qaoa::run_qaoa_slave_process(){
 	//auto acc = xacc::getAccelerator("quest");
 	loge("NOT IMPLEMENTED");
 	throw;
+}*/
 }

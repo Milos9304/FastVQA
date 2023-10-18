@@ -43,7 +43,7 @@ std::string PauliHamiltonian::getPauliHamiltonianString(int double_precision){
 	bool start = true;
 
 	if(this->nbQubits < 1 || this->pauliOpts.size() != this->nbQubits * this->coeffs.size() )
-    	throw_runtime_error("PauliHamiltonian unitialized");
+    	throw_runtime_error("PauliHamiltonian uninitialized");
 
 	for(unsigned int i = 0; i < this->coeffs.size(); ++i){
 
@@ -111,8 +111,10 @@ void PauliHamiltonian::initializeSumMinusSigmaXHamiltonian(){
 
 void PauliHamiltonian::toQuestPauliHamil(PauliHamil* hamil){
 
-	*hamil = createPauliHamil(this->nbQubits, this->coeffs.size());
+	//*hamil = createPauliHamil(this->nbQubits, this->coeffs.size());
 
+	hamil->numQubits = nbQubits;
+	hamil->numSumTerms = this->coeffs.size();
 	hamil->termCoeffs = &(this->coeffs)[0]; //conversion to c array
 	hamil->pauliCodes = (enum pauliOpType*)(&this->pauliOpts[0]);
 
@@ -140,7 +142,7 @@ Eigen::MatrixXd PauliHamiltonian::getMatrixRepresentation(bool diagonalOp){
 	}
 	throw_runtime_error("Not implemented");
 	/*if(this->nbQubits < 1 || this->pauliOpts.size() != this->nbQubits * this->coeffs.size() )
-	    	throw_runtime_error("PauliHamiltonian unitialized");
+	    	throw_runtime_error("PauliHamiltonian uninitialized");
 
 	for(int i = 0; i < this->coeffs.size(); ++i){
 
@@ -171,18 +173,21 @@ Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> PauliHamiltonian::getMatrix
 		this->toQuestPauliHamil(&hamil);
 		DiagonalOp hamDiag = createDiagonalOp(this->nbQubits, env, 1);
 		initDiagonalOpFromPauliHamil(hamDiag, hamil);
-		destroyQuESTEnv(env);
+
 
 		for(int i = 0; i < 1ULL<<(this->nbQubits); ++i){
 			m(i,i) = hamDiag.real[i];
 			//std::cerr<<hamDiag.real[i]<<". ";
 		}
+
+		destroyDiagonalOp(hamDiag, env);
+		destroyQuESTEnv(env);
 		return m;
 	}
 
 
 	if(this->nbQubits < 1 || this->pauliOpts.size() != this->nbQubits * this->coeffs.size() )
-	    	throw_runtime_error("PauliHamiltonian unitialized");
+	    	throw_runtime_error("PauliHamiltonian uninitialized");
 
 	Eigen::Matrix<qreal, 2, 2> PAULI_I {{1,0},{0,1}};
 	Eigen::Matrix<qreal, 2, 2> PAULI_X {{0,1},{1,0}};
