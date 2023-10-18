@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.8 FATAL_ERROR)
 
-option(COMPILE_TESTS "Compile tests" ON) #ON by default
+option(COMPILE_TESTS "Compile tests" OFF) #ON by default
 
 project (FastVQA
 	LANGUAGES C CXX
@@ -33,6 +33,7 @@ message(
 set(public_headers
     include/fastVQA.h
     include/vqas/vqe.h
+    include/vqas/qaoa.h
     include/vqas/vqeOptions.h
     include/vqas/vqaOptions.h
     include/vqas/qaoaOptions.h
@@ -63,6 +64,7 @@ add_library(${PROJECT_NAME} STATIC)
 target_sources(${PROJECT_NAME}
     PRIVATE
         src/vqas/vqe.cpp
+        src/vqas/qaoa.cpp
         src/aqc_pqc/aqc_pqc_accelerator.cpp
         src/aqc_pqc/aqc_pqc_opt_rank_reduce.cpp
         src/aqc_pqc/aqc_pqc_opt_trivial.cpp
