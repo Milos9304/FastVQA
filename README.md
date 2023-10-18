@@ -23,5 +23,5 @@ cmake .. -DCMAKE_INSTALL_PREFIX=destination_path
 ```
 
 # Usage
-See [LattiQ](https://github.com/Milos9304/LattiQ), the experimental framework for lattice problems on NISQ devices that is running on top of FastVQA. More detailed docs and api are on plan soon.
+See [LattiQ](https://github.com/Milos9304/LattiQ), the experimental framework for lattice problems on NISQ devices that is running on top of FastVQA and [AqcPqC] for an experimental framework for Adiabatic Quantum Computation via Parameterized Quantum Circuits built on top of FastVQA. More detailed docs and api are on plan soon.
 
