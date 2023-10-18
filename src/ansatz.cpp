@@ -139,12 +139,12 @@ Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int depth, int seed){
 		for(int d = 0; d < depth; ++d){
 
 			for(int i = 0; i < num_qubits; ++i){
-					double param1 = dis(gen);
-					ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("a"+std::to_string(i)+"_"+std::to_string(d), param1)));
+				double param1 = dis(gen);
+				ansatz.circuit.addParametrizedGate(Gate::g_Ry, i, std::shared_ptr<Parameter>(new Parameter("a"+std::to_string(i)+"_"+std::to_string(d), param1)));
 			}
 
 			for(int i = 0; i < num_qubits-1; ++i)
-					ansatz.circuit.addGate(Gate::g_CZ, i, i+1);
+				ansatz.circuit.addGate(Gate::g_CZ, i, i+1);
 			ansatz.circuit.addGate(Gate::g_CZ, num_qubits-1, 0);
 
 			for(int i = 0; i < num_qubits; ++i){
@@ -164,7 +164,7 @@ Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int depth, int seed){
 			}
 
 			for(int i = 0; i < num_qubits-1; ++i)
-					ansatz.circuit.addGate(Gate::g_CNOT, i, i+1);
+				ansatz.circuit.addGate(Gate::g_CNOT, i, i+1);
 			ansatz.circuit.addGate(Gate::g_CNOT, num_qubits-1, 0);
 
 			for(int i = 0; i < num_qubits; ++i){

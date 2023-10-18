@@ -267,7 +267,6 @@ void AqcPqcAccelerator::run(){
 		//round to 5 decimal places as Gianni's doing
 		double lambda = (double)(k)/(nbSteps);
 
-
 		PauliHamiltonian h = this->_calc_intermediate_hamiltonian(lambda);
 
 		//std::cerr<<(this->_calc_intermediate_hamiltonian(1)).getMatrixRepresentation2(false)<< std::endl;throw;
@@ -510,19 +509,40 @@ void AqcPqcAccelerator::run(){
 		}
 	}
 	if(options.backup){
-		bkp_file << "FINAL: " << std::flush;
-		for(unsigned int i = 0; i < parameters.size(); ++i){
-			bkp_file << parameters[i]->value << " " << std::flush;
+
+		if(options.start_with_step == nbSteps){ //just final evaluation is happening
+			bkp_file.close();
+
+			//PauliHamil hamil;
+			//hamil_int.h1.toQuestPauliHamil(&hamil);
+			//this->_calc_intermediate_hamiltonian(1).toQuestPauliHamil(&hamil);
+			//std::cerr<<sol<<":"<<calcExpecPauliHamil(qureg, hamil, workspace)<<" ";
+			int i = 0;
+			for(auto &ptr: parameters){
+				ptr->value = options.init_angles[i++];
+				std::cerr<<ptr->name<<" "<<ptr->value<<"\n";
+			}
+
+			auto diag = hamil_int.h1.getMatrixRepresentation2(true);
+			for(int i = 0; i < 10; ++i)
+				std::cerr<<" "<<diag(i,i)<<"\n";
+			logi("Final energy using the final parameters in .bkp file: " + std::to_string(_calc_expectation(&hamil_int.h1)));
+
+		}else{
+			bkp_file << "FINAL: " << std::flush;
+			for(unsigned int i = 0; i < parameters.size(); ++i){
+				bkp_file << parameters[i]->value << " " << std::flush;
+			}
+			bkp_file << std::endl << "PARAMS: " << std::flush;
+			for(unsigned int i = 0; i < parameters.size(); ++i){
+				bkp_file << parameters[i]->name << " " << std::flush;
+			}
+			bkp_file <<std::endl << std::flush;
+			bkp_file.close();
 		}
-		bkp_file << std::endl << "PARAMS: " << std::flush;
-		for(unsigned int i = 0; i < parameters.size(); ++i){
-			bkp_file << parameters[i]->name << " " << std::flush;
-		}
-		bkp_file <<std::endl << std::flush;
-		bkp_file.close();
 	}
 
-	if(options.outputLogToFile){
+	if(options.outputLogToFile && options.start_with_step < nbSteps){
 
 		double fgsOverlap = 0;
 		switch(options.initialGroundState){
