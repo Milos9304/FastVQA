@@ -31,8 +31,6 @@ void Qaoa::__initialize(ExperimentBuffer* buffer, QAOAOptions* options){
 
 void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt){
 
-
-
    std::string instance_prefix = "[["+this->instance_name+"]] ";
 
    //xacc::setOption("quest-verbose", "true");

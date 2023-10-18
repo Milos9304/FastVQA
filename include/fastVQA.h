@@ -9,6 +9,7 @@
 #define FASTVQA_FASTVQA_H_
 
 #include "vqe.h"
+#include "qaoa.h"
 #include "accelerator.h"
 #include "AqcPqcAccelerator.h"
 #include "vqaOptions.h"

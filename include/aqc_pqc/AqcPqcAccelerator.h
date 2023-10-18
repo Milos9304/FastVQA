@@ -104,6 +104,8 @@ public:
 
 	qreal _calc_expectation(PauliHamiltonian *h);
 
+	double calc_third_derivative(int i, int j, int k, void* constr_data);
+
 private:
 
 	bool initialized = false;
@@ -141,6 +143,33 @@ private:
 	qreal __round(qreal x);
 
 };
+
+//TODO: unite the names
+typedef struct {
+		//for trivial
+		Eigen::Vector<qreal, Eigen::Dynamic> *Q;
+	    Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic>* A;
+} OptData_trivial;
+
+typedef struct {
+	    //for rank_reduce
+	    Eigen::Vector<qreal, Eigen::Dynamic> Xi;
+	    Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> N;
+} OptData_rank_reduce;
+
+typedef struct {
+	std::vector<std::shared_ptr<Parameter>> *parameters;
+	AqcPqcAccelerator *acc;
+	PauliHamiltonian *h;
+	OptData_trivial *optData;
+} ConstrData_trivial;
+
+typedef struct {
+	std::vector<std::shared_ptr<Parameter>> *parameters;
+	AqcPqcAccelerator *acc;
+	PauliHamiltonian *h;
+	OptData_rank_reduce *optData;
+} ConstrData_rank_reduce;
 
 }
 #endif /* FASTVQA_AQC_PQC_ACCELERATOR_H_ */
