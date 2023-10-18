@@ -22,7 +22,6 @@
 //void run_qaoa(xacc::quantum::PauliOperator, bool verbose);
 namespace FastVQA{
 
-
 class Qaoa{
 
 	public:
@@ -38,6 +37,11 @@ class Qaoa{
 		//static void run_qaoa_slave_process();
 
 	private:
+
+		int p;
+		int num_params; //function of p
+
+		double ftol;
 
 		int num_qubits;
 		std::string instance_name;

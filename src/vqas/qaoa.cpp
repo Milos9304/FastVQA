@@ -4,7 +4,7 @@
 #include <iostream>
 //#include <xacc.hpp>
 
-//#include "QuEST.h"
+#include "QuEST.h"
 #include <random>
 
 #include <fstream>
@@ -16,7 +16,7 @@ void Qaoa::run_qaoa(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAO
 
 	this->num_qubits = hamiltonian->nbQubits;
 	this->__initialize(buffer, options);
-
+	options->accelerator->initialize(hamiltonian);
 	logd("QAOA starting", log_level);
 	__execute(buffer, options->accelerator, options->optimizer);
 	logd("QAOA execution done", this->log_level);
@@ -26,12 +26,34 @@ void Qaoa::run_qaoa(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAO
 void Qaoa::__initialize(ExperimentBuffer* buffer, QAOAOptions* options){
 	this->instance_name = options->instance_name;
 	this->max_iters = options->max_iters;
+	this->ftol = options->ftol;
     this->log_level = options->log_level;
+
+    this->p = options->p;
+    this->num_params = 2*p;
 }
 
 void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt){
 
-   std::string instance_prefix = "[["+this->instance_name+"]] ";
+	std::string instance_prefix = "[["+this->instance_name+"]] ";
+
+	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
+
+			return 0;
+		}, num_params);
+
+	std::vector<double> initial_params;
+	std::mt19937 gen(1997); //rd() instead of 1997
+	std::uniform_real_distribution<> dis(-3.141592654, 3.141592654);
+	for(int i = 0; i < num_params; ++i){
+		initial_params.push_back(dis(gen));
+		initial_params.push_back(dis(gen));
+	}
+	std::vector<double> lowerBounds(initial_params.size(), -3.141592654);
+	std::vector<double> upperBounds(initial_params.size(), 3.141592654);
+
+	OptResult result = opt->optimize(f, initial_params, this->ftol, this->max_iters, lowerBounds, upperBounds);
+
 
    //xacc::setOption("quest-verbose", "true");
    //xacc::setOption("quest-debug", "true");
@@ -39,11 +61,7 @@ void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt)
    //std::cout << hamiltonian <<"\n";throw;
 
    // The corresponding QUBO Hamiltonian is:
-
-
-
    /*
-
 
    auto observable = xacc::quantum::getObservable("pauli", hamiltonian);
 
