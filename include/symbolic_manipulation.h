@@ -92,7 +92,7 @@ class Expression{
 		}
 
 		void addNewTerm(int id_a, int id_b, mpz_t coeff){
-					addNewTerm(id_a, id_b, mpz_class(coeff));
+			addNewTerm(id_a, id_b, mpz_class(coeff));
 		}
 
 
@@ -177,7 +177,7 @@ class Expression{
 		}
 
 		int getId(std::string name){
-			return varMap[name];
+			return varMap.at(name);
 		}
 
 		std::string getName(int id){

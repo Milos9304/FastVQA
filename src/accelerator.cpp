@@ -359,7 +359,7 @@ void Accelerator::__initialize(int num_qubits){
 		this->qureg = createQureg(num_qubits, env);
 	}else{
 		logw("Skipping qureg initialization. Be sure you know what you're doing!", options.log_level);
-	}std::cerr<<"a"<<std::endl;
+	}
 
 }
 
@@ -385,7 +385,7 @@ void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 
 void Accelerator::initialize(PauliHamiltonian* hamIn){
 
-	logd("Calculating hamiltonian terms explicitly.", options.log_level);
+	logd("Calculating Hamiltonian terms explicitly.", options.log_level);
 
 	this->hamiltonian_specified = true;
 
@@ -422,8 +422,10 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 		throw_runtime_error("TODO: NON DIAGONAL HAMILTONIAN NOT IMPLEMENTED");
 	}
 
+	logd("PauliHamiltonian initialized", options.log_level);
+
 	if(env.numRanks>1){
-		throw_runtime_error("TODO: UNIMPLEMENTED");
+		throw_runtime_error("TODO: DISTRIBUTED COMPUTATION UNIMPLEMENTED");
 	}
 
 	ref_hamil_energies.clear();
@@ -439,7 +441,7 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 	for(auto &index : indexes){
 
 		//TODO: add more zero_reference states
-		if(index == options.zero_reference_states[0]){
+		if(options.zero_reference_states.size() > 1 && index == options.zero_reference_states[0]){
 			//logw("Zero excluded with counter " + std::to_string(counter) + " where E(0) = " + std::to_string(hamDiag.real[index]));
 			if(hamDiag.real[index]!=0){
 				loge("Tried to exclude something else than zero ground state! Did you run qaoa?");
@@ -451,14 +453,15 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 
 
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
-
+		std::cerr<<index<<" "<<hamDiag.real[index]<<"\n";
 		if(hamDiag.real[index] == 0){
-			loge("Here we have not exluded zero");
+			loge("Here we have not exluded zero at index " + std::to_string(index));
 		}else
 			ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index));
 		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)
 		//	break;
 	}
+
 }
 
 void Accelerator::initialize(int num_qubits){
