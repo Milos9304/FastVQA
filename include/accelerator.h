@@ -78,6 +78,10 @@ public:
 		return std::make_shared<Qureg>(qureg);
 	}
 
+	RefEnergies getEigenspace(){
+		return ref_hamil_energies;
+	}
+
 private:
 
 	int *qubits_list;

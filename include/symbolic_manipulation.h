@@ -102,7 +102,6 @@ class Expression{
 		}
 
 		void addNewTerm(int id_a, int id_b, mpq_class coeff){
-
 			if(id_a == id_b && idMap[id_a]->isBinary())
 				polynomial.emplace(std::pair<int, int>(-1, id_a), coeff);
 			else if(id_a <= id_b)
