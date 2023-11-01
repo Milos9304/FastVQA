@@ -24,6 +24,28 @@ AlphaFunction Accelerator::alpha_linear_f = [](double init_val, double final_val
 	return final_val;
 };
 
+RefEnergies Accelerator::getEigenspace(){
+	if(!ref_hamil_energies_set)
+		throw_runtime_error("You need to run accelerator->initialize first!");
+	return ref_hamil_energies;
+}
+
+RefEnergies Accelerator::getSolutions(){
+	if(!ref_hamil_energies_set)
+		throw_runtime_error("You need to run accelerator->initialize first!");
+
+	RefEnergies res;
+
+	int min_sol=std::get<0>(ref_hamil_energies[0]);
+	int i = 0;
+	while(std::get<0>(ref_hamil_energies[i]) == min_sol){
+		res.push_back(ref_hamil_energies[i]);
+		i++;
+	}
+
+	return res;
+}
+
 double Accelerator::evaluate_assignment(PauliHamil isingHam, std::string measurement){
 
 	int numQubits = isingHam.numQubits;
@@ -453,7 +475,7 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 
 
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
-		std::cerr<<index<<" "<<hamDiag.real[index]<<"\n";
+		//std::cerr<<index<<" "<<hamDiag.real[index]<<"\n";
 		if(hamDiag.real[index] == 0){
 			loge("Here we have not exluded zero at index " + std::to_string(index));
 		}else
@@ -461,6 +483,7 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)
 		//	break;
 	}
+	ref_hamil_energies_set = true;
 
 }
 

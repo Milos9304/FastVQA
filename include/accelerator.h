@@ -78,9 +78,8 @@ public:
 		return std::make_shared<Qureg>(qureg);
 	}
 
-	RefEnergies getEigenspace(){
-		return ref_hamil_energies;
-	}
+	RefEnergies getEigenspace();
+	RefEnergies getSolutions();
 
 private:
 
@@ -94,6 +93,7 @@ private:
 	CostFunction cost_function;
 
 	PauliHamil pauliHamiltonian;
+	bool ref_hamil_energies_set = false;
 	RefEnergies ref_hamil_energies;
 
     DiagonalOp hamDiag;
