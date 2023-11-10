@@ -41,7 +41,10 @@ class Qaoa{
 		int p;
 		int num_params; //function of p
 
+		Ansatz ansatz;
+
 		double ftol;
+		int nbSamples_calcVarAssignment;
 
 		int num_qubits;
 		std::string instance_name;

@@ -182,12 +182,13 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 
 */
 
-	RefEnergy ground_state;
+	std::vector<RefEnergy> ground_states;
 
 	long long int i = 0;
 	if(this->options.exclude_zero_state){
 		while(ref_hamil_energies[i++].first == 0);
-		ground_state = ref_hamil_energies[i-1];
+		ground_states.push_back(ref_hamil_energies[i-1]);
+		logw("Only one ground state recorded0");
 	}else{
 
 		if(this->options.choose_ground_state_with_smallest_index){
@@ -220,29 +221,50 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 						return a.second < b.second;
 			});
 
-			ground_state = ref_hamil_energies[0];
+			ground_states.push_back(ref_hamil_energies[0]);
+			logw("Only one ground state recorded1");
+
 			//std::cerr<<ground_state.first<<" "<<ground_state.second<<"\n";
 			//loge("I choose: " + std::to_string(ground_state.second));
 
-		}else
-			ground_state = ref_hamil_energies[i];
+		}else{
+			std::sort(ref_hamil_energies.begin(), ref_hamil_energies.end(),
+					[](const RefEnergy& a, const RefEnergy& b) {
+						return a.first < b.first;
+			});
 
+			/*for(auto &e:ref_hamil_energies){
+				std::cerr<<"e:"<<e.first<<" i:"<<e.second<<"\n";
+			}*/
+
+			int j = 0;
+			while(ref_hamil_energies[j++].first == ref_hamil_energies[0].first){
+				ground_states.push_back(ref_hamil_energies[j-1]);
+			}
+		}
 	}
-	i = ground_state.second;
 
 	const int max_qubits=40;
-
 	if(qureg.numQubitsInStateVec > max_qubits){
 		loge("Not enough binary places to hold final opt_config. You are simulating more than" + std::to_string(max_qubits) + " qubits. Increase the number in the code.");
 	}
 
-	std::string opt_config = std::bitset<max_qubits>(i).to_string();
-	opt_config=opt_config.substr(max_qubits-qureg.numQubitsInStateVec,qureg.numQubitsInStateVec);
-	std::reverse(opt_config.begin(), opt_config.end());
-	buffer->opt_config=opt_config;
-	buffer->opt_val=ground_state.first;
+
+
+	for(auto &ground_state: ground_states){
+		i = ground_state.second;
+		std::string opt_config = std::bitset<max_qubits>(i).to_string();
+		opt_config=opt_config.substr(max_qubits-qureg.numQubitsInStateVec,qureg.numQubitsInStateVec);
+		std::reverse(opt_config.begin(), opt_config.end());
+
+		ExperimentBuffer::ExperimentBufferSolution solution(opt_config, ground_state.first, qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i]);
+		buffer->final_solutions.push_back(solution);
+	}
+
+	buffer->opt_val=ground_states[0].first;
+	//buffer->opt_config=opt_config;
 	//logw("Hits " + std::to_string(hits) + " / " + std::to_string(nbSamples));
-	buffer->hit_rate= qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
+	//buffer->hit_rate= qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
 
 	//std::sort(amps.begin(), amps.end();
 }
@@ -346,7 +368,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 			//applyTrotterCircuit(qureg, hamiltonian,	x[2*i], 1, 1);
 			qreal gamma = x[2*i];
 			for(long long i = 0; i < qureg.numAmpsTotal; ++i){
-				qreal h = hamDiag.real[i];
+				qreal h = hamDiag.real[i]; //we know hamDiag is real
 
 				qreal a = cos(gamma*h);
 				qreal b = -sin(gamma*h);
@@ -361,6 +383,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		}
 
 	}else{
+
 		initZeroState(qureg);
 		run_with_new_params(ansatz.circuit, x);
 	}

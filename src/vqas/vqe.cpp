@@ -136,8 +136,10 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 	acc->finalConfigEvaluator(buffer, result.second, nbSamples_calcVarAssignment);
 	if(log_level <= 1){
 		logi(instance_prefix + "Final opt-val: " + std::to_string(buffer->opt_val));
-		logi(instance_prefix + "Final opt-config: " + buffer->opt_config);
-		logi(instance_prefix + "Final hit-rate: " + std::to_string(buffer->hit_rate));
+		for(auto &solution : buffer->final_solutions){
+			logi(instance_prefix + "Final opt-config: " + solution.opt_config);
+			logi(instance_prefix + "Final hit-rate: " + std::to_string(solution.hit_rate));
+		}
 	}
 
 	if(keepQureg)
