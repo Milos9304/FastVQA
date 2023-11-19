@@ -46,6 +46,9 @@ class PauliHamiltonian{
 		}
 
 		void toQuestPauliHamil(PauliHamil* hamil);
+
+		void to_ising_file(std::string filename);
+
 };
 
 }

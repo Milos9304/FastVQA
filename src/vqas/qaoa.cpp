@@ -25,7 +25,6 @@ void Qaoa::run_qaoa(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAO
 	logd("QAOA starting", log_level);
 	__execute(buffer, options->accelerator, options->optimizer);
 	logd("QAOA execution done", this->log_level);
-
 }
 
 void Qaoa::__initialize(ExperimentBuffer* buffer, QAOAOptions* options){
@@ -52,9 +51,14 @@ void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt)
 	std::mt19937 gen(1997); //rd() instead of 1997
 	std::uniform_real_distribution<> dis(-3.141592654, 3.141592654);
 	for(int i = 0; i < num_params/2; ++i){
-		initial_params.push_back(dis(gen));
-		initial_params.push_back(dis(gen));
+		double param1 = dis(gen);
+		double param2 = dis(gen);
+		initial_params.push_back(param1);
+		initial_params.push_back(param2);
+		buffer->initial_params.push_back(std::pair<std::string, double>("alpha_"+std::to_string(i),param1));
+		buffer->initial_params.push_back(std::pair<std::string, double>("beta_"+std::to_string(i),param2));
 	}
+
 	std::vector<double> lowerBounds(initial_params.size(), -3.141592654);
 	std::vector<double> upperBounds(initial_params.size(), 3.141592654);
 

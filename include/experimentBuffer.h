@@ -29,6 +29,15 @@ public:
 	};
 	double opt_val;
 	std::vector<ExperimentBufferSolution> final_solutions;
+	double getTotalHitRate(){
+		double hit_rate=0;
+		for(auto &fs : this->final_solutions){
+			hit_rate+=fs.hit_rate;
+		}
+		return hit_rate;
+	}
+
+	std::vector<std::pair<std::string, double>> initial_params; //for debug purposes
 
 	/*
 	* All the return structures below are optional,
