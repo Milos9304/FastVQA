@@ -43,17 +43,21 @@ class Qaoa{
 
 		Ansatz ansatz;
 
-		double ftol;
+
 		int nbSamples_calcVarAssignment;
 
 		int num_qubits;
 		std::string instance_name;
+
+		double ftol;
 		long long int max_iters;
 
 		int log_level;
 
 		void __initialize(ExperimentBuffer* buffer, QAOAOptions* options);
 		void __execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt);
+
+		QAOAOptions* options_ptr;
 
 };
 

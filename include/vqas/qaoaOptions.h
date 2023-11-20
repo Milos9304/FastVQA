@@ -19,6 +19,8 @@ class QAOAOptions : public VQAOptions{
 		int p=1;
 		bool extendedParametrizedMode = false;
 
+		std::vector<double> initial_params; //if empty, they are generated at random
+
 		//TODO: explain
 		bool simplifiedSimulation = true;
 

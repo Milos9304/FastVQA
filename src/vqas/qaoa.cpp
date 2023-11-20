@@ -18,6 +18,10 @@ void Qaoa::run_qaoa(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAO
 	this->__initialize(buffer, options);
 	options->accelerator->initialize(hamiltonian);
 
+	if(buffer->storeQuregPtr){
+		buffer->stateVector = options->accelerator->getQuregPtr();
+	}
+
 	this->ansatz = getAnsatz("qaoa", this->num_qubits, this->p, 0);
 	this->num_params = ansatz.num_params;
 	options->accelerator->set_ansatz(&ansatz);
@@ -34,6 +38,7 @@ void Qaoa::__initialize(ExperimentBuffer* buffer, QAOAOptions* options){
 	this->nbSamples_calcVarAssignment = options->nbSamples_calcVarAssignment;
     this->log_level = options->log_level;
     this->p = options->p;
+    this->options_ptr = options;
 }
 
 void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt){
@@ -48,15 +53,26 @@ void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt)
 		}, num_params);
 
 	std::vector<double> initial_params;
-	std::mt19937 gen(1997); //rd() instead of 1997
-	std::uniform_real_distribution<> dis(-3.141592654, 3.141592654);
-	for(int i = 0; i < num_params/2; ++i){
-		double param1 = dis(gen);
-		double param2 = dis(gen);
-		initial_params.push_back(param1);
-		initial_params.push_back(param2);
-		buffer->initial_params.push_back(std::pair<std::string, double>("alpha_"+std::to_string(i),param1));
-		buffer->initial_params.push_back(std::pair<std::string, double>("beta_"+std::to_string(i),param2));
+	if(this->options_ptr->initial_params.size() == 0){
+		std::mt19937 gen(0); //rd() instead of 0 - seed
+		std::uniform_real_distribution<> dis(-3.141592654, 3.141592654);
+		for(int i = 0; i < num_params/2; ++i){
+			double param1 = dis(gen);
+			double param2 = dis(gen);
+			initial_params.push_back(param1);
+			initial_params.push_back(param2);
+			buffer->initial_params.push_back(std::pair<std::string, double>("alpha_"+std::to_string(i),param1));
+			buffer->initial_params.push_back(std::pair<std::string, double>("beta_"+std::to_string(i),param2));
+		}
+	}else{
+		for(int i = 0; i < num_params/2; ++i){
+			double param1 = this->options_ptr->initial_params[2*i];
+			double param2 = this->options_ptr->initial_params[2*i+1];
+			initial_params.push_back(param1);
+			initial_params.push_back(param2);
+			buffer->initial_params.push_back(std::pair<std::string, double>("alpha_"+std::to_string(i),param1));
+			buffer->initial_params.push_back(std::pair<std::string, double>("beta_"+std::to_string(i),param2));
+		}
 	}
 
 	std::vector<double> lowerBounds(initial_params.size(), -3.141592654);

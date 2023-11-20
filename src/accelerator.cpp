@@ -361,6 +361,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 		int p = ansatz.num_params/2;
 
+		//logd("Initializing plus state", options.log_level); //too verbosive
 		initPlusState(qureg);
 
 		for(int i = 0; i < p; ++i){
@@ -379,8 +380,12 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 				qureg.stateVec.imag[i] = b*c+a*d;
 
 			}
-			multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, x[2*i+1]);
+
+			for(int j = 0; j < qureg.numQubitsInStateVec; ++j)
+				rotateX(qureg, j, 2*x[2*i+1]);
+			//multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, -2*x[2*i+1]);
 		}
+
 
 	}else{
 
@@ -516,11 +521,11 @@ void Accelerator::initialize(int num_qubits){
 }
 
 void Accelerator::run_vqe_slave_process(){
-	logw("Slave process not implemented in non-distributed version!");
+	logw("Slave process not implemented in non-distributed version!", options.log_level);
 }
 
 void Accelerator::finalize(){
-	logd("Destroying qureg");
+	logd("Destroying qureg", options.log_level);
 	destroyQureg(qureg, env);
 }
 
@@ -546,7 +551,7 @@ Accelerator::Accelerator(AcceleratorOptions options){
 			loge("If createQuregAtEachInilization=false, need to specify number of qubits by setting createQuregAtEachInilization_num_qubits");
 			throw;
 		}
-		logd("Creating QuEST environment");
+		logd("Creating QuEST environment", options.log_level);
 		this->env = createQuESTEnv();
 
 		logd("Initializing " + std::to_string(options.createQuregAtEachInilization_num_qubits) + " qubits", options.log_level);

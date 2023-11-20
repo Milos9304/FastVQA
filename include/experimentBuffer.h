@@ -45,6 +45,7 @@ public:
 	*/
 
 	// Reference to final stateVector
+	bool storeQuregPtr = false;
 	std::shared_ptr<Qureg> stateVector;
 
 	std::vector<double> intermediateEnergies;
