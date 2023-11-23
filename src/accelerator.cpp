@@ -435,6 +435,8 @@ void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 
 void Accelerator::initialize(PauliHamiltonian* hamIn){
 
+	bool diag=true;
+
 	logd("Calculating Hamiltonian terms explicitly.", options.log_level);
 
 	this->hamiltonian_specified = true;
@@ -452,12 +454,19 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 
 	int coeffsSize = hamIn->coeffs.size();
 
+	if(pauliHamilInitialized){
+		destroyPauliHamil(pauliHamiltonian);
+		if(diag){
+			destroyDiagonalOp(hamDiag, env);
+		}
+	}
+
 	pauliHamiltonian = createPauliHamil(num_qubits, coeffsSize);
 
 	pauliHamiltonian.termCoeffs = &hamIn->coeffs[0]; //conversion to c array
 	pauliHamiltonian.pauliCodes = (enum pauliOpType*)(&hamIn->pauliOpts[0]);
 
-	bool diag=true;
+
 	for(auto &c:hamIn->pauliOpts){ //check for diagonal hamiltonian
 		if(c == 1 || c == 2){
 			diag=false;
