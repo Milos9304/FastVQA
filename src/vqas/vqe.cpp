@@ -103,7 +103,6 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 
 	if(ansatz.circuit.qaoa_ansatz){
 
-		std::vector<double> initialParams;
 		//std::random_device rd;
 		std::mt19937 gen(1997); //rd() instead of 1997
 		std::uniform_real_distribution<> dis(-3.141592654, 3.141592654);
@@ -132,14 +131,15 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 	}
 
 	//double finalCost = result.first;
-
 	std::string opt_config;
 
 	acc->finalConfigEvaluator(buffer, result.second, nbSamples_calcVarAssignment);
 	if(log_level <= 1){
 		logi(instance_prefix + "Final opt-val: " + std::to_string(buffer->opt_val));
-		logi(instance_prefix + "Final opt-config: " + buffer->opt_config);
-		logi(instance_prefix + "Final hit-rate: " + std::to_string(buffer->hit_rate));
+		for(auto &solution : buffer->final_solutions){
+			logi(instance_prefix + "Final opt-config: " + solution.opt_config);
+			logi(instance_prefix + "Final hit-rate: " + std::to_string(solution.hit_rate));
+		}
 	}
 
 	if(keepQureg)

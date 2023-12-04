@@ -5,8 +5,10 @@ namespace FastVQA{
 
 void AcceleratorBase::run_circuit(Circuit circuit, bool init_zero_state){
 
-	if(init_zero_state)
+	if(init_zero_state){
+		logd("Initializing qureg to a zero state");
 		initZeroState(qureg);
+	}
 
 	for(auto &gate : circuit.gates)
 		apply_gate(gate);

@@ -24,6 +24,28 @@ AlphaFunction Accelerator::alpha_linear_f = [](double init_val, double final_val
 	return final_val;
 };
 
+RefEnergies Accelerator::getEigenspace(){
+	if(!ref_hamil_energies_set)
+		throw_runtime_error("You need to run accelerator->initialize first!");
+	return ref_hamil_energies;
+}
+
+RefEnergies Accelerator::getSolutions(){
+	if(!ref_hamil_energies_set)
+		throw_runtime_error("You need to run accelerator->initialize first!");
+
+	RefEnergies res;
+
+	int min_sol=std::get<0>(ref_hamil_energies[0]);
+	int i = 0;
+	while(std::get<0>(ref_hamil_energies[i]) == min_sol){
+		res.push_back(ref_hamil_energies[i]);
+		i++;
+	}
+
+	return res;
+}
+
 double Accelerator::evaluate_assignment(PauliHamil isingHam, std::string measurement){
 
 	int numQubits = isingHam.numQubits;
@@ -160,12 +182,13 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 
 */
 
-	RefEnergy ground_state;
+	std::vector<RefEnergy> ground_states;
 
 	long long int i = 0;
 	if(this->options.exclude_zero_state){
 		while(ref_hamil_energies[i++].first == 0);
-		ground_state = ref_hamil_energies[i-1];
+		ground_states.push_back(ref_hamil_energies[i-1]);
+		logw("Only one ground state recorded0");
 	}else{
 
 		if(this->options.choose_ground_state_with_smallest_index){
@@ -198,29 +221,50 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 						return a.second < b.second;
 			});
 
-			ground_state = ref_hamil_energies[0];
+			ground_states.push_back(ref_hamil_energies[0]);
+			logw("Only one ground state recorded1");
+
 			//std::cerr<<ground_state.first<<" "<<ground_state.second<<"\n";
 			//loge("I choose: " + std::to_string(ground_state.second));
 
-		}else
-			ground_state = ref_hamil_energies[i];
+		}else{
+			std::sort(ref_hamil_energies.begin(), ref_hamil_energies.end(),
+					[](const RefEnergy& a, const RefEnergy& b) {
+						return a.first < b.first;
+			});
 
+			/*for(auto &e:ref_hamil_energies){
+				std::cerr<<"e:"<<e.first<<" i:"<<e.second<<"\n";
+			}*/
+
+			int j = 0;
+			while(ref_hamil_energies[j++].first == ref_hamil_energies[0].first){
+				ground_states.push_back(ref_hamil_energies[j-1]);
+			}
+		}
 	}
-	i = ground_state.second;
 
 	const int max_qubits=40;
-
 	if(qureg.numQubitsInStateVec > max_qubits){
 		loge("Not enough binary places to hold final opt_config. You are simulating more than" + std::to_string(max_qubits) + " qubits. Increase the number in the code.");
 	}
 
-	std::string opt_config = std::bitset<max_qubits>(i).to_string();
-	opt_config=opt_config.substr(max_qubits-qureg.numQubitsInStateVec,qureg.numQubitsInStateVec);
-	std::reverse(opt_config.begin(), opt_config.end());
-	buffer->opt_config=opt_config;
-	buffer->opt_val=ground_state.first;
+
+
+	for(auto &ground_state: ground_states){
+		i = ground_state.second;
+		std::string opt_config = std::bitset<max_qubits>(i).to_string();
+		opt_config=opt_config.substr(max_qubits-qureg.numQubitsInStateVec,qureg.numQubitsInStateVec);
+		std::reverse(opt_config.begin(), opt_config.end());
+
+		ExperimentBuffer::ExperimentBufferSolution solution(opt_config, ground_state.first, qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i]);
+		buffer->final_solutions.push_back(solution);
+	}
+
+	buffer->opt_val=ground_states[0].first;
+	//buffer->opt_config=opt_config;
 	//logw("Hits " + std::to_string(hits) + " / " + std::to_string(nbSamples));
-	buffer->hit_rate= qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
+	//buffer->hit_rate= qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
 
 	//std::sort(amps.begin(), amps.end();
 }
@@ -317,6 +361,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 		int p = ansatz.num_params/2;
 
+		//logd("Initializing plus state", options.log_level); //too verbosive
 		initPlusState(qureg);
 
 		for(int i = 0; i < p; ++i){
@@ -324,7 +369,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 			//applyTrotterCircuit(qureg, hamiltonian,	x[2*i], 1, 1);
 			qreal gamma = x[2*i];
 			for(long long i = 0; i < qureg.numAmpsTotal; ++i){
-				qreal h = hamDiag.real[i];
+				qreal h = hamDiag.real[i]; //we know hamDiag is real
 
 				qreal a = cos(gamma*h);
 				qreal b = -sin(gamma*h);
@@ -335,10 +380,15 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 				qureg.stateVec.imag[i] = b*c+a*d;
 
 			}
-			multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, x[2*i+1]);
+
+			for(int j = 0; j < qureg.numQubitsInStateVec; ++j)
+				rotateX(qureg, j, 2*x[2*i+1]);
+			//multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, -2*x[2*i+1]);
 		}
 
+
 	}else{
+
 		initZeroState(qureg);
 		run_with_new_params(ansatz.circuit, x);
 	}
@@ -359,7 +409,7 @@ void Accelerator::__initialize(int num_qubits){
 		this->qureg = createQureg(num_qubits, env);
 	}else{
 		logw("Skipping qureg initialization. Be sure you know what you're doing!", options.log_level);
-	}std::cerr<<"a"<<std::endl;
+	}
 
 }
 
@@ -385,7 +435,9 @@ void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 
 void Accelerator::initialize(PauliHamiltonian* hamIn){
 
-	logd("Calculating hamiltonian terms explicitly.", options.log_level);
+	bool diag=true;
+
+	logd("Calculating Hamiltonian terms explicitly.", options.log_level);
 
 	this->hamiltonian_specified = true;
 
@@ -402,12 +454,19 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 
 	int coeffsSize = hamIn->coeffs.size();
 
+	if(pauliHamilInitialized){
+		destroyPauliHamil(pauliHamiltonian);
+		if(diag){
+			destroyDiagonalOp(hamDiag, env);
+		}
+	}
+
 	pauliHamiltonian = createPauliHamil(num_qubits, coeffsSize);
 
 	pauliHamiltonian.termCoeffs = &hamIn->coeffs[0]; //conversion to c array
 	pauliHamiltonian.pauliCodes = (enum pauliOpType*)(&hamIn->pauliOpts[0]);
 
-	bool diag=true;
+
 	for(auto &c:hamIn->pauliOpts){ //check for diagonal hamiltonian
 		if(c == 1 || c == 2){
 			diag=false;
@@ -422,8 +481,10 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 		throw_runtime_error("TODO: NON DIAGONAL HAMILTONIAN NOT IMPLEMENTED");
 	}
 
+	logd("PauliHamiltonian initialized", options.log_level);
+
 	if(env.numRanks>1){
-		throw_runtime_error("TODO: UNIMPLEMENTED");
+		throw_runtime_error("TODO: DISTRIBUTED COMPUTATION UNIMPLEMENTED");
 	}
 
 	ref_hamil_energies.clear();
@@ -439,7 +500,7 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 	for(auto &index : indexes){
 
 		//TODO: add more zero_reference states
-		if(index == options.zero_reference_states[0]){
+		if(options.zero_reference_states.size() > 1 && index == options.zero_reference_states[0]){
 			//logw("Zero excluded with counter " + std::to_string(counter) + " where E(0) = " + std::to_string(hamDiag.real[index]));
 			if(hamDiag.real[index]!=0){
 				loge("Tried to exclude something else than zero ground state! Did you run qaoa?");
@@ -451,14 +512,16 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 
 
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
-
+		//std::cerr<<index<<" "<<hamDiag.real[index]<<"\n";
 		if(hamDiag.real[index] == 0){
-			loge("Here we have not exluded zero");
+			loge("Here we have not exluded zero at index " + std::to_string(index));
 		}else
 			ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index));
 		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)
 		//	break;
 	}
+	ref_hamil_energies_set = true;
+
 }
 
 void Accelerator::initialize(int num_qubits){
@@ -467,11 +530,11 @@ void Accelerator::initialize(int num_qubits){
 }
 
 void Accelerator::run_vqe_slave_process(){
-	logw("Slave process not implemented in non-distributed version!");
+	logw("Slave process not implemented in non-distributed version!", options.log_level);
 }
 
 void Accelerator::finalize(){
-	logd("Destroying qureg");
+	logd("Destroying qureg", options.log_level);
 	destroyQureg(qureg, env);
 }
 
@@ -497,7 +560,7 @@ Accelerator::Accelerator(AcceleratorOptions options){
 			loge("If createQuregAtEachInilization=false, need to specify number of qubits by setting createQuregAtEachInilization_num_qubits");
 			throw;
 		}
-		logd("Creating QuEST environment");
+		logd("Creating QuEST environment", options.log_level);
 		this->env = createQuESTEnv();
 
 		logd("Initializing " + std::to_string(options.createQuregAtEachInilization_num_qubits) + " qubits", options.log_level);

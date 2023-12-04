@@ -78,6 +78,9 @@ public:
 		return std::make_shared<Qureg>(qureg);
 	}
 
+	RefEnergies getEigenspace();
+	RefEnergies getSolutions();
+
 private:
 
 	int *qubits_list;
@@ -89,7 +92,9 @@ private:
 
 	CostFunction cost_function;
 
+	bool pauliHamilInitialized = false;
 	PauliHamil pauliHamiltonian;
+	bool ref_hamil_energies_set = false;
 	RefEnergies ref_hamil_energies;
 
     DiagonalOp hamDiag;

@@ -2,6 +2,7 @@
 #include "logger.h"
 
 #include <sstream>
+#include <fstream>
 
 template <typename T>
 std::string to_string_with_precision(const T a_value, const int n = 6)
@@ -235,6 +236,36 @@ Eigen::Matrix<qreal, Eigen::Dynamic, Eigen::Dynamic> PauliHamiltonian::getMatrix
 	}
 
 	return m;
+}
+void PauliHamiltonian::to_ising_file(std::string filename){
+
+	std::ofstream f;
+	f.open(filename+".ising");
+
+	if(this->nbQubits < 1 || this->pauliOpts.size() != this->nbQubits * this->coeffs.size() )
+		    	throw_runtime_error("PauliHamiltonian uninitialized");
+
+	for(int i = 0; i < this->coeffs.size(); ++i){
+		if(this->coeffs[i] == 0)
+			continue;
+		f<<this->coeffs[i]<<" ";
+
+		for(int q = 0; q < this->nbQubits; ++q){
+			int opt = this->pauliOpts[i*this->nbQubits + q];
+
+			if(opt == 0)
+				f<<"I";
+			else if(opt == 1)
+				f<<"X";
+			else if(opt == 2)
+				f<<"Y";
+			else if(opt == 3)
+				f<<"Z";
+			else
+				throw_runtime_error("Invalid PauliHamiltonian");
+		}f<<"\n";
+	}
+	f.close();
 }
 
 }
