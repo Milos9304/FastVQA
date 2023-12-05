@@ -408,7 +408,7 @@ void Accelerator::__initialize(int num_qubits){
 		logd("Initializing " + std::to_string(num_qubits) + " qubits", options.log_level);
 		this->qureg = createQureg(num_qubits, env);
 	}else{
-		logw("Skipping qureg initialization. Be sure you know what you're doing!", options.log_level);
+		logd("Skipping qureg initialization. Be sure you know what you're doing!", options.log_level);
 	}
 
 }
