@@ -143,5 +143,5 @@ FastVQA::OptResult FastVQA::NLOptimizer::optimize(OptFunction &function, std::ve
                 std::string(e.what()));
   }
 
-  return OptResult{optF, x};
+  return OptResult{{optF, x}, r};
 }

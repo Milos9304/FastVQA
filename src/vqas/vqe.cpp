@@ -133,7 +133,7 @@ void Vqe::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* optim
 	//double finalCost = result.first;
 	std::string opt_config;
 
-	acc->finalConfigEvaluator(buffer, result.second, nbSamples_calcVarAssignment);
+	acc->finalConfigEvaluator(buffer, result.first.second, nbSamples_calcVarAssignment);
 	if(log_level <= 1){
 		logi(instance_prefix + "Final opt-val: " + std::to_string(buffer->opt_val));
 		for(auto &solution : buffer->final_solutions){

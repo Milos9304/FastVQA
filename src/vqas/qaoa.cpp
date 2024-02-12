@@ -10,6 +10,24 @@
 #include <fstream>
 #include "mpi.h"
 
+std::string nlopt_res_to_string(int result){
+  switch(result)
+  {
+    case -1: return "FAILURE";
+    case -2: return "INVALID_ARGS";
+    case -3: return "OUT_OF_MEMORY";
+    case -4: return "ROUNDOFF_LIMITED";
+    case -5: return "FORCED_STOP";
+    case 1: return "SUCCESS";
+    case 2: return "STOPVAL_REACHED";
+    case 3: return "FTOL_REACHED";
+    case 4: return "XTOL_REACHED";
+    case 5: return "MAXEVAL_REACHED";
+    case 6: return "MAXTIME_REACHED";
+    default: return NULL;
+  }
+}
+
 namespace FastVQA{
 
 void Qaoa::run_qaoa(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAOAOptions* options){
@@ -106,7 +124,7 @@ void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt)
 	logd("QAOA finishing optimization", this->log_level);
 
 	std::string opt_config;
-	acc->finalConfigEvaluator(buffer, result.second, nbSamples_calcVarAssignment);
+	acc->finalConfigEvaluator(buffer, result.first.second, nbSamples_calcVarAssignment);
 	if(log_level <= 1){
 		logi(instance_prefix + "Final opt-val: " + std::to_string(buffer->opt_val));
 		for(auto &solution : buffer->final_solutions){
@@ -114,6 +132,9 @@ void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt)
 			logi(instance_prefix + "Final hit-rate: " + std::to_string(solution.hit_rate));
 		}
 	}
+
+	buffer->num_iters = iteration_i;
+	buffer->opt_message = nlopt_res_to_string(result.second);
 
 }
 

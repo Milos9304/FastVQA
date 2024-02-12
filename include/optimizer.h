@@ -18,7 +18,7 @@ using OptimizerFunctorNoGrad =
     std::function<double(const std::vector<double> &)>;
 using OptimizerFunctor =
     std::function<double(const std::vector<double> &, std::vector<double> &)>;
-using OptResult = std::pair<double, std::vector<double>>;
+using OptResult = std::pair<std::pair<double, std::vector<double>>, int>;
 
 using OptFunctionPtr = double (*)(const std::vector<double> &,
                                   std::vector<double> &, void *);

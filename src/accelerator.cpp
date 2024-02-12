@@ -514,7 +514,7 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
 		//std::cerr<<index<<" "<<hamDiag.real[index]<<"\n";
 		if(hamDiag.real[index] == 0){
-			loge("Here we have not exluded zero at index " + std::to_string(index));
+			logw("Here we have not exluded zero at index " + std::to_string(index), options.log_level);
 		}else
 			ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index));
 		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)

@@ -50,6 +50,9 @@ public:
 
 	std::vector<double> intermediateEnergies;
 	std::vector<double> intermediateGroundStateOverlaps;
+
+	int num_iters = 0;
+	std::string opt_message="";
 };
 }
 #endif /* FASTVQA_EXPERIMENT_BUFFER_H_ */
