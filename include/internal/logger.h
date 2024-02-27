@@ -11,7 +11,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
-#include "indicators/termcolor.hpp"
+#include "termcolor.hpp"
 
 namespace FastVQA{
 
