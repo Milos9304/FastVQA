@@ -3,6 +3,15 @@
 #include <iomanip>
 #include <fstream>
 #include <algorithm>
+#include <cfloat>
+
+# if QuEST_PREC==1
+	#define QREAL_MAX FLOAT_MAX
+# elif QuEST_PREC==2
+    #define QREAL_MAX DOUBLE_MAX
+# elif QuEST_PREC==4
+   #define QREAL_MAX LONG_DOUBLE_MAX
+# endif
 
 namespace FastVQA{
 
@@ -187,69 +196,34 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 
 	std::vector<RefEnergy> ground_states;
 
-	if(this->options.exclude_zero_state){
+	//if(this->options.exclude_zero_state){
 		long long int i = 0;
-		while(ref_hamil_energies[i++].first == 0);
-		i--;
-
-		qreal gs = ref_hamil_energies[i].first;
-		while(ref_hamil_energies[i++].first == gs)
-			ground_states.push_back(ref_hamil_energies[i-1]);
-
-	}else{
-
-		if(this->options.choose_ground_state_with_smallest_index){
-
-
-			/*for(int j = 0; j < ref_hamil_energies.size(); ++j){
-				std::cout << ref_hamil_energies[j].first << " " << ref_hamil_energies[j].second << std::endl;
-			}
-
-			double p=0;
-			for(long long j = 0; j < qureg.numAmpsTotal; ++j){
-				p+=qureg.stateVec.real[j]*qureg.stateVec.real[j]+qureg.stateVec.imag[j]*qureg.stateVec.imag[j];
-			}
-
-			logw("Qreg prob=" + std::to_string(p));
-
-			p=0;*/
-
-			//double p = 0;
-			int j = 0;
-			while(ref_hamil_energies[j++].first == ref_hamil_energies[0].first){
-				//long long index = ref_hamil_energies[j-1].second;
-				//p+=qureg.stateVec.real[index]*qureg.stateVec.real[index]+qureg.stateVec.imag[index]*qureg.stateVec.imag[index];
-			}
-			//loge("Total prob=" + std::to_string(p));
-
-			//std::pair<qreal, long long int>
-			std::sort(ref_hamil_energies.begin(), ref_hamil_energies.begin() + (j-1),
-					[](const RefEnergy& a, const RefEnergy& b) {
-						return a.second < b.second;
-			});
-
-			ground_states.push_back(ref_hamil_energies[0]);
-			logw("Only one ground state recorded1");
-
-			//std::cerr<<ground_state.first<<" "<<ground_state.second<<"\n";
-			//loge("I choose: " + std::to_string(ground_state.second));
-
-		}else{
+		qreal min_gs = DBL_MAX;
+		for(auto &hamil_energy : ref_hamil_energies){
+			if(hamil_energy.first != 0 && hamil_energy.first < min_gs)
+				min_gs = hamil_energy.first;
+		}
+		for(auto &hamil_energy : ref_hamil_energies){
+			if(hamil_energy.first == min_gs)
+				ground_states.push_back(hamil_energy);
+		}
+	//}
+	/*else{
+		else{loge("here");
 			std::sort(ref_hamil_energies.begin(), ref_hamil_energies.end(),
 					[](const RefEnergy& a, const RefEnergy& b) {
 						return a.first < b.first;
 			});
 
-			/*for(auto &e:ref_hamil_energies){
-				std::cerr<<"e:"<<e.first<<" i:"<<e.second<<"\n";
-			}*/
+			if(ref_hamil_energies[0].first == 0)
+				loge("Zero not excluded");
 
 			int j = 0;
 			while(ref_hamil_energies[j++].first == ref_hamil_energies[0].first){
 				ground_states.push_back(ref_hamil_energies[j-1]);
 			}
 		}
-	}
+	}*/
 
 	const int max_qubits=40;
 	if(qureg.numQubitsInStateVec > max_qubits){
@@ -257,7 +231,6 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 	}
 
 
-	long long int i;
 	for(auto &ground_state: ground_states){
 		i = ground_state.second;
 		std::string opt_config = std::bitset<max_qubits>(i).to_string();
