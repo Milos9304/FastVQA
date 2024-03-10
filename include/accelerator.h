@@ -83,6 +83,8 @@ public:
 
 private:
 
+	int log_level;
+
 	int *qubits_list;
 	pauliOpType* all_x_list;
 

@@ -87,11 +87,13 @@ void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt)
 	std::string instance_prefix = "[["+this->instance_name+"]] ";
 
 	int iteration_i = 0;
+	std::vector<std::vector<double>> intermediateAngles;
 	std::vector<double> intermediateEnergies;
 
 	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
 			double ground_state_overlap;
 			double expectation = acc->calc_expectation(buffer, x, iteration_i++, &ground_state_overlap);
+			intermediateAngles.push_back(x);
 			intermediateEnergies.push_back(expectation);
 			return expectation;
 		}, num_params);
@@ -137,7 +139,9 @@ void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt)
 	}
 
 	buffer->num_iters = iteration_i;
+	buffer->finalParams = result.first.second;
 	buffer->opt_message = nlopt_res_to_string(result.second);
+	buffer->intermediateAngles = intermediateAngles;
 	buffer->intermediateEnergies = intermediateEnergies;
 
 }

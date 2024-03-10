@@ -182,13 +182,20 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 
 */
 
+	if(!this->options.exclude_zero_state && ref_hamil_energies[0].first == 0)
+		loge("Zero not excluded properly!");
+
 	std::vector<RefEnergy> ground_states;
 
-	long long int i = 0;
 	if(this->options.exclude_zero_state){
+		long long int i = 0;
 		while(ref_hamil_energies[i++].first == 0);
-		ground_states.push_back(ref_hamil_energies[i-1]);
-		logw("Only one ground state recorded0");
+		i--;
+
+		qreal gs = ref_hamil_energies[i].first;
+		while(ref_hamil_energies[i++].first == gs)
+			ground_states.push_back(ref_hamil_energies[i-1]);
+
 	}else{
 
 		if(this->options.choose_ground_state_with_smallest_index){
@@ -250,7 +257,7 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 	}
 
 
-
+	long long int i;
 	for(auto &ground_state: ground_states){
 		i = ground_state.second;
 		std::string opt_config = std::bitset<max_qubits>(i).to_string();
@@ -287,8 +294,8 @@ void Accelerator::run_with_new_params(Circuit circuit, const std::vector<double>
 
 double Accelerator::_energy_evaluation(double* ground_state_overlap_out, int iteration_i){
 
-	if(this->options.exclude_zero_state && ref_hamil_energies[0].first == 0)
-			loge("Zero not excluded properly!");
+	if(!this->options.exclude_zero_state && ref_hamil_energies[0].first == 0)
+			loge("Zero was not excluded properly!");
 
 	long long int ground_index = ref_hamil_energies[0].second;
 	*ground_state_overlap_out = qureg.stateVec.real[ground_index]*qureg.stateVec.real[ground_index]+qureg.stateVec.imag[ground_index]*qureg.stateVec.imag[ground_index];
@@ -361,7 +368,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 		int p = ansatz.num_params/2;
 
-		//logd("Initializing plus state", options.log_level); //too verbosive
+		//logd("Initializing plus state", this->log_level); //too verbosive
 		initPlusState(qureg);
 
 		for(int i = 0; i < p; ++i){
@@ -402,20 +409,20 @@ void Accelerator::__initialize(int num_qubits){
 	unsigned long int keys[1];
 	keys[0] = 1997;
 	seedQuEST(&env, keys, 1);
-	logd("Setting seed to " + std::to_string(keys[0]), options.log_level);
+	logd("Setting seed to " + std::to_string(keys[0]), this->log_level);
 
 	if(options.createQuregAtEachInilization){
-		logd("Initializing " + std::to_string(num_qubits) + " qubits", options.log_level);
+		logd("Initializing " + std::to_string(num_qubits) + " qubits", this->log_level);
 		this->qureg = createQureg(num_qubits, env);
 	}else{
-		logd("Skipping qureg initialization. Be sure you know what you're doing!", options.log_level);
+		logd("Skipping qureg initialization. Be sure you know what you're doing!", this->log_level);
 	}
 
 }
 
 void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 
-	logd("Calculating hamiltonian terms explicitly.", options.log_level);
+	logd("Calculating hamiltonian terms explicitly.", this->log_level);
 
 	this->hamiltonian_specified = false;
 	this->__initialize(num_qubits);
@@ -437,7 +444,7 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 
 	bool diag=true;
 
-	logd("Calculating Hamiltonian terms explicitly.", options.log_level);
+	logd("Calculating Hamiltonian terms explicitly.", this->log_level);
 
 	this->hamiltonian_specified = true;
 
@@ -481,7 +488,7 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 		throw_runtime_error("TODO: NON DIAGONAL HAMILTONIAN NOT IMPLEMENTED");
 	}
 
-	logd("PauliHamiltonian initialized", options.log_level);
+	logd("PauliHamiltonian initialized", this->log_level);
 
 	if(env.numRanks>1){
 		throw_runtime_error("TODO: DISTRIBUTED COMPUTATION UNIMPLEMENTED");
@@ -514,9 +521,9 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
 		//std::cerr<<index<<" "<<hamDiag.real[index]<<"\n";
 		if(hamDiag.real[index] == 0){
-			logw("Here we have not exluded zero at index " + std::to_string(index), options.log_level);
-		}else
-			ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index));
+			logw("Here we have not exluded zero at index " + std::to_string(index), this->log_level);
+		}
+		ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index));
 		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)
 		//	break;
 	}
@@ -525,20 +532,22 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 }
 
 void Accelerator::initialize(int num_qubits){
-	logd("Initializing qureg with " + std::to_string(num_qubits) + " qubits", options.log_level);
+	logd("Initializing qureg with " + std::to_string(num_qubits) + " qubits", this->log_level);
 	this->__initialize(num_qubits);
 }
 
 void Accelerator::run_vqe_slave_process(){
-	logw("Slave process not implemented in non-distributed version!", options.log_level);
+	logw("Slave process not implemented in non-distributed version!", this->log_level);
 }
 
 void Accelerator::finalize(){
-	logd("Destroying qureg", options.log_level);
+	logd("Destroying qureg", this->log_level);
 	destroyQureg(qureg, env);
 }
 
 Accelerator::Accelerator(AcceleratorOptions options){
+
+	this->log_level = options.log_level;
 
 	if(options.accelerator_type != "quest"){
 		loge("No other accelerator than QuEST implemented");
@@ -560,10 +569,10 @@ Accelerator::Accelerator(AcceleratorOptions options){
 			loge("If createQuregAtEachInilization=false, need to specify number of qubits by setting createQuregAtEachInilization_num_qubits");
 			throw;
 		}
-		logd("Creating QuEST environment", options.log_level);
+		logd("Creating QuEST environment", this->log_level);
 		this->env = createQuESTEnv();
 
-		logd("Initializing " + std::to_string(options.createQuregAtEachInilization_num_qubits) + " qubits", options.log_level);
+		logd("Initializing " + std::to_string(options.createQuregAtEachInilization_num_qubits) + " qubits", this->log_level);
 		this->qureg = createQureg(options.createQuregAtEachInilization_num_qubits, env);
 	}
 

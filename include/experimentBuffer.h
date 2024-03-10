@@ -48,7 +48,10 @@ public:
 	bool storeQuregPtr = false;
 	std::shared_ptr<Qureg> stateVector;
 
+	std::vector<double> finalParams;
+
 	std::vector<double> intermediateEnergies;
+	std::vector<std::vector<double>> intermediateAngles;
 	std::vector<double> intermediateGroundStateOverlaps;
 
 	int num_iters = 0;
