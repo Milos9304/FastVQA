@@ -8,7 +8,7 @@
 #include <random>
 
 #include <fstream>
-#include "mpi.h"
+//#include "mpi.h"
 
 std::string nlopt_res_to_string(int result){
   switch(result)
