@@ -47,7 +47,7 @@ RefEnergies Accelerator::getSolutions(){
 
 	int min_sol=std::get<0>(ref_hamil_energies[0]);
 	int i = 0;
-	while(std::get<0>(ref_hamil_energies[i]) == min_sol){
+	while(ref_hamil_energies[i].first == min_sol){
 		res.push_back(ref_hamil_energies[i]);
 		i++;
 	}
@@ -377,15 +377,13 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 void Accelerator::__initialize(int num_qubits){
 
-	this->env = createQuESTEnv();
-
-	unsigned long int keys[1];
-	keys[0] = 1997;
-	seedQuEST(&env, keys, 1);
-	logd("Setting seed to " + std::to_string(keys[0]), this->log_level);
-
 	if(options.createQuregAtEachInilization){
 		logd("Initializing " + std::to_string(num_qubits) + " qubits", this->log_level);
+		this->env = createQuESTEnv();
+		unsigned long int keys[1];
+		keys[0] = 1997;
+		seedQuEST(&env, keys, 1);
+		logd("Setting seed to " + std::to_string(keys[0]), this->log_level);
 		this->qureg = createQureg(num_qubits, env);
 	}else{
 		logd("Skipping qureg initialization. Be sure you know what you're doing!", this->log_level);
@@ -492,10 +490,11 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 
 
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
-		//std::cerr<<index<<" "<<hamDiag.real[index]<<"\n";
+
 		if(hamDiag.real[index] == 0){
 			logw("Here we have not exluded zero at index " + std::to_string(index), this->log_level);
 		}
+		//std::cerr<<index<<" "<<hamDiag.real[index]<<"\n";
 		ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index));
 		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)
 		//	break;

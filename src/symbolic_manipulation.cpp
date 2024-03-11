@@ -8,6 +8,7 @@
 #include "symbolic_manipulation.h"
 #include <sstream>
 #include <iomanip>
+#include "logger.h"
 #include <iostream>
 
 namespace FastVQA{
@@ -87,6 +88,34 @@ std::string Expression::expression_line_print(){
 	}
 
 	return ss.str();
+}
+
+mpq_class Expression::evaluate_bin_expr(std::map<Var*, int> *varBoolMap){
+
+	mpq_class result = 0;
+	for(auto &term : polynomial){
+
+		if(term.second == 0)
+			continue;
+
+		int id1 = term.first.first;
+		int id2 = term.first.second;
+
+		if(id1 == -1 && id2 == -1){
+			result += term.second;
+		} //id
+		else if(id1 == -1){
+			if(!idMap[id2]->isBinary())
+				throw_runtime_error("evaluate_bin_expr only for binary variables");
+			result += term.second * (*varBoolMap)[idMap[id2]];
+		}else if(id2 == -1)
+			result += term.second * (*varBoolMap)[idMap[id1]];
+		else
+			result += term.second * (*varBoolMap)[idMap[id1]] * (*varBoolMap)[idMap[id2]];
+
+	}
+
+	return result;
 }
 
 void Expression::print(){
