@@ -20,9 +20,6 @@
 
 namespace FastVQA{
 
-typedef std::pair<qreal, long long int> RefEnergy;
-typedef std::vector<RefEnergy> RefEnergies;
-
 typedef std::function<double(double init_val, double final_val, int iter_i, int max_iters)> AlphaFunction; //initial val, final_val, and num_iterations in which alpha is being increased
 
 struct AcceleratorOptions{

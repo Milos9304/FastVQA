@@ -49,6 +49,10 @@ class PauliHamiltonian{
 
 		void to_ising_file(std::string filename);
 
+	    //if empty, ONLY ground states of custom_solutions are considered as valid solution
+		//otherwise, the following vector contains string of the form 01.100.1. where . can be 0/1 and the string marks a valid solution
+		std::vector<std::string> custom_solutions;
+
 };
 
 }

@@ -15,6 +15,8 @@
 
 namespace FastVQA{
 
+const int max_qubits=40;
+
 AlphaFunction Accelerator::alpha_constant_f = [](double init_val, double final_val, int iter_i, int max_iters){
 	return init_val;
 };
@@ -45,11 +47,16 @@ RefEnergies Accelerator::getSolutions(){
 
 	RefEnergies res;
 
-	int min_sol=std::get<0>(ref_hamil_energies[0]);
-	int i = 0;
-	while(ref_hamil_energies[i].first == min_sol){
-		res.push_back(ref_hamil_energies[i]);
-		i++;
+	//int min_sol=ref_hamil_energies[0].first;
+	//int i = 0;
+	//while(ref_hamil_energies[i].first == min_sol){
+	//	res.push_back(ref_hamil_energies[i]);
+	//	i++;
+	//}
+
+	for(auto &e: ref_hamil_energies){
+		if(e.isConsideredSolution)
+			res.push_back(e);
 	}
 
 	return res;
@@ -102,102 +109,13 @@ double Accelerator::evaluate_assignment(PauliHamil isingHam, std::string measure
 
 void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<double> final_params, int nbSamples){
 
-	//bool second_eigenergy = true;
-
-	/*typedef std::pair<int, double> meas_freq_eval;
-	typedef std::pair<std::string, meas_freq_eval> measurement;
-
-	std::vector<measurement> measurements;
-
-	Qureg qureg_cache = createQureg(qureg.numQubitsInStateVec, env);
-
-	//std::string classicalRefState_str(qureg.numQubitsRepresented, '0');
-	//classicalRefState_str[qureg.numQubitsRepresented-1]='1';
-
-	logd("Performing " + std::to_string(nbSamples) + " samples");
-
-	for(int i = 0; i < nbSamples; ++i){
-
-		cloneQureg(qureg_cache, qureg);
-		std::string measurementStr = "";
-		for(int measureQubit = qureg.numQubitsRepresented-1;
-				measureQubit >= 0 ; --measureQubit){
-			measurementStr += std::to_string(measure(qureg_cache, measureQubit));
-		}
-
-		bool found = false;
-		int index = 0;
-		for(auto &instance : measurements){
-			if(instance.first == measurementStr){
-				found = true;
-				break;
-			}
-			index++;
-		}
-
-		//loge(classicalRefState_str);throw;
-
-		//if(!overlapPenalization || measurementStr != classicalRefState_str){
-		if(true)
-			if(!found){
-
-			  measurements.push_back(measurement(measurementStr, // bit string
-									  meas_freq_eval(1, //frequency
-											  evaluate_assignment(hamiltonian, measurementStr))));
-			}else{
-				measurements[index].second.first++;
-			}
-		}
-	}
-	if(false)
-		  std::sort(measurements.begin(), measurements.end(),
-			  [](const std::pair<std::string, std::pair<int, double>>& a, const std::pair<std::string, std::pair<int,int>>& b) {
-				  //sort by global value
-				  return a.second.second > b.second.second;
-		  });
-
-	else
-		  std::sort(measurements.begin(), measurements.end(),
-			  [](const std::pair<std::string, std::pair<int, double>>& a, const std::pair<std::string, std::pair<int,int>>& b) {
-				  //sort by global value
-				  return a.second.second < b.second.second;
-		});
-
-	for(auto &m : measurements){
-		logw(m.first + " " + std::to_string(m.second.second));
-	}
-
-	measurement optimalMeasurement;
-	if(second_eigenergy && measurements.size() > 1 && measurements[0].second.second == 0.){
-		optimalMeasurement = measurements[1];
-		logd("Returning second highest energy level");
-
-		if(optimalMeasurement.second.second == 0){
-			loge("Second highest energy is still 0!");
-		}
-
-	}else
-		optimalMeasurement = measurements[0];
-
-	int hits = optimalMeasurement.second.first;
-
-	loge("Measurements size = " + std::to_string(measurements.size()));
-
-	buffer->opt_config=optimalMeasurement.first;
-	loge(optimalMeasurement.first);
-	buffer->opt_val=optimalMeasurement.second.second;
-	logw("Hits " + std::to_string(hits) + " / " + std::to_string(nbSamples));
-	buffer->hit_rate= hits / double(nbSamples);
-
-*/
-
-	if(!this->options.exclude_zero_state && ref_hamil_energies[0].first == 0)
+	if(!this->options.exclude_zero_state && ref_hamil_energies[0].value == 0)
 		loge("Zero not excluded properly!");
 
-	std::vector<RefEnergy> ground_states;
+	RefEnergies ground_states = this->getSolutions();
 
 	//if(this->options.exclude_zero_state){
-		long long int i = 0;
+		/*
 		qreal min_gs = DBL_MAX;
 		for(auto &hamil_energy : ref_hamil_energies){
 			if(hamil_energy.first != 0 && hamil_energy.first < min_gs)
@@ -206,7 +124,7 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 		for(auto &hamil_energy : ref_hamil_energies){
 			if(hamil_energy.first == min_gs)
 				ground_states.push_back(hamil_energy);
-		}
+		}*/
 	//}
 	/*else{
 		else{loge("here");
@@ -225,23 +143,22 @@ void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<dou
 		}
 	}*/
 
-	const int max_qubits=40;
 	if(qureg.numQubitsInStateVec > max_qubits){
 		loge("Not enough binary places to hold final opt_config. You are simulating more than" + std::to_string(max_qubits) + " qubits. Increase the number in the code.");
 	}
 
-
+	long long int i = 0;
 	for(auto &ground_state: ground_states){
-		i = ground_state.second;
+		i = ground_state.index;
 		std::string opt_config = std::bitset<max_qubits>(i).to_string();
-		opt_config=opt_config.substr(max_qubits-qureg.numQubitsInStateVec,qureg.numQubitsInStateVec);
+		opt_config=opt_config.substr(max_qubits-qureg.numQubitsInStateVec, qureg.numQubitsInStateVec);
 		std::reverse(opt_config.begin(), opt_config.end());
 
-		ExperimentBuffer::ExperimentBufferSolution solution(opt_config, ground_state.first, qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i]);
+		ExperimentBuffer::ExperimentBufferSolution solution(opt_config, ground_state.value, qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i]);
 		buffer->final_solutions.push_back(solution);
 	}
 
-	buffer->opt_val=ground_states[0].first;
+	buffer->opt_val=ground_states[0].value;
 	//buffer->opt_config=opt_config;
 	//logw("Hits " + std::to_string(hits) + " / " + std::to_string(nbSamples));
 	//buffer->hit_rate= qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
@@ -267,10 +184,10 @@ void Accelerator::run_with_new_params(Circuit circuit, const std::vector<double>
 
 double Accelerator::_energy_evaluation(double* ground_state_overlap_out, int iteration_i){
 
-	if(!this->options.exclude_zero_state && ref_hamil_energies[0].first == 0)
+	if(!this->options.exclude_zero_state && ref_hamil_energies[0].value == 0)
 			loge("Zero was not excluded properly!");
 
-	long long int ground_index = ref_hamil_energies[0].second;
+	long long int ground_index = ref_hamil_energies[0].index;
 	*ground_state_overlap_out = qureg.stateVec.real[ground_index]*qureg.stateVec.real[ground_index]+qureg.stateVec.imag[ground_index]*qureg.stateVec.imag[ground_index];
 
 	double energy=0;
@@ -301,18 +218,18 @@ double Accelerator::_energy_evaluation(double* ground_state_overlap_out, int ite
 			 break;
 		 }
 
-		long long int q_index = ref_hamil_energies[i].second;
+		long long int q_index = ref_hamil_energies[i].index;
 		amp = zero_state_amp_per_elem + qureg.stateVec.real[q_index]*qureg.stateVec.real[q_index]+qureg.stateVec.imag[q_index]*qureg.stateVec.imag[q_index];
 		alpha_sum += amp;
 		if(i >= ref_hamil_energies.size()){
 			loge("NOT ENOUGH REF ENERGIES STORED IN MEMORY.");
 		}
 		else{
-			energy += ref_hamil_energies[i].first * (amp / alpha);
+			energy += ref_hamil_energies[i].value * (amp / alpha);
 		}
 		i++;
 	}
-	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].first * (amp / alpha);
+	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].value * (amp / alpha);
 	return energy;
 }
 
@@ -403,8 +320,10 @@ void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 	std::iota(indexes.begin(), indexes.end(), 0); //zip with indices
 	std::sort(indexes.begin(), indexes.end(), [&](int i, int j){return cost_function(i) < cost_function(j);}); //non-descending
 
+	throw_runtime_error("Unimplemented! RefEnergy(cost_function(index), index, false) should replace false with a false/true marking a solution!");
+
 	for(auto &index : indexes){
-		ref_hamil_energies.push_back(RefEnergy(cost_function(index), index));
+		ref_hamil_energies.push_back(RefEnergy(cost_function(index), index, false));
 		//std::cerr<<"."<<cost_function(index)<<" "<<index<<std::endl;
 	}
 
@@ -475,6 +394,9 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 	if(options.zero_reference_states.size() > 1)
 		loge("TODO: Add more zero reference states compatibility");
 
+	if(hamIn -> custom_solutions.size() == 0)
+		throw_runtime_error("Unimplemented! TODO: If no custom solutions are provided, choose the lowest energy one.");
+
 	for(auto &index : indexes){
 
 		//TODO: add more zero_reference states
@@ -495,7 +417,35 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 			logw("Here we have not exluded zero at index " + std::to_string(index), this->log_level);
 		}
 		//std::cerr<<index<<" "<<hamDiag.real[index]<<"\n";
-		ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index));
+
+		bool isConsideredSolution=false;
+
+		for(const auto& s: hamIn->custom_solutions){
+			std::string index_b = std::bitset<max_qubits>(index).to_string();
+			index_b=index_b.substr(max_qubits-num_qubits, num_qubits);
+
+
+			if(index_b.size() != s.size())
+				throw_runtime_error("index_b.size != s.size()");
+
+			bool matches=true;
+			for(unsigned int i = 0; i < index_b.size(); ++i){
+				if(s[i] == '.')
+					continue;
+				if(s[i] != index_b[i]){
+					matches = false;
+					break;
+				}
+			}
+
+			if(matches){
+				isConsideredSolution = true;
+				break;
+			}
+
+		}
+		ref_hamil_energies.push_back(RefEnergy(hamDiag.real[index], index, isConsideredSolution));
+
 		//if( double(counter++)/indexes.size() > options.samples_cut_ratio)
 		//	break;
 	}

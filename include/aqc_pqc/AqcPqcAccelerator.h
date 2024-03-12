@@ -25,9 +25,6 @@ namespace FastVQA{
 const long double PI =   3.14159265358979323846264338327950288419716939937510L;
 const long double PI_2 = 1.57079632679489661923132169163975144209858469968755L;
 
-typedef std::pair<qreal, long long int> RefEnergy;
-typedef std::vector<RefEnergy> RefEnergies;
-
 typedef std::function<double(double init_val, double final_val, int iter_i, int max_iters)> AlphaFunction; //initial val, final_val, and num_iterations in which alpha is being increased
 
 enum InitialGroundState {None, PlusState};

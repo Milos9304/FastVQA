@@ -18,6 +18,21 @@
 
 namespace FastVQA{
 
+//typedef std::pair<qreal, long long int> RefEnergy;
+struct RefEnergy{
+	qreal value; //.first
+	long long int index; //.second
+	bool isConsideredSolution;
+
+	RefEnergy(qreal value, long long int index, bool isConsideredSolution){
+		this->value = value;
+		this->index = index;
+		this->isConsideredSolution = isConsideredSolution;
+	}
+};
+
+typedef std::vector<RefEnergy> RefEnergies;
+
 class AcceleratorBase{
 
 public:
