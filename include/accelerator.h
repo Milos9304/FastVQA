@@ -61,7 +61,7 @@ public:
 	Accelerator(AcceleratorOptions options);
 
 	void initialize(CostFunction cost_function, int num_qubits);
-	void initialize(PauliHamiltonian* hamIn);
+	void initialize(PauliHamiltonian* hamIn, bool debug=false);
 	void initialize(int num_qubits);
 	void finalize();
 
@@ -91,12 +91,13 @@ private:
 
 	CostFunction cost_function;
 
-	bool pauliHamilInitialized = false;
-	PauliHamil pauliHamiltonian;
+	//bool pauliHamilInitialized = false;
+	//PauliHamil pauliHamiltonian;
 	bool ref_hamil_energies_set = false;
 	RefEnergies ref_hamil_energies;
 
     DiagonalOp hamDiag;
+	//bool hamDiagInitialized = false;
 
     void __initialize(int num_qubits);
 

@@ -330,9 +330,7 @@ void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 
 }
 
-void Accelerator::initialize(PauliHamiltonian* hamIn){
-
-	bool diag=true;
+void Accelerator::initialize(PauliHamiltonian* hamIn, bool debug){
 
 	logd("Calculating Hamiltonian terms explicitly.", this->log_level);
 
@@ -341,42 +339,50 @@ void Accelerator::initialize(PauliHamiltonian* hamIn){
 	int num_qubits = hamIn->nbQubits;
 	this->__initialize(num_qubits);
 
-	qubits_list = new int[num_qubits]();
-	all_x_list = new pauliOpType[num_qubits]();
-
-	for(int i = 0; i < num_qubits; ++i){
-		qubits_list[i]=i;
-		all_x_list[i]=PAULI_X;
-	}
-
 	int coeffsSize = hamIn->coeffs.size();
 
-	if(pauliHamilInitialized){
+	/*if(pauliHamilInitialized){
 		destroyPauliHamil(pauliHamiltonian);
-		if(diag){
-			destroyDiagonalOp(hamDiag, env);
-		}
-	}
+		pauliHamilInitialized = false;
+	}*/
 
-	pauliHamiltonian = createPauliHamil(num_qubits, coeffsSize);
+	/*if(diag && hamDiagInitialized){
+		destroyDiagonalOp(hamDiag, env);
+		hamDiagInitialized = false;
+	}*/
+
+	PauliHamil pauliHamiltonian;
+	pauliHamiltonian.numQubits = num_qubits;
+	pauliHamiltonian.numSumTerms = coeffsSize;
+	//h.termCoeffs = malloc(coeffsSize * sizeof *h.termCoeffs);
+	//h.pauliCodes = malloc(num_qubits*coeffsSize * sizeof *h.pauliCodes);
+    //for(int i=0; i<num_qubits*coeffsSize; i++)
+    //	h.pauliCodes[i] = PAULI_I;
 
 	pauliHamiltonian.termCoeffs = &hamIn->coeffs[0]; //conversion to c array
 	pauliHamiltonian.pauliCodes = (enum pauliOpType*)(&hamIn->pauliOpts[0]);
 
-
 	for(auto &c:hamIn->pauliOpts){ //check for diagonal hamiltonian
 		if(c == 1 || c == 2){
-			diag=false;
-			break;
+			throw_runtime_error("TODO: NON DIAGONAL HAMILTONIAN NOT IMPLEMENTED");
 		}
 	}
 
-	if(diag){
-		hamDiag = createDiagonalOp(num_qubits, env, 1);
-		initDiagonalOpFromPauliHamil(hamDiag, pauliHamiltonian);
-	}else{ //assuming PauliHamil
-		throw_runtime_error("TODO: NON DIAGONAL HAMILTONIAN NOT IMPLEMENTED");
+	if(hamDiag.numQubits != num_qubits){
+		hamDiag.numElemsPerChunk = (1LL << num_qubits) / env.numRanks;
+		hamDiag.chunkId = env.rank;
+		hamDiag.numChunks = env.numRanks;
+		hamDiag.hermitian = 1;
+		if(hamDiag.numQubits > 0)
+			free(hamDiag.real);
+		hamDiag.real = (qreal*) calloc(hamDiag.numElemsPerChunk, sizeof(qreal));
+		hamDiag.numQubits = num_qubits;
 	}
+
+	initDiagonalOpFromPauliHamil(hamDiag, pauliHamiltonian);
+
+	//if(debug)
+	//		return;
 
 	logd("PauliHamiltonian initialized", this->log_level);
 
@@ -498,6 +504,7 @@ Accelerator::Accelerator(AcceleratorOptions options){
 		this->qureg = createQureg(options.createQuregAtEachInilization_num_qubits, env);
 	}
 
+	hamDiag.numQubits = 0;
 
 }
 }
