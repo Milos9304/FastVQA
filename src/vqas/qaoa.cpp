@@ -49,7 +49,7 @@ void Qaoa::run_qaoa(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAO
 	logd("QAOA execution done", this->log_level);
 }
 
-void Qaoa::run_qaoa_fixed_angles(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAOAOptions* options, double *angles){
+void Qaoa::run_qaoa_fixed_angles(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAOAOptions* options, const double *angles){
 
 	this->num_qubits = hamiltonian->nbQubits;
 	this->__initialize(buffer, options);
@@ -68,6 +68,7 @@ void Qaoa::run_qaoa_fixed_angles(ExperimentBuffer* buffer, PauliHamiltonian* ham
 	std::vector<double> x;
 	x.assign(angles, angles+2*this->p);
 	/*double expectation = */options->accelerator->calc_expectation(buffer, x, 0, &ground_state_overlap);
+	//std::cerr<<buffer->stateVector->stateVec.real[0];
 	logd("QAOA execution done", this->log_level);
 
 }

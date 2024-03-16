@@ -42,6 +42,10 @@ public:
 	void set_ansatz(Ansatz *ansatz);
 	void run_circuit(Circuit circuit, bool init_zero_state=true);
 
+	int getNumQubitsInQureg(){
+		return qureg.numQubitsInStateVec;
+	}
+
 protected:
 
 	Qureg qureg;

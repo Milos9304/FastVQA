@@ -303,6 +303,9 @@ void Accelerator::__initialize(int num_qubits){
 		logd("Setting seed to " + std::to_string(keys[0]), this->log_level);
 		this->qureg = createQureg(num_qubits, env);
 	}else{
+		if(this->qureg.numQubitsInStateVec != num_qubits)
+			throw_runtime_error("Different number of qubits requested that those represented by qureg!");
+
 		logd("Skipping qureg initialization. Be sure you know what you're doing!", this->log_level);
 	}
 
@@ -430,7 +433,6 @@ void Accelerator::initialize(PauliHamiltonian* hamIn, bool debug){
 			std::string index_b = std::bitset<max_qubits>(index).to_string();
 			index_b=index_b.substr(max_qubits-num_qubits, num_qubits);
 
-
 			if(index_b.size() != s.size())
 				throw_runtime_error("index_b.size != s.size()");
 
@@ -470,7 +472,9 @@ void Accelerator::run_vqe_slave_process(){
 
 void Accelerator::finalize(){
 	logd("Destroying qureg", this->log_level);
-	destroyQureg(qureg, env);
+	if(qureg.numQubitsInStateVec != -1)
+		destroyQureg(qureg, env);
+	qureg.numQubitsInStateVec = -1;
 }
 
 Accelerator::Accelerator(AcceleratorOptions options){
