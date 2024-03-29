@@ -49,6 +49,26 @@ void Qaoa::run_qaoa(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAO
 	logd("QAOA execution done", this->log_level);
 }
 
+void Qaoa::run_cm_qaoa(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAOAOptions* options, long long int zero_index){
+
+	this->num_qubits = hamiltonian->nbQubits;
+	this->__initialize(buffer, options);
+	options->accelerator->initialize(hamiltonian);
+
+	if(buffer->storeQuregPtr){
+		buffer->stateVector = options->accelerator->getQuregPtr();
+	}
+
+	this->ansatz = getAnsatz("cm_qaoa", this->num_qubits, this->p, 0);
+	this->num_params = ansatz.num_params;
+	options->accelerator->set_ansatz(&ansatz);
+	options->accelerator->zero_index = zero_index;
+
+	logd("CM_QAOA starting", log_level);
+	__execute(buffer, options->accelerator, options->optimizer);
+	logd("CM_QAOA execution done", this->log_level);
+}
+
 void Qaoa::run_qaoa_fixed_angles(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAOAOptions* options, const double *angles){
 
 	this->num_qubits = hamiltonian->nbQubits;

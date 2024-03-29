@@ -184,8 +184,8 @@ void Accelerator::run_with_new_params(Circuit circuit, const std::vector<double>
 
 double Accelerator::_energy_evaluation(double* ground_state_overlap_out, int iteration_i){
 
-	if(!this->options.exclude_zero_state && ref_hamil_energies[0].value == 0)
-			loge("Zero was not excluded properly!");
+	//if(!this->options.exclude_zero_state && ref_hamil_energies[0].value == 0)
+	//		logd("Zero was not excluded properly!", this->log_level);
 
 	long long int ground_index = ref_hamil_energies[0].index;
 	*ground_state_overlap_out = qureg.stateVec.real[ground_index]*qureg.stateVec.real[ground_index]+qureg.stateVec.imag[ground_index]*qureg.stateVec.imag[ground_index];
@@ -235,7 +235,7 @@ double Accelerator::_energy_evaluation(double* ground_state_overlap_out, int ite
 
 double Accelerator::calc_expectation(ExperimentBuffer* buffer){
 	double overlap;
-	if(ansatz.circuit.qaoa_ansatz){
+	if(ansatz.circuit.qaoa_ansatz || ansatz.circuit.cm_qaoa_ansatz){
 		loge("UNIMPLEMENTED");
 		throw;
 	}
@@ -245,16 +245,16 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer){
 
 double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector<double> &x, int iteration_i, double* ground_state_overlap_out){
 	//int x_size = x.size();
-	if(env.numRanks > 1){
-		loge("UNIMPLEMENTED");
-		throw;
-	}
+	if(env.numRanks > 1)
+		throw_runtime_error("UNIMPLEMENTED");
 
-	if(ansatz.circuit.qaoa_ansatz){
+	if(ansatz.circuit.qaoa_ansatz && ansatz.circuit.cm_qaoa_ansatz)
+		throw_runtime_error("ansatz.circuit.qaoa_ansatz && ansatz.circuit.cm_qaoa_ansatz cannot be both true");
 
-		if(x.size() != (unsigned)ansatz.num_params){
-			loge("Wrong number of parameters");
-		}
+	if(ansatz.circuit.qaoa_ansatz || ansatz.circuit.cm_qaoa_ansatz){
+
+		if(x.size() != (unsigned)ansatz.num_params)
+			throw_runtime_error("Wrong number of parameters");
 
 		int p = ansatz.num_params/2;
 
@@ -278,9 +278,27 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 			}
 
-			for(int j = 0; j < qureg.numQubitsInStateVec; ++j)
-				rotateX(qureg, j, 2*x[2*i+1]);
-			//multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, -2*x[2*i+1]);
+			if(ansatz.circuit.qaoa_ansatz){
+				for(int j = 0; j < qureg.numQubitsInStateVec; ++j)
+					rotateX(qureg, j, 2*x[2*i+1]);
+				//multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, -2*x[2*i+1]);
+			}else{ //ansatz.circuit.cm_qaoa_ansatz
+
+				std::string constraint_bits = std::bitset<max_qubits>(this->zero_index+2).to_string();
+				constraint_bits=constraint_bits.substr(max_qubits-qureg.numQubitsInStateVec, qureg.numQubitsInStateVec);
+				//std::reverse(constraint_bits.begin(), constraint_bits.end());
+				for(int j = 0; j < qureg.numQubitsInStateVec; ++j){
+
+					if(constraint_bits[constraint_bits.size()-1-j] == '1')
+						pauliX(qureg, j);
+
+					controlledRotateX(qureg, j, (j+1) % qureg.numQubitsInStateVec,2*x[2*i+1]);
+
+					if(constraint_bits[constraint_bits.size()-1-j] == '1')
+						pauliX(qureg, j);
+				}
+
+			}
 		}
 
 
