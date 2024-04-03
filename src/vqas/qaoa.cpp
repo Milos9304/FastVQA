@@ -146,17 +146,24 @@ void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt)
 	std::vector<double> lowerBounds(initial_params.size(), -3.141592654);
 	std::vector<double> upperBounds(initial_params.size(), 3.141592654);
 
+	if(log_level == 0){
+		logd("Initial params:", log_level);
+		for(auto &param: initial_params){
+			logd(std::to_string(param), log_level);
+		}
+	}
+
 	logd("QAOA starting optimization", this->log_level);
 	OptResult result = opt->optimize(f, initial_params, this->ftol, this->max_iters, lowerBounds, upperBounds);
 	logd("QAOA finishing optimization", this->log_level);
 
 	std::string opt_config;
 	acc->finalConfigEvaluator(buffer, result.first.second, nbSamples_calcVarAssignment);
-	if(log_level <= 1){
-		logi(instance_prefix + "Final opt-val: " + std::to_string(buffer->opt_val));
+	if(log_level == 0){
+		logd(instance_prefix + "Final opt-val: " + std::to_string(buffer->opt_val));
 		for(auto &solution : buffer->final_solutions){
-			logi(instance_prefix + "Final opt-config: " + solution.opt_config);
-			logi(instance_prefix + "Final hit-rate: " + std::to_string(solution.hit_rate));
+			logd(instance_prefix + "Final opt-config: " + solution.opt_config);
+			logd(instance_prefix + "Final hit-rate: " + std::to_string(solution.hit_rate));
 		}
 	}
 

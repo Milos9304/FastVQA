@@ -109,8 +109,8 @@ double Accelerator::evaluate_assignment(PauliHamil isingHam, std::string measure
 
 void Accelerator::finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<double> final_params, int nbSamples){
 
-	if(!this->options.exclude_zero_state && ref_hamil_energies[0].value == 0)
-		loge("Zero not excluded properly!");
+	//if(!this->options.exclude_zero_state && ref_hamil_energies[0].value == 0)
+	//	loge("Zero not excluded properly!");
 
 	RefEnergies ground_states = this->getSolutions();
 
@@ -261,6 +261,12 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		//logd("Initializing plus state", this->log_level); //too verbosive
 		initPlusState(qureg);
 
+		//PRINT
+		/*for(int j = 0; j < qureg.numAmpsTotal; ++j)
+			std::cerr<<qureg.stateVec.real[j]<<"+"<<qureg.stateVec.imag[j]<<"i ";
+		std::cerr<<std::endl;;*/
+		//PRINT
+
 		for(int i = 0; i < p; ++i){
 
 			//applyTrotterCircuit(qureg, hamiltonian,	x[2*i], 1, 1);
@@ -278,15 +284,23 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 
 			}
 
+			//PRINT
+			/*std::cerr<<"after Hc: ";
+			for(int j = 0; j < qureg.numAmpsTotal; ++j)
+				std::cerr<<qureg.stateVec.real[j]<<"+"<<qureg.stateVec.imag[j]<<"i ";
+			std::cerr<<std::endl;;*/
+			//PRINT
+
 			if(ansatz.circuit.qaoa_ansatz){
 				for(int j = 0; j < qureg.numQubitsInStateVec; ++j)
 					rotateX(qureg, j, 2*x[2*i+1]);
 				//multiRotatePauli(qureg, qubits_list, all_x_list, qureg.numQubitsInStateVec, -2*x[2*i+1]);
 			}else{ //ansatz.circuit.cm_qaoa_ansatz
 
-				std::string constraint_bits = std::bitset<max_qubits>(this->zero_index+2).to_string();
+				std::string constraint_bits = std::bitset<max_qubits>(this->zero_index).to_string();
 				constraint_bits=constraint_bits.substr(max_qubits-qureg.numQubitsInStateVec, qureg.numQubitsInStateVec);
 				//std::reverse(constraint_bits.begin(), constraint_bits.end());
+
 				for(int j = 0; j < qureg.numQubitsInStateVec; ++j){
 
 					if(constraint_bits[constraint_bits.size()-1-j] == '1')
@@ -297,7 +311,12 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 					if(constraint_bits[constraint_bits.size()-1-j] == '1')
 						pauliX(qureg, j);
 				}
-
+				//PRINT
+				/*std::cerr<<"after Hm: ";
+				for(int j = 0; j < qureg.numAmpsTotal; ++j)
+					std::cerr<<qureg.stateVec.real[j]<<"+"<<qureg.stateVec.imag[j]<<"i ";
+				std::cerr<<std::endl;;*/
+				//PRINT
 			}
 		}
 
@@ -441,7 +460,7 @@ void Accelerator::initialize(PauliHamiltonian* hamIn, bool debug){
 		//logw(std::to_string(index)+"       " + std::to_string(hamDiag.real[index]));
 
 		if(hamDiag.real[index] == 0){
-			logw("Here we have not exluded zero at index " + std::to_string(index), this->log_level);
+			logd("Here we have not exluded zero at index " + std::to_string(index), this->log_level);
 		}
 		//std::cerr<<index<<" "<<hamDiag.real[index]<<"\n";
 
