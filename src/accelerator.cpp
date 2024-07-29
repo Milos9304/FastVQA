@@ -187,7 +187,9 @@ double Accelerator::_energy_evaluation(double* ground_state_overlap_out, int ite
 	//if(!this->options.exclude_zero_state && ref_hamil_energies[0].value == 0)
 	//		logd("Zero was not excluded properly!", this->log_level);
 
-	long long int ground_index = ref_hamil_energies[0].index;
+	//OLD VQE WAY
+
+	/*long long int ground_index = ref_hamil_energies[0].index;
 	*ground_state_overlap_out = qureg.stateVec.real[ground_index]*qureg.stateVec.real[ground_index]+qureg.stateVec.imag[ground_index]*qureg.stateVec.imag[ground_index];
 
 	double energy=0;
@@ -210,7 +212,7 @@ double Accelerator::_energy_evaluation(double* ground_state_overlap_out, int ite
 
 	double zero_state_amp_per_elem = zero_state_amp / (qureg.numAmpsPerChunk-1);
 
-	double alpha = alpha_f(options.samples_cut_ratio, options.final_alpha, iteration_i, options.max_alpha_iters);
+	double alpha = 0.2;//alpha_f(options.samples_cut_ratio, options.final_alpha, iteration_i, options.max_alpha_iters);
 
 	while(alpha_sum < alpha){
 
@@ -229,7 +231,14 @@ double Accelerator::_energy_evaluation(double* ground_state_overlap_out, int ite
 		}
 		i++;
 	}
-	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].value * (amp / alpha);
+	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].value * (amp / alpha);*/
+
+	double energy = 0;
+	int i = 0;
+	for(auto &e: ref_hamil_energies){
+		long long int q_index = e.index;
+		energy += e.value * (qureg.stateVec.real[q_index]*qureg.stateVec.real[q_index]+qureg.stateVec.imag[q_index]*qureg.stateVec.imag[q_index]);
+	}
 	return energy;
 }
 
@@ -264,13 +273,15 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 		//PRINT
 		/*for(int j = 0; j < qureg.numAmpsTotal; ++j)
 			std::cerr<<qureg.stateVec.real[j]<<"+"<<qureg.stateVec.imag[j]<<"i ";
-		std::cerr<<std::endl;;*/
+		std::cerr<<std::endl;*/
 		//PRINT
 
 		for(int i = 0; i < p; ++i){
 
 			//applyTrotterCircuit(qureg, hamiltonian,	x[2*i], 1, 1);
 			qreal gamma = x[2*i];
+
+			//std::cerr<<std::setprecision (15)<<"gamma: "<<gamma<<std::endl;
 			for(long long i = 0; i < qureg.numAmpsTotal; ++i){
 				qreal h = hamDiag.real[i]; //we know hamDiag is real
 
@@ -278,6 +289,8 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 				qreal b = -sin(gamma*h);
 				qreal c = qureg.stateVec.real[i];
 				qreal d = qureg.stateVec.imag[i];
+
+				//std::cerr<<std::setprecision (15)<<"h: "<<h<<" a: "<<a<<" b: "<<b<<" c: "<<c<<" d: "<<d<<std::endl;
 
 				qureg.stateVec.real[i] = a*c-b*d;
 				qureg.stateVec.imag[i] = b*c+a*d;
@@ -288,7 +301,7 @@ double Accelerator::calc_expectation(ExperimentBuffer* buffer, const std::vector
 			/*std::cerr<<"after Hc: ";
 			for(int j = 0; j < qureg.numAmpsTotal; ++j)
 				std::cerr<<qureg.stateVec.real[j]<<"+"<<qureg.stateVec.imag[j]<<"i ";
-			std::cerr<<std::endl;;*/
+			std::cerr<<std::endl;*/
 			//PRINT
 
 			if(ansatz.circuit.qaoa_ansatz){
@@ -441,7 +454,7 @@ void Accelerator::initialize(PauliHamiltonian* hamIn, bool debug){
 		loge("TODO: Add more zero reference states compatibility");
 
 	if(hamIn -> custom_solutions.size() == 0)
-		throw_runtime_error("Unimplemented! TODO: If no custom solutions are provided, choose the lowest energy one.");
+		logw("Unimplemented! TODO: If no custom solutions are provided, choose the lowest energy one.", this->log_level);
 
 	for(auto &index : indexes){
 

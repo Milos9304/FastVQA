@@ -1,6 +1,7 @@
 #include "vqas/qaoa.h"
 #include "logger.h"
 
+#include <iomanip>
 #include <iostream>
 //#include <xacc.hpp>
 
@@ -79,6 +80,8 @@ void Qaoa::run_qaoa_fixed_angles(ExperimentBuffer* buffer, PauliHamiltonian* ham
 		buffer->stateVector = options->accelerator->getQuregPtr();
 	}
 
+	//std::cerr<<hamiltonian->getMatrixRepresentation2(true)<<std::endl;
+
 	this->ansatz = getAnsatz("qaoa", this->num_qubits, this->p, 0);
 	this->num_params = ansatz.num_params;
 	options->accelerator->set_ansatz(&ansatz);
@@ -87,7 +90,10 @@ void Qaoa::run_qaoa_fixed_angles(ExperimentBuffer* buffer, PauliHamiltonian* ham
 	double ground_state_overlap;
 	std::vector<double> x;
 	x.assign(angles, angles+2*this->p);
+
 	/*double expectation = */options->accelerator->calc_expectation(buffer, x, 0, &ground_state_overlap);
+	//loge(std::to_string(expectation));std::cerr<<std::flush;
+
 	//std::cerr<<buffer->stateVector->stateVec.real[0];
 	logd("QAOA execution done", this->log_level);
 
@@ -139,9 +145,10 @@ void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt)
 
 	OptFunction f([&, this](const std::vector<double> &x, std::vector<double> &dx) {
 			double ground_state_overlap;
-			double expectation = acc->calc_expectation(buffer, x, iteration_i++, &ground_state_overlap);
+			long double expectation = acc->calc_expectation(buffer, x, iteration_i++, &ground_state_overlap);
 			intermediateAngles.push_back(x);
 			intermediateEnergies.push_back(expectation);
+			//std::cerr<<std::setprecision(15)<<expectation<<std::endl;
 			return expectation;
 		}, num_params);
 
@@ -180,7 +187,7 @@ void Qaoa::__execute(ExperimentBuffer* buffer, Accelerator* acc, Optimizer* opt)
 
 	logd("QAOA starting optimization", this->log_level);
 	OptResult result = opt->optimize(f, initial_params, this->ftol, this->max_iters, lowerBounds, upperBounds);
-	logd("QAOA finishing optimization", this->log_level);
+	logd("QAOA finishing optimization msg="+nlopt_res_to_string(result.second), this->log_level);
 
 	std::string opt_config;
 	acc->finalConfigEvaluator(buffer, result.first.second, nbSamples_calcVarAssignment);
