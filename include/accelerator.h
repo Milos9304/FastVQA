@@ -51,6 +51,18 @@ class Accelerator:public AcceleratorBase{
 
 public:
 
+	struct DiagonalOpDuplicate	{ //copied from Quest.h
+		int numQubits=-1; //-1 means uninitialized
+	    //long long int numElemsPerChunk;
+	    //int numChunks=1;
+	    //int chunkId;
+	    //qreal *real;
+		std::vector<qreal> real;
+	    //qreal *imag;
+	    //ComplexArray deviceOperator;
+	    //int hermitian=1;
+	};
+
 	AlphaFunction alpha_f = alpha_constant_f;
 
 	static AlphaFunction alpha_constant_f;
@@ -61,7 +73,7 @@ public:
 	Accelerator(AcceleratorOptions options);
 
 	void initialize(CostFunction cost_function, int num_qubits);
-	void initialize(PauliHamiltonian* hamIn, bool debug=false);
+	void initialize(PauliHamiltonian* hamIn, bool use_external_hamDiag=false, DiagonalOpDuplicate *diagonalOpDuplicate=nullptr);
 	void initialize(int num_qubits);
 	void finalize();
 

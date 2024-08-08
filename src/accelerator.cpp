@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <cfloat>
 
+//#include <chrono>
+
 # if QuEST_PREC==1
 	#define QREAL_MAX FLOAT_MAX
 # elif QuEST_PREC==2
@@ -234,7 +236,6 @@ double Accelerator::_energy_evaluation(double* ground_state_overlap_out, int ite
 	energy -= (alpha_sum - alpha) * ref_hamil_energies[i-1].value * (amp / alpha);*/
 
 	double energy = 0;
-	int i = 0;
 	for(auto &e: ref_hamil_energies){
 		long long int q_index = e.index;
 		energy += e.value * (qureg.stateVec.real[q_index]*qureg.stateVec.real[q_index]+qureg.stateVec.imag[q_index]*qureg.stateVec.imag[q_index]);
@@ -383,9 +384,9 @@ void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 
 }
 
-void Accelerator::initialize(PauliHamiltonian* hamIn, bool debug){
+void Accelerator::initialize(PauliHamiltonian* hamIn, bool use_external_hamDiag, DiagonalOpDuplicate *diagonalOpDuplicate){
 
-	logd("Calculating Hamiltonian terms explicitly.", this->log_level);
+	logd("Accelerator initialize", this->log_level);
 
 	this->hamiltonian_specified = true;
 
@@ -403,6 +404,7 @@ void Accelerator::initialize(PauliHamiltonian* hamIn, bool debug){
 		destroyDiagonalOp(hamDiag, env);
 		hamDiagInitialized = false;
 	}*/
+
 
 	PauliHamil pauliHamiltonian;
 	pauliHamiltonian.numQubits = num_qubits;
@@ -432,10 +434,26 @@ void Accelerator::initialize(PauliHamiltonian* hamIn, bool debug){
 		hamDiag.numQubits = num_qubits;
 	}
 
-	initDiagonalOpFromPauliHamil(hamDiag, pauliHamiltonian);
+	if(use_external_hamDiag && diagonalOpDuplicate != nullptr){
 
-	//if(debug)
-	//		return;
+		if(diagonalOpDuplicate->numQubits == -1){
+			initDiagonalOpFromPauliHamil(hamDiag, pauliHamiltonian);
+			diagonalOpDuplicate->numQubits = num_qubits;
+			diagonalOpDuplicate->real = std::vector<qreal>(hamDiag.real, hamDiag.real + hamDiag.numElemsPerChunk);
+		}else{
+			std::copy(diagonalOpDuplicate->real.begin(), diagonalOpDuplicate->real.end(), hamDiag.real);
+		}
+
+	}else{
+
+		//if(diagonalOpDuplicate != nullptr){
+			//diagonalOpDuplicate->numQubits = num_qubits;
+			//diagonalOpDuplicate->real = std::vector<qreal>(hamDiag.real, hamDiag.real + hamDiag.numElemsPerChunk);
+		//}else{
+			initDiagonalOpFromPauliHamil(hamDiag, pauliHamiltonian);
+		//}
+
+	}
 
 	logd("PauliHamiltonian initialized", this->log_level);
 

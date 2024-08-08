@@ -74,7 +74,7 @@ void Qaoa::run_qaoa_fixed_angles(ExperimentBuffer* buffer, PauliHamiltonian* ham
 
 	this->num_qubits = hamiltonian->nbQubits;
 	this->__initialize(buffer, options);
-	options->accelerator->initialize(hamiltonian, true);
+	options->accelerator->initialize(hamiltonian, options->diagOpDuplicatePtr == nullptr ? false : true, options->diagOpDuplicatePtr);
 	//return;
 	if(buffer->storeQuregPtr){
 		buffer->stateVector = options->accelerator->getQuregPtr();
@@ -103,7 +103,8 @@ void Qaoa::run_cm_qaoa_fixed_angles(ExperimentBuffer* buffer, PauliHamiltonian* 
 
 	this->num_qubits = hamiltonian->nbQubits;
 	this->__initialize(buffer, options);
-	options->accelerator->initialize(hamiltonian, true);
+
+	options->accelerator->initialize(hamiltonian, options->diagOpDuplicatePtr == nullptr ? false : true, options->diagOpDuplicatePtr);
 	//return;
 	if(buffer->storeQuregPtr){
 		buffer->stateVector = options->accelerator->getQuregPtr();
