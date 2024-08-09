@@ -93,9 +93,10 @@ public:
 	//for run_cm_qaoa
 	long long int zero_index = 0;
 
-private:
-
 	int log_level;
+
+
+private:
 
 	int *qubits_list;
 	pauliOpType* all_x_list;
