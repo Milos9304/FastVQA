@@ -548,8 +548,10 @@ void AqcPqcAccelerator::run(){
 		switch(options.initialGroundState){
 			case PlusState:{
 				for(long long int i = 0; i < qureg.numAmpsTotal; ++i){
+					std::cerr<<i<<" "<<qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i]<<std::endl;
 					if(std::find(options.solutions.begin(), options.solutions.end(), i) != options.solutions.end()) {
-						fgsOverlap += pow(qureg.stateVec.real[i],2)+pow(qureg.stateVec.imag[i], 2);
+						loge("here");
+						fgsOverlap += qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
 					}
 				}
 				break;}
