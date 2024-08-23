@@ -378,7 +378,8 @@ void Accelerator::initialize(CostFunction cost_function, int num_qubits){
 
 	for(auto &index : indexes){
 		ref_hamil_energies.push_back(RefEnergy(cost_function(index), index, false));
-		//std::cerr<<"."<<cost_function(index)<<" "<<index<<std::endl;
+		//loge("this is in accelerator.cpp .");
+		//td::cerr<<"."<<cost_function(index)<<" "<<index<<std::endl;
 	}
 
 
@@ -450,7 +451,7 @@ void Accelerator::initialize(PauliHamiltonian* hamIn, bool use_external_hamDiag,
 			//diagonalOpDuplicate->numQubits = num_qubits;
 			//diagonalOpDuplicate->real = std::vector<qreal>(hamDiag.real, hamDiag.real + hamDiag.numElemsPerChunk);
 		//}else{
-			initDiagonalOpFromPauliHamil(hamDiag, pauliHamiltonian);
+		initDiagonalOpFromPauliHamil(hamDiag, pauliHamiltonian);
 		//}
 
 	}
