@@ -223,7 +223,7 @@ bool isPsd(const MatrixT& A) {
 	return pass?0:1000;
 }*/
 
-void AqcPqcAccelerator::run(){
+void AqcPqcAccelerator::run(AqcPqcAcceleratorResult* result){
 
 	int nbSteps = options.nbSteps;
 	this->ansatz = getAnsatz(options.ansatz_name, hamil_int.nbQubits, options.ansatz_depth);
@@ -567,6 +567,19 @@ void AqcPqcAccelerator::run(){
 	/*free(first_order_terms);
     for (int i = 0; i < parameters.size(); i++)
     	free(second_order_terms[i]);*/
+
+	//double fgsOverlap = 0;
+
+	if(result != nullptr){
+		for(long long int i = 0; i < qureg.numAmpsTotal; ++i){
+			std::cerr<<i<<" "<<qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i]<<std::endl;
+			if(std::find(options.solutions.begin(), options.solutions.end(), i) != options.solutions.end()) {
+				result->final_state_overlap += qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
+			}
+		}
+	}
+	//std::cerr<< "Overlap: " << fgsOverlap << std::endl;
+
 
 }
 

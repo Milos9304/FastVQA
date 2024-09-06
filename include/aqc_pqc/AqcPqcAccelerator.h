@@ -29,6 +29,10 @@ typedef std::function<double(double init_val, double final_val, int iter_i, int 
 
 enum InitialGroundState {None, PlusState};
 
+struct AqcPqcAcceleratorResult{
+	double final_state_overlap = 0;
+};
+
 struct AqcPqcAcceleratorOptions{
 
 	int log_level=1;
@@ -90,7 +94,7 @@ public:
 	~AqcPqcAccelerator();
 
 	void initialize(PauliHamiltonian* h0, PauliHamiltonian* h1);
-	void run();
+	void run(AqcPqcAcceleratorResult* result = nullptr);
 
 	qreal calc_intermediate_expectation(ExperimentBuffer* buffer, double lambda, bool init_zero_state=true);
 	void finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<qreal> final_params, int nbSamples);
