@@ -95,6 +95,15 @@ FastVQA::OptResult FastVQA::NLOptimizer::optimize(OptFunction &function, std::ve
   } else {
     _opt.set_min_objective(c_wrapper, d);
   }
+
+  if(add_nondecreasing_constraint){
+	  // Add non-decreasing constraints
+	  for (unsigned int iii = 0; iii < dim; ++iii) {
+		  _opt.add_inequality_constraint(non_decreasing_constraint, &iii, 1e-8);
+	  }
+	  std::cerr<<"NON-DECREASING CONSTRAINT ADDED"<<std::endl;
+  }
+
   // Default lower bounds
   //std::vector<double> lowerBounds(dim, -3.1415926);
   /*if (options.keyExists<std::vector<double>>("lower-bounds")) {

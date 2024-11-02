@@ -60,6 +60,18 @@ public:
 	virtual OptResult optimize(OptFunction &function, std::vector<double> initial_params, double tol, long long int maxeval, std::vector<double> lowerBounds, std::vector<double> upperBounds) = 0;
 	virtual const std::string get_algorithm() const { return ""; }
 	virtual const bool isGradientBased() const { return false; }
+
+	  // Define the constraint function to ensure x_i <= x_{i+1}
+	  static double non_decreasing_constraint(const std::vector<double> &x, std::vector<double> &grad, void *data) {
+	      int i = *(int *)data;  // index for constraint
+	      if (!grad.empty()) {
+	          grad[i] = 1.0;
+	          grad[i+1] = -1.0;
+	      }
+	      return x[i] - x[i+1];
+	  }
+	  bool add_nondecreasing_constraint = false;
+
 };
 
 struct ExtraNLOptData {
@@ -72,5 +84,7 @@ public:
   const bool isGradientBased() const override;
   virtual const std::string get_algorithm() const;
 };
+
+
 }
 #endif /* FASTVQA__OPTIMIZER_H_ */
