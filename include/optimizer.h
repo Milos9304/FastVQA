@@ -61,15 +61,10 @@ public:
 	virtual const std::string get_algorithm() const { return ""; }
 	virtual const bool isGradientBased() const { return false; }
 
-	  // Define the constraint function to ensure x_i <= x_{i+1}
-	  static double non_decreasing_constraint(const std::vector<double> &x, std::vector<double> &grad, void *data) {
-	      int i = *(int *)data;  // index for constraint
-	      if (!grad.empty()) {
-	          grad[i] = 1.0;
-	          grad[i+1] = -1.0;
-	      }
-	      return x[i] - x[i+1];
-	  }
+	  // Define the constraint function to ensure x_i <= x_{i+2}
+	  static double non_decreasing_constraint(const std::vector<double> &x, std::vector<double> &grad, void *data);
+	  static double non_increasing_constraint(const std::vector<double> &x, std::vector<double> &grad, void *data);
+
 	  bool add_nondecreasing_constraint = false;
 
 };
