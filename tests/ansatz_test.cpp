@@ -8,6 +8,7 @@
 #include <gtest/gtest.h>
 #include <cmath>
 #include "fastVQA.h"
+#include "accelerator.h"
 
 #define GTEST_COUT std::cerr << "[          ] [ INFO ]"
 
