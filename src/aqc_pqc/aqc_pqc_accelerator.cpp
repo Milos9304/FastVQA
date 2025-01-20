@@ -576,6 +576,9 @@ void AqcPqcAccelerator::run(AqcPqcAcceleratorResult* result){
 			if(std::find(options.solutions.begin(), options.solutions.end(), i) != options.solutions.end()) {
 				result->final_state_overlap += qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
 			}
+			if(options.first_excited_states.size() > 0 && std::find(options.first_excited_states.begin(), options.first_excited_states.end(), i) != options.first_excited_states.end()) {
+				result->first_exc_state_overlap += qureg.stateVec.real[i]*qureg.stateVec.real[i]+qureg.stateVec.imag[i]*qureg.stateVec.imag[i];
+			}
 		}
 	}
 	//std::cerr<< "Overlap: " << fgsOverlap << std::endl;

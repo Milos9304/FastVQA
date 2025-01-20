@@ -31,6 +31,7 @@ enum InitialGroundState {None, PlusState};
 
 struct AqcPqcAcceleratorResult{
 	double final_state_overlap = 0;
+	double first_exc_state_overlap = 0; //optional
 };
 
 struct AqcPqcAcceleratorOptions{
@@ -60,6 +61,7 @@ struct AqcPqcAcceleratorOptions{
 	bool checkSolutions = false;
 	qreal solutionExpectation;
 	std::vector<long long int> solutions;
+	std::vector<long long int> first_excited_states; //optional
 
 	//-1 avoids rounding
 	int roundDecimalPlaces=-1;
