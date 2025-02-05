@@ -165,6 +165,7 @@ double ineq_constraint_trivial(unsigned n, const double *x, double *grad, void *
 		}
 		else {
 			std::cerr<<"nlopt success code: "<< opt_res << " = " << nlopt_result_to_string(opt_res) << " #:" << data.num_steps << std::endl;
+		}
 			 //std::cerr<<"found minimum at f("<<eps[0];
 			 //for(int i = 1; i < opt_dim; ++i)
 			//	 std::cerr<<","<<eps[i];
@@ -188,7 +189,7 @@ double ineq_constraint_trivial(unsigned n, const double *x, double *grad, void *
 			//std::cerr<<res_eps;//throw;
 
 			//std::cerr<<"x"<<A*res_eps-Q<<std::endl;
-		}
+		//}
 
 
 	}
