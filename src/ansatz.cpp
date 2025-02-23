@@ -189,6 +189,15 @@ Ansatz getAnsatz(std::string ansatz_type, int num_qubits, int depth, int seed){
 
 		int p = depth;
 		ansatz.circuit.qaoa_ansatz = true;
+		ansatz.circuit.cm_qaoa_ansatz = false;
+
+		ansatz.num_params = p * 2;
+
+	}else if(ansatz_type == "cm_qaoa"){
+
+		int p = depth;
+		ansatz.circuit.qaoa_ansatz = false;
+		ansatz.circuit.cm_qaoa_ansatz = true;
 		ansatz.num_params = p * 2;
 
 	}else{

@@ -51,7 +51,6 @@ class Expression{
 		std::map<int, Var*> idMap;
 		std::map<std::string, int> varMap;
 
-
 	public:
 
 		std::string name;
@@ -191,6 +190,8 @@ class Expression{
 			variables.erase(it);
 			idMap.erase(id);
 		}
+
+		mpq_class evaluate_bin_expr(std::map<Var*, int> *varBoolMap);
 
 		std::string expression_line_print();
 		void print();

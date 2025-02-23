@@ -18,6 +18,21 @@
 
 namespace FastVQA{
 
+//typedef std::pair<qreal, long long int> RefEnergy;
+struct RefEnergy{
+	qreal value; //.first
+	long long int index; //.second
+	bool isConsideredSolution;
+
+	RefEnergy(qreal value, long long int index, bool isConsideredSolution){
+		this->value = value;
+		this->index = index;
+		this->isConsideredSolution = isConsideredSolution;
+	}
+};
+
+typedef std::vector<RefEnergy> RefEnergies;
+
 class AcceleratorBase{
 
 public:
@@ -26,6 +41,10 @@ public:
 
 	void set_ansatz(Ansatz *ansatz);
 	void run_circuit(Circuit circuit, bool init_zero_state=true);
+
+	int getNumQubitsInQureg(){
+		return qureg.numQubitsInStateVec;
+	}
 
 protected:
 

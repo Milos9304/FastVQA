@@ -19,6 +19,7 @@ class Circuit{
 public:
 
 	bool qaoa_ansatz = false;
+	bool cm_qaoa_ansatz = false;
 
 	Circuit(){}
 

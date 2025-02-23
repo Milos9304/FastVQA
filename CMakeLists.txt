@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.8 FATAL_ERROR)
 
-option(COMPILE_TESTS "Compile tests" OFF) #ON by default
+option(COMPILE_TESTS "Compile tests" ON) #ON by default
 
 project (FastVQA
 	LANGUAGES C CXX

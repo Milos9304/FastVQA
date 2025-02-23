@@ -33,6 +33,9 @@ class Qaoa{
 		*/
 		//void run_qaoa(ExperimentBuffer* buffer, CostFunction cost_f, int num_qubits, VQEOptions* options);
 		void run_qaoa(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAOAOptions* options);
+		void run_cm_qaoa(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAOAOptions* options, long long int zero_index);
+		void run_qaoa_fixed_angles(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAOAOptions* options, const double *angles);
+		void run_cm_qaoa_fixed_angles(ExperimentBuffer* buffer, PauliHamiltonian* hamiltonian, QAOAOptions* options, const double *angles, long long int zero_index);
 
 		//static void run_qaoa_slave_process();
 
@@ -42,7 +45,6 @@ class Qaoa{
 		int num_params; //function of p
 
 		Ansatz ansatz;
-
 
 		int nbSamples_calcVarAssignment;
 

@@ -25,12 +25,14 @@ namespace FastVQA{
 const long double PI =   3.14159265358979323846264338327950288419716939937510L;
 const long double PI_2 = 1.57079632679489661923132169163975144209858469968755L;
 
-typedef std::pair<qreal, long long int> RefEnergy;
-typedef std::vector<RefEnergy> RefEnergies;
-
 typedef std::function<double(double init_val, double final_val, int iter_i, int max_iters)> AlphaFunction; //initial val, final_val, and num_iterations in which alpha is being increased
 
 enum InitialGroundState {None, PlusState};
+
+struct AqcPqcAcceleratorResult{
+	double final_state_overlap = 0;
+	double first_exc_state_overlap = 0; //optional
+};
 
 struct AqcPqcAcceleratorOptions{
 
@@ -59,6 +61,7 @@ struct AqcPqcAcceleratorOptions{
 	bool checkSolutions = false;
 	qreal solutionExpectation;
 	std::vector<long long int> solutions;
+	std::vector<long long int> first_excited_states; //optional
 
 	//-1 avoids rounding
 	int roundDecimalPlaces=-1;
@@ -93,7 +96,7 @@ public:
 	~AqcPqcAccelerator();
 
 	void initialize(PauliHamiltonian* h0, PauliHamiltonian* h1);
-	void run();
+	void run(AqcPqcAcceleratorResult* result = nullptr);
 
 	qreal calc_intermediate_expectation(ExperimentBuffer* buffer, double lambda, bool init_zero_state=true);
 	void finalConfigEvaluator(ExperimentBuffer* buffer, std::vector<qreal> final_params, int nbSamples);

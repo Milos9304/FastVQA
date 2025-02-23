@@ -95,6 +95,18 @@ FastVQA::OptResult FastVQA::NLOptimizer::optimize(OptFunction &function, std::ve
   } else {
     _opt.set_min_objective(c_wrapper, d);
   }
+
+  if(add_nondecreasing_constraint){
+	  // Add non-decreasing constraints
+	  for (unsigned int iii = 0; iii < dim-2; ++iii) {
+		  if(iii % 2 == 0) //gamma
+			  _opt.add_inequality_constraint(non_decreasing_constraint, (void*)(intptr_t)iii, 1e-8);
+		  else
+			  _opt.add_inequality_constraint(non_increasing_constraint, (void*)(intptr_t)iii, 1e-8);
+	  }
+	  std::cerr<<"NON-DECREASING CONSTRAINT ADDED"<<std::endl;
+  }
+
   // Default lower bounds
   //std::vector<double> lowerBounds(dim, -3.1415926);
   /*if (options.keyExists<std::vector<double>>("lower-bounds")) {
@@ -143,5 +155,25 @@ FastVQA::OptResult FastVQA::NLOptimizer::optimize(OptFunction &function, std::ve
                 std::string(e.what()));
   }
 
-  return OptResult{optF, x};
+  return OptResult{{optF, x}, r};
+}
+
+// Define the constraint function to ensure x_i <= x_{i+2}
+double FastVQA::Optimizer::non_decreasing_constraint(const std::vector<double> &x, std::vector<double> &grad, void *data) {
+  int i = (int)(intptr_t)data;  // index for constraint
+  if (!grad.empty()) {
+	  grad[i] = 1.0;
+	  grad[i+1] = -1.0;
+  }
+
+  return x[i] - x[i+2];
+}
+
+double FastVQA::Optimizer::non_increasing_constraint(const std::vector<double> &x, std::vector<double> &grad, void *data) {
+  int i = (int)(intptr_t)data;  // index for constraint
+  if (!grad.empty()) {
+	  grad[i] = -1.0;
+	  grad[i+1] = 1.0;
+  }
+  return x[i+2] - x[i];
 }

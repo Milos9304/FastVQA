@@ -20,9 +20,6 @@
 
 namespace FastVQA{
 
-typedef std::pair<qreal, long long int> RefEnergy;
-typedef std::vector<RefEnergy> RefEnergies;
-
 typedef std::function<double(double init_val, double final_val, int iter_i, int max_iters)> AlphaFunction; //initial val, final_val, and num_iterations in which alpha is being increased
 
 struct AcceleratorOptions{
@@ -54,6 +51,18 @@ class Accelerator:public AcceleratorBase{
 
 public:
 
+	struct DiagonalOpDuplicate	{ //copied from Quest.h
+		int numQubits=-1; //-1 means uninitialized
+	    //long long int numElemsPerChunk;
+	    //int numChunks=1;
+	    //int chunkId;
+	    //qreal *real;
+		std::vector<qreal> real;
+	    //qreal *imag;
+	    //ComplexArray deviceOperator;
+	    //int hermitian=1;
+	};
+
 	AlphaFunction alpha_f = alpha_constant_f;
 
 	static AlphaFunction alpha_constant_f;
@@ -64,7 +73,7 @@ public:
 	Accelerator(AcceleratorOptions options);
 
 	void initialize(CostFunction cost_function, int num_qubits);
-	void initialize(PauliHamiltonian* hamIn);
+	void initialize(PauliHamiltonian* hamIn, bool use_external_hamDiag=false, DiagonalOpDuplicate *diagonalOpDuplicate=nullptr);
 	void initialize(int num_qubits);
 	void finalize();
 
@@ -81,6 +90,12 @@ public:
 	RefEnergies getEigenspace();
 	RefEnergies getSolutions();
 
+	//for run_cm_qaoa
+	long long int zero_index = 0;
+
+	int log_level;
+
+
 private:
 
 	int *qubits_list;
@@ -92,12 +107,13 @@ private:
 
 	CostFunction cost_function;
 
-	bool pauliHamilInitialized = false;
-	PauliHamil pauliHamiltonian;
+	//bool pauliHamilInitialized = false;
+	//PauliHamil pauliHamiltonian;
 	bool ref_hamil_energies_set = false;
 	RefEnergies ref_hamil_energies;
 
     DiagonalOp hamDiag;
+	//bool hamDiagInitialized = false;
 
     void __initialize(int num_qubits);
 

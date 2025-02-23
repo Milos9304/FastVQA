@@ -28,6 +28,8 @@ class QAOAOptions : public VQAOptions{
 			return extendedParametrizedMode ? "Extended" : "Standard";
 		}
 
+		Accelerator::DiagonalOpDuplicate* diagOpDuplicatePtr=nullptr;
+
 };
 }
 
